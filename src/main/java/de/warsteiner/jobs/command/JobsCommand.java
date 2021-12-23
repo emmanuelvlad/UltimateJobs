@@ -9,25 +9,26 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.utils.Action;
+import de.warsteiner.jobs.utils.GuiManager;
 
 public class JobsCommand  implements CommandExecutor {
 	
 	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
  
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		
-		ArrayList<File> jobs = plugin.getLoadedJobs();
+		 
 		int length = args.length;
 		
 		if(sender instanceof Player) {
-			
+		
+			GuiManager gui = plugin.getGUIManager();
 			Player player = (Player) sender;
 			 
 			if (length == 0) {
-				player.sendMessage("Jobs: "+jobs);
-			
+				gui.createMainGUIOfJobs(player);
 			} else if (length == 1 && args[0].equalsIgnoreCase("demo")) {
-				player.sendMessage("You can find demo files here; ");
+				player.sendMessage("You can find demo files here; https://github.com/Warsteiner37/DemoJobs");
 			}
 		}
 		

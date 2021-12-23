@@ -5,12 +5,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.warsteiner.jobs.command.JobsCommand;
+import de.warsteiner.jobs.events.PlayerBlockBreak;
+import de.warsteiner.jobs.events.PlayerExistEvent;
+import de.warsteiner.jobs.utils.DataFile;
+import de.warsteiner.jobs.utils.GuiManager;
 import de.warsteiner.jobs.utils.JobAPI;
-import de.warsteiner.jobs.utils.YamlConfigFile;
+import de.warsteiner.jobs.utils.PlayerAPI;
+import de.warsteiner.jobs.utils.YamlConfigFile; 
 import net.milkbowl.vault.economy.Economy;
  
 public class UltimateJobs extends JavaPlugin {
@@ -21,7 +27,10 @@ public class UltimateJobs extends JavaPlugin {
 	private ArrayList<File> jobs;
 	
 	private YamlConfigFile config;
+	private DataFile data;
 	private JobAPI api;
+	private PlayerAPI player;
+	private GuiManager gui;
 	
 	@Override
 	public void onEnable() {
@@ -29,7 +38,9 @@ public class UltimateJobs extends JavaPlugin {
 		plugin = this;
 		
 		api = new JobAPI();
+		player = new PlayerAPI();
 		jobs = new ArrayList<File>();
+		gui = new GuiManager();
 		 
 		this.getLogger().info("§bLoading UltimateJobs...");
 		
@@ -37,11 +48,14 @@ public class UltimateJobs extends JavaPlugin {
 		
 		this.getLogger().info("§bLoaded Vault for UltimateJobs");
 		
-		//Bukkit.getPluginManager().registerEvents(new PlayerJobBreakEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerBlockBreak(), this);
 		 
 		getCommand("jobs").setExecutor(new JobsCommand());
 		
 		createFolders();
+		
+		loadFiles();
 		
 		setupConfigs();
 		
@@ -69,6 +83,11 @@ public class UltimateJobs extends JavaPlugin {
 			this.getLogger().info("§bCreated Folders for UltimateJobs");
 		}
 		
+	}
+	
+	public void loadFiles() {
+		data = new DataFile(getPlugin(), "data", getDataFolder().getPath() + File.separator + "data" + File.separator);
+		data.reload();
 	}
 	
 	public void loadJobs(Logger logger) {
@@ -122,6 +141,22 @@ public class UltimateJobs extends JavaPlugin {
 	
 	public static Economy getEco() {
 		return econ;
+	}
+	
+	public YamlConfigFile getMainConfig() {
+		return config;
+	}
+	
+	public DataFile getPlayerData() {
+		return data;
+	}
+	
+	public PlayerAPI getPlayerAPI() {
+		return player;
+	}
+	
+	public GuiManager getGUIManager() {
+		return gui;
 	}
 	
 	public ArrayList<File> getLoadedJobs()  {

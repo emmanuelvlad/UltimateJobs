@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,11 +17,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.utils.Action; 
+import de.warsteiner.jobs.utils.Action;
+import net.md_5.bungee.api.ChatColor; 
 
 public class JobAPI {
 	
 	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
+	
+	private static final Pattern pattern = Pattern.compile("(?<!\\\\)(#[a-fA-F0-9]{6})");
+
+	public static String toHex(String motd) {
+		Matcher matcher = pattern.matcher(motd);
+		while (matcher.find()) {
+			String color = motd.substring(matcher.start(), matcher.end());
+			motd = motd.replace(color, "" + ChatColor.of(color));
+		}
+
+		return motd;
+	}
 	
 	public boolean canWorkThere(Player player, File file) {
 		 
