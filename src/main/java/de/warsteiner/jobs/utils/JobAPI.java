@@ -147,6 +147,10 @@ public class JobAPI {
 		return getJobConfig(file).getString("Display");
 	}
 	
+	public String getID(File file) {
+		return getJobConfig(file).getString("ID");
+	}
+	
 	public String getMaterial(File file) {
 		return getJobConfig(file).getString("Material");
 	}

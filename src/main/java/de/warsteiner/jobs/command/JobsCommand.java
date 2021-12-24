@@ -27,8 +27,8 @@ public class JobsCommand  implements CommandExecutor {
 			 
 			if (length == 0) {
 				gui.createMainGUIOfJobs(player);
-			} else if (length == 1 && args[0].equalsIgnoreCase("demo")) {
-				player.sendMessage("You can find demo files here; https://github.com/Warsteiner37/DemoJobs");
+			} else {
+				plugin.getCommandAPI().execute(player, args);
 			}
 		}
 		

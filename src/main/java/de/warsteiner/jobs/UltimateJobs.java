@@ -12,6 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.warsteiner.jobs.command.JobsCommand;
 import de.warsteiner.jobs.events.PlayerBlockBreak;
 import de.warsteiner.jobs.events.PlayerExistEvent;
+import de.warsteiner.jobs.events.inventorys.MainMenuClickEvent;
+import de.warsteiner.jobs.utils.CommandAPI;
 import de.warsteiner.jobs.utils.DataFile;
 import de.warsteiner.jobs.utils.GuiManager;
 import de.warsteiner.jobs.utils.JobAPI;
@@ -31,6 +33,7 @@ public class UltimateJobs extends JavaPlugin {
 	private JobAPI api;
 	private PlayerAPI player;
 	private GuiManager gui;
+	private CommandAPI command;
 	
 	@Override
 	public void onEnable() {
@@ -41,14 +44,19 @@ public class UltimateJobs extends JavaPlugin {
 		player = new PlayerAPI();
 		jobs = new ArrayList<File>();
 		gui = new GuiManager();
-		 
+		command = new CommandAPI(); 
+		
 		this.getLogger().info("§bLoading UltimateJobs...");
 		
 		setupEconomy();
 		
 		this.getLogger().info("§bLoaded Vault for UltimateJobs");
 		
+		//basic events
 		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new MainMenuClickEvent(), this);
+		
+		//job-events
 		Bukkit.getPluginManager().registerEvents(new PlayerBlockBreak(), this);
 		 
 		getCommand("jobs").setExecutor(new JobsCommand());
@@ -61,6 +69,7 @@ public class UltimateJobs extends JavaPlugin {
 		
 		loadJobs(this.getLogger());
 		
+		getCommandAPI().loadBasicJobCommands(getMainConfig());
 		
 		this.getLogger().info("§a§lLoaded UltimateJobs! Jobs: §4§lx"+jobs.size());
 	}
@@ -149,6 +158,10 @@ public class UltimateJobs extends JavaPlugin {
 	
 	public DataFile getPlayerData() {
 		return data;
+	}
+	
+	public CommandAPI getCommandAPI() {
+		return command;
 	}
 	
 	public PlayerAPI getPlayerAPI() {

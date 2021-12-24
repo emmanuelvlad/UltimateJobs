@@ -1,13 +1,16 @@
 package de.warsteiner.jobs.utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -41,12 +44,64 @@ public class GuiManager {
 	}
 	 
 	public void setMainInventoryJobItems(Inventory inv, Player player, String name) {
+		YamlConfiguration config = plugin.getMainConfig().getConfig();
+		
 		String title = player.getOpenInventory().getTitle();
+		JobAPI api = plugin.getJobAPI();
+		String UUID = ""+player.getUniqueId();
 		String need = plugin.getJobAPI().toHex(name).replaceAll("&", "§");
 		if(title.equalsIgnoreCase(need)) {
-			player.sendMessage("yes");
+			
+			ArrayList<File> jobs = plugin.getLoadedJobs();
+			
+			for(File job : jobs) {
+				
+				String display = api.toHex(api.getDisplay(job).replaceAll("&", "§"));
+				int slot = api.getSlot(job);
+				List<String> lore = api.getLore(job);
+				String mat = api.getMaterial(job);
+				int price = api.getPrice(job);
+				String id = api.getID(job);
+				 
+				ItemStack item = createItemStack(player, mat);
+				ItemMeta meta = item.getItemMeta();
+				meta.setDisplayName(display.replaceAll("&", "§"));
+				
+				List<String> see;
+				
+				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+				
+				if(plugin.getPlayerAPI().ownJob(UUID, need)) {
+					
+					if(plugin.getPlayerAPI().isInJob(UUID, id)) {
+						meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, false);
+					 
+						see = config.getStringList("Jobs.Lore.In"); 
+					} else {
+						see = config.getStringList("Jobs.Lore.Bought"); 
+					}
+					
+				} else {
+					see =config.getStringList("Jobs.Lore.Price"); 
+				} 
+				List<String> filore = new ArrayList<String>() ;
+				for(String l : lore) {
+					filore.add(plugin.getJobAPI().toHex(l).replaceAll("&", "§"));
+				} 
+				for(String l : see) {
+					filore.add(plugin.getJobAPI().toHex(l).replaceAll("<price>", ""+price).replaceAll("&", "§"));
+				} 
+				meta.setLore(filore); 
+				
+				item.setItemMeta(meta);
+				
+				inv.setItem(slot, item); 
+				
+			} 
 		}
 	}
+	 
  
 	public void setCustomitems(Player player, Inventory inv, YamlConfiguration config, String prefix, List<String> list, String name) {
 		String title = player.getOpenInventory().getTitle();
