@@ -10,9 +10,8 @@
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-#how many jobs can a player have by default?
-#IMPORTANT!!!!!!! -> 0 means the player can have one Job. if you use 1, the player can have two jobs!!
-MaxDefaultJobs: 0
+#how many jobs can a player have by default? 
+MaxDefaultJobs: 1
 
 # Use "CLOSE", or "REOPEN"
 Jobs_UpdateMode: "REOPEN"

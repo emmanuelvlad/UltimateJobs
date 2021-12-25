@@ -1,5 +1,5 @@
 package de.warsteiner.jobs.events.inventorys;
-
+ 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,7 +39,13 @@ public class MainMenuClickEvent implements Listener {
 		
 		Player p = (Player) e.getWhoClicked();
 		
+		String display = plugin.getJobAPI().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
+ 
 		if (e.getView().getTitle().equalsIgnoreCase(plugin.getJobAPI().toHex(name).replaceAll("&", "§"))) {
+		 
+			plugin.getGUIManager().executeJobClickEvent(display, p, config);
+			 
+			plugin.getGUIManager().executeCustomItem(display, e.getCurrentItem().getType(), p, config, name);
 			e.setCancelled(true);
 		}
 		

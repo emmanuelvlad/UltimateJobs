@@ -7,17 +7,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.Material;
-import org.bukkit.boss.BarColor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.boss.BarColor; 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.utils.Action;
+import de.warsteiner.jobs.UltimateJobs; 
 import net.md_5.bungee.api.ChatColor; 
 
 public class JobAPI {
@@ -26,7 +23,7 @@ public class JobAPI {
 	
 	private static final Pattern pattern = Pattern.compile("(?<!\\\\)(#[a-fA-F0-9]{6})");
 
-	public static String toHex(String motd) {
+	public String toHex(String motd) {
 		Matcher matcher = pattern.matcher(motd);
 		while (matcher.find()) {
 			String color = motd.substring(matcher.start(), matcher.end());
@@ -125,6 +122,14 @@ public class JobAPI {
 
 	}
 
+	public String getMessage(String path) {
+		return toHex(plugin.getMessages().getConfig().getString(path).replaceAll("<prefix>", getPrefix()).replaceAll("&", "§"));
+	}
+	
+	public String getPrefix() {
+		return toHex(plugin.getMessages().getConfig().getString("Prefix").replaceAll("&", "§"));
+	}
+	
 	public boolean canWorkInWorld(String world, File file) {
 
 		return getWorlds(file).contains(world);
@@ -144,7 +149,7 @@ public class JobAPI {
 	}
 	
 	public String getDisplay(File file) {
-		return getJobConfig(file).getString("Display");
+		return plugin.getJobAPI().toHex( getJobConfig(file).getString("Display").replaceAll("&", "§"));
 	}
 	
 	public String getID(File file) {
@@ -163,8 +168,8 @@ public class JobAPI {
 		return getJobConfig(file).getInt("Slot");
 	}
 	
-	public int getPrice(File file) {
-		return getJobConfig(file).getInt("Price");
+	public double getPrice(File file) {
+		return getJobConfig(file).getDouble("Price");
 	}
 	
 	public List<String> getWorlds(File file) {

@@ -1,7 +1,13 @@
 package de.warsteiner.jobs.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.warsteiner.jobs.UltimateJobs;
  
@@ -10,16 +16,17 @@ public class PlayerAPI {
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 
 	public void createPlayer(String uuid) {
-		DataFile cl = plugin.getPlayerData();
-		ArrayList<String> list = new ArrayList<String>();
+		DataFile cl = plugin.getPlayerData(); 
 		ArrayList<String> list2 = new ArrayList<String>();
 		List<String> players = cl.get().getStringList("Players");
 		players.add(uuid);
 		cl.get().set("Players", players);
-		cl.get().set("Player." + uuid + ".CurrentJob", list);
+		cl.get().set("Player." + uuid + ".CurrentJob", null);
 		cl.get().set("Player." + uuid + ".OwnsJob", list2);
 		cl.get().set("Player." + uuid + ".MaxJobs", plugin.getMainConfig().getConfig().getInt("MaxDefaultJobs"));
-
+		cl.get().set("Player." + uuid + ".Points", 0);
+		cl.get().set("Player." + uuid + ".Global.Level", 1);
+		cl.get().set("Player." + uuid + ".Global.Exp", 1); 
 		cl.save();
 	}
 
@@ -62,10 +69,15 @@ public class PlayerAPI {
 		cl.save();
 	}
 
-	public void createJob(String uuid, String job) {
+	public void createJob(String uuid, String job, YamlConfiguration config) {
 		DataFile cl = plugin.getPlayerData();
+		
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		Date data = new Date();
+		
 		cl.get().set("Job." + uuid + ".ID." + job + ".Level", 1);
 		cl.get().set("Job." + uuid + ".ID." + job + ".Exp", 0);
+		cl.get().set("Job." + uuid + ".ID." + job + ".Bought", "" + format.format(data));
 		cl.get().set("Job." + uuid + ".ID." + job + ".Points", 0);
 		cl.save();
 	}
@@ -159,6 +171,10 @@ public class PlayerAPI {
 
 	public List<String> getCurrentJobs(String uuid) { 
 		return plugin.getPlayerData().get().getStringList("Player." + uuid + ".CurrentJob");
+	}
+	
+	public boolean hasAnyJob(String uuid) { 
+		return getCurrentJobs(uuid).size() == 0;
 	}
 
 	public int getMaxJobs(String uuid) { 

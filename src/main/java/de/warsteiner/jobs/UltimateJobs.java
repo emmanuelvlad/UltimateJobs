@@ -29,6 +29,8 @@ public class UltimateJobs extends JavaPlugin {
 	private ArrayList<File> jobs;
 	
 	private YamlConfigFile config;
+	private YamlConfigFile messages;
+	
 	private DataFile data;
 	private JobAPI api;
 	private PlayerAPI player;
@@ -127,11 +129,14 @@ public class UltimateJobs extends JavaPlugin {
 	
 	private void setupConfigs() {
 		File file_config = new File(getDataFolder() + File.separator, "Config.yml");
+		File file_messages = new File(getDataFolder() + File.separator, "Messages.yml");
 		 
 		config = new YamlConfigFile(getPlugin(), file_config); 
-
+		messages = new YamlConfigFile(getPlugin(), file_messages); 
+ 
 		try {
 			config.load(); 
+			messages.load();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,6 +159,10 @@ public class UltimateJobs extends JavaPlugin {
 	
 	public YamlConfigFile getMainConfig() {
 		return config;
+	}
+	
+	public YamlConfigFile getMessages() {
+		return messages;
 	}
 	
 	public DataFile getPlayerData() {
