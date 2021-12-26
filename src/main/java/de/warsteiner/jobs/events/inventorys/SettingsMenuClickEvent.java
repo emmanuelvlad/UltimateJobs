@@ -1,5 +1,7 @@
 package de.warsteiner.jobs.events.inventorys;
- 
+
+import java.io.File;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,7 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.warsteiner.jobs.UltimateJobs;
 
-public class MainMenuClickEvent implements Listener {
+public class SettingsMenuClickEvent implements Listener {
 	
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 
@@ -34,18 +36,15 @@ public class MainMenuClickEvent implements Listener {
 		}
 
 		YamlConfiguration config = plugin.getMainConfig().getConfig();
-		
-		String name = config.getString("Main_Name");
-		
+ 
 		Player p = (Player) e.getWhoClicked();
 		
 		String display = plugin.getJobAPI().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
- 
-		if (e.getView().getTitle().equalsIgnoreCase(plugin.getJobAPI().toHex(name).replaceAll("&", "§"))) {
-		 
-			plugin.getGUIManager().executeJobClickEvent(display, p, config);
-			 
-			plugin.getGUIManager().executeCustomItem(display, p, config, name);
+		String title = plugin.getJobAPI().toHex(e.getView().getTitle().replaceAll("&", "§"));
+		
+		if(plugin.getGUIManager().isSettingsGUI(title) != null) {
+			File job = plugin.getGUIManager().isSettingsGUI(title);
+			plugin.getGUIManager().executeCustomItemInSettings(job, display, p, config);
 			e.setCancelled(true);
 		}
 		

@@ -13,6 +13,15 @@
 #how many jobs can a player have by default? 
 MaxDefaultJobs: 1
 
+#do you want to use the levels?
+Enable_Levels: true
+
+#Date-Format
+Date: "dd/MM/yyyy"
+
+#format of example money, 10.05
+Format: "0.00"
+
 # Use "CLOSE", or "REOPEN"
 Jobs_UpdateMode: "REOPEN"
 
@@ -159,4 +168,107 @@ Command:
     Message: 
       - "<prefix> &7Stats of <player>&8: "
       - " &8| &7Idk: 0"
+      
+#options menu 
+Settings_Name: "&bJob Options &8- <job>"
 
+Settings_Size: 3
+
+Settings_Custom:
+
+  List: 
+    - "Close"
+    - "Back" 
+    - "Earnings"
+    - "Leave"
+    - "MoneyList"
+    
+  Close:
+  
+    Display: "&cClose Menu"
+    
+    Action: "CLOSE"
+     
+    Material: "RED_DYE"
+    
+    Slot: 16
+    
+  Leave:
+  
+    Display: "&c&lLeave this Job"
+    
+    Action: "LEAVE"
+     
+    Material: "REDSTONE"
+    
+    Slot: 15
+
+  Earnings:
+  
+    Display: "&6My Earnings this Month"
+    
+    Action: "EARNINGS"
+    
+    Lore:
+      - "&7This works only when the addon is installed."
+    
+    Material: "EMERALD"
+    
+    Slot: 10
+    
+  MoneyList:
+  
+    Display: "&4See Earnings for different Blocks"
+    
+    Action: "MONEYLIST"
+    
+    Lore:
+      - "&7This works only when the addon is installed."
+    
+    Material: "BOOK"
+    
+    Slot: 11
+    
+  Back:
+  
+    Display: "&4Go Back"
+    
+    Action: "BACK"
+    
+    Lore:
+      - "&7Click here to get back to the main menu"
+    
+    Material: "BARRIER"
+    
+    Slot: 13
+ 
+Settings_Place:
+  - "BLACK_STAINED_GLASS_PANE:0:&7" 
+  - "BLACK_STAINED_GLASS_PANE:1:&7"   
+  - "BLACK_STAINED_GLASS_PANE:2:&7" 
+  - "BLACK_STAINED_GLASS_PANE:3:&7" 
+  - "BLACK_STAINED_GLASS_PANE:4:&7" 
+  - "BLACK_STAINED_GLASS_PANE:5:&7" 
+  - "BLACK_STAINED_GLASS_PANE:6:&7" 
+  - "BLACK_STAINED_GLASS_PANE:7:&7" 
+  - "BLACK_STAINED_GLASS_PANE:8:&7" 
+  - "BLACK_STAINED_GLASS_PANE:9:&7" 
+  - "BLACK_STAINED_GLASS_PANE:10:&7" 
+  - "BLACK_STAINED_GLASS_PANE:11:&7" 
+  - "BLACK_STAINED_GLASS_PANE:10:&7" 
+  - "BLACK_STAINED_GLASS_PANE:11:&7"
+  - "BLACK_STAINED_GLASS_PANE:12:&7" 
+  - "BLACK_STAINED_GLASS_PANE:13:&7" 
+  - "BLACK_STAINED_GLASS_PANE:14:&7" 
+  - "BLACK_STAINED_GLASS_PANE:15:&7" 
+  - "BLACK_STAINED_GLASS_PANE:16:&7" 
+  - "BLACK_STAINED_GLASS_PANE:17:&7" 
+  - "BLACK_STAINED_GLASS_PANE:18:&7" 
+  - "BLACK_STAINED_GLASS_PANE:19:&7" 
+  - "BLACK_STAINED_GLASS_PANE:20:&7" 
+  - "BLACK_STAINED_GLASS_PANE:21:&7" 
+  - "BLACK_STAINED_GLASS_PANE:22:&7" 
+  - "BLACK_STAINED_GLASS_PANE:23:&7" 
+  - "BLACK_STAINED_GLASS_PANE:24:&7" 
+  - "BLACK_STAINED_GLASS_PANE:25:&7"  
+  - "BLACK_STAINED_GLASS_PANE:26:&7"  

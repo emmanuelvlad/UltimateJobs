@@ -23,4 +23,27 @@ Bought_Job: "<prefix> &bYou bought the Job <job>&b!"
 Joined: "<prefix> &bYou joined the Job <job>&b!"
 
 Full: "<prefix> &cYou already reached the maximum of Jobs!"
+
+Left_Job: "<prefix> &7You have left the Job <job>&7!"
+
+Levels:
+
+  Enable_Title: true
+  
+  Ttitle_1: "&8| &b&lLevel UP &8|"
  
+  Ttitle_2: "&7New level <level_int> &8/ <level_name>"
+
+  Enable_Message: false
+
+  Message: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"  
+  
+Reward:
+
+  Enable_BossBar: true
+  
+  BossBar: "&a+ &7<money> Dollars from <id>"
+  
+  Enable_Message: false
+  
+  Message: "<prefix> &7Added <money>  Dollars as Reward from <id>&7!"

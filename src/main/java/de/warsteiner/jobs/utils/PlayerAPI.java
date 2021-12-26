@@ -5,8 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.warsteiner.jobs.UltimateJobs;
@@ -30,6 +29,11 @@ public class PlayerAPI {
 		cl.save();
 	}
 
+	public double getGlobalPoints(String uuid) {
+		return plugin.getPlayerData().get().getDouble("Player." + uuid + ".Points");
+	}
+	
+	
 	public List<String> getPlayers() { 
 		return plugin.getPlayerData().get().getStringList("Players");
 	}
@@ -48,31 +52,13 @@ public class PlayerAPI {
 	public String getUUIDByName(String name) { 
 		return plugin.getPlayerData().get().getString("UUIDFetcher." + name.toUpperCase() + ".UUID");
 	}
-
-	public int getPointsInJob(String uuid, String job) { 
-		return plugin.getPlayerData().get().getInt("Job." + uuid + ".ID." + job + ".Points");
-	}
-
-	public void setPoints(String uuid, String job, int points) {
-		DataFile cl = plugin.getPlayerData();
-		cl.get().set("Job." + uuid + ".ID." + job + ".Points", points);
-		cl.save();
-	}
-
-	public int getGlobalPoints(String uuid) { 
-		return plugin.getPlayerData().get().getInt("Job." + uuid + ".Global.Points");
-	}
-
-	public void setGlobalPoints(String uuid, int points) {
-		DataFile cl = plugin.getPlayerData();
-		cl.get().set("Job." + uuid + ".Global.Points", points);
-		cl.save();
-	}
+ 
+ 
 
 	public void createJob(String uuid, String job, YamlConfiguration config) {
 		DataFile cl = plugin.getPlayerData();
 		
-		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat format = new SimpleDateFormat(config.getString("Date"));
 		Date data = new Date();
 		
 		cl.get().set("Job." + uuid + ".ID." + job + ".Level", 1);
@@ -80,6 +66,65 @@ public class PlayerAPI {
 		cl.get().set("Job." + uuid + ".ID." + job + ".Bought", "" + format.format(data));
 		cl.get().set("Job." + uuid + ".ID." + job + ".Points", 0);
 		cl.save();
+	}
+	
+	public double getStatsArg(String uuid, String job, int id) { 
+		return plugin.getPlayerData().get().getDouble("Job." + uuid + ".ID." + job + ".Stats.Arg"+id);
+	}
+
+	public int getStatsArgAsInt(String uuid, String job, int id) { 
+		return plugin.getPlayerData().get().getInt("Job." + uuid + ".ID." + job + ".Stats.Arg"+id);
+	}
+	
+	public void setStatsArg(String uuid, String job, double d, int id) {
+		DataFile cl = plugin.getPlayerData();
+		cl.get().set("Job." + uuid + ".ID." + job + ".Stats.Arg"+id, d);
+		cl.save();
+	}
+	
+	public void addStatsArg(String uuid, String job, double exp, int id) {
+
+		double old = getStatsArg(uuid, job, id);
+
+		setStatsArg(uuid, job, old + exp, id);
+	}
+	
+	public double getMoneyToday(String uuid, String job, String date) { 
+		return plugin.getPlayerData().get().getDouble("Job." + uuid + ".ID." + job + ".Stats.Money."+date+".Today");
+	}
+
+	public void setMoneyToday(String uuid, String job, double d, String date) {
+		DataFile cl = plugin.getPlayerData();
+		cl.get().set("Job." + uuid + ".ID." + job + ".Stats.Money."+date+".Today", d);
+		cl.save();
+	}
+	
+	public void addMoneyToday(String uuid, String job, double money, String date) {
+
+		double old = getMoneyToday(uuid, job,  date);
+
+		setMoneyToday(uuid, job, old + money, date);
+	}
+	
+	public double getMoneyAll(String uuid, String job) { 
+		return plugin.getPlayerData().get().getDouble("Job." + uuid + ".ID." + job + ".Stats.Money.All");
+	}
+
+	public void setMoneyAll(String uuid, String job, double d) {
+		DataFile cl = plugin.getPlayerData();
+		cl.get().set("Job." + uuid + ".ID." + job + ".Stats.Money.All", d);
+		cl.save();
+	}
+	
+	public void addMoneyAll(String uuid, String job, double money) {
+
+		double old = getMoneyAll(uuid, job);
+
+		setMoneyAll(uuid, job, old + money);
+	}
+	
+	public String getBoughtDate(String uuid, String job) { 
+		return plugin.getPlayerData().get().getString("Job." + uuid + ".ID." + job + ".Bought");
 	}
 
 	public double getJobExp(String uuid, String job) { 
@@ -109,22 +154,22 @@ public class PlayerAPI {
 		return plugin.getPlayerData().get().getInt("Job." + uuid + ".ID." + job + ".Level");
 	}
 
-	public void setJobLevel(String uuid, String job, int level) {
+	public void setLevelOfJob(String uuid, String job, int level) {
 		DataFile cl = plugin.getPlayerData();
 		cl.get().set("Job." + uuid + ".ID." + job + ".Level", level);
 		cl.save();
-	}
-
-	public void addJobLevel(String uuid, String job, int exp) { 
+	} 
+	 
+	public void addLevelOfJob(String uuid, String job, int exp) { 
 		int old = getJobLevel(uuid, job);
 
-		setJobLevel(uuid, job, old + exp);
+		setLevelOfJob(uuid, job, old + exp);
 	}
 
 	public void remJobLevel(String uuid, String job, int exp) {
 		int old = getJobLevel(uuid, job);
 
-		setJobLevel(uuid, job, old - exp);
+		setLevelOfJob(uuid, job, old - exp);
 	}
 
 	public boolean isInJob(String uuid, String id) { 

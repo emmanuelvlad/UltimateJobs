@@ -46,8 +46,65 @@ public class GuiManager {
 		setCustomitems(player, inv_view, config, "Main_Custom.", config.getStringList("Main_Custom.List"), name);
 		setMainInventoryJobItems(inv_view, player, name);
 	}
+	
+	public void createSettingsGUI(Player player, File job) {
+		
+		YamlConfiguration config = plugin.getMainConfig().getConfig();
+		String dis = plugin.getJobAPI().getDisplay(job);
+		String name = config.getString("Settings_Name").replaceAll("<job>", dis);
+		int size = config.getInt("Settings_Size");
+		
+		Inventory inv = createGui(size, name);
+		
+		player.openInventory(inv);
+		
+		InventoryView inv_view = player.getOpenInventory();
+		
+		setPlaceHolders(player, inv, config.getStringList("Settings_Place"), name);
+		setCustomitems(player, inv_view, config, "Settings_Custom.", config.getStringList("Settings_Custom.List"), name);
+ 
+	}
+	
+	public File isSettingsGUI(String menu) {
+		for(File file : plugin.getLoadedJobs()) {
+			String dis = plugin.getJobAPI().getDisplay(file);
+			String fin = plugin.getJobAPI().toHex(plugin.getMainConfig().getConfig().getString("Settings_Name").replaceAll("<job>", dis).replaceAll("&", "§")); 
+			if(fin.equalsIgnoreCase(menu)) {
+				return file;
+			}
+		}
+		return null;
+	}
+	
+	public void executeCustomItemInSettings(File job, String display,  final Player player, YamlConfiguration config) {
+		String item = isCustomItem(display, player, config, "Settings_Custom");
+		String UUID = ""+player.getUniqueId(); 
+		if(!item.equalsIgnoreCase("NOT_FOUND")) {
+			String action = config.getString("Settings_Custom."+item+".Action");
+			if(action.equalsIgnoreCase("NOTHING")) { 
+			} else if(action.equalsIgnoreCase("CLOSE")) {
+				new BukkitRunnable() {
+				    public void run() {
+				    	player.closeInventory();
+				    }
+				}.runTaskLater(plugin, 5);
+			}else if(action.equalsIgnoreCase("BACK")) {
+				    plugin.getGUIManager().createMainGUIOfJobs(player); 
+			}  else if(action.equalsIgnoreCase("LEAVE")) {
+				if(!plugin.getPlayerAPI().hasAnyJob(UUID)) {
+					plugin.getPlayerAPI().remCurrentJobs(UUID, plugin.getJobAPI().getID(job));
+					plugin.getGUIManager().createMainGUIOfJobs(player);
+					player.sendMessage(plugin.getJobAPI().getMessage("Left_Job").replaceAll("<job>", plugin.getJobAPI().getDisplay(job)));
+				}  
+			}  else if(action.equalsIgnoreCase("MONEYLIST")) {
+				player.sendMessage("UltimateJobs extension Money-List");
+			}  else if(action.equalsIgnoreCase("EARNINGS")) {
+				player.sendMessage("UltimateJobs extension Earnings-List");
+			}
+		}  
+	}
 	 
-	public void executeCustomItem(String display, Material material, final Player player, YamlConfiguration config, String name) {
+	public void executeCustomItem(String display, final Player player, YamlConfiguration config, String name) {
 		String item = isCustomItem(display, player, config, "Main_Custom");
 		String UUID = ""+player.getUniqueId();
 		InventoryView inv = player.getOpenInventory();
@@ -106,7 +163,7 @@ public class GuiManager {
 				if(p.ownJob(UUID, job)) {
 					
 					if(p.isInJob(UUID, job)) {
-						player.sendMessage("open settings gui");
+						createSettingsGUI(player, file);
 					} else {
 						
 						int max = plugin.getPlayerAPI().getMaxJobs(UUID) - 1;
@@ -153,6 +210,7 @@ public class GuiManager {
 		String title = player.getOpenInventory().getTitle();
 		JobAPI api = plugin.getJobAPI();
 		String UUID = ""+player.getUniqueId();
+		PlayerAPI p = plugin.getPlayerAPI();
 		String need = plugin.getJobAPI().toHex(name).replaceAll("&", "§");
 		if(title.equalsIgnoreCase(need)) {
 			
@@ -166,22 +224,23 @@ public class GuiManager {
 				String mat = api.getMaterial(job);
 				double price = api.getPrice(job);
 				String id = api.getID(job);
-				 
+				String date = api.getDate(); 
+				
 				ItemStack item = createItemStack(player, mat);
 				ItemMeta meta = item.getItemMeta();
 				meta.setDisplayName(display.replaceAll("&", "§"));
 				
-				List<String> see;
+				List<String> see; 
 				
 				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 				
-				if(plugin.getPlayerAPI().ownJob(UUID, id)) {
+				if(p.ownJob(UUID, id)) {
 					
 					if(plugin.getPlayerAPI().isInJob(UUID, id)) {
 						meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, false);
 					 
-						see = config.getStringList("Jobs.Lore.In"); 
+						see = config.getStringList("Jobs.Lore.In");  
 					} else {
 						see = config.getStringList("Jobs.Lore.Bought"); 
 					}
@@ -193,6 +252,22 @@ public class GuiManager {
 				for(String l : lore) {
 					filore.add(plugin.getJobAPI().toHex(l).replaceAll("&", "§"));
 				} 
+				if(p.isInJob(UUID, id)) {
+					for(String l : plugin.getJobAPI().getStatsDesc(job)) {
+						int level = p.getJobLevel(UUID, id);
+						filore.add(plugin.getJobAPI().toHex(l)
+								.replaceAll("<stats_args_4>",getLevelname(job, level))
+								.replaceAll("<stats_args_3>",""+ level)
+								.replaceAll("<stats_args_2>",""+ p.getStatsArgAsInt(UUID, id, 2))
+								.replaceAll("<stats_args_6>",""+ api.Format(plugin.getLevelAPI().getJobNeedExp(UUID, job, id)))
+								.replaceAll("<stats_args_5>",""+ api.Format(p.getJobExp(UUID, id)))
+								.replaceAll("<stats_args_9>",""+ api.Format(p.getStatsArg(UUID, id, 9)))
+								.replaceAll("<stats_args_7>",""+ api.Format(p.getMoneyAll(UUID, id)))
+								.replaceAll("<stats_args_8>",""+ api.Format(p.getMoneyToday(UUID, id, date)))
+								.replaceAll("<stats_args_1>", p.getBoughtDate(UUID, id) )
+								.replaceAll("&", "§"));
+					} 
+				}
 				for(String l : see) {
 					filore.add(plugin.getJobAPI().toHex(l).replaceAll("<price>", ""+price).replaceAll("&", "§"));
 				} 
@@ -206,6 +281,12 @@ public class GuiManager {
 		}
 	}
 	 
+	public String getLevelname(File job, int level) {
+		if(plugin.getLevelAPI().getLevelName(job, level) != null) {
+			return plugin.getLevelAPI().getLevelName(job, level);
+		}
+		return "NOT_FOUND";
+	}
  
 	public void setCustomitems(Player player, InventoryView inv, YamlConfiguration config, String prefix, List<String> list, String name) {
 		String title = player.getOpenInventory().getTitle();
