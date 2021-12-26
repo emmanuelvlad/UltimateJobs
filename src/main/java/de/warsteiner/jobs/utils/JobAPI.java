@@ -452,6 +452,7 @@ public class JobAPI {
 		try {
 			config.save(file);
 		} catch (IOException iOException) {
+			plugin.getLogger().info("§4§lFailed to create Demo Job File");
 		}
 	}
 

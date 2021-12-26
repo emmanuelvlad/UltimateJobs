@@ -63,7 +63,7 @@ public class UltimateJobs extends JavaPlugin {
 		
 		loadFiles();
 		
-		setupConfigs();
+		setupConfigs(this.getLogger());
 		
 		loadJobs(this.getLogger());
 		
@@ -140,7 +140,7 @@ public class UltimateJobs extends JavaPlugin {
 		}
 	}
 	
-	private void setupConfigs() {
+	private void setupConfigs(Logger logger) {
 		File file_config = new File(getDataFolder() + File.separator, "Config.yml");
 		File file_messages = new File(getDataFolder() + File.separator, "Messages.yml");
 		 
@@ -151,6 +151,7 @@ public class UltimateJobs extends JavaPlugin {
 			config.load(); 
 			messages.load();
 		} catch (IOException e) { 
+			logger.info("§4§lFailed to create Config Files");
 			e.printStackTrace();
 		}
 	}
