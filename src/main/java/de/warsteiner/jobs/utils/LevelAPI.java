@@ -39,7 +39,8 @@ public class LevelAPI {
 		return need; 
 	}
 	
-	 public  void check(Player player, File j) {
+	 @SuppressWarnings("deprecation")
+	public  void check(Player player, File j) {
 		 String UUID = ""+player.getUniqueId();
 		 String id = plugin.getJobAPI().getID(j); 
 		 PlayerAPI p = plugin.getPlayerAPI();

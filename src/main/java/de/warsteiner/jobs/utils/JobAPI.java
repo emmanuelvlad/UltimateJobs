@@ -15,9 +15,11 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor; 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -61,6 +63,7 @@ public class JobAPI {
 	public boolean hasItemInhandWhichIsNeed(File job, Player p) {
 		YamlConfiguration cfg = getJobConfig(job);
 		List<String> items = cfg.getStringList("Items");
+		@SuppressWarnings("deprecation")
 		ItemStack current = p.getItemInHand();
 		for (String item : items) {
 			ItemStack i = new ItemStack(Material.valueOf(item.toUpperCase()));
@@ -132,93 +135,120 @@ public class JobAPI {
 	
 	public HashMap<String, Date> lastworked_list = new HashMap<String, Date>();
 	
-	public void executeWork(Player player, String id) {
+	public void executeBlockBreakWork( BlockBreakEvent event) {
+		Player player = event.getPlayer();
+		Block block = event.getBlock();
 		
+		if (block.hasMetadata("placed-by-player")) {
+			return;
+		} 
+		
+		if (event.isCancelled()) {
+			event.setCancelled(true);
+			return;
+		}
+		 
 		JobAPI api = plugin.getJobAPI(); 
 		PlayerAPI p = plugin.getPlayerAPI();
+		String id = ""+block.getType();
 		
 		ArrayList<File> found = api.getJobsWithAction(Action.BREAK);
 		 
 		for(File job : found) { 
-		if(api.canReward(player, job, id)) { 
-			 
+			if(api.canReward(player, job, id)) { 
+			  
+			String UUID = ""+player.getUniqueId();
 		 
-	 
-		String UUID = ""+player.getUniqueId();
-		YamlConfiguration cfg = plugin.getMainConfig().getConfig();
+			String jobid = api.getID(job);
+		 
+			if(api.needCustomItemToWork(job)) {
+	            if(!api.hasItemInhandWhichIsNeed(job, player)) { 
+	                return;
+	            }
+	        }
+		
+			if(canGetRewardFromJobAndID(p, api, player, job, jobid)) {
+				addRewards(player, job, id, UUID, jobid);
+				
+				sendRewardMessage(player, job, id, jobid, UUID);
+			}  
+			}
+		}
+	}
+	
+	public boolean canGetRewardFromJobAndID(PlayerAPI p, JobAPI api, Player player, File job, String id) {
+		if (api.canWorkThere(player, job)) {
+			if(p.isInJob(""+player.getUniqueId(), id)) { 
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void sendRewardMessage(Player player, File job, String id, String jobid, String UUID) {
+		JobAPI api = plugin.getJobAPI(); 
+		PlayerAPI p = plugin.getPlayerAPI();
 		YamlConfiguration tr = plugin.getMessages().getConfig();
 		 
-		String jobid = api.getID(job);
+		double reward = api.getRewardOfID(job, id); 
+		int level = p.getJobLevel(UUID, jobid);
+		double ex = p.getJobExp(UUID, jobid);
 		
-		
-		
-		if(api.needCustomItemToWork(job)) {
-            if(!api.hasItemInhandWhichIsNeed(job, player)) { 
-                return;
-            }
-        }
-		
-		if (api.canWorkThere(player, job)) {
-			if(p.isInJob(UUID, jobid)) { 
-				//stats
-				 
-				double points = api.getPointsOfID(job, id);
-				double reward = api.getRewardOfID(job, id);
-				double exp = api.getExpOfID(job, id);
-				int level = p.getJobLevel(UUID, jobid);
-				double ex = p.getJobExp(UUID, jobid);
-				
-				String date = getDate();
-				
-				p.addStatsArg(UUID, jobid, 1, 2);
-				p.addStatsArg(UUID, jobid, points, 9);
-		 
-				p.addMoneyAll(UUID, jobid, reward);
-				p.addMoneyToday(UUID, jobid, reward, date);
-				
-				if(cfg.getBoolean("Enable_Levels")) {
-					//add exp with event
-					new PlayerJobExpEvent(UUID, job, player);
-					
-					p.addJobExp(UUID, jobid, exp);
-				}
-				//money
-				plugin.getEco().depositPlayer(player, reward);
-			
-				//reward message
-				if(tr.getBoolean("Reward.Enable_BossBar")) {
-					Date isago5seconds = new Date(new Date().getTime() + 3 * 1000);
-	
-					if (lastworked_list.containsKey(player.getName())) {
-						lastworked_list.remove(player.getName());
-					}
-	
-					lastworked_list.put(player.getName(), isago5seconds);
-					
-					double use = calcBossbar(player, job);
-	
-					BarColor color = api.getColorOfBossBar(job);
-					String message = api.toHex(tr.getString("Reward.BossBar")
-							.replaceAll("<prefix>", api.getPrefix())	.replaceAll("<exp>", api.Format(ex)).replaceAll("<level_name>",plugin.getLevelAPI().getLevelName(job, level)).replaceAll("<level_int>", ""+level)	.replaceAll("<id>", api.getDisplayOfID(job, id))	.replaceAll("<money>", api.Format(reward)).replaceAll("&", "§"));
-					
-					if (!BossBarHandler.exist(player.getName())) {
-						BossBarHandler.createBar(player, message,color, player.getName(), use);
-					} else {
-						BossBarHandler.renameBossBar(message, player.getName());
-						BossBarHandler.recolorBossBar(color, player.getName());
-						BossBarHandler.updateProgress(use, player.getName());
-					}
-				}
-				if(tr.getBoolean("Reward.Enable_Message")) {
-					String message = api.toHex(tr.getString("Reward.Message")
-							.replaceAll("<prefix>", api.getPrefix()).replaceAll("<exp>", api.Format(ex)).replaceAll("<level_name>",plugin.getLevelAPI().getLevelName(job, level)).replaceAll("<level_int>", ""+level)	.replaceAll("<id>", api.getDisplayOfID(job, id))	.replaceAll("<money>", api.Format(reward)).replaceAll("&", "§"));
-					player.sendMessage(message);
-				}
+		if(tr.getBoolean("Reward.Enable_BossBar")) {
+			Date isago5seconds = new Date(new Date().getTime() + 3 * 1000);
+
+			if (lastworked_list.containsKey(player.getName())) {
+				lastworked_list.remove(player.getName());
 			}
-		 }
-		
-	}
+
+			lastworked_list.put(player.getName(), isago5seconds);
+			
+			double use = calcBossbar(player, job);
+
+			BarColor color = api.getColorOfBossBar(job);
+			String message = api.toHex(tr.getString("Reward.BossBar")
+					.replaceAll("<prefix>", api.getPrefix())	.replaceAll("<exp>", api.Format(ex)).replaceAll("<level_name>",plugin.getLevelAPI().getLevelName(job, level)).replaceAll("<level_int>", ""+level)	.replaceAll("<id>", api.getDisplayOfID(job, id))	.replaceAll("<money>", api.Format(reward)).replaceAll("&", "§"));
+			
+			if (!BossBarHandler.exist(player.getName())) {
+				BossBarHandler.createBar(player, message,color, player.getName(), use);
+			} else {
+				BossBarHandler.renameBossBar(message, player.getName());
+				BossBarHandler.recolorBossBar(color, player.getName());
+				BossBarHandler.updateProgress(use, player.getName());
+			}
 		}
+		if(tr.getBoolean("Reward.Enable_Message")) {
+			String message = api.toHex(tr.getString("Reward.Message")
+					.replaceAll("<prefix>", api.getPrefix()).replaceAll("<exp>", api.Format(ex)).replaceAll("<level_name>",plugin.getLevelAPI().getLevelName(job, level)).replaceAll("<level_int>", ""+level)	.replaceAll("<id>", api.getDisplayOfID(job, id))	.replaceAll("<money>", api.Format(reward)).replaceAll("&", "§"));
+			player.sendMessage(message);
+		}
+	}
+	
+	public void addRewards(Player player,  File job, String id, String UUID, String jobid) {
+		YamlConfiguration cfg = plugin.getMainConfig().getConfig();
+		JobAPI api = plugin.getJobAPI(); 
+		PlayerAPI p = plugin.getPlayerAPI();
+		
+		double points = api.getPointsOfID(job, id);
+		double reward = api.getRewardOfID(job, id);
+		double exp = api.getExpOfID(job, id);  
+		
+		String date = getDate();
+		
+		p.addStatsArg(UUID, jobid, 1, 2);
+		p.addStatsArg(UUID, jobid, points, 9);
+ 
+		p.addMoneyAll(UUID, jobid, reward);
+		p.addMoneyToday(UUID, jobid, reward, date);
+		
+		if(cfg.getBoolean("Enable_Levels")) {
+			//add exp with event
+			new PlayerJobExpEvent(UUID, job, player);
+			
+			p.addJobExp(UUID, jobid, exp);
+		}
+		//money
+		plugin.getEco().depositPlayer(player, reward);
 	}
  
 	public void startSystemCheck() {
@@ -315,7 +345,7 @@ public class JobAPI {
 	}
 
 	public YamlConfiguration getJobConfig(File file) {
-		return YamlConfiguration.loadConfiguration(file);
+		return plugin.getLoadedConfigs().get(file);
 	}
 	
 	public Action getAction(File file) {

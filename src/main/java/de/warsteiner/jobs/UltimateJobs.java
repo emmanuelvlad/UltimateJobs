@@ -3,9 +3,11 @@ package de.warsteiner.jobs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,9 +29,10 @@ import net.milkbowl.vault.economy.Economy;
 public class UltimateJobs extends JavaPlugin {
 	
 	private static UltimateJobs plugin;
-	private static Economy econ;
+	private  Economy econ;
 	
 	private ArrayList<File> jobs;
+	private HashMap<File, YamlConfiguration> jcfg;
 	
 	private YamlConfigFile config;
 	private YamlConfigFile messages;
@@ -49,6 +52,7 @@ public class UltimateJobs extends JavaPlugin {
 		api = new JobAPI();
 		player = new PlayerAPI();
 		jobs = new ArrayList<File>();
+		jcfg = new HashMap<File, YamlConfiguration>();
 		gui = new GuiManager();
 		command = new CommandAPI(); 
 		levels = new LevelAPI();
@@ -125,12 +129,14 @@ public class UltimateJobs extends JavaPlugin {
 				logger.info("§aChecking Jobs File §e§l" + name);
 				if(getJobAPI().isJobFile(file)) {
 					jobs.add(file);
+					jcfg.put(file,  YamlConfiguration.loadConfiguration(file));
 					logger.info("§aLoaded Job with File §e§l" + name);
 				} else {
 					logger.info("§aCannot load Job File §e§l" + name+"§a! Creating new...");
 					getJobAPI().createDemoFile(file);
 					if(getJobAPI().isJobFile(file)) {
 						jobs.add(file);
+						jcfg.put(file,  YamlConfiguration.loadConfiguration(file));
 						logger.info("§aLoaded Job with File §e§l" + name);
 					}
 				}
@@ -166,7 +172,7 @@ public class UltimateJobs extends JavaPlugin {
 		return (econ != null);
 	}
 	
-	public static Economy getEco() {
+	public Economy getEco() {
 		return econ;
 	}
 	
@@ -200,6 +206,10 @@ public class UltimateJobs extends JavaPlugin {
 	
 	public ArrayList<File> getLoadedJobs()  {
 		return jobs;
+	}
+	
+	public HashMap<File, YamlConfiguration> getLoadedConfigs() {
+		return jcfg;
 	}
 
 	public JobAPI getJobAPI() {

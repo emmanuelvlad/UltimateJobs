@@ -350,6 +350,7 @@ public class GuiManager {
 		return i;
 	}
 
+	@SuppressWarnings("deprecation")
 	public ItemStack generateSkull(String owner) {
 		ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
 		SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
