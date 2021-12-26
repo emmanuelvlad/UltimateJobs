@@ -3,7 +3,6 @@ version: 0.0.1-SNAPSHOT
 name: UltimateJobs
 author: Warsteiner37
 api-version: 1.18
- 
+
 commands:
   jobs:
-     

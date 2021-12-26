@@ -28,7 +28,7 @@ public class DataFile {
 		if (!this.file.exists())
 			try {
 				this.file.createNewFile();
-				;
+			 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

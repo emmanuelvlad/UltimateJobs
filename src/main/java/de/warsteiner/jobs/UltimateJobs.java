@@ -150,8 +150,7 @@ public class UltimateJobs extends JavaPlugin {
 		try {
 			config.load(); 
 			messages.load();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) { 
 			e.printStackTrace();
 		}
 	}

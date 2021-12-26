@@ -81,8 +81,7 @@ public class GuiManager {
 		String UUID = ""+player.getUniqueId(); 
 		if(!item.equalsIgnoreCase("NOT_FOUND")) {
 			String action = config.getString("Settings_Custom."+item+".Action");
-			if(action.equalsIgnoreCase("NOTHING")) { 
-			} else if(action.equalsIgnoreCase("CLOSE")) {
+			if(action.equalsIgnoreCase("CLOSE")) {
 				new BukkitRunnable() {
 				    public void run() {
 				    	player.closeInventory();
@@ -110,8 +109,7 @@ public class GuiManager {
 		InventoryView inv = player.getOpenInventory();
 		if(!item.equalsIgnoreCase("NOT_FOUND")) {
 			String action = config.getString("Main_Custom."+item+".Action");
-			if(action.equalsIgnoreCase("NOTHING")) { 
-			} else if(action.equalsIgnoreCase("CLOSE")) {
+			if(action.equalsIgnoreCase("CLOSE")) {
 				new BukkitRunnable() {
 				    public void run() {
 				    	player.closeInventory();

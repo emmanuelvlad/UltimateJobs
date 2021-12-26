@@ -37,7 +37,7 @@ Levels:
   Enable_Message: false
 
   Message: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
-  
+
 Reward:
 
   Enable_BossBar: true
