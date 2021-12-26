@@ -30,6 +30,7 @@ public class DataFile {
 				this.file.createNewFile();
 			 
 			} catch (IOException e) {
+				plugin.getLogger().info("§4§lFailed to create Config Files");
 				e.printStackTrace();
 			}
 		this.customFile = (FileConfiguration) YamlConfiguration.loadConfiguration(this.file);
@@ -52,6 +53,7 @@ public class DataFile {
 		try {
 			this.customFile.save(this.file);
 		} catch (IOException iOException) {
+			plugin.getLogger().info("§4§lFailed to save Config Files");
 		}
 	}
 
