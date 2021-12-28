@@ -7,7 +7,9 @@
   
 Check the Wiki:
 
-- [Test](http://electron.atom.io/) 
+- [Installation](https://github.com/Warsteiner37/UltimateJobs/wiki/Installation) 
+- [PlaceHolders](https://github.com/Warsteiner37/UltimateJobs/wiki/Placeholders) 
+- [Development API](https://github.com/Warsteiner37/UltimateJobs/wiki/Development-API)  
 
 <br>
 
