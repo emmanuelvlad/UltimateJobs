@@ -22,17 +22,17 @@ public class AdminCommand implements CommandExecutor {
 				plugin.getCommand().executeAdminCommandAsPlayer(player, args);
 			} 
 		} else {
-			plugin.getLogger().info("test");
+			plugin.getCommand().executeAdminCommandAsPlayer(sender, args);
 		}
 		
 		return false;
 	}
 
-	public static boolean checkPermissions(Player player, String text) {
-		if(player.hasPermission("ultimatejobs."+text) || player.hasPermission("ultimatejobs.admin.all")) {
-			return true;
-		}
-		player.sendMessage(plugin.getJobAPI().getMessage("No_Perm"));
+	public static boolean checkPermissions(CommandSender s, String text) {
+		if(s.hasPermission("ultimatejobs."+text) || s.hasPermission("ultimatejobs.admin.all")) {
+			return true;  
+		}   
+		s.sendMessage(plugin.getJobAPI().getMessage("No_Perm"));
 		return false;
 	}
 	

@@ -61,9 +61,8 @@ public class UltimateJobs extends JavaPlugin {
 		levels = new LevelAPI();
 		cmd = new CommandAPI();
 		
-		getTypes().add("config");
-		getTypes().add("messages");
-		getTypes().add("jobs");
+		getTypes().add("CONFIGS"); 
+		getTypes().add("JOBS");
 		
 		this.getLogger().info("§bLoading UltimateJobs...");
 		
@@ -150,7 +149,7 @@ public class UltimateJobs extends JavaPlugin {
 		}
 	}
 	
-	private void setupConfigs(Logger logger) {
+	public void setupConfigs(Logger logger) {
 		File file_config = new File(getDataFolder() + File.separator, "Config.yml");
 		File file_messages = new File(getDataFolder() + File.separator, "Messages.yml");
 		 

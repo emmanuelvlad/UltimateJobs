@@ -193,6 +193,15 @@ public class JobAPI {
 		return list;
 	}
 	
+	public boolean isInt(String str) {
+	    try {
+	        Integer.parseInt(str);
+	    } catch (Throwable e) {
+	        return false;
+	    }
+	    return true;
+	}
+	
 	public ArrayList<String> getJobsInListAsIDIfIsIn(String UUID) {
 		ArrayList<String> list = new ArrayList<String>();
 		for(File job : plugin.getLoadedJobs()) {

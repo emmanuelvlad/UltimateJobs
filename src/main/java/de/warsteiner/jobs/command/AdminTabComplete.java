@@ -35,7 +35,7 @@ public class AdminTabComplete implements TabCompleter {
 				String ar = args[0].toLowerCase();
 				if(ar.equalsIgnoreCase("reload")) {
 					for(String b : plugin.getTypes()) {
-						l.add(b); 
+						l.add(b.toLowerCase()); 
 					}
 				} else if(ar.equalsIgnoreCase("removejob")
 						|| ar.equalsIgnoreCase("addjob") || ar.equalsIgnoreCase("setlevel")) {

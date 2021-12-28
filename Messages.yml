@@ -57,6 +57,24 @@ Not_Found_Job: "<prefix> &7The Job &6<job> &7does not exist."
 
 Not_In_Job: "<prefix> &7You are not in the <job> &7Job."
  
+Not_Found_Type: "<prefix> &7Cannot find config type &6<name>&7."
+
+Reloaded: "<prefix> &7Reloaded Plugin &6<name>&7."
+
+Not_Found_Player: "<prefix> &7Cannot find &6<name> &7in player data."
+
+Admin_Already_Own: "<prefix> &7The player &6<name> &7already owns the job &a<job>&7."
+
+Admin_Added: "<prefix> &7Added Job &6<job> &7to player &a<name>&7!"
+
+Admin_Already_Removed: "<prefix> &7This player does not own this Job!"
+
+Admin_Removed: "<prefix> &7Removed Job &6<job> &7from player &a<name>&7!"
+
+Not_A_Int: "<prefix> &7The message must be a Number!"
+
+Admin_Set_Level: "<prefix> &7Set &6<name>&7's Job-Level in &a<job> &7to &c<level>&7!"
+ 
 Levels:
 
   Enable_Title: true

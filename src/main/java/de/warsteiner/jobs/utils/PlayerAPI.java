@@ -246,7 +246,7 @@ public class PlayerAPI {
 
 	}
 
-	public List<String> getOwn(String uuid) { 
+	public List<String> getOwnedJobs(String uuid) { 
 		return plugin.getPlayerData().get().getStringList("Player." + uuid + ".OwnsJob");
 	}
 
