@@ -22,10 +22,13 @@ public class JobsCommand  implements CommandExecutor {
 			Player player = (Player) sender;
 			 
 			if (length == 0) {
+			 
 				gui.createMainGUIOfJobs(player);
 			} else {
-				plugin.getCommandAPI().execute(player, args);
+				plugin.getCommand().execute(player, args);
 			}
+		} else {
+			plugin.getLogger().warning("§cThis Command is only for Players. Please use /Jobsadmin.");
 		}
 		
 		return false;

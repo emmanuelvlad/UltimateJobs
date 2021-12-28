@@ -109,7 +109,7 @@ Main_Place:
   - "BLACK_STAINED_GLASS_PANE:10:&7"
   - "BLACK_STAINED_GLASS_PANE:11:&7"
   - "RED_STAINED_GLASS_PANE:10:&7"
-  - "RED_STAINED_GLASS_PANE:11:&7
+  - "RED_STAINED_GLASS_PANE:11:&7"
   - "RED_STAINED_GLASS_PANE:12:&7"
   - "RED_STAINED_GLASS_PANE:13:&7"
   - "RED_STAINED_GLASS_PANE:14:&7"
@@ -145,30 +145,43 @@ Main_Place:
   - "BLACK_STAINED_GLASS_PANE:44:&7"
 
 Command:
-
+ 
+  #do not remove something here, if you dont want to use it, put "false" on Enabled!
   HELP:
 
-    Action: "MESSAGE"
+    Enabled: true
 
-    Message:
-      - "<prefix> Welcome, <name>"
+    Usage: "help"
+    
+  LEAVE:
 
+    Enabled: true
+
+    Usage: "leave"
+    
+  LEAVEALL:
+
+    Enabled: true
+
+    Usage: "leaveall"
+ 
   STATS:
 
-    Action: "STATS_OTHER"
+    Enabled: true
 
-    Message:
-      - "<prefix> &7Stats of <player>&8: "
-      - " &8| &7Idk: 0"
+    Usage: "stats"
+ 
+    Addon: "STATS_GUI"
+    
+  SALARY:
 
-  STATS:
+    Enabled: true
 
-    Action: "STATS_SELF"
-
-    Message:
-      - "<prefix> &7Stats of <player>&8: "
-      - " &8| &7Idk: 0"
-
+    Usage: "salary"
+ 
+    Addon: "REWARDS_GUI"
+ 
+ 
 #options menu
 Settings_Name: "&bJob Options &8- <job>"
 

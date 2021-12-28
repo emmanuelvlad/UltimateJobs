@@ -24,20 +24,22 @@ public class GuiManager {
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 
 	public Inventory createGui(int size, String name) {
+ 
 		final Inventory inv = Bukkit.createInventory(null, size * 9,
 				plugin.getJobAPI().toHex(name).replaceAll("&", "§"));
+	 
 		return inv;
 	}
 	
 	public void createMainGUIOfJobs(Player player) {
-		
+	 
 		YamlConfiguration config = plugin.getMainConfig().getConfig();
-		
+ 
 		String name = config.getString("Main_Name");
 		int size = config.getInt("Main_Size");
-		
+	 
 		Inventory inv = createGui(size, name);
-		
+ 
 		player.openInventory(inv);
 		
 		InventoryView inv_view = player.getOpenInventory();
@@ -89,12 +91,10 @@ public class GuiManager {
 				}.runTaskLater(plugin, 5);
 			}else if(action.equalsIgnoreCase("BACK")) {
 				    plugin.getGUIManager().createMainGUIOfJobs(player); 
-			}  else if(action.equalsIgnoreCase("LEAVE")) {
-				if(!plugin.getPlayerAPI().hasAnyJob(UUID)) {
+			}  else if(action.equalsIgnoreCase("LEAVE")) { 
 					plugin.getPlayerAPI().remCurrentJobs(UUID, plugin.getJobAPI().getID(job));
 					plugin.getGUIManager().createMainGUIOfJobs(player);
-					player.sendMessage(plugin.getJobAPI().getMessage("Left_Job").replaceAll("<job>", plugin.getJobAPI().getDisplay(job)));
-				}  
+					player.sendMessage(plugin.getJobAPI().getMessage("Left_Job").replaceAll("<job>", plugin.getJobAPI().getDisplay(job))); 
 			}  else if(action.equalsIgnoreCase("MONEYLIST")) {
 				player.sendMessage("UltimateJobs extension Money-List");
 			}  else if(action.equalsIgnoreCase("EARNINGS")) {

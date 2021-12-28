@@ -12,20 +12,51 @@
 
 Prefix: "&8[&9Jobs&8]"
 
-Leave_All: "<prefix> &7You left all current Jobs!"
+Leave_All: "<prefix> &7You left all &6current &7Jobs."
 
-Already_Left_All: "<prefix> &cYou are not in any Job!"
+No_Perm: "<prefix> &7You dont have permissions to do this."
 
-Not_Enough_Money: "<prefix> &cYou dont have enough money!"
+Already_Left_All: "<prefix> &7You are &6not &7in any Job."
 
-Bought_Job: "<prefix> &bYou bought the Job <job>&b!"
+Not_Enough_Money: "<prefix> &7You dont have enough money."
 
-Joined: "<prefix> &bYou joined the Job <job>&b!"
+Bought_Job: "<prefix> &7You bought the Job <job>&7."
 
-Full: "<prefix> &cYou already reached the maximum of Jobs!"
+Joined: "<prefix> &7You joined the Job <job>&7."
 
-Left_Job: "<prefix> &7You have left the Job <job>&7!"
+Full: "<prefix> &7You already reached the &cmaximum &7of Jobs."
 
+Left_Job: "<prefix> &7You have left the Job <job>&7."
+
+Help:
+  - "&8"
+  - " &8| &9UltimateJobs &8- &7Help &8| "
+  - "&8-> &6/Jobs leave <job>"
+  - "&8-> &6/Jobs leaveall"
+  - "&8-> &6/Jobs help"
+  - "&8-> &6/Jobs stats <name>"
+  - "&8-> &6/Jobs salary <job>"
+  - "&8"
+  
+Admin_Help:
+  - "&8"
+  - " &8| &9UltimateJobs &8- &4Admin&8-&7Help &8| "
+  - "&8-> &6/Jobsadmin setlevel <name> <job> <id>"
+  - "&8-> &6/Jobsadmin addjob <name> <job>"
+  - "&8-> &6/Jobsadmin removejob <name> <job>"
+  - "&8-> &6/Jobsadmin reload <type>"
+  - "&8-> &6/Jobsadmin help" 
+  - "&8-> &6/Jobsadmin version" 
+  - "&8"
+  
+Admin_Not_Found: "<prefix> &7Error! Please use &6/Jobsadmin help&7."
+  
+Not_Found_Command: "<prefix> &7Error! Please use &6/Jobs help&7."
+
+Not_Found_Job: "<prefix> &7The Job &6<job> &7does not exist."
+
+Not_In_Job: "<prefix> &7You are not in the <job> &7Job."
+ 
 Levels:
 
   Enable_Title: true

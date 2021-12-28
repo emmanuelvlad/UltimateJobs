@@ -11,6 +11,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.warsteiner.jobs.command.AdminCommand;
+import de.warsteiner.jobs.command.AdminTabComplete;
+import de.warsteiner.jobs.command.JobTabComplete;
 import de.warsteiner.jobs.command.JobsCommand;
 import de.warsteiner.jobs.events.PlayerBlockBreak;
 import de.warsteiner.jobs.events.PlayerExistEvent;
@@ -32,16 +35,16 @@ public class UltimateJobs extends JavaPlugin {
 	private  Economy econ;
 	
 	private ArrayList<File> jobs;
+	private ArrayList<String> type;
 	private HashMap<File, YamlConfiguration> jcfg;
 	
 	private YamlConfigFile config;
 	private YamlConfigFile messages;
-	
+	private CommandAPI cmd;
 	private DataFile data;
 	private JobAPI api;
 	private PlayerAPI player;
-	private GuiManager gui;
-	private CommandAPI command;
+	private GuiManager gui; 
 	private LevelAPI levels;
 	
 	@Override
@@ -52,10 +55,15 @@ public class UltimateJobs extends JavaPlugin {
 		api = new JobAPI();
 		player = new PlayerAPI();
 		jobs = new ArrayList<File>();
+		type = new ArrayList<String>();
 		jcfg = new HashMap<File, YamlConfiguration>();
-		gui = new GuiManager();
-		command = new CommandAPI(); 
+		gui = new GuiManager(); 
 		levels = new LevelAPI();
+		cmd = new CommandAPI();
+		
+		getTypes().add("config");
+		getTypes().add("messages");
+		getTypes().add("jobs");
 		
 		this.getLogger().info("§bLoading UltimateJobs...");
 		
@@ -70,9 +78,7 @@ public class UltimateJobs extends JavaPlugin {
 		setupConfigs(this.getLogger());
 		
 		loadJobs(this.getLogger());
-		
-		getCommandAPI().loadBasicJobCommands(getMainConfig());
-		
+	 
 		//basic events
 		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new MainMenuClickEvent(), this);
@@ -85,6 +91,10 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerBlockBreak(), this);
 		 
 		getCommand("jobs").setExecutor(new JobsCommand());
+		getCommand("jobs").setTabCompleter(new JobTabComplete());
+		
+		getCommand("jobsadmin").setExecutor(new AdminCommand());
+		getCommand("jobsadmin").setTabCompleter(new AdminTabComplete());
  
 		if(getMessages().getConfig().getBoolean("Reward.Enable_BossBar")) {
 			getJobAPI().startSystemCheck();
@@ -132,13 +142,7 @@ public class UltimateJobs extends JavaPlugin {
 					jcfg.put(file,  YamlConfiguration.loadConfiguration(file));
 					logger.info("§aLoaded Job with File §e§l" + name);
 				} else {
-					logger.info("§aCannot load Job File §e§l" + name+"§a! Creating new...");
-					getJobAPI().createDemoFile(file);
-					if(getJobAPI().isJobFile(file)) {
-						jobs.add(file);
-						jcfg.put(file,  YamlConfiguration.loadConfiguration(file));
-						logger.info("§aLoaded Job with File §e§l" + name);
-					}
+					logger.info("§aFailed to get Job File! "); 
 				}
 			} else if (file.isDirectory()) {
 				logger.info("§4§lCannot load Directory §e§l" + name);
@@ -176,8 +180,16 @@ public class UltimateJobs extends JavaPlugin {
 		return econ;
 	}
 	
+	public ArrayList<String> getTypes() {
+		return type;
+	}
+	
 	public YamlConfigFile getMainConfig() {
 		return config;
+	}
+	
+	public CommandAPI getCommand() {
+		return cmd;
 	}
 	
 	public YamlConfigFile getMessages() {
@@ -191,11 +203,7 @@ public class UltimateJobs extends JavaPlugin {
 	public LevelAPI getLevelAPI() {
 		return levels;
 	}
-	
-	public CommandAPI getCommandAPI() {
-		return command;
-	}
-	
+	 
 	public PlayerAPI getPlayerAPI() {
 		return player;
 	}

@@ -176,6 +176,35 @@ public class JobAPI {
 		}
 	}
 	
+	public ArrayList<String> getJobsInListAsID() {
+		ArrayList<String> list = new ArrayList<String>();
+		for(File job : plugin.getLoadedJobs()) {
+			String id = getID(job);
+			list.add(id.toLowerCase());
+		}
+		return list;
+	}
+	
+	public ArrayList<String> getPlayerNameList() {
+		ArrayList<String> list = new ArrayList<String>();
+		for(Player p :Bukkit.getOnlinePlayers()) { 
+			list.add(p.getName());
+		}
+		return list;
+	}
+	
+	public ArrayList<String> getJobsInListAsIDIfIsIn(String UUID) {
+		ArrayList<String> list = new ArrayList<String>();
+		for(File job : plugin.getLoadedJobs()) {
+			String id = getID(job);
+			if(plugin.getPlayerAPI().isInJob(UUID, id)) {
+				list.add(id.toLowerCase());
+			}
+		}
+		return list;
+	}
+	
+	
 	public boolean canGetRewardFromJobAndID(PlayerAPI p, JobAPI api, Player player, File job, String id) {
 		if (api.canWorkThere(player, job)) {
 			if(p.isInJob(""+player.getUniqueId(), id)) { 
@@ -334,6 +363,16 @@ public class JobAPI {
 		return toHex(plugin.getMessages().getConfig().getString("Prefix").replaceAll("&", "§"));
 	}
 	
+	public File isJobFromConfigID(String id) {
+		for(File job : plugin.getLoadedJobs()) {
+			String cfg_id = getID(job);
+			if(cfg_id.equalsIgnoreCase(id)) {
+				return job;
+			}
+		}
+		return null;
+	}
+	
 	public boolean canWorkInWorld(String world, File file) {
 
 		return getWorlds(file).contains(world);
@@ -391,7 +430,7 @@ public class JobAPI {
 	public String getDisplayOfID(File file, String id) {
 		return getJobConfig(file).getString("IDS."+id+".Display");
 	}
-	
+	 
 	public double getRewardOfID(File file, String id) {
 		return getJobConfig(file).getDouble("IDS."+id+".Money");
 	}
@@ -415,75 +454,6 @@ public class JobAPI {
 	public double getChanceOfID(File file, String id) {
 		return getJobConfig(file).getDouble("IDS."+id+".Chance");
 	}
-	
-	public void createDemoFile(File file) {
-		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-		// lists
-
-		ArrayList<String> worlds = new ArrayList<String>();
-		ArrayList<String> desc = new ArrayList<String>();
-		ArrayList<String> ids = new ArrayList<String>();
-		ArrayList<String> commands = new ArrayList<String>();
-		ArrayList<String> commands_2 = new ArrayList<String>();
-
-		// loading lists
-		worlds.add("world");
-		worlds.add("world_nether");
-
-		desc.add("&8&m-----------------------");
-		desc.add("&7This is an example Job. Just break some sand or stone!");
-
-		ids.add("STONE");
-		ids.add("SAND");
-
-		commands.add("say give <player> reward of <money>");
-		commands.add("say message from example job, please update me :p");
-
-		commands_2.add("say give <player> reward of <money>");
-		commands_2.add("say message from example job, please update me :p");
-
-		// basics
-		config.set("Action", "BREAK");
-		config.set("ID", "Example Job");
-		config.set("Display", "&6&lExample Job");
-		config.set("Material", "PAPER");
-		config.set("ColorOfBossBar", "ORANGE");
-		config.set("Slot", 10);
-		config.set("Price", 150);
-		config.set("Worlds", worlds);
-		config.set("Lore", desc);
-
-		// ids - list
-		config.set("IDs.List", ids);
-
-		// ids config
-		config.set("IDs.STONE.Display", "&7&lStone");
-		config.set("IDs.STONE.Reward", 1.15);
-		config.set("IDs.STONE.Exp", 2.25);
-		config.set("IDs.STONE.Points", 1);
-		config.set("IDs.STONE.Chance", 85);
-
-		config.set("IDs.SAND.Display", "&e&lSand");
-		config.set("IDs.SAND.Reward", 1.15);
-		config.set("IDs.SAND.Exp", 2.25);
-		config.set("IDs.SAND.Points", 1);
-		config.set("IDs.SAND.Chance", 85);
-
-		// levels
-
-		config.set("Levels.1.Display", "&6&lLevel I");
-		config.set("Levels.1.Commands", commands);
-		config.set("Levels.1.Need", 0);
-
-		config.set("Levels.2.Display", "&6&lLevel II");
-		config.set("Levels.2.Commands", commands_2);
-		config.set("Levels.2.Need", 250);
-
-		try {
-			config.save(file);
-		} catch (IOException iOException) {
-			plugin.getLogger().info("§4§lFailed to create Demo Job File");
-		}
-	}
+ 
 
 }
