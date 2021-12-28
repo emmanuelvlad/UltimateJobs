@@ -30,29 +30,7 @@
     <a href="https://discord.ultimate-systems.org">Report Bug</a> 
   </p>
 </div>
-
-
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a> 
-    </li>
- * [Next.js](https://nextjs.org/)
-* [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-  </ol>
-</details>
-
-
-
+ 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
