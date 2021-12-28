@@ -145,43 +145,43 @@ Main_Place:
   - "BLACK_STAINED_GLASS_PANE:44:&7"
 
 Command:
- 
+
   #do not remove something here, if you dont want to use it, put "false" on Enabled!
   HELP:
 
     Enabled: true
 
     Usage: "help"
-    
+
   LEAVE:
 
     Enabled: true
 
     Usage: "leave"
-    
+
   LEAVEALL:
 
     Enabled: true
 
     Usage: "leaveall"
- 
+
   STATS:
 
     Enabled: true
 
     Usage: "stats"
- 
+
     Addon: "STATS_GUI"
-    
+
   SALARY:
 
     Enabled: true
 
     Usage: "salary"
- 
+
     Addon: "REWARDS_GUI"
- 
- 
+
+
 #options menu
 Settings_Name: "&bJob Options &8- <job>"
 

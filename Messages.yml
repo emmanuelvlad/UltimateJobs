@@ -45,18 +45,18 @@ Admin_Help:
   - "&8-> &6/Jobsadmin addjob <name> <job>"
   - "&8-> &6/Jobsadmin removejob <name> <job>"
   - "&8-> &6/Jobsadmin reload <type>"
-  - "&8-> &6/Jobsadmin help" 
-  - "&8-> &6/Jobsadmin version" 
+  - "&8-> &6/Jobsadmin help"
+  - "&8-> &6/Jobsadmin version"
   - "&8"
-  
+
 Admin_Not_Found: "<prefix> &7Error! Please use &6/Jobsadmin help&7."
-  
+
 Not_Found_Command: "<prefix> &7Error! Please use &6/Jobs help&7."
 
 Not_Found_Job: "<prefix> &7The Job &6<job> &7does not exist."
 
 Not_In_Job: "<prefix> &7You are not in the <job> &7Job."
- 
+
 Not_Found_Type: "<prefix> &7Cannot find config type &6<name>&7."
 
 Reloaded: "<prefix> &7Reloaded Plugin &6<name>&7."
@@ -74,7 +74,7 @@ Admin_Removed: "<prefix> &7Removed Job &6<job> &7from player &a<name>&7!"
 Not_A_Int: "<prefix> &7The message must be a Number!"
 
 Admin_Set_Level: "<prefix> &7Set &6<name>&7's Job-Level in &a<job> &7to &c<level>&7!"
- 
+
 Levels:
 
   Enable_Title: true
