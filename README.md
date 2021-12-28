@@ -4,76 +4,36 @@
 <br>
  
 ## Links
- 
-<p>this is paragraph..paragraph should be more longer</p>
-
-_this is italic text_
-
-**this is bold text**
-
-offer price 50 tk regular price ~~90~~
-
-### oneline code
-
-`this is inline code`
-
-### multiline code
-
-```html
-<html>
-  <head></head>
-  <body></body>
-</html>
-```
-
-```css
-h1 {
-  background: red;
-}
-```
-
-### ordered list
-
-1.item1  
-2.item2  
-3.item3
-
-### unorded list
-
+  
 - item1
 - item2
 - item3
 
-### task list
+<br>
 
-- [x] item1
-- [x] item2
-- [x] item3
+## Maven
+How to include the API with Maven:
 
-### autometic link
 
-http://www.facebook.com
+```html
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
 
-### autometic link
+<dependency>
+  <groupId>com.github.Warsteiner37</groupId>
+    <artifactId>UltimateJobs</artifactId>
+    <version>SNAPSHOT</version>
+  <scope>provided</scope>
+</dependency>
+```
+ <br>
 
-`http://www.facebook.com`
+## Donations
 
-### markdown link syntax
-
-[facebook link](http://www.facebook.com)
-
-### image syntax
-
-<!-- ![profile](./images/pic.png) -->
-<img src="images/pic.png" width="200" title="profile img">
-
-💖💖💖
-
-### image syntax
-
-| Name    | Email                  |
+| Name    | Amount                  |
 | ------- | ---------------------- |
-| Farhana | farhanaela00@gmail.com |
-| Ela     | ela00@gmail.com        |
-| Fariha  | fariha00@gmail.com     |
-| Fatima  | fatiha00@gmail.com     |
+| @micro_maniaque#0001  | 15 Euro | 
