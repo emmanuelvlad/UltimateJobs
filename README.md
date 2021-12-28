@@ -22,7 +22,7 @@
 
 <!-- PROJECT LOGO -->
  
-<h3 align="center">UltimateJobs</h3>
+<h5 align="center">UltimateJobs</h5>
 
   <p align="center"> 
     <br />
