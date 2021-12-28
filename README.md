@@ -1,3 +1,3 @@
-<center> #UltimateJobs </center>
+#UltimateJobs
 <br>
 test
