@@ -24,13 +24,10 @@
  
 <h1 align="center">UltimateJobs</h1>
 
-  <p align="center">   
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+  <p align="center">    
+    <a href="https://github.com/Warsteiner37/UltimateJobs/wiki">View Wiki</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://discord.ultimate-systems.org">Report Bug</a> 
   </p>
 </div>
 
