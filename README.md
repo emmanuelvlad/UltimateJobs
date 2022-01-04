@@ -14,6 +14,10 @@ Check the Wiki:
 - [Installation](https://github.com/Warsteiner37/UltimateJobs/wiki/Installation) 
 - [PlaceHolders](https://github.com/Warsteiner37/UltimateJobs/wiki/Placeholders) 
 - [Development API](https://github.com/Warsteiner37/UltimateJobs/wiki/Development-API)  
+ 
+Check the Addons:
+
+- [Rewards-GUI](https://github.com/Warsteiner37/UltimateJobs-Rewards)  
 
 <br>
 
@@ -32,7 +36,7 @@ How to include the API with Maven:
 <dependency>
   <groupId>com.github.Warsteiner37</groupId>
     <artifactId>UltimateJobs</artifactId>
-    <version><version></version>
+    <version>*version*</version>
   <scope>provided</scope>
 </dependency>
 ```
