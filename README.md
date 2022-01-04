@@ -28,7 +28,7 @@ How to include the API with Maven:
 <dependency>
   <groupId>com.github.Warsteiner37</groupId>
     <artifactId>UltimateJobs</artifactId>
-    <version>SNAPSHOT</version>
+    <version><version></version>
   <scope>provided</scope>
 </dependency>
 ```
