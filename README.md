@@ -12,6 +12,7 @@
 Check the Wiki:
 
 - [Installation](https://github.com/Warsteiner37/UltimateJobs/wiki/Installation) 
+- [Configuration](https://github.com/Warsteiner37/UltimateJobs/wiki/Configuration) 
 - [Demo-Jobs](https://github.com/Warsteiner37/DemoJobs) 
 - [PlaceHolders](https://github.com/Warsteiner37/UltimateJobs/wiki/Placeholders) 
 - [Development API](https://github.com/Warsteiner37/UltimateJobs/wiki/Development-API)  
