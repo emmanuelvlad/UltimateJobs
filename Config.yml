@@ -10,7 +10,7 @@
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
 
-Debug: true
+Debug: false
 
 #default 180 seconds
 #the cache gets saved on join or quit, a low value here can create TPS issues. Change on own risk
@@ -18,19 +18,6 @@ Cache_Saved_Every: 180
 
 #change on own risk
 ExecutorServiceThreads: 1
-
-#sql
-MySQL:
-
-  Host: "localhost"
-  
-  Username: "root"
-  
-  Password: "test"
-  
-  Database: "local"
-  
-  Port: "3306"
 
 #how many jobs can a player have by default?
 MaxDefaultJobs: 1
@@ -112,6 +99,9 @@ Main_Custom:
       - "&7"
       - "&7You need an Job to earn money, "
       - "&7to raise your Kids! :)"
+      - "&8"
+      - "&8-> &7You can have &c<max> &7Jobs."
+      - "&8-> &7You have &a<points> &7Points."
 
     Material: "BEACON"
 
@@ -174,36 +164,31 @@ Command:
     Enabled: true
 
     Usage: "help"
+    
+    Desc: "Display all Commands"
+    
+    Syntax: "<prefix> &7Use &6/Jobs help"
 
   LEAVE:
 
     Enabled: true
 
     Usage: "leave"
+    
+    Desc: "Leave a job"
+    
+    Syntax: "<prefix> &7Use &6/Jobs leave <job>"
 
   LEAVEALL:
 
     Enabled: true
 
     Usage: "leaveall"
-
-  STATSGUI:
-
-    Enabled: true
-
-    Usage: "statsgui"
-
-    Addon: "STATS_GUI"
-
-  SALARY:
-
-    Enabled: true
-
-    Usage: "salary"
-
-    Addon: "REWARDS_GUI"
-
-
+    
+    Desc: "Leave all jobs"
+    
+    Syntax: "<prefix> &7Use &6/Jobs leaveall"
+ 
 #options menu
 Settings_Name: "&bJob Options &8- <job>"
 
