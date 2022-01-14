@@ -36,7 +36,7 @@ Jobs_UpdateMode: "REOPEN"
 
 #config of the main gui
 Main_Name: "&b&lJobs Menu"
- 
+
 #options to the job items
 Jobs:
 
@@ -164,9 +164,9 @@ Command:
     Enabled: true
 
     Usage: "help"
-    
+
     Desc: "Display all Commands"
-    
+
     Syntax: "<prefix> &7Use &6/Jobs help"
 
   LEAVE:
@@ -174,9 +174,9 @@ Command:
     Enabled: true
 
     Usage: "leave"
-    
+
     Desc: "Leave a job"
-    
+
     Syntax: "<prefix> &7Use &6/Jobs leave <job>"
 
   LEAVEALL:
@@ -184,11 +184,11 @@ Command:
     Enabled: true
 
     Usage: "leaveall"
-    
+
     Desc: "Leave all jobs"
-    
+
     Syntax: "<prefix> &7Use &6/Jobs leaveall"
- 
+
 #options menu
 Settings_Name: "&bJob Options &8- <job>"
 

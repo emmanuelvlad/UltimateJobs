@@ -23,7 +23,7 @@ Not_Enough_Money: "<prefix> &7You dont have enough money."
 Bought_Job: "<prefix> &7You bought the Job <job>&7."
 
 Joined: "<prefix> &7You joined the Job <job>&7."
- 
+
 Full: "<prefix> &7You already reached the &cmaximum &7of Jobs."
 
 Left_Job: "<prefix> &7You have left the Job <job>&7."
@@ -37,13 +37,13 @@ Help:
   - "&8-> &6/Jobs statsgui <name>"
   - "&8-> &6/Jobs salary <job>"
   - "&8"
- 
+
 Not_Found_Command: "<prefix> &7Error! Please use &6/Jobs help&7."
 
 Not_Found_Job: "<prefix> &7The Job &6<job> &7does not exist."
 
 Not_In_Job: "<prefix> &7You are not in the <job> &7Job."
- 
+
 Levels:
 
   Enable_Title: true
@@ -55,7 +55,7 @@ Levels:
   Enable_Message: false
 
   Message: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
-  
+
   Enabled_Actionbar: false
 
   Actionbar: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"

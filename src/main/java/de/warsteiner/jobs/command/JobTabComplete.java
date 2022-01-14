@@ -20,7 +20,7 @@ public class JobTabComplete implements TabCompleter {
 
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 		ArrayList<String> l = new ArrayList<String>();
-		if (s instanceof Player) {
+	 
 			Player p = (Player) s;
 			String UUID = "" + p.getUniqueId();
 			JobAPI api = plugin.getAPI();
@@ -66,8 +66,7 @@ public class JobTabComplete implements TabCompleter {
 					}
 
 				}
-
-			}
+ 
 		}
 		return l;
 
