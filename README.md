@@ -1,6 +1,9 @@
 <!-- markdown tutorial -->
   
 <h1 align="center">UltimateJobs</h1> 
+  <p align="center">
+<a href="https://www.codefactor.io/repository/github/warsteiner37/ultimatejobs"><img src="https://www.codefactor.io/repository/github/warsteiner37/ultimatejobs/badge" alt="CodeFactor" /></a>
+</p>
 <br>
  
 ## Links
