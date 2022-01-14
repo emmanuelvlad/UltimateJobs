@@ -10,6 +10,28 @@
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
 
+Debug: true
+
+#default 180 seconds
+#the cache gets saved on join or quit, a low value here can create TPS issues. Change on own risk
+Cache_Saved_Every: 180
+
+#change on own risk
+ExecutorServiceThreads: 1
+
+#sql
+MySQL:
+
+  Host: "localhost"
+  
+  Username: "root"
+  
+  Password: "test"
+  
+  Database: "local"
+  
+  Port: "3306"
+
 #how many jobs can a player have by default?
 MaxDefaultJobs: 1
 
@@ -27,7 +49,7 @@ Jobs_UpdateMode: "REOPEN"
 
 #config of the main gui
 Main_Name: "&b&lJobs Menu"
-
+ 
 #options to the job items
 Jobs:
 
@@ -165,11 +187,11 @@ Command:
 
     Usage: "leaveall"
 
-  STATS:
+  STATSGUI:
 
     Enabled: true
 
-    Usage: "stats"
+    Usage: "statsgui"
 
     Addon: "STATS_GUI"
 

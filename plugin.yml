@@ -1,8 +1,9 @@
 main: de.warsteiner.jobs.UltimateJobs
-version: 0.0.2-SNAPSHOT
+version: 0.0.6-SNAPSHOT
 name: UltimateJobs
 author: Warsteiner37
 api-version: 1.18
+depend: [UltimateAPI]
 
 commands:
   jobs:

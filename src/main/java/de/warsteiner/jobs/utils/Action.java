@@ -3,6 +3,10 @@ package de.warsteiner.jobs.utils;
 public enum Action {
 
 	BREAK,
-	KILL;
+	PLACE,
+	KILL_MOB, 
+	FISH,
+	FARM,
+	MILK;
 
 }

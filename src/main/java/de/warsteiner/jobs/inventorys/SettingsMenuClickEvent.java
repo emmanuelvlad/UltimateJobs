@@ -1,5 +1,5 @@
-package de.warsteiner.jobs.events.inventorys;
- 
+package de.warsteiner.jobs.inventorys;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,9 +7,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.api.Job;
 
-public class MainMenuClickEvent implements Listener {
-	
+public class SettingsMenuClickEvent implements Listener {
+
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 
 	@EventHandler
@@ -34,20 +35,17 @@ public class MainMenuClickEvent implements Listener {
 		}
 
 		YamlConfiguration config = plugin.getMainConfig().getConfig();
-		
-		String name = config.getString("Main_Name");
-		
+
 		Player p = (Player) e.getWhoClicked();
-		
-		String display = plugin.getJobAPI().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "ง"));
- 
-		if (e.getView().getTitle().equalsIgnoreCase(plugin.getJobAPI().toHex(name).replaceAll("&", "ง"))) {
-		 
-			plugin.getGUIManager().executeJobClickEvent(display, p, config);
-			 
-			plugin.getGUIManager().executeCustomItem(display, p, config, name);
+
+		String display = plugin.getAPI().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "ยง"));
+		String title = plugin.getAPI().toHex(e.getView().getTitle().replaceAll("&", "ยง"));
+
+		if (plugin.getAPI().isSettingsGUI(title) != null) {
+			Job job = plugin.getAPI().isSettingsGUI(title);
+			plugin.getClickManager().executeCustomItemInSubMenu(job, display, p, "Settings_Custom", config);
 			e.setCancelled(true);
 		}
-		
+
 	}
 }
