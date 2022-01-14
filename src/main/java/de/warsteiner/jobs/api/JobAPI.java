@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -224,6 +225,7 @@ public class JobAPI {
 	public void executeBlockBreakWork(BlockBreakEvent event, JobsPlayer pl) {
 		final Block block = event.getBlock();
 		final Material type = event.getBlock().getType();
+
 		if (block.hasMetadata("placed-by-player")) {
 			return;
 		}
@@ -233,9 +235,10 @@ public class JobAPI {
 		}
 
 		finalWork("" + type, event.getPlayer(), pl, Action.BREAK);
+
 		return;
 	}
-
+ 
 	public void executeBlockPlaceWork(BlockPlaceEvent event, JobsPlayer pl) {
 		final Material type = event.getBlock().getType();
 
@@ -293,6 +296,7 @@ public class JobAPI {
 		}
 
 		finalWork("" + type, event.getPlayer(), pl, Action.FARM);
+
 		return;
 	}
 
@@ -312,7 +316,7 @@ public class JobAPI {
 			if (jb.getIDList().contains(id.toUpperCase())) {
 				if (pl.isInJob(job.toUpperCase())) {
 					if (canWorkThere(player, jb)) {
-						if (canReward(player, jb, id)) {
+						if (canReward(player, jb, id)) { 
 							PlayerFinishWorkEvent event = new PlayerFinishWorkEvent(UUID, jb, player, id, pl);
 
 							Bukkit.getServer().getPluginManager().callEvent(event);

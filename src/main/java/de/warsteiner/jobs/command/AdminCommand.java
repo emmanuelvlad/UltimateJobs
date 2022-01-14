@@ -60,6 +60,8 @@ public class AdminCommand implements CommandExecutor {
 		sender.sendMessage("§8-> §6/JobsAdmin help");
 		sender.sendMessage("§8-> §6/JobsAdmin addons");
 		sender.sendMessage("§8-> §6/JobsAdmin version");
+		sender.sendMessage("§8-> §6/JobsAdmin update");
+		sender.sendMessage("§8-> §6/JobsAdmin discord");
 		sender.sendMessage("§7");
 	}
 

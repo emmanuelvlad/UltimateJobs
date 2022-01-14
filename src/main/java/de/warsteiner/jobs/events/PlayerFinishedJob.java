@@ -20,7 +20,7 @@ public class PlayerFinishedJob implements Listener {
 			double reward = job.getRewardOf(i); 
 			Player player = event.getPlayer();
 			
-			UltimateJobs.getPlugin().getEco().withdrawPlayer(player, reward);
+			UltimateJobs.getPlugin().getEco().depositPlayer(player, reward);
 			
 			String id = job.getID(); 
 			double exp = job.getExpOf(i);

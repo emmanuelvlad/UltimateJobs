@@ -179,6 +179,16 @@ Command:
 
     Syntax: "<prefix> &7Use &6/Jobs leave <job>"
 
+  POINTS:
+
+    Enabled: true
+
+    Usage: "points"
+
+    Desc: "Display points"
+
+    Syntax: "<prefix> &7Use &6/Jobs points <name>"
+
   LEAVEALL:
 
     Enabled: true

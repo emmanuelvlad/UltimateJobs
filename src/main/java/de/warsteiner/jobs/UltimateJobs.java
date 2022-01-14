@@ -8,14 +8,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player; 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.utils.Metrics;
+import de.warsteiner.datax.utils.UpdateChecker;
 import de.warsteiner.datax.utils.YamlConfigFile;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
@@ -26,12 +29,15 @@ import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
 import de.warsteiner.jobs.command.JobsCommand;
 import de.warsteiner.jobs.command.admincommand.AddonSub;
+import de.warsteiner.jobs.command.admincommand.DiscordSub;
 import de.warsteiner.jobs.command.admincommand.HelpSub;
 import de.warsteiner.jobs.command.admincommand.ReloadSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
+import de.warsteiner.jobs.command.admincommand.UpdateSub;
 import de.warsteiner.jobs.command.admincommand.VersionSub;
 import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
 import de.warsteiner.jobs.command.playercommand.LeaveSub;
+import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.SubHelp;
 import de.warsteiner.jobs.events.PlayerExistEvent;
 import de.warsteiner.jobs.events.PlayerFinishedJob;
@@ -44,7 +50,7 @@ import de.warsteiner.jobs.jobs.JobActionFish;
 import de.warsteiner.jobs.jobs.JobActionKillMob;
 import de.warsteiner.jobs.jobs.JobActionMilk;
 import de.warsteiner.jobs.jobs.JobActionPlace;
-import de.warsteiner.jobs.jobs.JobBlockBreak; 
+import de.warsteiner.jobs.jobs.JobBlockBreak;
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.ClickManager;
 import de.warsteiner.jobs.utils.LogType;
@@ -61,13 +67,13 @@ public class UltimateJobs extends JavaPlugin {
 	private PlayerManager pm;
 	private LevelAPI levels;
 	private ArrayList<Job> loaded;
-	private HashMap<String, Job> ld; 
+	private HashMap<String, Job> ld;
 	private de.warsteiner.jobs.utils.GuiManager gui;
 	private YamlConfigFile config;
 	private YamlConfigFile messages;
 	private JobAPI api;
 	private ClickManager click;
-	private SQLManager sql; 
+	private SQLManager sql;
 	private Statement connection;
 	private ExecutorService executor;
 	private SubCommandRegistry cmdmanager;
@@ -86,7 +92,7 @@ public class UltimateJobs extends JavaPlugin {
 		loadClasses();
 
 		YamlConfiguration cfg = config.getConfig();
- 
+
 		getLogger().info("§bLoading UltimateJobs...");
 
 		setupEconomy();
@@ -94,7 +100,7 @@ public class UltimateJobs extends JavaPlugin {
 		getLogger().info("§bLoaded Vault for UltimateJobs");
 
 		api.loadJobs(getLogger());
- 
+
 		// basic events
 		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new MainMenuClickEvent(), this);
@@ -110,20 +116,20 @@ public class UltimateJobs extends JavaPlugin {
 
 		try {
 			connection = UltimateAPI.getInstance().getInit().getDataSource().getConnection().createStatement();
-		} catch (SQLException e) { 
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		//events
+
+		// events
 		loadEvents();
 
 		if (!UltimateAPI.getInstance().getInit().isClosed()) {
 			getSQLManager().createtables();
 			getLogger().info("§6Created job Tables... ");
 		}
-		
+
 		setupCommands();
-		 
+
 		getCommand("jobs").setExecutor(new JobsCommand());
 		getCommand("jobs").setTabCompleter(new JobTabComplete());
 
@@ -133,9 +139,18 @@ public class UltimateJobs extends JavaPlugin {
 		if (getMessages().getConfig().getBoolean("Reward.Enable_BossBar")) {
 			BossBarHandler.startSystemCheck();
 		}
-		
-		pm.startSave();
 
+		pm.startSave();
+	 
+		new Metrics(this, 13954);
+
+		new UpdateChecker(this, 99198).getVersion(version -> {
+			if (!this.getDescription().getVersion().equals(version)) {
+				getLogger().warning("§b§lTheres a new Plugin Version available! You run on version : v"
+						+ getDescription().getVersion() + " -> new version : " + version);
+			}
+		}); 
+		 
 		getLogger().info("§bLoaded UltimateJobs! Jobs: §a" + loaded.size());
 	}
 
@@ -153,28 +168,33 @@ public class UltimateJobs extends JavaPlugin {
 			getExecutor().shutdown();
 		}
 	}
-	
+
 	public void setupCommands() {
-		if(getMainConfig().getConfig().getBoolean("Command.HELP.Enabled")) {
+		if (getMainConfig().getConfig().getBoolean("Command.HELP.Enabled")) {
 			getSubCommandManager().getSubCommandList().add(new SubHelp());
 		}
-		if(getMainConfig().getConfig().getBoolean("Command.LEAVE.Enabled")) {
+		if (getMainConfig().getConfig().getBoolean("Command.LEAVE.Enabled")) {
 			getSubCommandManager().getSubCommandList().add(new LeaveSub());
 		}
-		if(getMainConfig().getConfig().getBoolean("Command.LEAVEALL.Enabled")) {
+		if (getMainConfig().getConfig().getBoolean("Command.LEAVEALL.Enabled")) {
 			getSubCommandManager().getSubCommandList().add(new LeaveAllSub());
 		}
-		
+		if (getMainConfig().getConfig().getBoolean("Command.POINTS.Enabled")) {
+			getSubCommandManager().getSubCommandList().add(new PointsSub());
+		}
+
 		getAdminSubCommandManager().getSubCommandList().add(new HelpSub());
 		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
 		getAdminSubCommandManager().getSubCommandList().add(new AddonSub());
 		getAdminSubCommandManager().getSubCommandList().add(new ReloadSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
+		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub());
+		getAdminSubCommandManager().getSubCommandList().add(new DiscordSub());
 	}
-	  
+
 	public void loadClasses() {
 		loaded = new ArrayList<Job>();
-		pm = new PlayerManager(plugin); 
+		pm = new PlayerManager(plugin);
 		ld = new HashMap<>();
 		levels = new LevelAPI(plugin, messages.getConfig());
 		sql = new SQLManager();
@@ -182,7 +202,7 @@ public class UltimateJobs extends JavaPlugin {
 		cmdmanager = new SubCommandRegistry();
 		api = new JobAPI(plugin, messages.getConfig());
 		gui = new de.warsteiner.jobs.utils.GuiManager(plugin, config.getConfig());
-		click = new ClickManager(plugin, config.getConfig(), gui); 
+		click = new ClickManager(plugin, config.getConfig(), gui);
 		module = new JobsModuleRegistry();
 		admincmdmanager = new AdminSubCommandRegistry();
 	}
@@ -190,22 +210,23 @@ public class UltimateJobs extends JavaPlugin {
 	public void doLog(LogType t, String m) {
 		if (config.getConfig().getBoolean("Debug")) {
 			if (t == LogType.FAILED) {
-				getLogger().warning( t.getColor() + m);
+				getLogger().warning(t.getColor() + m);
 			} else {
-				getLogger().info( t.getColor() + m);
+				getLogger().info(t.getColor() + m);
 			}
 		}
 
 	}
-	
+ 
+
 	public AdminSubCommandRegistry getAdminSubCommandManager() {
 		return admincmdmanager;
 	}
-	
+
 	public SubCommandRegistry getSubCommandManager() {
 		return cmdmanager;
 	}
-	
+
 	public JobsModuleRegistry getModuleRegistry() {
 		return module;
 	}
@@ -216,7 +237,7 @@ public class UltimateJobs extends JavaPlugin {
 
 	public Statement getConnection() {
 		return connection;
-	} 
+	}
 
 	public ExecutorService getExecutor() {
 		return executor;
@@ -229,7 +250,7 @@ public class UltimateJobs extends JavaPlugin {
 	public ClickManager getClickManager() {
 		return click;
 	}
- 
+
 	public HashMap<String, Job> getID() {
 		return ld;
 	}
@@ -263,7 +284,7 @@ public class UltimateJobs extends JavaPlugin {
 		}
 
 	}
- 
+
 	public void loadEvents() {
 		Bukkit.getPluginManager().registerEvents(new JobBlockBreak(), plugin);
 		Bukkit.getPluginManager().registerEvents(new JobActionFarm(), plugin);
@@ -272,7 +293,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionMilk(), plugin);
 		Bukkit.getPluginManager().registerEvents(new JobActionKillMob(), plugin);
 	}
-	 
+
 	public void setupConfigs() {
 		File file_config = new File(getDataFolder() + File.separator, "Config.yml");
 		File file_messages = new File(getDataFolder() + File.separator, "Messages.yml");
@@ -306,7 +327,7 @@ public class UltimateJobs extends JavaPlugin {
 	public HashMap<String, Job> getJobCache() {
 		return ld;
 	}
- 
+
 	public YamlConfigFile getMainConfig() {
 		return config;
 	}

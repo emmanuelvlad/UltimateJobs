@@ -24,46 +24,48 @@ public class AdminTabComplete implements TabCompleter {
 
 		JobAPI api = plugin.getAPI();
 
-		if (args.length == 1) {
+		if (plugin.getAPI().checkPermissions(s, "admin.tab")) {
 
-			for (String found : find(1)) {
-				l.add(found);
-			}
+			if (args.length == 1) {
 
-		} else if (args.length != 1) {
+				for (String found : find(1)) {
+					l.add(found);
+				}
 
-			for (AdminSubCommand c : plugin.getAdminSubCommandManager().getSubCommandList()) {
+			} else if (args.length != 1) {
 
-				if (c.getTabLength() <= args.length) {
+				for (AdminSubCommand c : plugin.getAdminSubCommandManager().getSubCommandList()) {
 
-					if (args[0].toLowerCase().equalsIgnoreCase(c.getName().toLowerCase())) {
-						if (!getFromFormat(args.length, c).equalsIgnoreCase("NOT_FOUND")) {
+					if (c.getTabLength() <= args.length) {
 
-							String type = getFromFormat(args.length, c).toUpperCase();
+						if (args[0].toLowerCase().equalsIgnoreCase(c.getName().toLowerCase())) {
+							if (!getFromFormat(args.length, c).equalsIgnoreCase("NOT_FOUND")) {
 
-							if (type.equalsIgnoreCase("JOBS_LISTED")) {
-								for (String b : api.getJobsInListAsID()) {
-									l.add(b);
+								String type = getFromFormat(args.length, c).toUpperCase();
+
+								if (type.equalsIgnoreCase("JOBS_LISTED")) {
+									for (String b : api.getJobsInListAsID()) {
+										l.add(b);
+									}
+								} else if (type.equalsIgnoreCase("PLAYERS_ONLINE")) {
+									for (Player b : Bukkit.getOnlinePlayers()) {
+										l.add(b.getName());
+									}
+								} else if (type.equalsIgnoreCase("ADDONS")) {
+									for (JobsModule tp : plugin.getModuleRegistry().getModuleList()) {
+										l.add(tp.getPluginName().toLowerCase());
+									}
 								}
-							} else if (type.equalsIgnoreCase("PLAYERS_ONLINE")) {
-								for (Player b : Bukkit.getOnlinePlayers()) {
-									l.add(b.getName());
-								}
-							} else if (type.equalsIgnoreCase("ADDONS")) {
-								for (JobsModule tp : plugin.getModuleRegistry().getModuleList()) {
-									l.add(tp.getPluginName().toLowerCase());
-								}
+
 							}
-
 						}
+
 					}
 
 				}
 
 			}
-
 		}
-
 		return l;
 
 	}

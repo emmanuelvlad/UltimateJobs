@@ -14,6 +14,12 @@ Prefix: "&8[&9Jobs&8]"
 
 Leave_All: "<prefix> &7You left all &6current &7Jobs."
 
+Not_found_Player: "<prefix> &7Cannot find player <name>&7."
+
+Points_Self: "<prefix> &7You have &b<points> &7Points."
+
+Points_Other: "<prefix> &7<name> owns &b<points> &7Points."
+
 No_Perm: "<prefix> &7You dont have permissions to do this."
 
 Already_Left_All: "<prefix> &7You are &6not &7in any Job."
@@ -36,6 +42,7 @@ Help:
   - "&8-> &6/Jobs help"
   - "&8-> &6/Jobs statsgui <name>"
   - "&8-> &6/Jobs salary <job>"
+  - "&8-> &6/Jobs points <name>"
   - "&8"
 
 Not_Found_Command: "<prefix> &7Error! Please use &6/Jobs help&7."
