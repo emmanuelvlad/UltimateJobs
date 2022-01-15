@@ -2,6 +2,7 @@ package de.warsteiner.jobs.utils;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -44,12 +45,26 @@ public class ClickManager {
 				jb.remoCurrentJob(job.getID());
 				gui.createMainGUIOfJobs(player);
 				player.sendMessage(plugin.getAPI().getMessage("Left_Job").replaceAll("<job>", job.getDisplay()));
-			} else if (action.equalsIgnoreCase("MONEYLIST")) {
-				player.sendMessage("UltimateJobs extension Money-List");
-			} else if (action.equalsIgnoreCase("EARNINGS")) {
-				player.sendMessage("UltimateJobs extension Earnings-List");
-			}
+			} else if (action.equalsIgnoreCase("COMMAND")) {
+				player.closeInventory();
+				String cmd = cf.getString(prefix + "." + item + ".Command").replaceAll("<job>", job.getID()); 
+				player.performCommand(cmd);
+			}  
 		}
+	}
+	
+	public void joinJob(Player player, String job, JobsPlayer jb, String name, String dis) {
+		jb.addCurrentJob(job);
+		new JobsPluginSoundEvent("" + player.getUniqueId(), player, "JOB_JOINED");
+		new BukkitRunnable() {
+			public void run() {
+				gui.setCustomitems(player, player.getName(), player.getOpenInventory(),
+						"Main_Custom.", cfg.getStringList("Main_Custom.List"), name, cfg);
+				gui.setMainInventoryJobItems(player.getOpenInventory(), player, name);
+			}
+		}.runTaskLater(plugin, 1);
+
+		player.sendMessage(api.getMessage("Joined").replaceAll("<job>", dis));
 	}
 
 	public void executeJobClickEvent(String display, Player player) {
@@ -65,32 +80,24 @@ public class ClickManager {
 				String job = j.getID();
 
 				String name = cfg.getString("Main_Name");
-				if (api.canBuyThisJob(player, j)) {
+				if (api.canBuyWithoutPermissions(player, j)) {
 					if (jb.ownJob(job)) {
 
 						if (jb.isInJob(job)) {
 							gui.createSettingsGUI(player, j);
 						} else {
 
-							int max = jb.getMaxJobs() - 1;
+							int max = jb.getMaxJobs();
+							 
 							if (jb.getCurrentJobs().size() <= max) {
-								jb.addCurrentJob(job);
-								new JobsPluginSoundEvent("" + player.getUniqueId(), player, "JOB_JOINED");
-								new BukkitRunnable() {
-									public void run() {
-										gui.setCustomitems(player, player.getName(), player.getOpenInventory(),
-												"Main_Custom.", cfg.getStringList("Main_Custom.List"), name, cfg);
-										gui.setMainInventoryJobItems(player.getOpenInventory(), player, name);
-									}
-								}.runTaskLater(plugin, 1);
-
-								player.sendMessage(api.getMessage("Joined").replaceAll("<job>", dis));
+								 joinJob(player, job, jb, name, dis);
 							} else {
 								player.sendMessage(api.getMessage("Full").replaceAll("<job>", dis));
 							}
+							
+							}
 						}
-
-					} else {
+					else {
 
 						double money = j.getPrice();
 
@@ -113,13 +120,14 @@ public class ClickManager {
 					}
 				} else {
 					player.sendMessage(
-							api.toHex(j.getPermMessage().replaceAll("&", "�").replaceAll("<prefix>", api.getPrefix())));
-				}
-				return;
-			}
+							api.toHex(j.getPermMessage().replaceAll("&", "§").replaceAll("<prefix>", api.getPrefix())));
+				 
 		}
-
-	}
+				 
+			}	 
+		}
+		}
+ 
 
 	public void executeCustomItem(String display, final Player player, String name, YamlConfiguration cf) {
 		String item = api.isCustomItem(display, player, "Main_Custom", cf);
@@ -133,7 +141,7 @@ public class ClickManager {
 					}
 				}.runTaskLater(plugin, 2);
 			} else if (action.equalsIgnoreCase("LEAVE")) {
-				if (jb.getCurrentJobs() != null) {
+				if (jb.getCurrentJobs().size() >= 1) {
 					new JobsPluginSoundEvent("" + player.getUniqueId(), player, "LEAVE_ALL");
 					jb.updateCurrentJobs(null);
 					gui.UpdateMainInventory(player, name);

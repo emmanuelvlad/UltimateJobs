@@ -10,7 +10,7 @@ import de.warsteiner.jobs.utils.Action;
 
 public class Job {
 
-	private String id;
+	private String idt;
 	private YamlConfiguration cf;
 	private String display;
 	private Action action;
@@ -24,47 +24,47 @@ public class Job {
 	private List<String> idslist;
 
 	public Job(String id, YamlConfiguration cfg) {
-		this.id = id;
-		this.cf = cfg;
-		this.display = cfg.getString("Display");
-		this.perm = cfg.getString("Permission");
-		this.action = Action.valueOf(cfg.getString("Action"));
-		this.icon = cfg.getString("Material");
-		this.slot = cfg.getInt("Slot");
-		this.price = cfg.getDouble("Price");
-		this.stats_message = cfg.getStringList("Stats");
-		this.worlds = cfg.getStringList("Worlds");
-		this.lore = cfg.getStringList("Lore");
-		this.idslist = cfg.getStringList("IDS.List");
+		idt = id;
+		cf = cfg;
+		display = cfg.getString("Display");
+		perm = cfg.getString("Permission");
+		action = Action.valueOf(cfg.getString("Action"));
+		icon = cfg.getString("Material");
+		slot = cfg.getInt("Slot");
+		price = cfg.getDouble("Price");
+		stats_message = cfg.getStringList("Stats");
+		worlds = cfg.getStringList("Worlds");
+		lore = cfg.getStringList("Lore");
+		idslist = cfg.getStringList("IDS.List");
 
 	}
 
 	public BarColor getBarColor() {
-		return BarColor.valueOf(this.cf.getString("ColorOfBossBar"));
+		return BarColor.valueOf(cf.getString("ColorOfBossBar"));
 	}
 
 	public String getLevelDisplay(int i) {
-		return this.cf.getString("LEVELS." + i + ".Display");
+		return cf.getString("LEVELS." + i + ".Display");
 	}
 
 	public List<String> getLevelCommands(int i) {
-		return this.cf.getStringList("LEVELS." + i + ".Command");
+		return cf.getStringList("LEVELS." + i + ".Command");
 	}
 
-	public List<String> getPermissionsLore() {
-		return this.cf.getStringList("PermLore");
+	public List<String> getPermissionsLore() { 
+		return cf.getStringList("PermLore");
 	}
 
-	public String getPermMessage() {
-		return this.cf.getString("PermMessage");
+	public String getPermMessage() { 
+		return cf.getString("PermMessage");
 	}
 
 	public boolean hasPermission() {
-		return this.cf.contains("Permission");
+		return cf.getString("Permission") != null;
 	}
 
 	public String getPermission() {
-		return this.perm;
+		return perm;
 	}
 
 	public Job get() {
@@ -72,79 +72,79 @@ public class Job {
 	}
 
 	public boolean getNeedToGrown(String id) {
-		return this.cf.getBoolean("IDS." + id + ".Need_Grown");
+		return cf.getBoolean("IDS." + id + ".Need_Grown");
 	}
 
 	public String getNameOfLevel(int level) {
-		return this.cf.getString("LEVELS." + level + ".Display");
+		return cf.getString("LEVELS." + level + ".Display");
 	}
 
 	public double getExpOfLevel(int level) {
-		return this.cf.getDouble("LEVELS." + level + ".Need");
+		return cf.getDouble("LEVELS." + level + ".Need");
 	}
 
 	public String getDisplayOf(String id) {
-		return this.cf.getString("IDS." + id + ".Display");
+		return cf.getString("IDS." + id + ".Display");
 	}
 
 	public int gettChanceOf(String id) {
-		return this.cf.getInt("IDS." + id + ".Chance");
+		return cf.getInt("IDS." + id + ".Chance");
 	}
 
 	public double getRewardOf(String id) {
-		return this.cf.getDouble("IDS." + id + ".Money");
+		return cf.getDouble("IDS." + id + ".Money");
 	}
 
 	public List<String> getCustomitems() {
-		return this.cf.getStringList("Items");
+		return cf.getStringList("Items");
 	}
 
 	public double getExpOf(String id) {
-		return this.cf.getDouble("IDS." + id + ".Exp");
+		return cf.getDouble("IDS." + id + ".Exp");
 	}
 
 	public double getPointsOf(String id) {
-		return this.cf.getDouble("IDS." + id + ".Points");
+		return cf.getDouble("IDS." + id + ".Points");
 	}
 
 	public List<String> getIDList() {
-		return this.idslist;
+		return idslist;
 	}
 
 	public List<String> getLore() {
-		return this.lore;
+		return lore;
 	}
 
 	public List<String> getWorlds() {
-		return this.worlds;
+		return worlds;
 	}
 
 	public List<String> getStatsMessage() {
-		return this.stats_message;
+		return stats_message;
 	}
 
 	public double getPrice() {
-		return this.price;
+		return price;
 	}
 
 	public int getSlot() {
-		return this.slot;
+		return slot;
 	}
 
 	public String getIcon() {
-		return this.icon;
+		return icon;
 	}
 
 	public Action getAction() {
-		return this.action;
+		return action;
 	}
 
 	public String getDisplay() {
-		return UltimateJobs.getPlugin().getAPI().toHex(this.display).replaceAll("&", "§");
+		return UltimateJobs.getPlugin().getAPI().toHex(display).replaceAll("&", "§");
 	}
 
 	public String getID() {
-		return this.id;
+		return idt;
 	}
 
 }

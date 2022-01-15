@@ -115,10 +115,18 @@ public class JobsPlayer {
 	}
 
 	public boolean isInJob(String id) {
+		
+		if(getCurrentJobs() == null) {
+			return false;
+		}
+		
 		return getCurrentJobs().contains(id.toUpperCase());
 	}
 
 	public List<String> getCurrentJobs() {
+		if(current == null) {
+			return new ArrayList<String>();
+		}
 		return current;
 	}
 

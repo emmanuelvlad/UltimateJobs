@@ -7,8 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.Executors; 
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -157,8 +156,10 @@ public class UltimateJobs extends JavaPlugin {
 	@Override
 	public void onDisable() {
 
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			p.kickPlayer(" ");
+		if(config.getConfig().getBoolean("KickOnReload")) {
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				p.kickPlayer(" ");
+			}
 		}
 
 		if (getExecutor().isShutdown()) {

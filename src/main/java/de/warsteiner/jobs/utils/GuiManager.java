@@ -109,7 +109,7 @@ public class GuiManager {
 					meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 					meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
-					if (api.canBuyThisJob(player, j)) {
+					if (api.canBuyWithoutPermissions(player, j)) {
 						if (jb.ownJob(id)) {
 
 							if (jb.isInJob(id)) {
@@ -195,7 +195,7 @@ public class GuiManager {
 							List<String> filore = new ArrayList<String>();
 							for (String l : lore) {
 								filore.add(api.toHex(l)
-										.replaceAll("<points>", ""+api.Format(jb.getPoints())).replaceAll("<max>", ""+jb.getMaxJobs()).replaceAll("&", "§"));
+										.replaceAll("<points>", ""+api.Format(jb.getPoints())).replaceAll("<max>", ""+jb.getMaxJobs()+1).replaceAll("&", "§"));
 							}
 							meta.setLore(filore);
 						}

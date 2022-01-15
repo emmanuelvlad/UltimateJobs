@@ -202,8 +202,8 @@ public class JobAPI {
 		return "NOT_FOUND";
 	}
 
-	public boolean canBuyThisJob(Player player, Job job) {
-		if (job.hasPermission()) {
+	public boolean canBuyWithoutPermissions(Player player, Job job) {
+		if (job.hasPermission() == true) {
 			return player.hasPermission(job.getPermission());
 		}
 		return true;

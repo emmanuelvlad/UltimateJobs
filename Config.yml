@@ -12,6 +12,8 @@
 
 Debug: false
 
+KickOnReload: true
+
 #default 180 seconds
 #the cache gets saved on join or quit, a low value here can create TPS issues. Change on own risk
 Cache_Saved_Every: 180
@@ -237,7 +239,9 @@ Settings_Custom:
 
     Display: "&6My Earnings this Month"
 
-    Action: "EARNINGS"
+    Action: "COMMAND"
+
+    Command: "jobs earnings <job>"
 
     Lore:
       - "&7This works only when the addon is installed."
@@ -250,7 +254,9 @@ Settings_Custom:
 
     Display: "&4See Earnings for different Blocks"
 
-    Action: "MONEYLIST"
+    Action: "COMMAND"
+
+    Command: "jobs rewards <job>"
 
     Lore:
       - "&7This works only when the addon is installed."
