@@ -186,7 +186,7 @@ public class JobAPI {
 		if (s.hasPermission("ultimatejobs." + text) || s.hasPermission("ultimatejobs.admin.all")) {
 			return true;
 		}
-		s.sendMessage(api.getMessage("No_Perm"));
+		s.sendMessage(plugin.getAPI().getMessage("No_Perm"));
 		return false;
 	}
 

@@ -149,7 +149,11 @@ public class ClickManager {
 				} else {
 					player.sendMessage(api.getMessage("Already_Left_All"));
 				}
-			}
+			} else if (action.equalsIgnoreCase("COMMAND")) {
+				player.closeInventory();
+				String cmd = cf.getString(api.getPrefix() + "." + item + ".Command"); 
+				player.performCommand(cmd);
+			}  
 		}
 	}
 

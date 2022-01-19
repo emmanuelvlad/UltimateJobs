@@ -32,6 +32,14 @@ public class SQLManager {
 			UltimateJobs.getPlugin().doLog(LogType.CREATED, "Created Tables of UltimateJobs");
 		});
 	}
+
+	public void updateLevel(String UUID, int value, String job) {
+		SQLStatementAPI s = UltimateAPI.getInstance().getSQLStatementAPI();
+		  
+		final String insertQuery = "UPDATE `job_stats` SET `LEVEL`='" + value + "' WHERE UUID='" +UUID + "' AND JOB='" +job + "'";
+		s.executeUpdate(insertQuery);
+		UltimateJobs.getPlugin().doLog(LogType.UPDATED, "Updated Level of Job: " + UUID);
+	}
 	
 	public void updateMax(String UUID, int value) {
 		SQLStatementAPI s = UltimateAPI.getInstance().getSQLStatementAPI();

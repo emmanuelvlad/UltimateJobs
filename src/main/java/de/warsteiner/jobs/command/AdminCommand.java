@@ -17,7 +17,7 @@ public class AdminCommand implements CommandExecutor {
 
 		int length = args.length;
 
-		if (plugin.getAPI().checkPermissions(sender, "admin.command")) {
+		if (sender.hasPermission("ultimatejobs.admin.command")) {
 
 			if (length == 0) {
 				sendHelp(sender);
@@ -37,8 +37,9 @@ public class AdminCommand implements CommandExecutor {
 
 			}
 
-		} else {
-			sender.sendMessage(prefix + "§7Error! §7You dont have Permissions.");
+		}   else {
+			sender.sendMessage(prefix + "§cYou dont have Permissions!");
+			return true;
 		}
 		return false;
 	}
@@ -55,6 +56,7 @@ public class AdminCommand implements CommandExecutor {
 	public static void sendHelp(CommandSender sender) {
 		sender.sendMessage("§7");
 		sender.sendMessage(" §8| §9UltimateJobs §8- §4Admin Help §8|");
+		sender.sendMessage("§8-> §6/JobsAdmin setlevel <name> <job> <value>");
 		sender.sendMessage("§8-> §6/JobsAdmin setmax <name> <value>");
 		sender.sendMessage("§8-> §6/JobsAdmin reload <type>");
 		sender.sendMessage("§8-> §6/JobsAdmin help");

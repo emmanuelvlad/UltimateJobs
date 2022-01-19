@@ -26,11 +26,12 @@ import de.warsteiner.jobs.api.PlayerManager;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
-import de.warsteiner.jobs.command.JobsCommand;
+import de.warsteiner.jobs.command.JobsCommand; 
 import de.warsteiner.jobs.command.admincommand.AddonSub;
 import de.warsteiner.jobs.command.admincommand.DiscordSub;
 import de.warsteiner.jobs.command.admincommand.HelpSub;
 import de.warsteiner.jobs.command.admincommand.ReloadSub;
+import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
 import de.warsteiner.jobs.command.admincommand.UpdateSub;
 import de.warsteiner.jobs.command.admincommand.VersionSub;
@@ -152,8 +153,7 @@ public class UltimateJobs extends JavaPlugin {
 		 
 		getLogger().info("§bLoaded UltimateJobs! Jobs: §a" + loaded.size());
 	}
-
-	@Override
+ 
 	public void onDisable() {
 
 		if(config.getConfig().getBoolean("KickOnReload")) {
@@ -191,6 +191,7 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
 		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub());
 		getAdminSubCommandManager().getSubCommandList().add(new DiscordSub());
+		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub()); 
 	}
 
 	public void loadClasses() {

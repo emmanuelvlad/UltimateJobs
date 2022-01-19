@@ -24,7 +24,7 @@ public class AdminTabComplete implements TabCompleter {
 
 		JobAPI api = plugin.getAPI();
 
-		if (plugin.getAPI().checkPermissions(s, "admin.tab")) {
+		if (s.hasPermission("ultimatejobs.complete")) {
 
 			if (args.length == 1) {
 
@@ -65,6 +65,8 @@ public class AdminTabComplete implements TabCompleter {
 				}
 
 			}
+		} else {
+			l.add("none");
 		}
 		return l;
 
