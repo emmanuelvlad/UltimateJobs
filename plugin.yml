@@ -1,8 +1,9 @@
 main: de.warsteiner.jobs.UltimateJobs
-version: 0.1.3-SNAPSHOT
+version: 0.1.4-SNAPSHOT
 name: UltimateJobs
 author: Warsteiner37
 api-version: 1.18
+softdepend: [WorldGuard]
 depend: [UltimateAPI]
 
 commands:

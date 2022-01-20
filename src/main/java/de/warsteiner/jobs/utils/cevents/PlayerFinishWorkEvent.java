@@ -20,14 +20,20 @@ public class PlayerFinishWorkEvent extends Event {
 	public String i;
 	public JobsPlayer pl;
 	public Player player;
+	public int amount;
 
-	public PlayerFinishWorkEvent(String uuid, Job job, Player player, String i, JobsPlayer pl) {
+	public PlayerFinishWorkEvent(String uuid, Job job, Player player, String i, JobsPlayer pl, int amount) {
 		this.i = i;
+		this.amount = amount;
 		this.pl = pl;
 		this.job = job;
 		this.player = player;
 		this.uuid = uuid;
 		Bukkit.getPluginManager().callEvent(this);
+	}
+	
+	public int getAmount() {
+		return amount;
 	}
 
 	public HandlerList getHandlers() {

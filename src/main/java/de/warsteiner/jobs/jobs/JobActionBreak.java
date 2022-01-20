@@ -9,7 +9,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import de.warsteiner.jobs.UltimateJobs;
 
-public class JobBlockBreak implements Listener {
+public class JobActionBreak implements Listener {
 	
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 

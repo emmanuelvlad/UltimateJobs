@@ -36,5 +36,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Pascal Heyer/Desktop/UltimateAPI-0.1.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pascal Heyer/Desktop/worldguard-bukkit-7.0.6-dist.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pascal Heyer/Desktop/FastAsyncWorldEdit-Bukkit-2.0.1-SNAPSHOT-72.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

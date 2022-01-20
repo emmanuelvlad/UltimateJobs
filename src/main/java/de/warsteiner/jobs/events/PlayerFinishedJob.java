@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.events;
  
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,24 +20,26 @@ public class PlayerFinishedJob implements Listener {
 			String i = event.getI(); 
 			double reward = job.getRewardOf(i); 
 			Player player = event.getPlayer();
+			int am = event.getAmount();
+			double fixed = reward * am;
 			
-			UltimateJobs.getPlugin().getEco().depositPlayer(player, reward);
-			
+			UltimateJobs.getPlugin().getEco().depositPlayer(player, fixed);
+		 
 			String id = job.getID(); 
 			double exp = job.getExpOf(i);
-			Integer broken = jb.getBrokenOf(id);
-			double points = job.getPointsOf(i);
+			Integer broken = jb.getBrokenOf(id) + am;
+			double points = job.getPointsOf(i)*am;
 			double old_points = jb.getPoints();
 			
-			jb.updateBroken(id, broken + 1);
+			jb.updateBroken(id, broken);
 		 
-			double exp_old = jb.getExpOf(id); 
+			double exp_old = jb.getExpOf(id) * am; 
 			
 			 jb.changePoints(points+old_points);
 
 			jb.updateExp(id, exp_old + exp); 
 			
-			UltimateJobs.getPlugin().getAPI().sendReward(jb, player, job, exp, reward, i);
+			UltimateJobs.getPlugin().getAPI().sendReward(jb, player, job, exp, fixed, i);
 		});
 
 	}

@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Random; 
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,11 +23,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+ 
 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.utils.Action;
@@ -211,15 +212,30 @@ public class JobAPI {
 
 	private static final Pattern pattern = Pattern.compile("(?<!\\\\)(#[a-fA-F0-9]{6})");
 
-	public boolean canWorkThere(Player player, Job j) {
+	public boolean canWorkThere(Player player, Job j, String st) {
 
 		if (canWorkInWorld(player.getWorld().getName(), j)) {
-			if (canWorkInRegion(player, j)) {
+			if (canWorkInRegion(player, j, st).equalsIgnoreCase("ALLOW")) {
 				return true;
 			}
 		}
 
 		return false;
+	}
+	
+	public void executeCraftWork(CraftItemEvent event, JobsPlayer pl) {
+		final Material block = event.getInventory().getResult().getType();
+		final int amount = event.getInventory().getResult().getAmount();
+ 
+	 
+		if (event.isCancelled()) {
+			event.setCancelled(true);
+			return;
+		}
+
+		finalWork("" + block, (Player) event.getWhoClicked(), pl, Action.CRAFT, "craft-action", amount);
+
+		return;
 	}
 
 	public void executeBlockBreakWork(BlockBreakEvent event, JobsPlayer pl) {
@@ -234,7 +250,7 @@ public class JobAPI {
 			return;
 		}
 
-		finalWork("" + type, event.getPlayer(), pl, Action.BREAK);
+		finalWork("" + type, event.getPlayer(), pl, Action.BREAK, "break-action", 1);
 
 		return;
 	}
@@ -247,7 +263,7 @@ public class JobAPI {
 			return;
 		}
 
-		finalWork("" + type, event.getPlayer(), pl, Action.PLACE);
+		finalWork("" + type, event.getPlayer(), pl, Action.PLACE, "place-action", 1);
 		return;
 	}
 
@@ -259,11 +275,11 @@ public class JobAPI {
 
 		if (event.getCaught() == null) {
 			return;
-		}
+		}  
 
 		String id = event.getCaught().getName().toUpperCase().replaceAll(" ", "_");
 
-		finalWork(id, event.getPlayer(), pl, Action.FISH);
+		finalWork(id, event.getPlayer(), pl, Action.FISH, "fish-action", 1);
 		return;
 	}
 
@@ -271,14 +287,14 @@ public class JobAPI {
 
 		Player player = event.getEntity().getKiller();
 
-		finalWork("" + event.getEntity().getType(), player, pl, Action.KILL_MOB);
+		finalWork("" + event.getEntity().getType(), player, pl, Action.KILL_MOB, "kill-action", 1);
 		return;
 	}
 
 	@SuppressWarnings("deprecation")
 	public void executeMilkWork(PlayerInteractAtEntityEvent event, JobsPlayer pl) {
 
-		finalWork("" + event.getPlayer().getItemInHand().getType(), event.getPlayer(), pl, Action.MILK);
+		finalWork("" + event.getPlayer().getItemInHand().getType(), event.getPlayer(), pl, Action.MILK, "milk-action", 1);
 		return;
 	}
 
@@ -295,12 +311,12 @@ public class JobAPI {
 			return;
 		}
 
-		finalWork("" + type, event.getPlayer(), pl, Action.FARM);
+		finalWork("" + type, event.getPlayer(), pl, Action.FARM, "farm-action", 1);
 
 		return;
 	}
 
-	public void finalWork(String id, Player player, JobsPlayer pl, Action ac) {
+	public void finalWork(String id, Player player, JobsPlayer pl, Action ac, String flag, int amount) {
 
 		String UUID = "" + player.getUniqueId();
 
@@ -315,9 +331,9 @@ public class JobAPI {
 
 			if (jb.getIDList().contains(id.toUpperCase())) {
 				if (pl.isInJob(job.toUpperCase())) {
-					if (canWorkThere(player, jb)) {
+					if (canWorkThere(player, jb, flag)) {
 						if (canReward(player, jb, id)) { 
-							PlayerFinishWorkEvent event = new PlayerFinishWorkEvent(UUID, jb, player, id, pl);
+							PlayerFinishWorkEvent event = new PlayerFinishWorkEvent(UUID, jb, player, id, pl, amount);
 
 							Bukkit.getServer().getPluginManager().callEvent(event);
 
@@ -363,8 +379,13 @@ public class JobAPI {
 		return false;
 	}
 
-	public boolean canWorkInRegion(Player player, Job j) {
-		return true;
+	public String canWorkInRegion(Player player, Job j, String st) {
+		if(plugin.isInstalledWorldGuard()) {
+			String ac = ""+j.getAction();
+			String flag = ac.toLowerCase()+"_action";  
+			return WorldGuardManager.checkFlag(player.getLocation(), flag, player, st);
+		} 
+		return "ALLOW";
 	}
 
 	public boolean canReward(Player player, Job j, String id) {

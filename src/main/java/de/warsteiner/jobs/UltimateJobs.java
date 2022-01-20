@@ -12,9 +12,10 @@ import java.util.concurrent.Executors;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
+ 
 import de.warsteiner.datax.UltimateAPI;
 import de.warsteiner.datax.utils.Metrics;
 import de.warsteiner.datax.utils.UpdateChecker;
@@ -23,6 +24,7 @@ import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
 import de.warsteiner.jobs.api.PlayerManager;
+import de.warsteiner.jobs.api.WorldGuardManager;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
@@ -45,12 +47,13 @@ import de.warsteiner.jobs.events.PlayerSoundsEvent;
 import de.warsteiner.jobs.events.PlayerlevelCheck;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
+import de.warsteiner.jobs.jobs.JobActionBreak;
+import de.warsteiner.jobs.jobs.JobActionCraft;
 import de.warsteiner.jobs.jobs.JobActionFarm;
 import de.warsteiner.jobs.jobs.JobActionFish;
 import de.warsteiner.jobs.jobs.JobActionKillMob;
 import de.warsteiner.jobs.jobs.JobActionMilk;
-import de.warsteiner.jobs.jobs.JobActionPlace;
-import de.warsteiner.jobs.jobs.JobBlockBreak;
+import de.warsteiner.jobs.jobs.JobActionPlace; 
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.ClickManager;
 import de.warsteiner.jobs.utils.LogType;
@@ -80,6 +83,14 @@ public class UltimateJobs extends JavaPlugin {
 	private AdminSubCommandRegistry admincmdmanager;
 	private JobsModuleRegistry module;
 
+	public void onLoad() {
+		if(isInstalledWorldGuard()) {
+			WorldGuardManager.setClass();
+			WorldGuardManager.load();
+			getLogger().info("§bLoaded WorldGuard for UltimateJobs!");
+		}
+	}
+	
 	@Override
 	public void onEnable() {
 
@@ -129,7 +140,6 @@ public class UltimateJobs extends JavaPlugin {
 		}
 
 		setupCommands();
-
 		getCommand("jobs").setExecutor(new JobsCommand());
 		getCommand("jobs").setTabCompleter(new JobTabComplete());
 
@@ -220,6 +230,13 @@ public class UltimateJobs extends JavaPlugin {
 
 	}
  
+	public boolean isInstalledWorldGuard() {
+		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+		if (wgPlugin != null) {
+			return true;
+		}
+		return false;
+	}
 
 	public AdminSubCommandRegistry getAdminSubCommandManager() {
 		return admincmdmanager;
@@ -288,12 +305,13 @@ public class UltimateJobs extends JavaPlugin {
 	}
 
 	public void loadEvents() {
-		Bukkit.getPluginManager().registerEvents(new JobBlockBreak(), plugin);
-		Bukkit.getPluginManager().registerEvents(new JobActionFarm(), plugin);
-		Bukkit.getPluginManager().registerEvents(new JobActionPlace(), plugin);
-		Bukkit.getPluginManager().registerEvents(new JobActionFish(), plugin);
-		Bukkit.getPluginManager().registerEvents(new JobActionMilk(), plugin);
-		Bukkit.getPluginManager().registerEvents(new JobActionKillMob(), plugin);
+		Bukkit.getPluginManager().registerEvents(new JobActionBreak(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionFarm(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionPlace(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionFish(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionMilk(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionKillMob(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionCraft(), this);
 	}
 
 	public void setupConfigs() {
