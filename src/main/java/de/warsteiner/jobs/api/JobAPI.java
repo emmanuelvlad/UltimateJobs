@@ -14,24 +14,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
  
 
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.api.plugins.WorldGuardManager;
 import de.warsteiner.jobs.utils.Action;
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.cevents.PlayerFinishWorkEvent;
@@ -223,6 +227,24 @@ public class JobAPI {
 		return false;
 	}
 	
+	public void executeShearWork(PlayerShearEntityEvent event, JobsPlayer pl) {
+		if (event.getEntity() instanceof Sheep) {
+
+			Sheep sheep = (Sheep) event.getEntity();
+
+			DyeColor color = sheep.getColor();
+		 
+			if (event.isCancelled()) {
+				event.setCancelled(true);
+				return;
+			}
+	
+			finalWork("" + color, (Player) event.getPlayer(), pl, Action.SHEAR, "shear-action", 1);
+	
+			return;
+			}
+		}
+	
 	public void executeCraftWork(CraftItemEvent event, JobsPlayer pl) {
 		final Material block = event.getInventory().getResult().getType();
 		final int amount = event.getInventory().getResult().getAmount();
@@ -333,10 +355,9 @@ public class JobAPI {
 				if (pl.isInJob(job.toUpperCase())) {
 					if (canWorkThere(player, jb, flag)) {
 						if (canReward(player, jb, id)) { 
-							PlayerFinishWorkEvent event = new PlayerFinishWorkEvent(UUID, jb, player, id, pl, amount);
-
-							Bukkit.getServer().getPluginManager().callEvent(event);
-
+							new PlayerFinishWorkEvent(UUID, jb, player, id, pl, amount);
+ 
+							return;
 						}
 					}
 				}
@@ -468,6 +489,16 @@ public class JobAPI {
 		return toHex(plugin.getMessages().getConfig().getString("Prefix").replaceAll("&", "§"));
 	}
 
+	public ItemStack createItemStack(String p, String item) {
+		ItemStack i;
+		if (Material.getMaterial(item.toUpperCase()) == null) {
+			i = generateSkull(item.replaceAll("<skull>", p));
+		} else {
+			i = new ItemStack(Material.valueOf(item.toUpperCase()), 1);
+		}
+		return i;
+	}
+	
 	public ItemStack createItemStack(Player p, String item) {
 		ItemStack i;
 		if (Material.getMaterial(item.toUpperCase()) == null) {

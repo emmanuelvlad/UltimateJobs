@@ -22,7 +22,7 @@ Cache_Saved_Every: 180
 ExecutorServiceThreads: 1
 
 #how many jobs can a player have by default?
-MaxDefaultJobs: 1
+MaxDefaultJobs: 0
 
 #do you want to use the levels?
 Enable_Levels: true

@@ -12,9 +12,11 @@ import de.warsteiner.jobs.utils.cevents.PlayerFinishWorkEvent;
 
 public class PlayerFinishedJob implements Listener {
 
+	private static UltimateJobs plugin = UltimateJobs.getPlugin();
+	
 	@EventHandler
 	public void onFinish(PlayerFinishWorkEvent event) {
-		UltimateJobs.getPlugin().getExecutor().execute(() -> {
+		plugin.getExecutor().execute(() -> {
 			Job job = event.getJob();
 			JobsPlayer jb = event.getJobsPlayer();
 			String i = event.getI(); 
@@ -26,11 +28,10 @@ public class PlayerFinishedJob implements Listener {
 			UltimateJobs.getPlugin().getEco().depositPlayer(player, fixed);
 		 
 			String id = job.getID(); 
-			double exp = job.getExpOf(i);
+			double exp = job.getExpOf(i); 
 			Integer broken = jb.getBrokenOf(id) + am;
 			double points = job.getPointsOf(i)*am;
-			double old_points = jb.getPoints();
-			
+			double old_points = jb.getPoints(); 
 			jb.updateBroken(id, broken);
 		 
 			double exp_old = jb.getExpOf(id) * am; 
@@ -39,9 +40,18 @@ public class PlayerFinishedJob implements Listener {
 
 			jb.updateExp(id, exp_old + exp); 
 			
+			//check for alonsolevels
+			if(plugin.isInstalledAlonso()) {
+				if(job.isAlonsoLevels(i)) {
+					String r = job.getAlonsoLevels(i);
+					plugin.getAlonsoLevelsPlugin().addExp(player.getUniqueId(), Integer.valueOf(r));
+				}
+			}
+			
 			UltimateJobs.getPlugin().getAPI().sendReward(jb, player, job, exp, fixed, i);
+			return;
 		});
-
+		return;
 	}
 
 }

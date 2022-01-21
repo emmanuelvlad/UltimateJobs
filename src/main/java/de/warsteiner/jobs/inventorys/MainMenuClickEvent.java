@@ -45,7 +45,7 @@ public class MainMenuClickEvent implements Listener {
 		 
 			plugin.getClickManager().executeJobClickEvent(display, p);
 			 
-			plugin.getClickManager().executeCustomItem(display, p, name, config);
+			plugin.getClickManager().executeCustomItem(display, p, "Main_Custom", config);
 			e.setCancelled(true);
 		}
 		

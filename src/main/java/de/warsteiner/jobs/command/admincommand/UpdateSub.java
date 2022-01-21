@@ -27,7 +27,7 @@ public class UpdateSub extends AdminSubCommand {
 			
 			new UpdateChecker(plugin, 99198).getVersion(version -> {
 				if (!plugin.getDescription().getVersion().equals(version)) {
-					sender.sendMessage(AdminCommand.prefix + "§7Theres a new Plugin Version §aavailable§7! You run on version : §c"+plugin.getDescription().getVersion()+" §7-> new version : §a"+version);
+					sender.sendMessage(AdminCommand.prefix + "§7Theres a new Plugin Version §aavailable§7! You run on version : §c"+plugin.getDescription().getVersion()+" §8-> §7new version : §a"+version);
 				} else {
 					sender.sendMessage(AdminCommand.prefix+"§7You are running the latest Version!");
 				}

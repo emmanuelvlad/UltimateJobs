@@ -70,9 +70,21 @@ public class Job {
 	public Job get() {
 		return this;
 	}
+	
+	public String getAlonsoLevelsOnLevel(int level) {
+		return cf.getString("LEVELS." + level + ".AlonsoLevelsExp");
+	}
 
-	public boolean getNeedToGrown(String id) {
-		return cf.getBoolean("IDS." + id + ".Need_Grown");
+	public boolean isAlonsoLevelsOnLevel(int level) {
+		return cf.getString("LEVELS." + level + ".AlonsoLevelsExp") != null;
+	}
+	
+	public String getAlonsoLevels(String id) {
+		return cf.getString("IDS." + id + ".AlonsoLevelsExp");
+	}
+
+	public boolean isAlonsoLevels(String id) {
+		return cf.getString("IDS." + id + ".AlonsoLevelsExp") != null;
 	}
 
 	public String getNameOfLevel(int level) {

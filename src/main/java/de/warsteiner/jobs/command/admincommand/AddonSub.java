@@ -28,7 +28,7 @@ public class AddonSub extends AdminSubCommand {
 				sender.sendMessage("§7");
 				sender.sendMessage(" §8| §9UltimateJobs §8- §4Addons §8|");
 				for (JobsModule c : plugin.getModuleRegistry().getModuleList()) {
-					sender.sendMessage("§8-> §6" + c.getPluginName() + " §8- §7Version§8: §bv" + c.getVersion() + " §7by §c"
+					sender.sendMessage("§8-> §6" + c.getPluginName() + " §8| §7Version§8: §bv" + c.getVersion() + " §7by §c"
 							+ c.getDeveloper());
 				}
 				sender.sendMessage("§7");

@@ -24,6 +24,13 @@ public class LevelAPI {
 
 		return job.getExpOfLevel(next);
 	}
+	
+	public double getJobNeedExpWithOutPlayer(Job job, int level) {
+ 
+		int next = level + 1;
+
+		return job.getExpOfLevel(next);
+	}
 
 	public boolean canLevelMore(String uuid, Job job, int level) {
 		if (job.getLevelDisplay(level) != null) {
@@ -69,6 +76,13 @@ public class LevelAPI {
 
 					pl.updateLevel(job.getID(), new_level);
 					pl.updateExp(job.getID(), 0);
+					
+					if(plugin.isInstalledAlonso()) {
+						if(job.isAlonsoLevelsOnLevel(new_level)) {
+							String r = job.getAlonsoLevelsOnLevel(new_level);
+							plugin.getAlonsoLevelsPlugin().addExp(player.getUniqueId(), Integer.valueOf(r));
+						}
+					}
 
 					String level_name = job.getNameOfLevel(new_level);
 

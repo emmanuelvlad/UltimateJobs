@@ -130,21 +130,21 @@ public class ClickManager {
  
 
 	public void executeCustomItem(String display, final Player player, String name, YamlConfiguration cf) {
-		String item = api.isCustomItem(display, player, "Main_Custom", cf);
+		String item = api.isCustomItem(display, player, name, cf);
 		JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get("" + player.getUniqueId());
 		if (!item.equalsIgnoreCase("NOT_FOUND")) {
-			String action = cf.getString("Main_Custom." + item + ".Action");
+			String action = cf.getString(name+"." + item + ".Action");
 			if (action.equalsIgnoreCase("CLOSE")) {
 				new BukkitRunnable() {
 					public void run() {
 						player.closeInventory();
 					}
 				}.runTaskLater(plugin, 2);
-			} else if (action.equalsIgnoreCase("LEAVE")) {
+			}  else if (action.equalsIgnoreCase("LEAVE")) {
 				if (jb.getCurrentJobs().size() >= 1) {
 					new JobsPluginSoundEvent("" + player.getUniqueId(), player, "LEAVE_ALL");
 					jb.updateCurrentJobs(null);
-					gui.UpdateMainInventory(player, name);
+					gui.UpdateMainInventory(player, cfg.getString("Main_Name"));
 					player.sendMessage(api.getMessage("Leave_All"));
 				} else {
 					player.sendMessage(api.getMessage("Already_Left_All"));

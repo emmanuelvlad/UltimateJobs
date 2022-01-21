@@ -24,15 +24,16 @@ import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
 import de.warsteiner.jobs.api.PlayerManager;
-import de.warsteiner.jobs.api.WorldGuardManager;
+import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
+import de.warsteiner.jobs.api.plugins.WorldGuardManager;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
 import de.warsteiner.jobs.command.JobsCommand; 
-import de.warsteiner.jobs.command.admincommand.AddonSub;
-import de.warsteiner.jobs.command.admincommand.DiscordSub;
+import de.warsteiner.jobs.command.admincommand.AddonSub; 
 import de.warsteiner.jobs.command.admincommand.HelpSub;
-import de.warsteiner.jobs.command.admincommand.ReloadSub;
+import de.warsteiner.jobs.command.admincommand.HooksSub;
+import de.warsteiner.jobs.command.admincommand.ReloadSub; 
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
 import de.warsteiner.jobs.command.admincommand.UpdateSub;
@@ -53,7 +54,8 @@ import de.warsteiner.jobs.jobs.JobActionFarm;
 import de.warsteiner.jobs.jobs.JobActionFish;
 import de.warsteiner.jobs.jobs.JobActionKillMob;
 import de.warsteiner.jobs.jobs.JobActionMilk;
-import de.warsteiner.jobs.jobs.JobActionPlace; 
+import de.warsteiner.jobs.jobs.JobActionPlace;
+import de.warsteiner.jobs.jobs.JobActionShear;
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.ClickManager;
 import de.warsteiner.jobs.utils.LogType;
@@ -82,19 +84,24 @@ public class UltimateJobs extends JavaPlugin {
 	private SubCommandRegistry cmdmanager;
 	private AdminSubCommandRegistry admincmdmanager;
 	private JobsModuleRegistry module;
+	private ArrayList<Plugin> plugins = new ArrayList<Plugin>();
+	private AlonsoLevelsManager allevels;
 
 	public void onLoad() {
+		 
+		plugin = this;
+		 
 		if(isInstalledWorldGuard()) {
 			WorldGuardManager.setClass();
 			WorldGuardManager.load();
-			getLogger().info("§bLoaded WorldGuard for UltimateJobs!");
+			getLogger().info("§bLoaded WorldGuard-Support for UltimateJobs!");
 		}
 	}
 	
 	@Override
 	public void onEnable() {
-
-		plugin = this;
+ 
+		setUpSupportedPlugins();
 
 		createFolders();
 
@@ -199,9 +206,20 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new AddonSub());
 		getAdminSubCommandManager().getSubCommandList().add(new ReloadSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
-		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub());
-		getAdminSubCommandManager().getSubCommandList().add(new DiscordSub());
+		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub()); 
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub()); 
+		getAdminSubCommandManager().getSubCommandList().add(new HooksSub()); 
+	}
+	
+	public void setUpSupportedPlugins() {
+		
+		Plugin al = Bukkit.getServer().getPluginManager().getPlugin("AlonsoLevels");
+		
+		if(isInstalledAlonso()) {
+			getSupportedPlugins().add(al);
+			getLogger().info("§bLoaded AlonsoLevels-Support for UltimateJobs!");
+			allevels = new AlonsoLevelsManager();
+		}
 	}
 
 	public void loadClasses() {
@@ -216,7 +234,7 @@ public class UltimateJobs extends JavaPlugin {
 		gui = new de.warsteiner.jobs.utils.GuiManager(plugin, config.getConfig());
 		click = new ClickManager(plugin, config.getConfig(), gui);
 		module = new JobsModuleRegistry();
-		admincmdmanager = new AdminSubCommandRegistry();
+		admincmdmanager = new AdminSubCommandRegistry(); 
 	}
 
 	public void doLog(LogType t, String m) {
@@ -229,7 +247,23 @@ public class UltimateJobs extends JavaPlugin {
 		}
 
 	}
+	
+	public AlonsoLevelsManager getAlonsoLevelsPlugin() {
+		return allevels;
+	}
  
+	public ArrayList<Plugin> getSupportedPlugins() {
+		return plugins;
+	}
+	
+	public boolean isInstalledAlonso() {
+		Plugin al = Bukkit.getServer().getPluginManager().getPlugin("AlonsoLevels");
+		if(al != null) {
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean isInstalledWorldGuard() {
 		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 		if (wgPlugin != null) {
@@ -311,6 +345,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionFish(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionMilk(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionKillMob(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionShear(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionCraft(), this);
 	}
 
@@ -334,9 +369,9 @@ public class UltimateJobs extends JavaPlugin {
 		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
 				.getRegistration(Economy.class);
 		if (economyProvider != null) {
+			getSupportedPlugins().add(Bukkit.getServer().getPluginManager().getPlugin("Vault"));
 			econ = (Economy) economyProvider.getProvider();
-		}
-
+		} 
 		return (econ != null);
 	}
 

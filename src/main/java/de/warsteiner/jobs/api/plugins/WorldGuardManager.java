@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.api;
+package de.warsteiner.jobs.api.plugins;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,13 +12,13 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
-import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry; 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
-import de.warsteiner.jobs.utils.Action;
+import de.warsteiner.jobs.UltimateJobs;
+ 
 
 public class WorldGuardManager {
 
@@ -31,6 +31,7 @@ public class WorldGuardManager {
 	public static StateFlag FISH_ACTION;
 	public static StateFlag MILK_ACTION; 
 	public static StateFlag CRAFT_ACTION; 
+	public static StateFlag SHEAR_ACTION;
 
 	public WorldGuardManager getManager() {
 		return this;
@@ -39,9 +40,12 @@ public class WorldGuardManager {
 	public static void setClass() {
 
 		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+		Plugin editPlugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
 
 		wg = (WorldGuardPlugin) wgPlugin;
-
+ 
+		UltimateJobs.getPlugin().getSupportedPlugins().add(editPlugin);
+		UltimateJobs.getPlugin().getSupportedPlugins().add(wgPlugin);
 	}
  
 
@@ -55,6 +59,8 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (FISH_ACTION = new StateFlag("fish-action", false)));
 		flagRegistry.register((Flag) (MILK_ACTION = new StateFlag("milk-action", false))); 
 		flagRegistry.register((Flag) (CRAFT_ACTION = new StateFlag("craft-action", false))); 
+		flagRegistry.register((Flag) (CRAFT_ACTION = new StateFlag("shear-action", false))); 
+		 
 	}
 	
 	public static StateFlag getFlagFromName(String b) {
@@ -65,6 +71,7 @@ public class WorldGuardManager {
 		if(b.equalsIgnoreCase("fish-action")) { return FISH_ACTION; }
 		if(b.equalsIgnoreCase("milk-action")) { return MILK_ACTION; } 
 		if(b.equalsIgnoreCase("craft-action")) { return CRAFT_ACTION; } 
+		if(b.equalsIgnoreCase("shear-action")) { return SHEAR_ACTION; } 
 		return null;
 	}
 

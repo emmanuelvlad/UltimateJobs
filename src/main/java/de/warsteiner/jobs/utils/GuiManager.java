@@ -190,12 +190,14 @@ public class GuiManager {
 						ItemMeta meta = item.getItemMeta();
 						meta.setDisplayName(display.replaceAll("&", "§"));
 
+						int max = jb.getMaxJobs() + 1;
+						
 						if (cf.contains(prefix + pl + ".Lore")) {
 							List<String> lore = cf.getStringList(prefix + pl + ".Lore");
 							List<String> filore = new ArrayList<String>();
 							for (String l : lore) {
 								filore.add(api.toHex(l)
-										.replaceAll("<points>", ""+api.Format(jb.getPoints())).replaceAll("<max>", ""+jb.getMaxJobs()+1).replaceAll("&", "§"));
+										.replaceAll("<points>", ""+api.Format(jb.getPoints())).replaceAll("<max>", ""+max).replaceAll("&", "§"));
 							}
 							meta.setLore(filore);
 						}
