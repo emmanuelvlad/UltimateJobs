@@ -37,8 +37,4 @@ How to include the API with Maven:
 ```
  <br>
 
-## Donations
-Special thanks <3
-| Name    | Amount                  |
-| ------- | ---------------------- |
-| @micro_maniaque#0001  | 15 Euro | 
+
