@@ -42,6 +42,10 @@ public class Job {
 	public BarColor getBarColor() {
 		return BarColor.valueOf(cf.getString("ColorOfBossBar"));
 	}
+	
+	public YamlConfiguration getConfig() {
+		return cf;
+	}
 
 	public String getLevelDisplay(int i) {
 		return cf.getString("LEVELS." + i + ".Display");
