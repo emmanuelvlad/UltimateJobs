@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.warsteiner</groupId>
   <artifactId>ultimatejobs</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.2.5-SNAPSHOT</version>
  	<name>UltimateJobs</name>
 	<packaging>jar</packaging>
 
@@ -41,7 +41,37 @@
         <version>1.7</version>
         <scope>provided</scope>
     </dependency>
+
+ <dependency>
+        <groupId>com.github.Warsteiner37</groupId>
+        <artifactId>UltimateAPI</artifactId>
+        <version>test5</version>
+        <scope>provided</scope>
+    </dependency>
  
 </dependencies>
+
+<build>
+  <plugins>
+    <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+
+      <configuration>
+<properties>
+ <maven.compiler.source>1.8</maven.compiler.source>
+ <maven.compiler.target>1.8</maven.compiler.target>
+</properties>
+        <archive>
+          <manifest>
+            <mainClass>de.warsteiner.datax.UltimateAPI</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
   
 </project>

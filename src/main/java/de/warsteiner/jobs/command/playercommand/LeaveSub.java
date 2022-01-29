@@ -3,6 +3,8 @@ package de.warsteiner.jobs.command.playercommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.utils.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
@@ -12,7 +14,8 @@ import de.warsteiner.jobs.utils.playercommand.SubCommand;
 public class LeaveSub extends SubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-
+	private PluginAPI up = UltimateAPI.getInstance().getAPI();
+	
 	@Override
 	public String getName() {
 		return plugin.getMainConfig().getConfig().getString("Command.LEAVE.Usage");
@@ -40,7 +43,7 @@ public class LeaveSub extends SubCommand {
 			}
 		} else {
 			player.sendMessage(
-					plugin.getAPI().toHex(plugin.getMainConfig().getConfig().getString("Command.LEAVE.Syntax")
+					up.toHex(plugin.getMainConfig().getConfig().getString("Command.LEAVE.Syntax")
 							.replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
 		}
 	}

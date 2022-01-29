@@ -4,6 +4,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.utils.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
@@ -11,6 +13,7 @@ import de.warsteiner.jobs.utils.playercommand.SubCommand;
 public class SubHelp extends SubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
+	private PluginAPI up = UltimateAPI.getInstance().getAPI();
 
 	@Override
 	public String getName() {
@@ -28,10 +31,10 @@ public class SubHelp extends SubCommand {
 		if (args.length == 1) {
 			YamlConfiguration mg = plugin.getMessages().getConfig();
 			for (String m : mg.getStringList("Help")) {
-				player.sendMessage(plugin.getAPI().toHex(m).replaceAll("&", "§"));
+				player.sendMessage(up.toHex(m).replaceAll("&", "§"));
 			}
 		} else {
-			player.sendMessage(plugin.getAPI().toHex(plugin.getMainConfig().getConfig().getString("Command.HELP.Syntax")
+			player.sendMessage(up.toHex(plugin.getMainConfig().getConfig().getString("Command.HELP.Syntax")
 					.replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
 		}
 	}

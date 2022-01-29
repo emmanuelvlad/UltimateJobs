@@ -32,6 +32,9 @@ public class WorldGuardManager {
 	public static StateFlag MILK_ACTION; 
 	public static StateFlag CRAFT_ACTION; 
 	public static StateFlag SHEAR_ACTION;
+	public static StateFlag AD_ACTION;
+	public static StateFlag EAT_ACTION;
+	public static StateFlag HONEY_ACTION;
 
 	public WorldGuardManager getManager() {
 		return this;
@@ -49,6 +52,7 @@ public class WorldGuardManager {
 	}
  
 
+	@SuppressWarnings("rawtypes")
 	public static void load() {
 		WorldGuard worldGuard = WorldGuard.getInstance();
 		FlagRegistry flagRegistry = worldGuard.getFlagRegistry();
@@ -60,10 +64,15 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (MILK_ACTION = new StateFlag("milk-action", false))); 
 		flagRegistry.register((Flag) (CRAFT_ACTION = new StateFlag("craft-action", false))); 
 		flagRegistry.register((Flag) (CRAFT_ACTION = new StateFlag("shear-action", false))); 
-		 
+		flagRegistry.register((Flag) (AD_ACTION = new StateFlag("advancement-action", false))); 
+		flagRegistry.register((Flag) (EAT_ACTION = new StateFlag("eat-action", false))); 
+		flagRegistry.register((Flag) (HONEY_ACTION = new StateFlag("honey-action", false))); 
 	}
 	
 	public static StateFlag getFlagFromName(String b) {
+		if(b.equalsIgnoreCase("honey-action")) { return HONEY_ACTION; }
+		if(b.equalsIgnoreCase("eat-action")) { return EAT_ACTION; }
+		if(b.equalsIgnoreCase("advancement-action")) { return AD_ACTION; }
 		if(b.equalsIgnoreCase("break-action")) { return BREAK_ACTION; }
 		if(b.equalsIgnoreCase("place-action")) { return PLACE_ACTION; }
 		if(b.equalsIgnoreCase("kill-action")) { return KILL_ACTION; }

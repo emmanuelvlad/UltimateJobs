@@ -1,11 +1,10 @@
 package de.warsteiner.jobs.api;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+ 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.utils.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 
 public class LevelAPI {
@@ -24,9 +23,9 @@ public class LevelAPI {
 
 		return job.getExpOfLevel(next);
 	}
-	
+
 	public double getJobNeedExpWithOutPlayer(Job job, int level) {
- 
+
 		int next = level + 1;
 
 		return job.getExpOfLevel(next);
@@ -51,32 +50,22 @@ public class LevelAPI {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void check(Player player, Job job, JobsPlayer pl) {
+	public void check(Player player, Job job, JobsPlayer pl, String block) {
+		plugin.getExecutor().execute(() -> {
+			String UUID = "" + player.getUniqueId();
 
-		String UUID = "" + player.getUniqueId();
+			PluginAPI api = UltimateAPI.getInstance().getAPI();
 
-		JobAPI api = plugin.getAPI();
+			String prefix = plugin.getAPI().getPrefix();
+			
+			int old_level = pl.getLevelOf(job.getID());
+			int new_level = old_level + 1;
 
-		int old_level = pl.getLevelOf(job.getID());
-		int new_level = old_level + 1;
+			if (!canLevelMore(UUID, job, new_level)) {
 
-		if (!canLevelMore(UUID, job, new_level)) {
+				if (canlevelUp(job, pl)) {
 
-			if (canlevelUp(job, pl)) {
-
-				for (String cmd : job.getLevelCommands(new_level)) {
-
-					ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-
-					Bukkit.dispatchCommand((CommandSender) console, cmd.replaceAll("<name>", player.getName()));
-
-				}
-
-				plugin.getExecutor().execute(() -> {
-
-					pl.updateLevel(job.getID(), new_level);
-					pl.updateExp(job.getID(), 0);
-					
+					//rewards
 					if(plugin.isInstalledAlonso()) {
 						if(job.isAlonsoLevelsOnLevel(new_level)) {
 							String r = job.getAlonsoLevelsOnLevel(new_level);
@@ -84,38 +73,54 @@ public class LevelAPI {
 						}
 					}
 
+					pl.updateLevel(job.getID(), new_level);
+					pl.updateExp(job.getID(), 0);
+					
+					plugin.getEventManager().getLevelQueue().put(""+player.getUniqueId(), job);
+
+					if (plugin.isInstalledAlonso()) {
+						if (job.isAlonsoLevelsOnLevel(new_level)) {
+							String r = job.getAlonsoLevelsOnLevel(new_level);
+							plugin.getAlonsoLevelsPlugin().addExp(player.getUniqueId(), Integer.valueOf(r));
+						}
+					}
+					
+					if(job.isVaultOnLevel(new_level)) {
+						double money = job.getVaultOnLevel(new_level); 
+						UltimateJobs.getPlugin().getEco().depositPlayer(player, money);
+					}
+				
 					String level_name = job.getNameOfLevel(new_level);
 
 					if (tr.getBoolean("Levels.Enable_Title")) {
 						String title_1 = api.toHex(tr.getString("Levels.Ttitle_1")
-								.replaceAll("<prefix>", api.getPrefix()).replaceAll("<level_name>", level_name)
+								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
 								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 
 						String title_2 = api.toHex(tr.getString("Levels.Ttitle_2")
-								.replaceAll("<prefix>", api.getPrefix()).replaceAll("<level_name>", level_name)
+								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
 								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 						player.sendTitle(title_1, title_2);
 					}
 
 					if (tr.getBoolean("Levels.Enable_Message")) {
 						String message = api.toHex(tr.getString("Levels.Message")
-								.replaceAll("<prefix>", api.getPrefix()).replaceAll("<level_name>", level_name)
+								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
 								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 						player.sendMessage(message);
 					}
 
 					if (tr.getBoolean("Levels.Enabled_Actionbar")) {
 						String message = api.toHex(tr.getString("Levels.Actionbar")
-								.replaceAll("<prefix>", api.getPrefix()).replaceAll("<level_name>", level_name)
+								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
 								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 						player.sendMessage(message);
-					}
-					return;
+					} 
 
-				});
+				}
 			}
 
-		}
+		});
 	}
 
 }

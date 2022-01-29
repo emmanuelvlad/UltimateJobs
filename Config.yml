@@ -27,6 +27,22 @@ MaxDefaultJobs: 0
 #do you want to use the levels?
 Enable_Levels: true
 
+Levels:
+
+  #get a firework on a level up?
+  FireWork: true
+
+#you can find the types in the github wiki
+Sounds:
+
+  LEVEL_UP:
+
+    Sound: "ENTITY_PLAYER_LEVELUP"
+
+    Volume: 1
+
+    Pitch: 1
+
 #Date-Format
 Date: "dd/MM/yyyy"
 

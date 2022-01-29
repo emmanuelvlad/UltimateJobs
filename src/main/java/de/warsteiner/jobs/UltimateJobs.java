@@ -9,59 +9,56 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors; 
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.Bukkit; 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
  
 import de.warsteiner.datax.UltimateAPI;
-import de.warsteiner.datax.utils.Metrics;
 import de.warsteiner.datax.utils.UpdateChecker;
 import de.warsteiner.datax.utils.YamlConfigFile;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
-import de.warsteiner.jobs.api.PlayerManager;
 import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
-import de.warsteiner.jobs.command.JobsCommand; 
-import de.warsteiner.jobs.command.admincommand.AddonSub; 
-import de.warsteiner.jobs.command.admincommand.HelpSub;
-import de.warsteiner.jobs.command.admincommand.HooksSub;
-import de.warsteiner.jobs.command.admincommand.ReloadSub; 
+import de.warsteiner.jobs.command.JobsCommand;  
+import de.warsteiner.jobs.command.admincommand.HelpSub; 
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
-import de.warsteiner.jobs.command.admincommand.SetMaxSub;
-import de.warsteiner.jobs.command.admincommand.UpdateSub;
-import de.warsteiner.jobs.command.admincommand.VersionSub;
+import de.warsteiner.jobs.command.admincommand.SetMaxSub; 
+import de.warsteiner.jobs.command.admincommand.SetPointsSub;
+import de.warsteiner.jobs.command.admincommand.UpdateSub; 
 import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
 import de.warsteiner.jobs.command.playercommand.LeaveSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.SubHelp;
 import de.warsteiner.jobs.events.PlayerExistEvent;
-import de.warsteiner.jobs.events.PlayerFinishedJob;
-import de.warsteiner.jobs.events.PlayerSoundsEvent;
-import de.warsteiner.jobs.events.PlayerlevelCheck;
+import de.warsteiner.jobs.events.PlayerLevelEvent; 
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
+import de.warsteiner.jobs.jobs.JobActionAdvancement;
 import de.warsteiner.jobs.jobs.JobActionBreak;
 import de.warsteiner.jobs.jobs.JobActionCraft;
+import de.warsteiner.jobs.jobs.JobActionEat;
 import de.warsteiner.jobs.jobs.JobActionFarm;
 import de.warsteiner.jobs.jobs.JobActionFish;
+import de.warsteiner.jobs.jobs.JobActionHoney;
 import de.warsteiner.jobs.jobs.JobActionKillMob;
 import de.warsteiner.jobs.jobs.JobActionMilk;
 import de.warsteiner.jobs.jobs.JobActionPlace;
 import de.warsteiner.jobs.jobs.JobActionShear;
+import de.warsteiner.jobs.manager.ClickManager;
+import de.warsteiner.jobs.manager.CustomEventManager;
+import de.warsteiner.jobs.manager.PlayerManager;
+import de.warsteiner.jobs.manager.SQLManager;
 import de.warsteiner.jobs.utils.BossBarHandler;
-import de.warsteiner.jobs.utils.ClickManager;
 import de.warsteiner.jobs.utils.LogType;
-import de.warsteiner.jobs.utils.SQLManager;
-import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry;
-import de.warsteiner.jobs.utils.module.JobsModuleRegistry;
+import de.warsteiner.jobs.utils.PluginModule;
+import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry; 
 import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry;
 import net.milkbowl.vault.economy.Economy;
 
@@ -73,7 +70,7 @@ public class UltimateJobs extends JavaPlugin {
 	private LevelAPI levels;
 	private ArrayList<Job> loaded;
 	private HashMap<String, Job> ld;
-	private de.warsteiner.jobs.utils.GuiManager gui;
+	private de.warsteiner.jobs.manager.GuiManager gui;
 	private YamlConfigFile config;
 	private YamlConfigFile messages;
 	private JobAPI api;
@@ -82,10 +79,11 @@ public class UltimateJobs extends JavaPlugin {
 	private Statement connection;
 	private ExecutorService executor;
 	private SubCommandRegistry cmdmanager;
-	private AdminSubCommandRegistry admincmdmanager;
-	private JobsModuleRegistry module;
+	private AdminSubCommandRegistry admincmdmanager; 
 	private ArrayList<Plugin> plugins = new ArrayList<Plugin>();
 	private AlonsoLevelsManager allevels;
+	private PluginModule ultimodule;
+	private CustomEventManager customevent;
 
 	public void onLoad() {
 		 
@@ -109,9 +107,10 @@ public class UltimateJobs extends JavaPlugin {
 
 		loadClasses();
 
-		YamlConfiguration cfg = config.getConfig();
-
 		getLogger().info("§bLoading UltimateJobs...");
+		
+		getLogger().info("§aHooked into UltimateAPI");
+		UltimateAPI.getPlugin().getModuleRegistry().getModuleList().add(getPluginModule());
 
 		setupEconomy();
 
@@ -122,14 +121,10 @@ public class UltimateJobs extends JavaPlugin {
 		// basic events
 		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new MainMenuClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new SettingsMenuClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerSoundsEvent(cfg), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerFinishedJob(), this);
-
-		if (getMainConfig().getConfig().getBoolean("Enable_Levels")) {
-			Bukkit.getPluginManager().registerEvents(new PlayerlevelCheck(), this);
-		}
-
+		Bukkit.getPluginManager().registerEvents(new SettingsMenuClickEvent(), this); 
+	  
+		Bukkit.getPluginManager().registerEvents(new PlayerLevelEvent(), this);
+		
 		getLogger().info("§fSetup SQL for UltimateJobs... ");
 
 		try {
@@ -158,17 +153,16 @@ public class UltimateJobs extends JavaPlugin {
 		}
 
 		pm.startSave();
-	 
-		new Metrics(this, 13954);
-
-		new UpdateChecker(this, 99198).getVersion(version -> {
-			if (!this.getDescription().getVersion().equals(version)) {
-				getLogger().warning("§b§lTheres a new Plugin Version available! You run on version : v"
-						+ getDescription().getVersion() + " -> new version : " + version);
-			}
-		}); 
-		 
+		
+		customevent.startSystemCheck();
+ 
 		getLogger().info("§bLoaded UltimateJobs! Jobs: §a" + loaded.size());
+		
+		new UpdateChecker(plugin, 99198).getVersion(version -> {
+			if (!plugin.getDescription().getVersion().equals(version)) {
+				this.getLogger().warning("§7Theres a new Plugin Version §aavailable§7! You run on version : §c"+plugin.getDescription().getVersion()+" §8-> §7new version : §a"+version);
+			}  
+		}); 
 	}
  
 	public void onDisable() {
@@ -201,14 +195,11 @@ public class UltimateJobs extends JavaPlugin {
 			getSubCommandManager().getSubCommandList().add(new PointsSub());
 		}
 
-		getAdminSubCommandManager().getSubCommandList().add(new HelpSub());
-		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
-		getAdminSubCommandManager().getSubCommandList().add(new AddonSub());
-		getAdminSubCommandManager().getSubCommandList().add(new ReloadSub());
+		getAdminSubCommandManager().getSubCommandList().add(new HelpSub()); 
 		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
 		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub()); 
-		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub()); 
-		getAdminSubCommandManager().getSubCommandList().add(new HooksSub()); 
+		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());  
+		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());  
 	}
 	
 	public void setUpSupportedPlugins() {
@@ -231,10 +222,11 @@ public class UltimateJobs extends JavaPlugin {
 		executor = Executors.newFixedThreadPool(config.getConfig().getInt("ExecutorServiceThreads"));
 		cmdmanager = new SubCommandRegistry();
 		api = new JobAPI(plugin, messages.getConfig());
-		gui = new de.warsteiner.jobs.utils.GuiManager(plugin, config.getConfig());
-		click = new ClickManager(plugin, config.getConfig(), gui);
-		module = new JobsModuleRegistry();
+		gui = new de.warsteiner.jobs.manager.GuiManager(plugin, config.getConfig());
+		click = new ClickManager(plugin, config.getConfig(), gui); 
 		admincmdmanager = new AdminSubCommandRegistry(); 
+		customevent = new CustomEventManager();
+		ultimodule = new PluginModule();
 	}
 
 	public void doLog(LogType t, String m) {
@@ -256,6 +248,10 @@ public class UltimateJobs extends JavaPlugin {
 		return plugins;
 	}
 	
+	public PluginModule getPluginModule() {
+		return ultimodule;
+	}
+	
 	public boolean isInstalledAlonso() {
 		Plugin al = Bukkit.getServer().getPluginManager().getPlugin("AlonsoLevels");
 		if(al != null) {
@@ -271,6 +267,10 @@ public class UltimateJobs extends JavaPlugin {
 		}
 		return false;
 	}
+	
+	public CustomEventManager getEventManager() {
+		return customevent;
+	}
 
 	public AdminSubCommandRegistry getAdminSubCommandManager() {
 		return admincmdmanager;
@@ -279,11 +279,7 @@ public class UltimateJobs extends JavaPlugin {
 	public SubCommandRegistry getSubCommandManager() {
 		return cmdmanager;
 	}
-
-	public JobsModuleRegistry getModuleRegistry() {
-		return module;
-	}
-
+  
 	public SQLManager getSQLManager() {
 		return sql;
 	}
@@ -308,7 +304,7 @@ public class UltimateJobs extends JavaPlugin {
 		return ld;
 	}
 
-	public de.warsteiner.jobs.utils.GuiManager getGUI() {
+	public de.warsteiner.jobs.manager.GuiManager getGUI() {
 		return gui;
 	}
 
@@ -347,6 +343,9 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionKillMob(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionShear(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionCraft(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionAdvancement(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionEat(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionHoney(), this);
 	}
 
 	public void setupConfigs() {

@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.utils;
+package de.warsteiner.jobs.manager;
 
 import java.util.List;
 
@@ -7,16 +7,18 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.utils.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.utils.cevents.JobsPluginSoundEvent;
+import de.warsteiner.jobs.api.JobsPlayer; 
 
 public class ClickManager {
 
 	private UltimateJobs plugin;
 	private JobAPI api = UltimateJobs.getPlugin().getAPI();
+	private PluginAPI up = UltimateAPI.getInstance().getAPI();
 	private YamlConfiguration cfg;
 	private GuiManager gui;
 
@@ -41,7 +43,7 @@ public class ClickManager {
 			} else if (action.equalsIgnoreCase("BACK")) {
 				plugin.getGUI().createMainGUIOfJobs(player);
 			} else if (action.equalsIgnoreCase("LEAVE")) {
-				new JobsPluginSoundEvent("" + player.getUniqueId(), player, "LEAVE_SINGLE");
+				api.playSound("LEAVE_SINGLE", player);
 				jb.remoCurrentJob(job.getID());
 				gui.createMainGUIOfJobs(player);
 				player.sendMessage(plugin.getAPI().getMessage("Left_Job").replaceAll("<job>", job.getDisplay()));
@@ -53,9 +55,10 @@ public class ClickManager {
 		}
 	}
 	
-	public void joinJob(Player player, String job, JobsPlayer jb, String name, String dis) {
-		jb.addCurrentJob(job);
-		new JobsPluginSoundEvent("" + player.getUniqueId(), player, "JOB_JOINED");
+	public void joinJob(Player player, String job, JobsPlayer jb, String name, String dis) { 
+		plugin.getPlayerManager().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId()); 
+		jb.addCurrentJob(job); 
+		api.playSound("JOB_JOINED", player);
 		new BukkitRunnable() {
 			public void run() {
 				gui.setCustomitems(player, player.getName(), player.getOpenInventory(),
@@ -107,9 +110,8 @@ public class ClickManager {
 							jb.addOwnedJob(job);
 
 							plugin.getPlayerManager().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
-
-							new JobsPluginSoundEvent("" + player.getUniqueId(), player, "JOB_BOUGHT");
-
+ 
+							api.playSound("JOB_BOUGHT", player);
 							gui.UpdateMainInventory(player, name);
 
 							player.sendMessage(api.getMessage("Bought_Job").replaceAll("<job>", dis));
@@ -120,7 +122,7 @@ public class ClickManager {
 					}
 				} else {
 					player.sendMessage(
-							api.toHex(j.getPermMessage().replaceAll("&", "§").replaceAll("<prefix>", api.getPrefix())));
+							up.toHex(j.getPermMessage().replaceAll("&", "§").replaceAll("<prefix>", api.getPrefix())));
 				 
 		}
 				 
@@ -141,8 +143,8 @@ public class ClickManager {
 					}
 				}.runTaskLater(plugin, 2);
 			}  else if (action.equalsIgnoreCase("LEAVE")) {
-				if (jb.getCurrentJobs().size() >= 1) {
-					new JobsPluginSoundEvent("" + player.getUniqueId(), player, "LEAVE_ALL");
+				if (jb.getCurrentJobs().size() >= 1) { 
+					api.playSound("LEAVE_ALL", player);
 					jb.updateCurrentJobs(null);
 					gui.UpdateMainInventory(player, cfg.getString("Main_Name"));
 					player.sendMessage(api.getMessage("Leave_All"));

@@ -6,11 +6,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.utils.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 
 public class MainMenuClickEvent implements Listener {
 	
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
+	private PluginAPI up = UltimateAPI.getInstance().getAPI();
 
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e) {
@@ -39,9 +42,9 @@ public class MainMenuClickEvent implements Listener {
 		
 		Player p = (Player) e.getWhoClicked();
 		
-		String display = plugin.getAPI().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
+		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
  
-		if (e.getView().getTitle().equalsIgnoreCase(plugin.getAPI().toHex(name).replaceAll("&", "§"))) {
+		if (e.getView().getTitle().equalsIgnoreCase(up.toHex(name).replaceAll("&", "§"))) {
 		 
 			plugin.getClickManager().executeJobClickEvent(display, p);
 			 

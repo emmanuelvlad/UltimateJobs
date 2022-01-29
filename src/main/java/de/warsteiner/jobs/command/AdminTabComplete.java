@@ -11,8 +11,7 @@ import org.bukkit.entity.Player;
 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
-import de.warsteiner.jobs.utils.module.JobsModule;
+import de.warsteiner.jobs.utils.admincommand.AdminSubCommand; 
 
 public class AdminTabComplete implements TabCompleter {
 
@@ -51,11 +50,7 @@ public class AdminTabComplete implements TabCompleter {
 									for (Player b : Bukkit.getOnlinePlayers()) {
 										l.add(b.getName());
 									}
-								} else if (type.equalsIgnoreCase("ADDONS")) {
-									for (JobsModule tp : plugin.getModuleRegistry().getModuleList()) {
-										l.add(tp.getPluginName().toLowerCase());
-									}
-								}
+								}  
 
 							}
 						}

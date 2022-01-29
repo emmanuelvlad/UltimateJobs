@@ -58,11 +58,8 @@ public class AdminCommand implements CommandExecutor {
 		sender.sendMessage(" §8| §9UltimateJobs §8- §4Admin Help §8|");
 		sender.sendMessage("§8-> §6/JobsAdmin setlevel <name> <job> <value>");
 		sender.sendMessage("§8-> §6/JobsAdmin setmax <name> <value>");
-		sender.sendMessage("§8-> §6/JobsAdmin reload <type>");
-		sender.sendMessage("§8-> §6/JobsAdmin help");
-		sender.sendMessage("§8-> §6/JobsAdmin addons");
-		sender.sendMessage("§8-> §6/JobsAdmin hooks"); 
-		sender.sendMessage("§8-> §6/JobsAdmin version");
+		sender.sendMessage("§8-> §6/JobsAdmin setpoints <name> <value>"); 
+		sender.sendMessage("§8-> §6/JobsAdmin help");   
 		sender.sendMessage("§8-> §6/JobsAdmin update"); 
 		sender.sendMessage("§7");
 	}

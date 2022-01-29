@@ -10,54 +10,36 @@ import org.bukkit.event.HandlerList;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobsPlayer;
 
-public class PlayerFinishWorkEvent extends Event {
+public class PlayerLevelJobEvent extends Event {
 
 	private static HandlerList list = new HandlerList();
 
-	public String uuid;
-	public UUID id;
-	public Job job;
-	public String i;
+	public UUID id; 
 	public JobsPlayer pl;
-	public Player player;
-	public int amount;
+	public Job job;
+	public Player player; 
 
-	public PlayerFinishWorkEvent(String uuid, Job job, Player player, String i, JobsPlayer pl, int amount) {
-		this.i = i;
-		this.amount = amount;
-		this.pl = pl;
+	public PlayerLevelJobEvent(Player player, JobsPlayer plt, Job job) { 
+		this.pl = plt; 
 		this.job = job;
 		this.player = player;
-		this.uuid = uuid;
 		Bukkit.getPluginManager().callEvent(this);
-	}
-	
-	public int getAmount() {
-		return amount;
 	}
 
 	public HandlerList getHandlers() {
 		return list;
 	}
+	
+	public Job getJob() {
+		return job;
+	}
 
 	public JobsPlayer getJobsPlayer() {
-		return this.pl;
-	}
-
-	public String getUUID() {
-		return uuid;
-	}
-
-	public String getI() {
-		return i;
+		return pl;
 	}
 
 	public Player getPlayer() {
 		return player;
-	}
-
-	public Job getJob() {
-		return job;
 	}
 
 	public static HandlerList getHandlerList() {

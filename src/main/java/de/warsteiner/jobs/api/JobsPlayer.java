@@ -2,7 +2,7 @@ package de.warsteiner.jobs.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.List; 
 
 public class JobsPlayer {
 
@@ -15,8 +15,8 @@ public class JobsPlayer {
 	private HashMap<String, Integer> job_broken = new HashMap<String, Integer>();
 	private HashMap<String, String> job_date = new HashMap<String, String>();
 	private double points;
-	private int max;
-
+	private int max; 
+	
 	public JobsPlayer(String name, List<String> current2, List<String> owned2, HashMap<String, Integer> levels,
 			HashMap<String, Double> exp, HashMap<String, Integer> broken, double points, HashMap<String, String> date,
 			int max) {
@@ -30,12 +30,16 @@ public class JobsPlayer {
 		this.job_exp = exp;
 		this.current = current2;
 	}
+	
+	public JobsPlayer getJobsPlayer() {
+		return this;
+	}
 
 	public double getPoints() {
 		return points;
 	}
 
-	public void changePoints(double d) {
+	public void changePoints(double d) { 
 		points = d;
 	}
 
@@ -63,7 +67,7 @@ public class JobsPlayer {
 		return getBrokenList().get(job);
 	}
 
-	public void updateBroken(String job, int nw) {
+	public void updateBroken(String job, int nw) {  
 		job_broken.remove(job);
 		job_broken.put(job, nw);
 	}
@@ -111,7 +115,10 @@ public class JobsPlayer {
 	}
 
 	public boolean ownJob(String id) {
-		return getOwnJobs().contains(id);
+		if(getOwnJobs().contains(id)) {
+			return true;
+		}
+		return false;
 	}
 
 	public boolean isInJob(String id) {

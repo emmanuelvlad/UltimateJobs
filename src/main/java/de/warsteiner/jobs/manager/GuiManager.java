@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.utils;
+package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList; 
 import java.util.List;
@@ -14,16 +14,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.utils.GUIManager;
+import de.warsteiner.datax.utils.ItemAPI;
+import de.warsteiner.datax.utils.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.JobsPlayer; 
-import de.warsteiner.jobs.utils.cevents.JobsPluginSoundEvent;
 
 public class GuiManager {
 
 	private UltimateJobs plugin;
 	private JobAPI api = UltimateJobs.getPlugin().getAPI(); 
+	private PluginAPI up = UltimateAPI.getInstance().getAPI();
+	private ItemAPI im = UltimateAPI.getInstance().getItemAPI();
+	private GUIManager gm = UltimateAPI.getInstance().getGUIManager();
 	private YamlConfiguration cfg; 
 
 	public GuiManager(UltimateJobs plugin, YamlConfiguration cfg) {
@@ -31,19 +37,15 @@ public class GuiManager {
 		this.cfg = cfg;
 	}
 
-	public void openInventory(Player player, int size, String name) {
-		final Inventory inv = Bukkit.createInventory(null, size * 9, api.toHex(name).replaceAll("&", "§"));
-		player.openInventory(inv);
-	}
+ 
 
 	public void createMainGUIOfJobs(Player player) {
 		String name = cfg.getString("Main_Name");
 		int size = cfg.getInt("Main_Size");
 
-		openInventory(player, size, name);
-
-		new JobsPluginSoundEvent("" + player.getUniqueId(), player, "OPEN_MAIN");
-
+		gm.openInventory(player, size, name);
+ 
+		api.playSound("OPEN_MAIN", player);
 		InventoryView inv_view = player.getOpenInventory();
 
 		setPlaceHolders(player, inv_view, cfg.getStringList("Main_Place"), name);
@@ -66,10 +68,9 @@ public class GuiManager {
 		String name = cfg.getString("Settings_Name").replaceAll("<job>", dis);
 		int size = cfg.getInt("Settings_Size");
 
-		openInventory(player, size, name);
-
-		new JobsPluginSoundEvent("" + player.getUniqueId(), player, "OPEN_SETTINGS");
-
+		gm.openInventory(player, size, name);
+ 
+		api.playSound("OPEN_SETTINGS", player);
 		InventoryView inv_view = player.getOpenInventory();
 
 		setPlaceHolders(player, inv_view, cfg.getStringList("Settings_Place"), name);
@@ -84,14 +85,14 @@ public class GuiManager {
 			String title = player.getOpenInventory().getTitle(); 
 			JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get(""+player.getUniqueId()); 
  
-			String need = api.toHex(name).replaceAll("&", "§");
+			String need = up.toHex(name).replaceAll("&", "§");
 			if (title.equalsIgnoreCase(need)) {
 
 				ArrayList<Job> jobs = plugin.getLoaded();
 
 				for (Job j : jobs) {
 
-					String display = api.toHex(j.getDisplay().replaceAll("&", "§"));
+					String display = up.toHex(j.getDisplay().replaceAll("&", "§"));
 					int slot = j.getSlot();
 					List<String> lore = j.getLore();
 					String mat = j.getIcon();
@@ -100,7 +101,7 @@ public class GuiManager {
 
 					inv.setItem(slot, null);
 
-					ItemStack item = api.createItemStack(player, mat);
+					ItemStack item = im.createItemStack(player, mat);
 					ItemMeta meta = item.getItemMeta();
 					meta.setDisplayName(display.replaceAll("&", "§"));
 
@@ -130,7 +131,7 @@ public class GuiManager {
 
 					List<String> filore = new ArrayList<String>();
 					for (String l : lore) {
-						filore.add(api.toHex(l).replaceAll("&", "§"));
+						filore.add(up.toHex(l).replaceAll("&", "§"));
 					}
 					if (jb.isInJob(id)) {
 
@@ -142,7 +143,7 @@ public class GuiManager {
 						
 						for (String l : j.getStatsMessage()) {
 
-							filore.add(api.toHex(l).replaceAll("<stats_args_4>", lvl)
+							filore.add(up.toHex(l).replaceAll("<stats_args_4>", lvl)
 									.replaceAll("<stats_args_3>", "" + level)
 									.replaceAll("<stats_args_2>", "" + broken)
 									.replaceAll("<stats_args_6>",
@@ -152,7 +153,7 @@ public class GuiManager {
 						}
 					}
 					for (String l : see) {
-						filore.add(api.toHex(l).replaceAll("<price>", "" + price).replaceAll("&", "§"));
+						filore.add(up.toHex(l).replaceAll("<price>", "" + price).replaceAll("&", "§"));
 					}
 					meta.setLore(filore);
 
@@ -178,7 +179,7 @@ public class GuiManager {
 			}
 			
 			String title = player.getOpenInventory().getTitle();
-			String need = api.toHex(name).replaceAll("&", "§");
+			String need = up.toHex(name).replaceAll("&", "§");
 			if (title.equalsIgnoreCase(need)) {
 				for (String pl : list) {
 					if (cf.contains(prefix + pl + ".Display")) {
@@ -186,7 +187,7 @@ public class GuiManager {
 						String mat = cf.getString(prefix + pl + ".Material").toUpperCase();
 						int slot = cf.getInt(prefix + pl + ".Slot");
 
-						ItemStack item = api.createItemStack(player, mat);
+						ItemStack item = im.createItemStack(player, mat);
 						ItemMeta meta = item.getItemMeta();
 						meta.setDisplayName(display.replaceAll("&", "§"));
 
@@ -196,7 +197,7 @@ public class GuiManager {
 							List<String> lore = cf.getStringList(prefix + pl + ".Lore");
 							List<String> filore = new ArrayList<String>();
 							for (String l : lore) {
-								filore.add(api.toHex(l)
+								filore.add(up.toHex(l)
 										.replaceAll("<points>", ""+api.Format(jb.getPoints())).replaceAll("<max>", ""+max).replaceAll("&", "§"));
 							}
 							meta.setLore(filore);
@@ -216,7 +217,7 @@ public class GuiManager {
 	public void setPlaceHolders(Player player, InventoryView inv_view, List<String> list, String name) {
 		plugin.getExecutor().execute(() -> {
 			String title = player.getOpenInventory().getTitle();
-			String need = plugin.getAPI().toHex(name).replaceAll("&", "§");
+			String need = up.toHex(name).replaceAll("&", "§");
 			if (title.equalsIgnoreCase(need)) {
 				for (String pl : list) {
 					String[] t = pl.split(":");
@@ -225,7 +226,7 @@ public class GuiManager {
 					int slot = Integer.valueOf(t[1]).intValue();
 					String display = t[2];
 
-					ItemStack item = api.createItemStack(player, mat);
+					ItemStack item = im.createItemStack(player, mat);
 					ItemMeta meta = item.getItemMeta();
 					meta.setDisplayName(display.replaceAll("&", "§"));
 					item.setItemMeta(meta);

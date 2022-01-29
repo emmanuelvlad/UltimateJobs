@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.datax.UltimateAPI; 
 import de.warsteiner.jobs.utils.Action;
 
 public class Job {
@@ -54,7 +54,7 @@ public class Job {
 	public List<String> getPermissionsLore() { 
 		return cf.getStringList("PermLore");
 	}
-
+  
 	public String getPermMessage() { 
 		return cf.getString("PermMessage");
 	}
@@ -69,6 +69,14 @@ public class Job {
 
 	public Job get() {
 		return this;
+	}
+	
+	public double getVaultOnLevel(int level) {
+		return cf.getDouble("LEVELS." + level + ".Money");
+	} 
+
+	public boolean isVaultOnLevel(int level) {
+		return cf.getString("LEVELS." + level + ".Money") != null;
 	}
 	
 	public String getAlonsoLevelsOnLevel(int level) {
@@ -152,7 +160,7 @@ public class Job {
 	}
 
 	public String getDisplay() {
-		return UltimateJobs.getPlugin().getAPI().toHex(display).replaceAll("&", "§");
+		return UltimateAPI.getInstance().getAPI().toHex(display).replaceAll("&", "§");
 	}
 
 	public String getID() {

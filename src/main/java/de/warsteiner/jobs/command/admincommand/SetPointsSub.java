@@ -8,19 +8,19 @@ import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 
-public class SetMaxSub extends AdminSubCommand {
+public class SetPointsSub extends AdminSubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 	private static UltimateAPI ap = UltimateAPI.getPlugin();
 
 	@Override
 	public String getName() {
-		return "setmax";
+		return "setpoints";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Set Player's Max Jobs";
+		return "Set Player's Points";
 	}
 
 	@Override
@@ -46,16 +46,16 @@ public class SetMaxSub extends AdminSubCommand {
 
 					JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get(uuid);
 
-					jb.changeMax(Integer.valueOf(value));
-					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7max Jobs to §a" + value
+					jb.changePoints(Integer.valueOf(value));
+					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7Points to §a" + value
 							+ "§7. §8(§eCache§8)");
 					return;
 
 				} else {
 
-					plugin.getSQLManager().updateMax(uuid, Integer.valueOf(value));
+					plugin.getSQLManager().updatePoints(uuid, Integer.valueOf(value));
 
-					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7max Jobs to §a" + value
+					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7Points to §a" + value
 							+ "§7. §8(§bSQL§8)");
 					return;
 				}
@@ -66,7 +66,7 @@ public class SetMaxSub extends AdminSubCommand {
 			}
 
 		} else {
-			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin setmax <name> <value>");
+			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin setpoints <name> <value>");
 		}
 	}
 
@@ -77,7 +77,7 @@ public class SetMaxSub extends AdminSubCommand {
 
 	@Override
 	public String FormatTab() {
-		return "command setmax players_online";
+		return "command setpoints players_online";
 	}
 
 }

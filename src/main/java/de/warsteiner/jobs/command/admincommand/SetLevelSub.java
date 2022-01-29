@@ -2,6 +2,7 @@ package de.warsteiner.jobs.command.admincommand;
 
 import org.bukkit.command.CommandSender;
 
+import de.warsteiner.datax.UltimateAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobsPlayer;
@@ -11,6 +12,7 @@ import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 public class SetLevelSub extends AdminSubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
+	private static UltimateAPI ap = UltimateAPI.getPlugin();
 
 	@Override
 	public String getName() {
@@ -31,13 +33,13 @@ public class SetLevelSub extends AdminSubCommand {
 
 			String value = args[3];
 			
-			if (plugin.getSQLManager().getUUIDFromName(player.toUpperCase()) == null) {
+			if (ap.getSQLManager().getUUIDFromName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
 				return;
 			}
 
 			String name = player;
-			String uuid = plugin.getSQLManager().getUUIDFromName(player.toUpperCase());
+			String uuid =ap.getSQLManager().getUUIDFromName(player.toUpperCase());
 
 			String how = plugin.getAPI().isCurrentlyInCacheOrSQL(name, uuid);
 

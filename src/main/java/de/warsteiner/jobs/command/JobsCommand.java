@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.utils.GuiManager;
+import de.warsteiner.jobs.manager.GuiManager;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class JobsCommand implements CommandExecutor {

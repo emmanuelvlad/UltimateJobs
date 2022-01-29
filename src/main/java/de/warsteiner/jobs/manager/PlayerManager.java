@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.api;
+package de.warsteiner.jobs.manager;
  
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.utils.LogType;
-import de.warsteiner.jobs.utils.SQLManager;
 
 public class PlayerManager {
 
@@ -104,18 +104,20 @@ public class PlayerManager {
 
 			SQLManager s = UltimateJobs.getPlugin().getSQLManager();
 
-			s.createJobData(UUID, j);
+			if(!s.ExistJobData(UUID, j)) {
+				s.createJobData(UUID, j);
 
-			HashMap<String, Integer> levels = pl.getLevels();
-			HashMap<String, Integer> broken = pl.getBrokenList();
-			HashMap<String, Double> exp = pl.getExpList();
-			HashMap<String, String> date = pl.getDateList();
+				HashMap<String, Integer> levels = pl.getLevels();
+				HashMap<String, Integer> broken = pl.getBrokenList();
+				HashMap<String, Double> exp = pl.getExpList();
+				HashMap<String, String> date = pl.getDateList();
 
-			levels.put(j, s.getLevelOf("" + UUID, j));
-			broken.put(j, s.getBrokenOf("" + UUID, j));
-			exp.put(j, s.getExpOf("" + UUID, j));
-			date.put(j, s.getDateOf("" + UUID, j));
-			UltimateJobs.getPlugin().doLog(LogType.UPDATED, "Updated Jobs of : "+UUID);
+				levels.put(j, s.getLevelOf("" + UUID, j));
+				broken.put(j, s.getBrokenOf("" + UUID, j));
+				exp.put(j, s.getExpOf("" + UUID, j));
+				date.put(j, s.getDateOf("" + UUID, j));
+				UltimateJobs.getPlugin().doLog(LogType.UPDATED, "Updated Jobs of : "+UUID);
+			}
 		});
 	}
 
