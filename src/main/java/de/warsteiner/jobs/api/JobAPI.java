@@ -37,7 +37,8 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta; 
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import de.warsteiner.datax.UltimateAPI;
 import de.warsteiner.datax.utils.PluginAPI;
@@ -83,7 +84,9 @@ public class JobAPI {
 
 		fw.setFireworkMeta(fwm);
 		fw.detonate();
-
+		
+		fw.setMetadata("nodamage", new FixedMetadataValue(plugin, true));
+ 
 		Firework fw2 = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 		fw2.setFireworkMeta(fwm);
 
@@ -438,13 +441,11 @@ public class JobAPI {
 
 								pl.updateExp(jobid, exp_old + exp);
 
-								// check for alonsolevels
-								if (plugin.isInstalledAlonso()) {
-									if (jb.isAlonsoLevels(id)) {
-										String r = jb.getAlonsoLevels(id);
-										plugin.getAlonsoLevelsPlugin().addExp(player.getUniqueId(), Integer.valueOf(r));
-									}
-								}
+								playSound("FINISHED_WORK", player);
+								
+								plugin.getEventManager().getWorkQueue().put(UUID, jb);
+								plugin.getEventManager().getIDQueue().put(UUID, id);
+								 
 								if (plugin.getMainConfig().getConfig().getBoolean("Enable_Levels")) {
 									UltimateJobs.getPlugin().getLevelAPI().check(player, jb, pl, id);
 								}
@@ -503,7 +504,7 @@ public class JobAPI {
 	}
 
 	public boolean canReward(Player player, Job j, String id) {
-		double chance = j.gettChanceOf(id);
+		double chance = j.getChanceOf(id);
 		if (j.getIDList().contains(id)) {
 			Random r = new Random();
 			int chance2 = r.nextInt(100);

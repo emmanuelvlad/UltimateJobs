@@ -50,7 +50,15 @@ public class CustomEventManager {
 				}
 
 			}
-		}.runTaskTimer(plugin, 0, 30);
+		}.runTaskTimer(plugin, 0, 20);
+	}
+	
+	public HashMap<String, String> getIDQueue() {
+		return id;
+	}
+	
+	public HashMap<String, Job> getWorkQueue() {
+		return work;
 	}
 
 	public HashMap<String, Job> getLevelQueue() {

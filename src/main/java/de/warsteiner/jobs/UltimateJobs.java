@@ -1,9 +1,7 @@
 package de.warsteiner.jobs;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.IOException; 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
@@ -21,7 +19,7 @@ import de.warsteiner.datax.utils.YamlConfigFile;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
-import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
+import de.warsteiner.jobs.api.plugins.PlaceHolderManager;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
@@ -36,8 +34,11 @@ import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
 import de.warsteiner.jobs.command.playercommand.LeaveSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.SubHelp;
+import de.warsteiner.jobs.events.BlockFireWorkDamage;
 import de.warsteiner.jobs.events.PlayerExistEvent;
-import de.warsteiner.jobs.events.PlayerLevelEvent; 
+import de.warsteiner.jobs.events.PlayerLevelEvent;
+import de.warsteiner.jobs.events.PlayerRewardCommandEvent;
+import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
 import de.warsteiner.jobs.jobs.JobActionAdvancement;
@@ -75,13 +76,11 @@ public class UltimateJobs extends JavaPlugin {
 	private YamlConfigFile messages;
 	private JobAPI api;
 	private ClickManager click;
-	private SQLManager sql;
-	private Statement connection;
+	private SQLManager sql; 
 	private ExecutorService executor;
 	private SubCommandRegistry cmdmanager;
 	private AdminSubCommandRegistry admincmdmanager; 
-	private ArrayList<Plugin> plugins = new ArrayList<Plugin>();
-	private AlonsoLevelsManager allevels;
+	private ArrayList<Plugin> plugins = new ArrayList<Plugin>(); 
 	private PluginModule ultimodule;
 	private CustomEventManager customevent;
 
@@ -98,9 +97,7 @@ public class UltimateJobs extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
- 
-		setUpSupportedPlugins();
-
+  
 		createFolders();
 
 		setupConfigs();
@@ -122,23 +119,22 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new MainMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new SettingsMenuClickEvent(), this); 
-	  
+		Bukkit.getPluginManager().registerEvents(new BlockFireWorkDamage(), this);
+		Bukkit.getPluginManager().registerEvents(new AreYouSureMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerLevelEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerRewardCommandEvent(), this);
 		
-		getLogger().info("§fSetup SQL for UltimateJobs... ");
-
-		try {
-			connection = UltimateAPI.getInstance().getInit().getDataSource().getConnection().createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
 		// events
 		loadEvents();
 
 		if (!UltimateAPI.getInstance().getInit().isClosed()) {
 			getSQLManager().createtables();
 			getLogger().info("§6Created job Tables... ");
+		}
+		
+		if(isInstalledPlaceHolder()) {
+			new PlaceHolderManager().register();
+			getLogger().info("§6Loaded PlaceHolderAPI for UltimateJobs");
 		}
 
 		setupCommands();
@@ -201,18 +197,7 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());  
 		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());  
 	}
-	
-	public void setUpSupportedPlugins() {
-		
-		Plugin al = Bukkit.getServer().getPluginManager().getPlugin("AlonsoLevels");
-		
-		if(isInstalledAlonso()) {
-			getSupportedPlugins().add(al);
-			getLogger().info("§bLoaded AlonsoLevels-Support for UltimateJobs!");
-			allevels = new AlonsoLevelsManager();
-		}
-	}
-
+ 
 	public void loadClasses() {
 		loaded = new ArrayList<Job>();
 		pm = new PlayerManager(plugin);
@@ -239,10 +224,6 @@ public class UltimateJobs extends JavaPlugin {
 		}
 
 	}
-	
-	public AlonsoLevelsManager getAlonsoLevelsPlugin() {
-		return allevels;
-	}
  
 	public ArrayList<Plugin> getSupportedPlugins() {
 		return plugins;
@@ -251,10 +232,10 @@ public class UltimateJobs extends JavaPlugin {
 	public PluginModule getPluginModule() {
 		return ultimodule;
 	}
-	
-	public boolean isInstalledAlonso() {
-		Plugin al = Bukkit.getServer().getPluginManager().getPlugin("AlonsoLevels");
-		if(al != null) {
+	 
+	public boolean isInstalledPlaceHolder() {
+		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI");
+		if (wgPlugin != null) {
 			return true;
 		}
 		return false;
@@ -283,11 +264,7 @@ public class UltimateJobs extends JavaPlugin {
 	public SQLManager getSQLManager() {
 		return sql;
 	}
-
-	public Statement getConnection() {
-		return connection;
-	}
-
+ 
 	public ExecutorService getExecutor() {
 		return executor;
 	}

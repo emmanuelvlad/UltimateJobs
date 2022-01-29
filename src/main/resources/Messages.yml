@@ -51,6 +51,14 @@ Not_Found_Job: "<prefix> &7The Job &6<job> &7does not exist."
 
 Not_In_Job: "<prefix> &7You are not in the <job> &7Job."
 
+PlaceHolders:
+
+  No_Job: "&cNo Job"
+  
+  No_Level: "&cNo Level"
+  
+  No_Exp: "&6No Exp"
+
 Levels:
 
   Enable_Title: true

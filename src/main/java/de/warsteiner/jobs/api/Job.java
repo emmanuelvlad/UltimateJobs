@@ -71,6 +71,14 @@ public class Job {
 		return this;
 	}
 	
+	public List<String> getCommands(int level) {
+		return cf.getStringList("LEVELS." + level + ".Commands");
+	} 
+
+	public boolean isCommand(int level) {
+		return cf.getStringList("LEVELS." + level + ".Commands") != null;
+	}
+	
 	public double getVaultOnLevel(int level) {
 		return cf.getDouble("LEVELS." + level + ".Money");
 	} 
@@ -78,23 +86,7 @@ public class Job {
 	public boolean isVaultOnLevel(int level) {
 		return cf.getString("LEVELS." + level + ".Money") != null;
 	}
-	
-	public String getAlonsoLevelsOnLevel(int level) {
-		return cf.getString("LEVELS." + level + ".AlonsoLevelsExp");
-	}
-
-	public boolean isAlonsoLevelsOnLevel(int level) {
-		return cf.getString("LEVELS." + level + ".AlonsoLevelsExp") != null;
-	}
-	
-	public String getAlonsoLevels(String id) {
-		return cf.getString("IDS." + id + ".AlonsoLevelsExp");
-	}
-
-	public boolean isAlonsoLevels(String id) {
-		return cf.getString("IDS." + id + ".AlonsoLevelsExp") != null;
-	}
-
+ 
 	public String getNameOfLevel(int level) {
 		return cf.getString("LEVELS." + level + ".Display");
 	}
@@ -102,12 +94,20 @@ public class Job {
 	public double getExpOfLevel(int level) {
 		return cf.getDouble("LEVELS." + level + ".Need");
 	}
+	
+	public List<String> getCommandsOfBlock(String id) {
+		return cf.getStringList("IDS." + id + ".Commands");
+	} 
+
+	public boolean isCommandonBlock(String id) {
+		return cf.getStringList("IDS." + id + ".Commands") != null;
+	}
 
 	public String getDisplayOf(String id) {
 		return cf.getString("IDS." + id + ".Display");
 	}
 
-	public int gettChanceOf(String id) {
+	public int getChanceOf(String id) {
 		return cf.getInt("IDS." + id + ".Chance");
 	}
 

@@ -66,25 +66,12 @@ public class LevelAPI {
 				if (canlevelUp(job, pl)) {
 
 					//rewards
-					if(plugin.isInstalledAlonso()) {
-						if(job.isAlonsoLevelsOnLevel(new_level)) {
-							String r = job.getAlonsoLevelsOnLevel(new_level);
-							plugin.getAlonsoLevelsPlugin().addExp(player.getUniqueId(), Integer.valueOf(r));
-						}
-					}
-
+				 
 					pl.updateLevel(job.getID(), new_level);
 					pl.updateExp(job.getID(), 0);
 					
 					plugin.getEventManager().getLevelQueue().put(""+player.getUniqueId(), job);
-
-					if (plugin.isInstalledAlonso()) {
-						if (job.isAlonsoLevelsOnLevel(new_level)) {
-							String r = job.getAlonsoLevelsOnLevel(new_level);
-							plugin.getAlonsoLevelsPlugin().addExp(player.getUniqueId(), Integer.valueOf(r));
-						}
-					}
-					
+ 
 					if(job.isVaultOnLevel(new_level)) {
 						double money = job.getVaultOnLevel(new_level); 
 						UltimateJobs.getPlugin().getEco().depositPlayer(player, money);

@@ -2,12 +2,10 @@ package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList; 
 import java.util.List;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.Player; 
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -37,7 +35,76 @@ public class GuiManager {
 		this.cfg = cfg;
 	}
 
+	public void createAreYouSureGUI(Player player, Job job) {
+		String name = cfg.getString("AreYouSureGUI_Name").replaceAll("<job>", job.getDisplay());
+		int size = cfg.getInt("AreYouSureGUI_Size");
+
+		gm.openInventory(player, size, name);
  
+		api.playSound("OPEN_SURE_GUI", player);
+		InventoryView inv_view = player.getOpenInventory();
+
+		setPlaceHolders(player, inv_view, cfg.getStringList("AreYouSureGUI_Place"), name);
+		setCustomitems(player, player.getName(), inv_view, "AreYouSureGUI_Custom.",
+				cfg.getStringList("AreYouSureGUI_Custom.List"), name, cfg);
+		setAreYouSureItems(player, job, name, inv_view);
+	}
+	
+	public void setAreYouSureItems(Player player, Job job, String tit, InventoryView inv) { 
+		plugin.getExecutor().execute(() -> { 
+			 
+			if(job != null) {
+				
+				ItemStack item = im.createItemStack(player, cfg.getString("AreYouSureGUI_Items.Yes.Icon"));
+				
+				String dis =up.toHex( cfg.getString("AreYouSureGUI_Items.Yes.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
+				int slot = cfg.getInt("AreYouSureGUI_Items.Yes.Slot");
+				List<String> lore = cfg.getStringList("AreYouSureGUI_Items.Yes.Lore");
+				ArrayList<String> l = new ArrayList<String>();
+				
+				ItemMeta meta = item.getItemMeta();
+				
+				for(String line : lore) {
+					l.add(up.toHex(line).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§"));
+				}
+				
+				meta.setDisplayName(dis);
+				
+				meta.setLore(l);
+				
+				item.setItemMeta(meta);
+				
+				inv.setItem(slot, item);
+				
+			}
+			
+			if(job != null) {
+				
+				ItemStack item = im.createItemStack(player, cfg.getString("AreYouSureGUI_Items.No.Icon"));
+				
+				String dis = up.toHex(cfg.getString("AreYouSureGUI_Items.No.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
+				int slot = cfg.getInt("AreYouSureGUI_Items.No.Slot");
+				List<String> lore = cfg.getStringList("AreYouSureGUI_Items.No.Lore");
+				ArrayList<String> l = new ArrayList<String>();
+				
+				ItemMeta meta = item.getItemMeta();
+				
+				for(String line : lore) {
+					l.add(up.toHex(line).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§"));
+				}
+				
+				meta.setDisplayName(dis);
+				
+				meta.setLore(l);
+				
+				item.setItemMeta(meta);
+				
+				inv.setItem(slot, item);
+				
+			}
+			
+		});
+	}
 
 	public void createMainGUIOfJobs(Player player) {
 		String name = cfg.getString("Main_Name");

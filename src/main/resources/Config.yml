@@ -48,15 +48,15 @@ Date: "dd/MM/yyyy"
 
 #format of example money, 10.05
 Format: "0.00"
-
-# Use "CLOSE", or "REOPEN"
-Jobs_UpdateMode: "REOPEN"
-
+ 
 #config of the main gui
 Main_Name: "&b&lJobs Menu"
 
 #options to the job items
 Jobs:
+
+  #you want the "Are you Sure to buy this Job" GUI?
+  AreYouSureGUIonBuy: true
 
   Lore:
 
@@ -324,3 +324,53 @@ Settings_Place:
   - "BLACK_STAINED_GLASS_PANE:24:&7"
   - "BLACK_STAINED_GLASS_PANE:25:&7"
   - "BLACK_STAINED_GLASS_PANE:26:&7"
+
+#Are you sure gui
+AreYouSureGUI_Name: "&7You want to buy <job>&7?"
+
+AreYouSureGUI_Size: 3
+
+AreYouSureGUI_Items:
+
+  No:
+  
+    Icon: "RED_DYE"
+    
+    Display: "&cNo"
+    
+    Slot: 15
+    
+    Lore:
+      - "&7Cancel this progress."
+
+  Yes:
+  
+    Icon: "GREEN_DYE"
+    
+    Display: "&aYes, I'm Sure"
+    
+    Slot: 11
+    
+    Lore:
+      - "&7You want to buy this Job?"
+
+AreYouSureGUI_Custom:
+
+  List:
+    - "Back"
+
+  Back:
+
+    Display: "&4Go Back"
+
+    Action: "BACK"
+
+    Lore:
+      - "&7Click here to get back to the main menu"
+
+    Material: "BARRIER"
+
+    Slot: 26
+
+AreYouSureGUI_Place:
+  - "BLACK_STAINED_GLASS_PANE:13:&7"

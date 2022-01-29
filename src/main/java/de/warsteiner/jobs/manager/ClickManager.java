@@ -1,8 +1,7 @@
 package de.warsteiner.jobs.manager;
 
 import java.util.List;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -88,41 +87,44 @@ public class ClickManager {
 
 						if (jb.isInJob(job)) {
 							gui.createSettingsGUI(player, j);
+							return;
 						} else {
 
 							int max = jb.getMaxJobs();
 							 
 							if (jb.getCurrentJobs().size() <= max) {
 								 joinJob(player, job, jb, name, dis);
+								 return;
 							} else {
 								player.sendMessage(api.getMessage("Full").replaceAll("<job>", dis));
+								return;
 							}
 							
 							}
 						}
 					else {
-
 						double money = j.getPrice();
-
 						if (plugin.getEco().getBalance(player) >= money) {
+							
+							if(cfg.getBoolean("Jobs.AreYouSureGUIonBuy")) {
+								gui.createAreYouSureGUI(player, j);
+								return;
+							} else {
+								buy(money, player, jb, j);
+								return;
+							}
 
-							plugin.getEco().withdrawPlayer(player, money);
-							jb.addOwnedJob(job);
-
-							plugin.getPlayerManager().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
- 
-							api.playSound("JOB_BOUGHT", player);
-							gui.UpdateMainInventory(player, name);
-
-							player.sendMessage(api.getMessage("Bought_Job").replaceAll("<job>", dis));
+							 
 						} else {
 							player.sendMessage(api.getMessage("Not_Enough_Money").replaceAll("<job>", dis));
+							return;
 						}
 
 					}
 				} else {
 					player.sendMessage(
 							up.toHex(j.getPermMessage().replaceAll("&", "§").replaceAll("<prefix>", api.getPrefix())));
+					return;
 				 
 		}
 				 
@@ -130,6 +132,24 @@ public class ClickManager {
 		}
 		}
  
+	public void buy(double money, Player player, JobsPlayer jb, Job job) {
+		plugin.getEco().withdrawPlayer(player, money);
+		jb.addOwnedJob(job.getID());
+
+		plugin.getPlayerManager().updateJobs(job.getID().toUpperCase(), jb, "" + player.getUniqueId());
+
+		api.playSound("JOB_BOUGHT", player);
+	
+		String title = player.getOpenInventory().getTitle();
+		
+		if(title.equalsIgnoreCase(up.toHex(cfg.getString("Main_Name")).replaceAll("&", "§"))) {
+			gui.UpdateMainInventory(player, title);
+		} else {
+			gui.createMainGUIOfJobs(player);
+		}
+
+		player.sendMessage(api.getMessage("Bought_Job").replaceAll("<job>", job.getDisplay() ));
+	}
 
 	public void executeCustomItem(String display, final Player player, String name, YamlConfiguration cf) {
 		String item = api.isCustomItem(display, player, name, cf);
@@ -155,7 +175,9 @@ public class ClickManager {
 				player.closeInventory();
 				String cmd = cf.getString(api.getPrefix() + "." + item + ".Command"); 
 				player.performCommand(cmd);
-			}  
+			}   else if (action.equalsIgnoreCase("BACK")) {
+				plugin.getGUI().createMainGUIOfJobs(player);
+			}
 		}
 	}
 
