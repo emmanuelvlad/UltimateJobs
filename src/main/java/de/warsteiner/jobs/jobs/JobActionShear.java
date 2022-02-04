@@ -13,6 +13,6 @@ public class JobActionShear implements Listener {
 	 
 	@EventHandler(priority = EventPriority.HIGHEST) 
 	public void onEvent(PlayerShearEntityEvent event) {
-		plugin.getAPI().executeShearWork(event, plugin.getPlayerManager().getJonPlayers().get(""+event.getPlayer().getUniqueId()));
+		plugin.getAPI().executeShearWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getPlayer().getUniqueId()));
 	}
 }

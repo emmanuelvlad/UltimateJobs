@@ -61,6 +61,10 @@ PlaceHolders:
 
 Levels:
 
+  BroadCastLevelUps: true
+  
+  BoardCastMessage: "&6Server &8| &7Player &c<name> &7reached Level &b<level> &7in the <job>&7!"
+
   Enable_Title: true
 
   Ttitle_1: "&8| &b&lLevel UP &8|"

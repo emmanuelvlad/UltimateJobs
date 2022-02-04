@@ -1,15 +1,15 @@
 package de.warsteiner.jobs.api;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List; 
+import java.util.Collection;
+import java.util.HashMap; 
 
 public class JobsPlayer {
 
 	private String name;
 
-	private List<String> current = new ArrayList<String>();
-	private List<String> owned = new ArrayList<String>();
+	private ArrayList<String> current = new ArrayList<String>();
+	private ArrayList<String> owned = new ArrayList<String>();
 	private HashMap<String, Integer> job_levels = new HashMap<String, Integer>();
 	private HashMap<String, Double> job_exp = new HashMap<String, Double>();
 	private HashMap<String, Integer> job_broken = new HashMap<String, Integer>();
@@ -17,7 +17,7 @@ public class JobsPlayer {
 	private double points;
 	private int max; 
 	
-	public JobsPlayer(String name, List<String> current2, List<String> owned2, HashMap<String, Integer> levels,
+	public JobsPlayer(String name, ArrayList<String> current2, ArrayList<String> owned2, HashMap<String, Integer> levels,
 			HashMap<String, Double> exp, HashMap<String, Integer> broken, double points, HashMap<String, String> date,
 			int max) {
 		this.name = name;
@@ -103,13 +103,13 @@ public class JobsPlayer {
 	}
 
 	public void addCurrentJob(String job) {
-		List<String> l = getCurrentJobs();
+		ArrayList<String> l = getCurrentJobs();
 		l.add(job);
 		updateCurrentJobs(l);
 	}
 
 	public void remoCurrentJob(String job) {
-		List<String> l = getCurrentJobs();
+		ArrayList<String> l = getCurrentJobs();
 		l.remove(job);
 		updateCurrentJobs(l);
 	}
@@ -130,35 +130,35 @@ public class JobsPlayer {
 		return getCurrentJobs().contains(id.toUpperCase());
 	}
 
-	public List<String> getCurrentJobs() {
+	public ArrayList<String> getCurrentJobs() {
 		if(current == null) {
 			return new ArrayList<String>();
 		}
 		return current;
 	}
 
-	public void updateCurrentJobs(List<String> list) {
-		current = list;
+	public void updateCurrentJobs(ArrayList<String> l) {
+		current = l;
 	}
 
-	public List<String> getOwnJobs() {
+	public ArrayList<String> getOwnJobs() {
 		return owned;
 	}
 
 	public void addOwnedJob(String job) {
-		List<String> l = getOwnJobs();
+		ArrayList<String> l = getOwnJobs();
 		l.add(job);
 		updateOwnJobs(l);
 	}
 
 	public void remOwnedJob(String job) {
-		List<String> l = getOwnJobs();
+		ArrayList<String> l = getOwnJobs();
 		l.remove(job);
 		updateOwnJobs(l);
 	}
 
-	public void updateOwnJobs(List<String> list) {
-		owned = list;
+	public void updateOwnJobs(ArrayList<String> l) {
+		owned = l;
 	}
 
 }

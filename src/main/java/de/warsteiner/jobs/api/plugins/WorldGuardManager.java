@@ -43,12 +43,8 @@ public class WorldGuardManager {
 	public static void setClass() {
 
 		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-		Plugin editPlugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-
-		wg = (WorldGuardPlugin) wgPlugin;
- 
-		UltimateJobs.getPlugin().getSupportedPlugins().add(editPlugin);
-		UltimateJobs.getPlugin().getSupportedPlugins().add(wgPlugin);
+	 
+		wg = (WorldGuardPlugin) wgPlugin; 
 	}
  
 

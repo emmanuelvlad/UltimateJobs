@@ -13,6 +13,6 @@ public class JobActionCraft  implements Listener {
 	 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEvent(CraftItemEvent event) {
-		plugin.getAPI().executeCraftWork(event, plugin.getPlayerManager().getJonPlayers().get(""+event.getWhoClicked().getUniqueId()));
+		plugin.getAPI().executeCraftWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getWhoClicked().getUniqueId()));
 	}
 }

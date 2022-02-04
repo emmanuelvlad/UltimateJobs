@@ -1,5 +1,7 @@
 package de.warsteiner.jobs.manager;
  
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +25,7 @@ public class PlayerManager {
 		plugin = main;
 	}
 
-	public HashMap<String, JobsPlayer> getJonPlayers() {
+	public HashMap<String, JobsPlayer> getOnlineJobPlayers() {
 		return this.pllist;
 	}
 
@@ -78,8 +80,8 @@ public class PlayerManager {
 			HashMap<String, Integer> broken = new HashMap<String, Integer>();
 			HashMap<String, String> date = new HashMap<String, String>();
 
-			List<String> owned = s.getOwnedJobs("" + UUID);
-			List<String> current = s.getCurrentJobs("" + UUID);
+			ArrayList<String> owned = s.getOwnedJobs("" + UUID);
+			ArrayList<String> current = s.getCurrentJobs("" + UUID);
 
 			for (String j : owned) {
 

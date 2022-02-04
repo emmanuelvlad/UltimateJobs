@@ -47,7 +47,7 @@ public class PlayerExistEvent implements Listener {
 			UUID UUID = player.getUniqueId();
 			String name = player.getName();
 
-			l.savePlayer(plugin.getPlayerManager().getJonPlayers().get("" + UUID), "" + UUID);
+			l.savePlayer(plugin.getPlayerManager().getOnlineJobPlayers().get("" + UUID), "" + UUID);
 			m.removePlayerFromCache(UUID, name);
 
 			if (plugin.getEventManager().getLevelQueue().containsKey(""+player.getUniqueId())) {

@@ -24,7 +24,7 @@ public class JobTabComplete implements TabCompleter {
 			Player p = (Player) s;
 			String UUID = "" + p.getUniqueId();
 			JobAPI api = plugin.getAPI();
-			JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get(UUID);
+			JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(UUID);
 
 			if (args.length == 1) {
 

@@ -330,9 +330,9 @@ AreYouSureGUI_Name: "&7You want to buy <job>&7?"
 
 AreYouSureGUI_Size: 3
 
-AreYouSureGUI_Items:
+AreYouSureItems:
 
-  No:
+  Button_NO:
   
     Icon: "RED_DYE"
     
@@ -343,7 +343,7 @@ AreYouSureGUI_Items:
     Lore:
       - "&7Cancel this progress."
 
-  Yes:
+  Button_YES:
   
     Icon: "GREEN_DYE"
     

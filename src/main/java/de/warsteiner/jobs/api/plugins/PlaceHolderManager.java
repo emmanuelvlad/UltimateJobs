@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.api.plugins;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
@@ -41,12 +42,12 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 	@Override
 	public String onRequest(OfflinePlayer player, String pr) {
 
-		JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get("" + player.getPlayer().getUniqueId());
+		JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getPlayer().getUniqueId());
 
 		YamlConfiguration cfg = plugin.getMessages().getConfig();
 
 		if (jb != null) {
-			List<String> jobs = jb.getCurrentJobs();
+			Collection<String> jobs = jb.getCurrentJobs();
 			if (pr.contains("job_current_name")) {
 				String[] split = pr.split("_");
 				Integer which = Integer.valueOf(split[3]) - 1;

@@ -20,7 +20,7 @@ public class JobActionMilk implements Listener {
 		
 		if (clicked instanceof Cow) { 
 		//	Cow c = (Cow) clicked;
-			plugin.getAPI().executeMilkWork(event, plugin.getPlayerManager().getJonPlayers().get(""+event.getPlayer().getUniqueId()));
+			plugin.getAPI().executeMilkWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getPlayer().getUniqueId()));
 		}
 		
 	}

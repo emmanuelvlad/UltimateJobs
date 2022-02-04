@@ -44,7 +44,7 @@ public class SetPointsSub extends AdminSubCommand {
 
 				if (how.equalsIgnoreCase("CACHE")) {
 
-					JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get(uuid);
+					JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(uuid);
 
 					jb.changePoints(Integer.valueOf(value));
 					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7Points to §a" + value

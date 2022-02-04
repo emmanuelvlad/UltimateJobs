@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors; 
 
-import org.bukkit.Bukkit; 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -19,6 +20,7 @@ import de.warsteiner.datax.utils.YamlConfigFile;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
+import de.warsteiner.jobs.api.plugins.NotQuestManager;
 import de.warsteiner.jobs.api.plugins.PlaceHolderManager;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager;
 import de.warsteiner.jobs.command.AdminCommand;
@@ -83,9 +85,10 @@ public class UltimateJobs extends JavaPlugin {
 	private ArrayList<Plugin> plugins = new ArrayList<Plugin>(); 
 	private PluginModule ultimodule;
 	private CustomEventManager customevent;
+	private NotQuestManager notquest;
 
 	public void onLoad() {
-		 
+	 
 		plugin = this;
 		 
 		if(isInstalledWorldGuard()) {
@@ -102,9 +105,11 @@ public class UltimateJobs extends JavaPlugin {
 
 		setupConfigs();
 
-		loadClasses();
+		 
 
 		getLogger().info("§bLoading UltimateJobs...");
+		
+		loadClasses();
 		
 		getLogger().info("§aHooked into UltimateAPI");
 		UltimateAPI.getPlugin().getModuleRegistry().getModuleList().add(getPluginModule());
@@ -135,6 +140,10 @@ public class UltimateJobs extends JavaPlugin {
 		if(isInstalledPlaceHolder()) {
 			new PlaceHolderManager().register();
 			getLogger().info("§6Loaded PlaceHolderAPI for UltimateJobs");
+		}
+		
+		if(isInstalledNotQuest()) {
+			getNotQuestManager().setClass();
 		}
 
 		setupCommands();
@@ -207,11 +216,12 @@ public class UltimateJobs extends JavaPlugin {
 		executor = Executors.newFixedThreadPool(config.getConfig().getInt("ExecutorServiceThreads"));
 		cmdmanager = new SubCommandRegistry();
 		api = new JobAPI(plugin, messages.getConfig());
-		gui = new de.warsteiner.jobs.manager.GuiManager(plugin, config.getConfig());
+		gui = new de.warsteiner.jobs.manager.GuiManager(plugin);
 		click = new ClickManager(plugin, config.getConfig(), gui); 
 		admincmdmanager = new AdminSubCommandRegistry(); 
 		customevent = new CustomEventManager();
 		ultimodule = new PluginModule();
+		notquest = new NotQuestManager();
 	}
 
 	public void doLog(LogType t, String m) {
@@ -224,15 +234,24 @@ public class UltimateJobs extends JavaPlugin {
 		}
 
 	}
- 
-	public ArrayList<Plugin> getSupportedPlugins() {
-		return plugins;
+	
+	public NotQuestManager getNotQuestManager() {
+		return notquest;
 	}
+ 
 	
 	public PluginModule getPluginModule() {
 		return ultimodule;
 	}
 	 
+	public boolean isInstalledNotQuest() {
+		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("NotQuests");
+		if (wgPlugin != null) {
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean isInstalledPlaceHolder() {
 		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI");
 		if (wgPlugin != null) {
@@ -344,8 +363,7 @@ public class UltimateJobs extends JavaPlugin {
 	private boolean setupEconomy() {
 		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
 				.getRegistration(Economy.class);
-		if (economyProvider != null) {
-			getSupportedPlugins().add(Bukkit.getServer().getPluginManager().getPlugin("Vault"));
+		if (economyProvider != null) { 
 			econ = (Economy) economyProvider.getProvider();
 		} 
 		return (econ != null);

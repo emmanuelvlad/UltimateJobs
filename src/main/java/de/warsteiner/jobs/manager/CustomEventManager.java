@@ -17,6 +17,7 @@ public class CustomEventManager {
 	private UltimateJobs plugin = UltimateJobs.getPlugin(); 
 
 	private HashMap<String, Job> level = new HashMap<String, Job>();
+	private HashMap<String, Integer> level_int = new HashMap<String, Integer>();
 	private HashMap<String, Job> work = new HashMap<String, Job>();
 	private HashMap<String, String> id = new HashMap<String, String>();
 
@@ -29,11 +30,13 @@ public class CustomEventManager {
 				for (Player p : Bukkit.getOnlinePlayers()) {
 
 					String uuid = ""+p.getUniqueId();
-					JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get(uuid);
+					JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(uuid);
 					
 					if (level.containsKey(uuid)) { 
-						new PlayerLevelJobEvent(p, jb, level.get(uuid)); 
+						Integer l = level_int.get(uuid);
+						new PlayerLevelJobEvent(p, jb, level.get(uuid), l); 
 						level.remove(uuid);
+						level_int.remove(uuid);
 					}
 					
 					if (work.containsKey(uuid)) { 
@@ -59,6 +62,10 @@ public class CustomEventManager {
 	
 	public HashMap<String, Job> getWorkQueue() {
 		return work;
+	}
+	
+	public HashMap<String, Integer> getLevelDetails() {
+		return level_int;
 	}
 
 	public HashMap<String, Job> getLevelQueue() {

@@ -44,7 +44,7 @@ public class PointsSub extends SubCommand {
 				String how = plugin.getAPI().isCurrentlyInCacheOrSQL(pl.toUpperCase(), uuid);
 				
 				if(how.equalsIgnoreCase("CACHE")) {
-					double points = plugin.getPlayerManager().getJonPlayers().get(uuid).getPoints();
+					double points = plugin.getPlayerManager().getOnlineJobPlayers().get(uuid).getPoints();
 					player.sendMessage(
 							up.toHex(plugin.getMessages().getConfig().getString("Points_Other")
 									.replaceAll("<name>",  args[1]).replaceAll("<points>", ""+points).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));

@@ -28,11 +28,10 @@ public class GuiManager {
 	private PluginAPI up = UltimateAPI.getInstance().getAPI();
 	private ItemAPI im = UltimateAPI.getInstance().getItemAPI();
 	private GUIManager gm = UltimateAPI.getInstance().getGUIManager();
-	private YamlConfiguration cfg; 
+	private YamlConfiguration cfg = UltimateJobs.getPlugin().getMainConfig().getConfig();
 
-	public GuiManager(UltimateJobs plugin, YamlConfiguration cfg) {
+	public GuiManager(UltimateJobs plugin) {
 		this.plugin = plugin;
-		this.cfg = cfg;
 	}
 
 	public void createAreYouSureGUI(Player player, Job job) {
@@ -53,13 +52,13 @@ public class GuiManager {
 	public void setAreYouSureItems(Player player, Job job, String tit, InventoryView inv) { 
 		plugin.getExecutor().execute(() -> { 
 			 
-			if(job != null) {
+			if(player != null) { 
+			 
+				ItemStack item = im.createItemStack(player, cfg.getString("AreYouSureItems.Button_YES.Icon"));
 				
-				ItemStack item = im.createItemStack(player, cfg.getString("AreYouSureGUI_Items.Yes.Icon"));
-				
-				String dis =up.toHex( cfg.getString("AreYouSureGUI_Items.Yes.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
-				int slot = cfg.getInt("AreYouSureGUI_Items.Yes.Slot");
-				List<String> lore = cfg.getStringList("AreYouSureGUI_Items.Yes.Lore");
+				String dis =up.toHex( cfg.getString("AreYouSureItems.Button_YES.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
+				int slot = cfg.getInt("AreYouSureItems.Button_YES.Slot");
+				List<String> lore = cfg.getStringList("AreYouSureItems.Button_YES.Lore");
 				ArrayList<String> l = new ArrayList<String>();
 				
 				ItemMeta meta = item.getItemMeta();
@@ -78,13 +77,13 @@ public class GuiManager {
 				
 			}
 			
-			if(job != null) {
+			if(player != null) {
 				
-				ItemStack item = im.createItemStack(player, cfg.getString("AreYouSureGUI_Items.No.Icon"));
+				ItemStack item = im.createItemStack(player, cfg.getString("AreYouSureItems.Button_NO.Icon"));
 				
-				String dis = up.toHex(cfg.getString("AreYouSureGUI_Items.No.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
-				int slot = cfg.getInt("AreYouSureGUI_Items.No.Slot");
-				List<String> lore = cfg.getStringList("AreYouSureGUI_Items.No.Lore");
+				String dis = up.toHex(cfg.getString("AreYouSureItems.Button_NO.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
+				int slot = cfg.getInt("AreYouSureItems.Button_NO.Slot");
+				List<String> lore = cfg.getStringList("AreYouSureItems.Button_NO.Lore");
 				ArrayList<String> l = new ArrayList<String>();
 				
 				ItemMeta meta = item.getItemMeta();
@@ -150,7 +149,7 @@ public class GuiManager {
 
 		plugin.getExecutor().execute(() -> {
 			String title = player.getOpenInventory().getTitle(); 
-			JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get(""+player.getUniqueId()); 
+			JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(""+player.getUniqueId()); 
  
 			String need = up.toHex(name).replaceAll("&", "§");
 			if (title.equalsIgnoreCase(need)) {
@@ -241,8 +240,8 @@ public class GuiManager {
 			
 			JobsPlayer jb = null;
 			
-			if(plugin.getPlayerManager().getJonPlayers().get(""+player.getUniqueId()) != null) {
-				jb = plugin.getPlayerManager().getJonPlayers().get(""+player.getUniqueId());
+			if(plugin.getPlayerManager().getOnlineJobPlayers().get(""+player.getUniqueId()) != null) {
+				jb = plugin.getPlayerManager().getOnlineJobPlayers().get(""+player.getUniqueId());
 			}
 			
 			String title = player.getOpenInventory().getTitle();

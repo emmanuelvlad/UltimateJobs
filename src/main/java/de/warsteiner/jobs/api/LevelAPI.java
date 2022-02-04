@@ -70,6 +70,7 @@ public class LevelAPI {
 					pl.updateLevel(job.getID(), new_level);
 					pl.updateExp(job.getID(), 0);
 					
+					plugin.getEventManager().getLevelDetails().put(""+player.getUniqueId(), new_level);
 					plugin.getEventManager().getLevelQueue().put(""+player.getUniqueId(), job);
  
 					if(job.isVaultOnLevel(new_level)) {

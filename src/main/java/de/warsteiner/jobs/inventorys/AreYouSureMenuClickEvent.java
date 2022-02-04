@@ -52,9 +52,9 @@ public class AreYouSureMenuClickEvent implements Listener {
 			if(e.getView().getTitle().equalsIgnoreCase(newname)) {
 				plugin.getClickManager().executeCustomItem(display, p, "AreYouSureGUI_Custom", config);
 				 
-				JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get(""+p.getUniqueId());
-				String yes =  up.toHex(config.getString("AreYouSureGUI_Items.Yes.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
-				String no =  up.toHex(config.getString("AreYouSureGUI_Items.No.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
+				JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(""+p.getUniqueId());
+				String yes =  up.toHex(config.getString("AreYouSureItems.Button_YES.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
+				String no =  up.toHex(config.getString("AreYouSureItems.Button_NO.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
 				
 				if(display.equalsIgnoreCase(yes)) {
 				 

@@ -49,7 +49,7 @@ public class SetLevelSub extends AdminSubCommand {
 					Job j = plugin.getAPI().isJobFromConfigID(job.toUpperCase());
 					if (how.equalsIgnoreCase("CACHE")) {
 
-						JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get(uuid);
+						JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(uuid);
 
 						if(jb.ownJob(j.getID())) {
 							jb.updateLevel(j.getID(), Integer.valueOf(value));

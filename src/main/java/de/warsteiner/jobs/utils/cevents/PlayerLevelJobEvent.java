@@ -18,12 +18,18 @@ public class PlayerLevelJobEvent extends Event {
 	public JobsPlayer pl;
 	public Job job;
 	public Player player; 
+	public int level;
 
-	public PlayerLevelJobEvent(Player player, JobsPlayer plt, Job job) { 
+	public PlayerLevelJobEvent(Player player, JobsPlayer plt, Job job, int level) { 
 		this.pl = plt; 
+		this.level = level;
 		this.job = job;
 		this.player = player;
 		Bukkit.getPluginManager().callEvent(this);
+	}
+	
+	public int getNewLevel() {
+		return level;
 	}
 
 	public HandlerList getHandlers() {

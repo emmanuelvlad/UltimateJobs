@@ -78,6 +78,14 @@ public class Job {
 	public List<String> getCommands(int level) {
 		return cf.getStringList("LEVELS." + level + ".Commands");
 	} 
+	
+	public boolean hasNotQuestCon() {
+		return cf.getStringList("NotQuestCond") != null;
+	}
+	
+	public List<String> getNotQuestCon() {
+		return cf.getStringList("NotQuestCond");
+	}
 
 	public boolean isCommand(int level) {
 		return cf.getStringList("LEVELS." + level + ".Commands") != null;

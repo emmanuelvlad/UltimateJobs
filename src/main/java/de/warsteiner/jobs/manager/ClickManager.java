@@ -30,7 +30,7 @@ public class ClickManager {
 	public void executeCustomItemInSubMenu(Job job, String display, final Player player, String prefix,
 			YamlConfiguration cf) {
 		String item = api.isCustomItem(display, player, prefix, cf);
-		JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get("" + player.getUniqueId());
+		JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());
 		if (!item.equalsIgnoreCase("NOT_FOUND")) {
 			String action = cf.getString(prefix + "." + item + ".Action");
 			if (action.equalsIgnoreCase("CLOSE")) {
@@ -73,7 +73,7 @@ public class ClickManager {
 
 		List<Job> jobs = plugin.getLoaded();
 
-		JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get("" + player.getUniqueId());
+		JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());
 
 		for (int i = 0; i <= jobs.size() - 1; i++) {
 			Job j = jobs.get(i);
@@ -153,7 +153,7 @@ public class ClickManager {
 
 	public void executeCustomItem(String display, final Player player, String name, YamlConfiguration cf) {
 		String item = api.isCustomItem(display, player, name, cf);
-		JobsPlayer jb = plugin.getPlayerManager().getJonPlayers().get("" + player.getUniqueId());
+		JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());
 		if (!item.equalsIgnoreCase("NOT_FOUND")) {
 			String action = cf.getString(name+"." + item + ".Action");
 			if (action.equalsIgnoreCase("CLOSE")) {

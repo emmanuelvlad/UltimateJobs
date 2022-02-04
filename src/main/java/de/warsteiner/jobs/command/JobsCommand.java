@@ -20,7 +20,7 @@ public class JobsCommand implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			JobsPlayer j = plugin.getPlayerManager().getJonPlayers().get("" + player.getUniqueId());
+			JobsPlayer j = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());
 			GuiManager gui = plugin.getGUI();
 
 			if (length == 0) {

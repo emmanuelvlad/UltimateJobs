@@ -3,9 +3,11 @@ package de.warsteiner.jobs.manager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import com.google.common.util.concurrent.AtomicDouble;
 
@@ -14,6 +16,7 @@ import de.warsteiner.datax.utils.statements.SQLStatementAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.utils.LogType;
+import scala.Array;
 
 public class SQLManager {
 
@@ -64,8 +67,8 @@ public class SQLManager {
 		mg.executeUpdate("DELETE FROM job_players WHERE UUID='" + UUID + "';");
 		mg.executeUpdate("DELETE FROM job_current WHERE UUID='" + UUID + "';");
 
-		List<String> current = pl.getCurrentJobs();
-		List<String> owned = pl.getOwnJobs();
+		Collection<String> current = pl.getCurrentJobs();
+		Collection<String> owned = pl.getOwnJobs();
 		int max = pl.getMaxJobs();
 		double points = pl.getPoints();
 
@@ -196,39 +199,35 @@ public class SQLManager {
 	}
 
 	public ArrayList<String> getOwnedJobs(String UUID) {
-		ArrayList<String> jobs = new ArrayList<String>();
-		try {
-			ResultSet rs = mg.Query("SELECT * FROM job_stats WHERE UUID= '" + UUID + "'");
-			if (rs != null) {
+		Collection<String> jobs = new ArrayList<String>();
+		mg.executeQuery("SELECT * FROM job_stats WHERE UUID= '" + UUID + "'", rs -> {
+		 
 				while (rs.next()) {
 					jobs.add(rs.getString("JOB"));
 				}
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+ 
+			return 1;
+		});
+		 
 		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Owned-Jobs of Player-Data for : " + UUID);
-		return jobs;
+		return (ArrayList<String>) jobs;
 	}
-
+	 
+	
 	public ArrayList<String> getCurrentJobs(String UUID) {
-		ArrayList<String> jobs = new ArrayList<String>();
-		try {
-			ResultSet rs = mg.Query("SELECT * FROM job_current WHERE UUID= '" + UUID + "'");
-			if (rs != null) {
+		
+		Collection<String> jobs = new ArrayList<String>();
+		mg.executeQuery("SELECT * FROM job_current WHERE UUID= '" + UUID + "'", rs -> {
+			 
 				while (rs.next()) {
 					jobs.add(rs.getString("JOB"));
 				}
-
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Current-Jobs of Player-Data for : " + UUID);
-		return jobs;
+ 
+			return 1;
+		});
+		 
+		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Owned-Jobs of Player-Data for : " + UUID);
+		return (ArrayList<String>) jobs;
 	}
 
 	public int getPoints(String UUID) {

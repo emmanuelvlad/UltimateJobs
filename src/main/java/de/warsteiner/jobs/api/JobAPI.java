@@ -225,6 +225,9 @@ public class JobAPI {
 		if (job.hasPermission() == true) {
 			return player.hasPermission(job.getPermission());
 		}
+		if(job.hasNotQuestCon() == true) {
+			return plugin.getNotQuestManager().canHaveJob(player, job);
+		}
 		return true;
 	}
 
