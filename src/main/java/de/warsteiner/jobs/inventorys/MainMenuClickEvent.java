@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.warsteiner.datax.UltimateAPI;
-import de.warsteiner.datax.utils.PluginAPI;
+import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 
 public class MainMenuClickEvent implements Listener {

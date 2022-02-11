@@ -13,9 +13,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.datax.UltimateAPI;
-import de.warsteiner.datax.utils.GUIManager;
-import de.warsteiner.datax.utils.ItemAPI;
-import de.warsteiner.datax.utils.PluginAPI;
+import de.warsteiner.datax.api.ItemAPI;
+import de.warsteiner.datax.api.PluginAPI;
+import de.warsteiner.datax.managers.GUIManager;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
@@ -177,7 +177,7 @@ public class GuiManager {
 					meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
 					if (api.canBuyWithoutPermissions(player, j)) {
-						if (jb.ownJob(id)) {
+						if (jb.ownJob(id) == true || api.canByPass(player, j) == true) {
 
 							if (jb.isInJob(id)) {
 								meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, false);
@@ -238,12 +238,8 @@ public class GuiManager {
 
 		plugin.getExecutor().execute(() -> {
 			
-			JobsPlayer jb = null;
-			
-			if(plugin.getPlayerManager().getOnlineJobPlayers().get(""+player.getUniqueId()) != null) {
-				jb = plugin.getPlayerManager().getOnlineJobPlayers().get(""+player.getUniqueId());
-			}
-			
+			JobsPlayer jb =  plugin.getPlayerManager().getOnlineJobPlayers().get(""+player.getUniqueId());
+		 
 			String title = player.getOpenInventory().getTitle();
 			String need = up.toHex(name).replaceAll("&", "§");
 			if (title.equalsIgnoreCase(need)) {

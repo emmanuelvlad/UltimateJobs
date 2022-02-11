@@ -12,6 +12,8 @@
 
 Debug: false
 
+CheckForUpdates: true
+
 KickOnReload: true
 
 #default 180 seconds
@@ -196,6 +198,16 @@ Command:
     Desc: "Leave a job"
 
     Syntax: "<prefix> &7Use &6/Jobs leave <job>"
+
+  LIMIT:
+
+    Enabled: true
+
+    Usage: "limit"
+
+    Desc: "Display player job limits"
+
+    Syntax: "<prefix> &7Use &6/Jobs limit <name>"
 
   POINTS:
 

@@ -18,7 +18,7 @@ import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.utils.LogType;
 import scala.Array;
 
-public class SQLManager {
+public class SQLPlayerManager {
 
 	private SQLStatementAPI mg = UltimateAPI.getInstance().getSQLStatementAPI();
 

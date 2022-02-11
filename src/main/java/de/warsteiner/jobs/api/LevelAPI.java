@@ -4,7 +4,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import de.warsteiner.datax.UltimateAPI;
-import de.warsteiner.datax.utils.PluginAPI;
+import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 
 public class LevelAPI {

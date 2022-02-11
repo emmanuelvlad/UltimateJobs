@@ -67,6 +67,14 @@ public class Job {
 		return cf.getString("Permission") != null;
 	}
 
+	public boolean hasByoassPermission() {
+		return cf.getString("BypassPermission") != null;
+	}
+	
+	public String getByPassPermission() {
+		return cf.getString("BypassPermission");
+	}
+	
 	public String getPermission() {
 		return perm;
 	}
@@ -79,12 +87,20 @@ public class Job {
 		return cf.getStringList("LEVELS." + level + ".Commands");
 	} 
 	
+	public boolean hasByPassNotQuestCon() {
+		return cf.getStringList("BypassNotQuestCond") != null;
+	}
+	
+	public List<String> getByPassNotQuestCon() {
+		return cf.getStringList("BypassNotQuestCond");
+	}
+	
 	public boolean hasNotQuestCon() {
-		return cf.getStringList("NotQuestCond") != null;
+		return cf.getStringList("ReqNotQuestCond") != null;
 	}
 	
 	public List<String> getNotQuestCon() {
-		return cf.getStringList("NotQuestCond");
+		return cf.getStringList("ReqNotQuestCond");
 	}
 
 	public boolean isCommand(int level) {

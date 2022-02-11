@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.manager;
+package de.warsteiner.jobs.utils.cevents;
  
 import java.util.HashMap;
 
@@ -8,9 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
-import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.utils.cevents.PlayerFinishedWorkEvent;
-import de.warsteiner.jobs.utils.cevents.PlayerLevelJobEvent; 
+import de.warsteiner.jobs.api.JobsPlayer; 
 
 public class CustomEventManager {
 

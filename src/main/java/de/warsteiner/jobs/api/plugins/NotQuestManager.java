@@ -32,5 +32,21 @@ public class NotQuestManager {
 		}
 		return true; 
 	}
+	
+	public boolean canBypassJob(Player player, Job job) {
+		if(job.hasByPassNotQuestCon()) {
+			
+			QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+			 
+			ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getByPassNotQuestCon());
+ 
+			for(Condition c : conditions){ 
+				if(!c.check(questPlayer).isBlank()){
+	                return false;
+	              }
+	       }
+		}
+		return true; 
+	}
 
 }

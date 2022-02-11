@@ -2,7 +2,7 @@ package de.warsteiner.jobs.command.admincommand;
 
 import org.bukkit.command.CommandSender;
 
-import de.warsteiner.datax.utils.UpdateChecker;
+import de.warsteiner.datax.utils.Messages; 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
@@ -24,17 +24,13 @@ public class UpdateSub extends AdminSubCommand {
 	@Override
 	public void perform(CommandSender sender, String[] args) {
 		if (args.length == 1) {
-			
-			new UpdateChecker(plugin, 99198).getVersion(version -> {
-				if (!plugin.getDescription().getVersion().equals(version)) {
-					sender.sendMessage(AdminCommand.prefix + "§7Theres a new Plugin Version §aavailable§7! You run on version : §c"+plugin.getDescription().getVersion()+" §8-> §7new version : §a"+version);
-				} else {
-					sender.sendMessage(AdminCommand.prefix+"§7You are running the latest Version!");
-				}
-			}); 
-			
-				 
 			 
+			if(plugin.isLatest != null && !plugin.isLatest.equalsIgnoreCase("LATEST")) {
+				
+				sender.sendMessage(Messages.prefix+"§7There is a new Version of §9UltimateJobs §7available! Download now: https://www.spigotmc.org/resources/ultimatejobs-reloaded.99198/");
+				
+			}
+			
 		} else {
 			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin update");
 		}

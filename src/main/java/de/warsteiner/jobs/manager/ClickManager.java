@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.datax.UltimateAPI;
-import de.warsteiner.datax.utils.PluginAPI;
+import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
@@ -83,7 +83,7 @@ public class ClickManager {
 
 				String name = cfg.getString("Main_Name");
 				if (api.canBuyWithoutPermissions(player, j)) {
-					if (jb.ownJob(job)) {
+					if (jb.ownJob(job) == true || api.canByPass(player, j) == true) {
 
 						if (jb.isInJob(job)) {
 							gui.createSettingsGUI(player, j);

@@ -41,7 +41,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import de.warsteiner.datax.UltimateAPI;
-import de.warsteiner.datax.utils.PluginAPI;
+import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager;
 import de.warsteiner.jobs.utils.Action;
@@ -101,8 +101,8 @@ public class JobAPI {
 		return false;
 	}
 
-	public String isCurrentlyInCacheOrSQL(String name, String uuid) {
-		if (plugin.getPlayerManager().existInCache(name)) {
+	public String isCurrentlyInCache(String uuid) {
+		if (plugin.getPlayerManager().existInCacheByUUID(uuid)) {
 			return "CACHE";
 		}
 		return "SQL";
@@ -226,12 +226,24 @@ public class JobAPI {
 			return player.hasPermission(job.getPermission());
 		}
 		if(job.hasNotQuestCon() == true) {
-			return plugin.getNotQuestManager().canHaveJob(player, job);
+			if(plugin.isInstalledNotQuest()) {
+				return plugin.getNotQuestManager().canHaveJob(player, job);
+			}  
 		}
 		return true;
 	}
 
-	 
+	public boolean canByPass(Player player, Job job) {
+		if(job.hasByoassPermission()) {
+			return player.hasPermission(job.getByPassPermission());
+		}
+		if(job.hasByPassNotQuestCon() == true) {
+			if(plugin.isInstalledNotQuest()) {
+				return plugin.getNotQuestManager().canBypassJob(player, job);
+			} 
+		}
+		return false;
+	}
 
 	public boolean canWorkThere(Player player, Job j, String st) {
 

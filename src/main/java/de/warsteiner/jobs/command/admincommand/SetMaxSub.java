@@ -6,12 +6,13 @@ import de.warsteiner.datax.UltimateAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.command.AdminCommand;
+import de.warsteiner.jobs.manager.PlayerDataManager;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 
 public class SetMaxSub extends AdminSubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private static UltimateAPI ap = UltimateAPI.getPlugin();
+	private static UltimateAPI ap = UltimateAPI.getPlugin(); 
 
 	@Override
 	public String getName() {
@@ -25,20 +26,20 @@ public class SetMaxSub extends AdminSubCommand {
 
 	@Override
 	public void perform(CommandSender sender, String[] args) {
+		 PlayerDataManager pl = UltimateJobs.getPlugin().getPlayerDataModeManager();
 		if (args.length == 3) {
 
 			String player = args[1];
 			String value = args[2];
 
-			if (ap.getSQLManager().getUUIDFromName(player.toUpperCase()) == null) {
+			if (ap.getPlayerManager().getUUIDByName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
 				return;
 			}
+ 
+			String uuid = ap.getPlayerManager().getUUIDByName(player.toUpperCase());
 
-			String name = player;
-			String uuid = ap.getSQLManager().getUUIDFromName(player.toUpperCase());
-
-			String how = plugin.getAPI().isCurrentlyInCacheOrSQL(name, uuid);
+			String how = plugin.getAPI().isCurrentlyInCache(uuid);
 
 			if (plugin.getAPI().isInt(value)) {
 
@@ -53,7 +54,7 @@ public class SetMaxSub extends AdminSubCommand {
 
 				} else {
 
-					plugin.getSQLManager().updateMax(uuid, Integer.valueOf(value));
+					pl.updateMax(uuid, Integer.valueOf(value));
 
 					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7max Jobs to §a" + value
 							+ "§7. §8(§bSQL§8)");
