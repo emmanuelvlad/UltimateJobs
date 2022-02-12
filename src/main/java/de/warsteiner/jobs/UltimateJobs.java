@@ -85,7 +85,7 @@ public class UltimateJobs extends JavaPlugin {
 	private SubCommandRegistry cmdmanager;
 	private AdminSubCommandRegistry admincmdmanager;
 	private CustomEventManager customevent;
-	private NotQuestManager notquest; 
+	private NotQuestManager notquest;
 	private YMLPlayerManager yml;
 	private PlayerDataManager pmanager;
 	private PlayerDataFile datafile;
@@ -109,7 +109,7 @@ public class UltimateJobs extends JavaPlugin {
 		createFolders();
 
 		setupConfigs();
- 
+
 		getLogger().info("§bLoading UltimateJobs...");
 
 		loadClasses();
@@ -131,7 +131,7 @@ public class UltimateJobs extends JavaPlugin {
 
 		// events
 		loadEvents();
-	 
+
 		if (isInstalledPlaceHolder()) {
 			new PlaceHolderManager().register();
 			getLogger().info("§6Loaded PlaceHolderAPI for UltimateJobs");
@@ -152,21 +152,10 @@ public class UltimateJobs extends JavaPlugin {
 			BossBarHandler.startSystemCheck();
 		}
 
-		if (UltimateAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
-			if (!UltimateAPI.getInstance().getInit().isClosed()) {
-				getSQLPlayerManager().createtables();
-				getLogger().info("§6Created job Tables... ");
-			}
-		} else {
+		datafile = new PlayerDataFile("jobs");
 
-			datafile = new PlayerDataFile("jobs");
-			 
-			
-			datafile.create();
-			
-			getLogger().info("§6Created Data Files...");
-		}
-		
+		datafile.create();
+
 		pm.startSave();
 
 		customevent.startSystemCheck();
@@ -184,12 +173,13 @@ public class UltimateJobs extends JavaPlugin {
 				}
 			});
 		}
-		
+
 		sql = new SQLPlayerManager();
 		yml = new YMLPlayerManager();
-		
+
 		pmanager = new PlayerDataManager();
-		
+
+		getSQLPlayerManager().createtables();
 	}
 
 	public void onDisable() {
@@ -237,7 +227,7 @@ public class UltimateJobs extends JavaPlugin {
 		pm = new PlayerManager(plugin);
 		ld = new HashMap<>();
 		levels = new LevelAPI(plugin, messages.getConfig());
-		 
+
 		executor = Executors.newFixedThreadPool(config.getConfig().getInt("ExecutorServiceThreads"));
 		cmdmanager = new SubCommandRegistry();
 		api = new JobAPI(plugin, messages.getConfig());
@@ -245,8 +235,8 @@ public class UltimateJobs extends JavaPlugin {
 		click = new ClickManager(plugin, config.getConfig(), gui);
 		admincmdmanager = new AdminSubCommandRegistry();
 		customevent = new CustomEventManager();
-		notquest = new NotQuestManager(); 
-	 
+		notquest = new NotQuestManager();
+
 	}
 
 	public void doLog(LogType t, String m) {
@@ -263,7 +253,7 @@ public class UltimateJobs extends JavaPlugin {
 	public PlayerDataFile getPlayerDataFile() {
 		return datafile;
 	}
- 
+
 	public PlayerDataManager getPlayerDataModeManager() {
 		return pmanager;
 	}
