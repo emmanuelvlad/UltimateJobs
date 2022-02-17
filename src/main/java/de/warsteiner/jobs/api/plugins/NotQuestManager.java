@@ -21,14 +21,18 @@ public class NotQuestManager {
 		return notQuestsInstance;
 	}
     
-	public boolean canHaveJob(Player player, Job job) {
+	public boolean canHaveJob(final Player player, final Job job) {
 		if(job.hasNotQuestCon()) {
-			
-			QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
-			 
-			ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getNotQuestCon());
+
+			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+
+			final ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getNotQuestCon());
+
+			if(conditions == null || conditions.isEmpty()){
+				return true;
+			}
  
-			for(Condition c : conditions){ 
+			for(final Condition c : conditions){
 				if(!c.check(questPlayer).isBlank()){
 	                return false;
 	            }
@@ -37,14 +41,18 @@ public class NotQuestManager {
 		return true; 
 	}
 	
-	public boolean canBypassJob(Player player, Job job) {
+	public boolean canBypassJob(final Player player, final Job job) {
 		if(job.hasByPassNotQuestCon()) {
-			
-			QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+
+			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
 			 
-			ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getByPassNotQuestCon());
+			final ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getByPassNotQuestCon());
+
+			if(conditions == null || conditions.isEmpty()){
+				return true;
+			}
  
-			for(Condition c : conditions){ 
+			for(final Condition c : conditions){
 				if(!c.check(questPlayer).isBlank()){
 	                return false;
 				}
