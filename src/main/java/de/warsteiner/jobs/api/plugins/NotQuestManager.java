@@ -16,34 +16,46 @@ public class NotQuestManager {
     public void setClass() {
         notQuestsInstance = NotQuests.getInstance();
     }
+
+	public final NotQuests getNotQuestsInstance() {
+		return notQuestsInstance;
+	}
     
-	public boolean canHaveJob(Player player, Job job) {
+	public boolean canHaveJob(final Player player, final Job job) {
 		if(job.hasNotQuestCon()) {
-			
-			QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
-			 
-			ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getNotQuestCon());
- 
-			for(Condition c : conditions){ 
+
+			final ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getNotQuestCon());
+
+			if(conditions == null || conditions.isEmpty()){
+				return true;
+			}
+
+			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+
+			for(final Condition c : conditions){
 				if(!c.check(questPlayer).isBlank()){
 	                return false;
-	              }
+	            }
 	       }
 		}
 		return true; 
 	}
 	
-	public boolean canBypassJob(Player player, Job job) {
+	public boolean canBypassJob(final Player player, final Job job) {
 		if(job.hasByPassNotQuestCon()) {
-			
-			QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
-			 
-			ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getByPassNotQuestCon());
- 
-			for(Condition c : conditions){ 
+
+			final ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getByPassNotQuestCon());
+
+			if(conditions == null || conditions.isEmpty()){
+				return true;
+			}
+
+			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+
+			for(final Condition c : conditions){
 				if(!c.check(questPlayer).isBlank()){
 	                return false;
-	              }
+				}
 	       }
 		}
 		return true; 

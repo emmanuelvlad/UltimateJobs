@@ -226,7 +226,7 @@ public class JobAPI {
 			return player.hasPermission(job.getPermission());
 		}
 		if(job.hasNotQuestCon() == true) {
-			if(plugin.isInstalledNotQuest()) {
+			if(plugin.isInstalledNotQuests()) {
 				return plugin.getNotQuestManager().canHaveJob(player, job);
 			}  
 		}
@@ -238,7 +238,7 @@ public class JobAPI {
 			return player.hasPermission(job.getByPassPermission());
 		}
 		if(job.hasByPassNotQuestCon() == true) {
-			if(plugin.isInstalledNotQuest()) {
+			if(plugin.isInstalledNotQuests()) {
 				return plugin.getNotQuestManager().canBypassJob(player, job);
 			} 
 		}
