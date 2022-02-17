@@ -24,14 +24,14 @@ public class NotQuestManager {
 	public boolean canHaveJob(final Player player, final Job job) {
 		if(job.hasNotQuestCon()) {
 
-			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
-
 			final ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getNotQuestCon());
 
 			if(conditions == null || conditions.isEmpty()){
 				return true;
 			}
- 
+
+			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+
 			for(final Condition c : conditions){
 				if(!c.check(questPlayer).isBlank()){
 	                return false;
@@ -44,14 +44,14 @@ public class NotQuestManager {
 	public boolean canBypassJob(final Player player, final Job job) {
 		if(job.hasByPassNotQuestCon()) {
 
-			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
-			 
 			final ArrayList<Condition> conditions = notQuestsInstance.getConversationManager().parseConditionsString(job.getByPassNotQuestCon());
 
 			if(conditions == null || conditions.isEmpty()){
 				return true;
 			}
- 
+
+			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+
 			for(final Condition c : conditions){
 				if(!c.check(questPlayer).isBlank()){
 	                return false;
