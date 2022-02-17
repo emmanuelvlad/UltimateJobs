@@ -13,7 +13,7 @@ public class JobActionFarm implements Listener  {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onFarm(BlockBreakEvent event) { 
-		plugin.getAPI().executeFarmWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getPlayer().getUniqueId()));
+		plugin.getJobWorkManager().executeFarmWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getPlayer().getUniqueId()));
 	}
 
 }

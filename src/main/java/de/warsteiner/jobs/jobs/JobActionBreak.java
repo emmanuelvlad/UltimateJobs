@@ -15,7 +15,7 @@ public class JobActionBreak implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBreak(BlockBreakEvent event) { 
-		plugin.getAPI().executeBlockBreakWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getPlayer().getUniqueId())); 
+		plugin.getJobWorkManager().executeBlockBreakWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getPlayer().getUniqueId())); 
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

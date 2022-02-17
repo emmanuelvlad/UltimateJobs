@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI; 
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
@@ -17,7 +17,7 @@ public class ClickManager {
 
 	private UltimateJobs plugin;
 	private JobAPI api = UltimateJobs.getPlugin().getAPI();
-	private PluginAPI up = UltimateAPI.getInstance().getAPI();
+	private PluginAPI up = SimpleAPI.getInstance().getAPI();
 	private YamlConfiguration cfg;
 	private GuiManager gui;
 

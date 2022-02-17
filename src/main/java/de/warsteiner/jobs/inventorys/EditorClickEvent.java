@@ -1,6 +1,5 @@
 package de.warsteiner.jobs.inventorys;
  
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,8 +8,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.api.Job;
 
-public class MainMenuClickEvent implements Listener {
+public class EditorClickEvent  implements Listener {
 	
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 	private PluginAPI up = SimpleAPI.getInstance().getAPI();
@@ -35,20 +35,29 @@ public class MainMenuClickEvent implements Listener {
 		if (e.getCurrentItem().getItemMeta().getDisplayName() == null) {
 			return;
 		}
-
-		YamlConfiguration config = plugin.getMainConfig().getConfig();
-		
-		String name = config.getString("Main_Name");
-		
+ 
 		Player p = (Player) e.getWhoClicked();
 		
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
- 
-		if (e.getView().getTitle().equalsIgnoreCase(up.toHex(name).replaceAll("&", "§"))) {
-		 
-			plugin.getClickManager().executeJobClickEvent(display, p);
-			 
-			plugin.getClickManager().executeCustomItem(display, p, "Main_Custom", config);
+		
+		if(e.getView().getTitle().equalsIgnoreCase("§6Jobs Editor")) {
+			
+			if(display.equalsIgnoreCase("§8< §cClose §8>")) {
+				p.closeInventory();
+			}
+			
+			Job j = null;
+			
+			for(Job job : plugin.getLoaded()) {
+				if(job.getDisplay().equalsIgnoreCase(display)) {
+					j = job;
+				}
+			}
+			
+			if(j != null) {
+				p.sendMessage("yes");
+			}
+			
 			e.setCancelled(true);
 		}
 		

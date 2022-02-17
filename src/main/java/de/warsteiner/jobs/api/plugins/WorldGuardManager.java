@@ -16,10 +16,7 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-
-import de.warsteiner.jobs.UltimateJobs;
  
-
 public class WorldGuardManager {
 
 	public static WorldGuardPlugin wg;

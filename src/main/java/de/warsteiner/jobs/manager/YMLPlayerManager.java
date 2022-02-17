@@ -3,26 +3,21 @@ package de.warsteiner.jobs.manager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.bukkit.configuration.file.FileConfiguration;
-
-import com.google.common.util.concurrent.AtomicDouble;
-
-import de.warsteiner.datax.utils.files.PlayerDataFile;
+import java.util.Collection; 
+import org.bukkit.configuration.file.FileConfiguration; 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.utils.LogType;
 
 public class YMLPlayerManager {
-	
+ 
 	private UltimateJobs plugin = UltimateJobs.getPlugin();
-	private File file = UltimateJobs.getPlugin().getPlayerDataFile().getfile();
-	private FileConfiguration cfg = UltimateJobs.getPlugin().getPlayerDataFile().get();
-
+	  
 	public void updatePoints(String UUID, double value) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		
 		cfg.set("Player."+UUID+".Points", value);
 		try {
 			cfg.save(file);
@@ -34,6 +29,10 @@ public class YMLPlayerManager {
 	}
 
 	public void updateLevel(String UUID, int value, String job) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		
 		cfg.set("Jobs."+UUID+"."+job+".Level", value);
 		try {
 			cfg.save(file);
@@ -45,6 +44,10 @@ public class YMLPlayerManager {
 	}
 
 	public void updateMax(String UUID, int value) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		
 		cfg.set("Player."+UUID+".Max", value);
 		try {
 			cfg.save(file);
@@ -56,6 +59,10 @@ public class YMLPlayerManager {
 	}
 
 	public void savePlayer(JobsPlayer pl, String UUID) { 
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		
 		Collection<String> current = pl.getCurrentJobs();
 		Collection<String> owned = pl.getOwnJobs();
 		int max = pl.getMaxJobs();
@@ -97,6 +104,9 @@ public class YMLPlayerManager {
 
 	public void createJobData(String UUID, String job) {
 		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		
 		String date = plugin.getAPI().getDate();
 		
 		cfg.set("Jobs."+UUID+"."+job+".Date", date);
@@ -114,46 +124,73 @@ public class YMLPlayerManager {
 	}
 
 	public boolean ExistJobData(String UUID, String job) { 
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		UltimateJobs.getPlugin().doLog(LogType.CHECK, "Check for Data of job : " + job + " for player : " + UUID);
 		return cfg.getString("Jobs."+UUID+"."+job+".Date") != null;
 	}
 
 	public int getLevelOf(String UUID, String job) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Level of Player-Data for : " + UUID + " : job : " + job);
 		return cfg.getInt("Jobs."+UUID+"."+job+".Level");
 	}
 
 	public double getExpOf(String UUID, String job) { 
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Exp of Player-Data for : " + UUID + " : job : " + job);
 		return cfg.getDouble("Jobs."+UUID+"."+job+".Exp");
 	}
 
 	public int getBrokenOf(String UUID, String job) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Broken of Player-Data for : " + UUID + " : job : " + job);
 		return cfg.getInt("Jobs."+UUID+"."+job+".Broken");
 	}
 
 	public String getDateOf(String UUID, String job) { 
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Date of Player-Data for : " + UUID + " : job : " + job);
 		return cfg.getString("Jobs."+UUID+"."+job+".Date");
 	}
 
 	public ArrayList<String> getOwnedJobs(String UUID) { 
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Owned-Jobs of Player-Data for : " + UUID);
 		return (ArrayList<String>) cfg.getStringList("Player."+UUID+".Owned");
 	}
 	 
 	
 	public ArrayList<String> getCurrentJobs(String UUID) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		UltimateJobs.getPlugin().doLog(LogType.GET, "Get Owned-Jobs of Player-Data for : " + UUID);
 		return (ArrayList<String>) cfg.getStringList("Player."+UUID+".Current");
 	}
 
 	public double getPoints(String UUID) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		return cfg.getDouble("Player."+UUID+".Points");
 	}
 
 	public int getMaxJobs(String UUID) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		
 		return cfg.getInt("Player."+UUID+".Max");
 	}
 
@@ -164,6 +201,8 @@ public class YMLPlayerManager {
 	}
 
 	public void createPlayerDetails(String UUID, String date) {
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
+		File file = plugin.getPlayerDataFile().getfile();
 		int max = UltimateJobs.getPlugin().getMainConfig().getConfig().getInt("MaxDefaultJobs"); 
 		ArrayList<String> list = new ArrayList<String>();
 		cfg.set("Player."+UUID+".Points", 0);
@@ -180,6 +219,7 @@ public class YMLPlayerManager {
 	}
 
 	public boolean ExistPlayer(String UUID) { 
+		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
 		UltimateJobs.getPlugin().doLog(LogType.CHECK, "Check for Data of player : " + UUID);
 		return cfg.getString("Player."+UUID+".Date") != null;
 	}

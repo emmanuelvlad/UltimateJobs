@@ -3,7 +3,7 @@ package de.warsteiner.jobs.command.playercommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
@@ -14,16 +14,16 @@ import de.warsteiner.jobs.utils.playercommand.SubCommand;
 public class LeaveSub extends SubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = UltimateAPI.getInstance().getAPI();
+	private PluginAPI up = SimpleAPI.getInstance().getAPI();
 	
 	@Override
 	public String getName() {
-		return plugin.getMainConfig().getConfig().getString("Command.LEAVE.Usage");
+		return plugin.getCommandConfig().getConfig().getString("Command.LEAVE.Usage");
 	}
 
 	@Override
 	public String getDescription() {
-		return plugin.getMainConfig().getConfig().getString("Command.LEAVE.Desc");
+		return plugin.getCommandConfig().getConfig().getString("Command.LEAVE.Desc");
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class LeaveSub extends SubCommand {
 			}
 		} else {
 			player.sendMessage(
-					up.toHex(plugin.getMainConfig().getConfig().getString("Command.LEAVE.Syntax")
+					up.toHex(plugin.getCommandConfig().getConfig().getString("Command.LEAVE.Syntax")
 							.replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
 		}
 	}
@@ -60,7 +60,7 @@ public class LeaveSub extends SubCommand {
 	
 	@Override
 	public boolean isEnabled() { 
-		return plugin.getMainConfig().getConfig().getBoolean("Command.LEAVE.Enabled");
+		return plugin.getCommandConfig().getConfig().getBoolean("Command.LEAVE.Enabled");
 	}
 
 }

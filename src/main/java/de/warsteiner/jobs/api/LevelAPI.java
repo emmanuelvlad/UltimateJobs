@@ -3,7 +3,7 @@ package de.warsteiner.jobs.api;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 
@@ -54,7 +54,7 @@ public class LevelAPI {
 		plugin.getExecutor().execute(() -> {
 			String UUID = "" + player.getUniqueId();
 
-			PluginAPI api = UltimateAPI.getInstance().getAPI();
+			PluginAPI api = SimpleAPI.getInstance().getAPI();
 
 			String prefix = plugin.getAPI().getPrefix();
 			

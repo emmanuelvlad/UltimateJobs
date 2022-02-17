@@ -1,29 +1,24 @@
 package de.warsteiner.jobs.manager;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+ 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Collection; 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.concurrent.atomic.AtomicReference; 
 
 import com.google.common.util.concurrent.AtomicDouble;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.utils.statements.SQLStatementAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.utils.LogType;
-import scala.Array;
+import de.warsteiner.jobs.utils.LogType; 
 
 public class SQLPlayerManager {
 
-	private SQLStatementAPI mg = UltimateAPI.getInstance().getSQLStatementAPI();
+	private SQLStatementAPI mg = SimpleAPI.getInstance().getSQLStatementAPI();
 
 	public void createtables() {
-		SQLStatementAPI s = UltimateAPI.getInstance().getSQLStatementAPI();
+		SQLStatementAPI s = SimpleAPI.getInstance().getSQLStatementAPI();
 		UltimateJobs.getPlugin().getExecutor().execute(() -> {
 
 			s.executeUpdate(

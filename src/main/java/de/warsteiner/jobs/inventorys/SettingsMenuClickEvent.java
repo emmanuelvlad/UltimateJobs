@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI; 
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
@@ -14,7 +14,7 @@ import de.warsteiner.jobs.api.Job;
 public class SettingsMenuClickEvent implements Listener {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = UltimateAPI.getInstance().getAPI();
+	private PluginAPI up = SimpleAPI.getInstance().getAPI();
 
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e) {

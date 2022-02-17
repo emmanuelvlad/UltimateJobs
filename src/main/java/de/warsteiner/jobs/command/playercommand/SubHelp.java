@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
@@ -13,16 +13,16 @@ import de.warsteiner.jobs.utils.playercommand.SubCommand;
 public class SubHelp extends SubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = UltimateAPI.getInstance().getAPI();
+	private PluginAPI up = SimpleAPI.getInstance().getAPI();
 
 	@Override
 	public String getName() {
-		return plugin.getMainConfig().getConfig().getString("Command.HELP.Usage");
+		return plugin.getCommandConfig().getConfig().getString("Command.HELP.Usage");
 	}
 
 	@Override
 	public String getDescription() {
-		return plugin.getMainConfig().getConfig().getString("Command.HELP.Desc");
+		return plugin.getCommandConfig().getConfig().getString("Command.HELP.Desc");
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class SubHelp extends SubCommand {
 				player.sendMessage(up.toHex(m).replaceAll("&", "§"));
 			}
 		} else {
-			player.sendMessage(up.toHex(plugin.getMainConfig().getConfig().getString("Command.HELP.Syntax")
+			player.sendMessage(up.toHex(plugin.getCommandConfig().getConfig().getString("Command.HELP.Syntax")
 					.replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
 		}
 	}
@@ -51,7 +51,7 @@ public class SubHelp extends SubCommand {
 	
 	@Override
 	public boolean isEnabled() { 
-		return plugin.getMainConfig().getConfig().getBoolean("Command.HELP.Enabled");
+		return plugin.getCommandConfig().getConfig().getBoolean("Command.HELP.Enabled");
 	}
 
 }

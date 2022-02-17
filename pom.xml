@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.warsteiner</groupId>
 	<artifactId>ultimatejobs</artifactId>
-	<version>0.2.9</version>
+	<version>0.3.0</version>
 	<name>UltimateJobs</name>
 	<packaging>jar</packaging>
 
@@ -66,10 +66,11 @@
 
 
 		<dependency>
-			<groupId>com.github.war-systems</groupId>
-			<artifactId>UltimateAPI</artifactId>
-			<version>0.1.8</version>
-			<scope>provided</scope>
+			<groupId>com.sample</groupId>
+			<artifactId>simpleapi</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/simpleapi.jar</systemPath>
 		</dependency>
 
 		<dependency>

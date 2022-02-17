@@ -14,6 +14,8 @@ Debug: false
 
 CheckForUpdates: true
 
+LoadJobsFrom: "plugins/UltimateJobs/jobs/"
+
 KickOnReload: true
 
 #default 180 seconds
@@ -175,59 +177,6 @@ Main_Place:
   - "BLACK_STAINED_GLASS_PANE:42:&7"
   - "BLACK_STAINED_GLASS_PANE:43:&7"
   - "BLACK_STAINED_GLASS_PANE:44:&7"
-
-Command:
-
-  #do not remove something here, if you dont want to use it, put "false" on Enabled!
-  HELP:
-
-    Enabled: true
-
-    Usage: "help"
-
-    Desc: "Display all Commands"
-
-    Syntax: "<prefix> &7Use &6/Jobs help"
-
-  LEAVE:
-
-    Enabled: true
-
-    Usage: "leave"
-
-    Desc: "Leave a job"
-
-    Syntax: "<prefix> &7Use &6/Jobs leave <job>"
-
-  LIMIT:
-
-    Enabled: true
-
-    Usage: "limit"
-
-    Desc: "Display player job limits"
-
-    Syntax: "<prefix> &7Use &6/Jobs limit <name>"
-
-  POINTS:
-
-    Enabled: true
-
-    Usage: "points"
-
-    Desc: "Display points"
-
-    Syntax: "<prefix> &7Use &6/Jobs points <name>"
-
-  LEAVEALL:
-
-    Enabled: true
-
-    Usage: "leaveall"
-
-    Desc: "Leave all jobs"
-
-    Syntax: "<prefix> &7Use &6/Jobs leaveall"
 
 #options menu
 Settings_Name: "&bJob Options &8- <job>"

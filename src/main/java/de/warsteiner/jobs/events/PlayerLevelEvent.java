@@ -6,14 +6,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.utils.cevents.PlayerLevelJobEvent;
 
 public class PlayerLevelEvent implements Listener {
 
-	private UltimateAPI plugin = UltimateAPI.getPlugin();
+	private SimpleAPI plugin = SimpleAPI.getPlugin();
 	
 	@EventHandler
 	public void onLevelUp(PlayerLevelJobEvent event) {

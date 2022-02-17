@@ -2,7 +2,8 @@ package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList; 
 import java.util.List;
- 
+
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player; 
@@ -12,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.ItemAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.datax.managers.GUIManager;
@@ -25,13 +26,116 @@ public class GuiManager {
 
 	private UltimateJobs plugin;
 	private JobAPI api = UltimateJobs.getPlugin().getAPI(); 
-	private PluginAPI up = UltimateAPI.getInstance().getAPI();
-	private ItemAPI im = UltimateAPI.getInstance().getItemAPI();
-	private GUIManager gm = UltimateAPI.getInstance().getGUIManager();
+	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+	private ItemAPI im = SimpleAPI.getInstance().getItemAPI();
+	private GUIManager gm = SimpleAPI.getInstance().getGUIManager();
 	private YamlConfiguration cfg = UltimateJobs.getPlugin().getMainConfig().getConfig();
 
 	public GuiManager(UltimateJobs plugin) {
 		this.plugin = plugin;
+	}
+	
+	public void EditorChooseJob(Player player, boolean sound) {  
+		String name = "§6Jobs Editor";
+		gm.openInventory(player, 5, name);
+		
+		if(sound) {
+			player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 1, 1);
+		}
+		
+		InventoryView inv = player.getOpenInventory();
+		
+		plugin.getExecutor().execute(() -> { 
+			
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "GRAY_STAINED_GLASS_PANE");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8-/-");
+				  
+				it.setItemMeta(meta);
+				  
+				inv.setItem(0, it); 
+				inv.setItem(1, it); 
+				inv.setItem(2, it); 
+				inv.setItem(3, it); 
+				inv.setItem(4, it); 
+				inv.setItem(5, it); 
+				inv.setItem(6, it); 
+				inv.setItem(7, it); 
+				inv.setItem(8, it); 
+				inv.setItem(36, it); 
+				inv.setItem(37, it); 
+				inv.setItem(38, it); 
+				inv.setItem(39, it);  
+				inv.setItem(41, it);
+				inv.setItem(42, it); 
+				inv.setItem(43, it); 
+				inv.setItem(44, it); 
+	 
+			}
+	
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "RED_DYE");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §cClose §8>");
+				  
+				it.setItemMeta(meta); 
+				
+				inv.setItem(40, it); 
+			}
+			
+			ArrayList<Job> jobs = plugin.getLoaded();
+			int size = jobs.size();
+			
+			if(size == 0) {
+				
+				ItemStack it = im.createItemStack(player.getName(), "BARRIER");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§cNo Jobs Found");
+				  
+				it.setItemMeta(meta);
+				  
+					inv.setItem(22, it); 
+					
+					return;
+				
+			} else {
+				for (int i = 0; i < size; i++) {
+
+					if (size >= i) {
+						
+						Job job = jobs.get(i);
+						
+						ItemStack it = im.createItemStack(player.getName(), job.getIcon());
+						ItemMeta meta = it.getItemMeta();
+						
+						meta.setDisplayName(job.getDisplay());
+						
+						ArrayList<String> lore = new ArrayList<String>();
+						  
+						lore.add("§8< Click to edit this Job §8>");
+						
+						meta.setLore(lore);
+						
+						meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+						meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+						
+						it.setItemMeta(meta);
+						
+						int slot = i + 9;
+						 
+						if(inv.getItem(slot) == null) {
+							inv.setItem(slot, it); 
+						}
+						
+					}
+				}
+			}
+			
+		});
 	}
 
 	public void createAreYouSureGUI(Player player, Job job) {
@@ -171,26 +275,33 @@ public class GuiManager {
 					ItemMeta meta = item.getItemMeta();
 					meta.setDisplayName(display.replaceAll("&", "§"));
 
-					List<String> see;
+					List<String> see = null;
 
 					meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 					meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
 					if (api.canBuyWithoutPermissions(player, j)) {
-						if (jb.ownJob(id) == true || api.canByPass(player, j) == true) {
-
-							if (jb.isInJob(id)) {
-								meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, false);
-
-								see = cfg.getStringList("Jobs.Lore.In");
+						List<String> d = api.canGetJobWithSubOptions(player, j);
+						if(d == null) {
+							if (jb.ownJob(id) == true || api.canByPass(player, j) == true) {
+	
+								if (jb.isInJob(id)) {
+									meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, false);
+	
+									see = cfg.getStringList("Jobs.Lore.In");
+								} else {
+									see = cfg.getStringList("Jobs.Lore.Bought");
+								}
+	
 							} else {
-								see = cfg.getStringList("Jobs.Lore.Bought");
+								see = cfg.getStringList("Jobs.Lore.Price");
 							}
 
-						} else {
-							see = cfg.getStringList("Jobs.Lore.Price");
+						} else { 
+							see = d;
+							 
 						}
-
+						
 					} else {
 						see = j.getPermissionsLore();
 					}

@@ -2,17 +2,21 @@ package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList;
 
-import de.warsteiner.datax.UltimateAPI;
-import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.api.JobsPlayer;
 
 public class PlayerDataManager {
  
-	public SQLPlayerManager sql = UltimateJobs.getPlugin().getSQLPlayerManager();
-	public YMLPlayerManager yml = UltimateJobs.getPlugin().getYMLPlayerManager();
+	private SQLPlayerManager sql;
+	private YMLPlayerManager yml;
+	
+	public PlayerDataManager(YMLPlayerManager yml, SQLPlayerManager sql) {
+		this.yml = yml;
+		this.sql = sql;
+	}
 	
 	public void savePlayer(JobsPlayer jb, String UUID) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			sql.savePlayer(jb, UUID);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -22,7 +26,7 @@ public class PlayerDataManager {
 	
 	
 	public void createJobData(String UUID, String job) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			sql.createJobData(UUID, job);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -31,7 +35,7 @@ public class PlayerDataManager {
 	}
 	
 	public boolean ExistJobData(String UUID, String job) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.ExistJobData(UUID, job);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -41,7 +45,7 @@ public class PlayerDataManager {
 	}
 
 	public double getPoints(String UUID) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.getPoints(UUID);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -52,7 +56,7 @@ public class PlayerDataManager {
 	
 
 	public String getDateOf(String UUID, String job) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.getDateOf(UUID, job);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -62,7 +66,7 @@ public class PlayerDataManager {
 	}
 	
 	public double getExpOf(String UUID, String job) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.getExpOf(UUID, job);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -72,7 +76,7 @@ public class PlayerDataManager {
 	}
 	
 	public int getBrokenOf(String UUID, String job) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.getBrokenOf(UUID, job);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -82,7 +86,7 @@ public class PlayerDataManager {
 	}
 	
 	public int getLevelOf(String UUID, String job) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.getLevelOf(UUID, job);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -92,7 +96,7 @@ public class PlayerDataManager {
 	}
 	
 	public int getMax(String UUID) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.getMaxJobs(UUID);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -102,7 +106,7 @@ public class PlayerDataManager {
 	}
 	
 	public boolean ExistPlayer(String UUID) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.ExistPlayer(UUID);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -112,7 +116,7 @@ public class PlayerDataManager {
 	}
 	
 	public void updatePoints(String UUID, double value) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			sql.updatePoints(UUID, value);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -121,7 +125,7 @@ public class PlayerDataManager {
 	}
 	
 	public void updateMax(String UUID, int value) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			sql.updateMax(UUID, value);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -130,7 +134,7 @@ public class PlayerDataManager {
 	}
 	
 	public void updateLevel(String UUID, int value, String job) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			sql.updateLevel(UUID, value, job);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -139,7 +143,7 @@ public class PlayerDataManager {
 	}
 	
 	public void createPlayer(String UUID, String name) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			sql.createPlayer(UUID, name);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -148,7 +152,7 @@ public class PlayerDataManager {
 	}
 	
 	public ArrayList<String> getOfflinePlayerCurrentJobs(String UUID) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.getCurrentJobs(UUID);
 		}  else if(mode.equalsIgnoreCase("YML")) {
@@ -158,7 +162,7 @@ public class PlayerDataManager {
 	}
 	
 	public ArrayList<String> getOfflinePlayerOwnedJobs(String UUID) {
-		String mode = UltimateAPI.getPlugin().getPluginMode();
+		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			return sql.getOwnedJobs(UUID);
 		}  else if(mode.equalsIgnoreCase("YML")) {

@@ -2,7 +2,7 @@ package de.warsteiner.jobs.command.admincommand;
 
 import org.bukkit.command.CommandSender;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.command.AdminCommand;
@@ -12,7 +12,7 @@ import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 public class SetPointsSub extends AdminSubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private static UltimateAPI ap = UltimateAPI.getPlugin(); 
+	private static SimpleAPI ap = SimpleAPI.getPlugin(); 
 
 	@Override
 	public String getName() {

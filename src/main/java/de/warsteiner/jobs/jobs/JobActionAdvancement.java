@@ -13,6 +13,6 @@ public class JobActionAdvancement implements Listener  {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEvent(PlayerAdvancementDoneEvent   event) { 
-		plugin.getAPI().executeAchWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getPlayer().getUniqueId()));
+		plugin.getJobWorkManager().executeAchWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getPlayer().getUniqueId()));
 	}
 }

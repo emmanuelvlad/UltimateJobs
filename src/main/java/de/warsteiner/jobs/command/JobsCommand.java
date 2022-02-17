@@ -1,4 +1,5 @@
 package de.warsteiner.jobs.command;
+ 
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +18,7 @@ public class JobsCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		int length = args.length;
-
+		 
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
 			JobsPlayer j = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());

@@ -1,13 +1,11 @@
 package de.warsteiner.jobs.command.playercommand;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.jobs.UltimateJobs; 
-import de.warsteiner.jobs.api.JobAPI;
+import de.warsteiner.jobs.UltimateJobs;  
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.manager.PlayerDataManager;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
@@ -15,18 +13,18 @@ import de.warsteiner.jobs.utils.playercommand.SubCommand;
 public class PointsSub extends SubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = UltimateAPI.getInstance().getAPI(); 
+	private PluginAPI up = SimpleAPI.getInstance().getAPI(); 
 	
-	private static UltimateAPI ap = UltimateAPI.getPlugin(); 
+	private static SimpleAPI ap = SimpleAPI.getPlugin(); 
 	
 	@Override
 	public String getName() {
-		return plugin.getMainConfig().getConfig().getString("Command.POINTS.Usage");
+		return plugin.getCommandConfig().getConfig().getString("Command.POINTS.Usage");
 	}
 
 	@Override
 	public String getDescription() {
-		return plugin.getMainConfig().getConfig().getString("Command.POINTS.Desc");
+		return plugin.getCommandConfig().getConfig().getString("Command.POINTS.Desc");
 	}
 
 	@Override
@@ -68,7 +66,7 @@ public class PointsSub extends SubCommand {
 		}
 		else {
 			player.sendMessage(
-					up.toHex(plugin.getMainConfig().getConfig().getString("Command.POINTS.Syntax")
+					up.toHex(plugin.getCommandConfig().getConfig().getString("Command.POINTS.Syntax")
 							.replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
 		}
 	}
@@ -85,7 +83,7 @@ public class PointsSub extends SubCommand {
 	
 	@Override
 	public boolean isEnabled() { 
-		return plugin.getMainConfig().getConfig().getBoolean("Command.POINTS.Enabled");
+		return plugin.getCommandConfig().getConfig().getBoolean("Command.POINTS.Enabled");
 	}
 
 }

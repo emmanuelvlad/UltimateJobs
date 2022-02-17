@@ -1,7 +1,6 @@
 package de.warsteiner.jobs.api;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.ArrayList; 
 import java.util.HashMap; 
 
 public class JobsPlayer {

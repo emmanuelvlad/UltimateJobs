@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import de.warsteiner.datax.UltimateAPI; 
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.utils.Action;
 
 public class Job {
@@ -88,7 +88,7 @@ public class Job {
 	} 
 	
 	public boolean hasByPassNotQuestCon() {
-		return cf.getStringList("BypassNotQuestCond") != null;
+		return cf.contains("BypassNotQuestCond");
 	}
 	
 	public List<String> getByPassNotQuestCon() {
@@ -96,11 +96,15 @@ public class Job {
 	}
 	
 	public boolean hasNotQuestCon() {
-		return cf.getStringList("ReqNotQuestCond") != null;
+		return cf.contains("ReqNotQuestCond");
 	}
 	
 	public List<String> getNotQuestCon() {
 		return cf.getStringList("ReqNotQuestCond");
+	}
+	
+	public List<String> getNotQuestConLore() {
+		return cf.getStringList("ReqNotQuestCondLore");
 	}
 
 	public boolean isCommand(int level) {
@@ -188,7 +192,7 @@ public class Job {
 	}
 
 	public String getDisplay() {
-		return UltimateAPI.getInstance().getAPI().toHex(display).replaceAll("&", "§");
+		return SimpleAPI.getInstance().getAPI().toHex(display).replaceAll("&", "§");
 	}
 
 	public String getID() {

@@ -60,6 +60,7 @@ public class AdminCommand implements CommandExecutor {
 		sender.sendMessage("§8-> §6/JobsAdmin setmax <name> <value>");
 		sender.sendMessage("§8-> §6/JobsAdmin setpoints <name> <value>"); 
 		sender.sendMessage("§8-> §6/JobsAdmin help");   
+		sender.sendMessage("§8-> §6/JobsAdmin editor"); 
 		sender.sendMessage("§8-> §6/JobsAdmin update"); 
 		sender.sendMessage("§7");
 	}

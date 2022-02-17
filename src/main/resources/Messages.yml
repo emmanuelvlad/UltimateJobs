@@ -47,7 +47,7 @@ Help:
   - "&8-> &6/Jobs statsgui <name>"
   - "&8-> &6/Jobs salary <job>"
   - "&8-> &6/Jobs points <name>"
-  - "&8-> &7/Jobs limit <name>"
+  - "&8-> &6/Jobs limit <name>"
   - "&8"
 
 Not_Found_Command: "<prefix> &7Error! Please use &6/Jobs help&7."
@@ -68,7 +68,7 @@ Levels:
 
   BroadCastLevelUps: true
   
-  BoardCastMessage: "&6Server &8| &7Player &c<name> &7reached Level &b<level> &7in the <job>&7!"
+  BoardCastMessage: "&6Server &8| &7Player &c<name> &7reached Level &b<level> &7in the <job> Job&7!"
 
   Enable_Title: true
 

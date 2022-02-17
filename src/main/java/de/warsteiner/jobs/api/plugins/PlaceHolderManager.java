@@ -1,13 +1,11 @@
 package de.warsteiner.jobs.api.plugins;
 
-import java.util.Collection;
-import java.util.List;
-
+import java.util.Collection; 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import de.warsteiner.datax.UltimateAPI;
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
@@ -17,7 +15,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 public class PlaceHolderManager extends PlaceholderExpansion {
 
 	private UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = UltimateAPI.getPlugin().getAPI();
+	private PluginAPI up = SimpleAPI.getPlugin().getAPI();
 
 	@Override
 	public @NotNull String getIdentifier() {
