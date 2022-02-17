@@ -16,6 +16,10 @@ public class NotQuestManager {
     public void setClass() {
         notQuestsInstance = NotQuests.getInstance();
     }
+
+	public final NotQuests getNotQuestsInstance() {
+		return notQuestsInstance;
+	}
     
 	public boolean canHaveJob(Player player, Job job) {
 		if(job.hasNotQuestCon()) {
@@ -27,7 +31,7 @@ public class NotQuestManager {
 			for(Condition c : conditions){ 
 				if(!c.check(questPlayer).isBlank()){
 	                return false;
-	              }
+	            }
 	       }
 		}
 		return true; 
@@ -43,7 +47,7 @@ public class NotQuestManager {
 			for(Condition c : conditions){ 
 				if(!c.check(questPlayer).isBlank()){
 	                return false;
-	              }
+				}
 	       }
 		}
 		return true; 

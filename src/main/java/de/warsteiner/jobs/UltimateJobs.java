@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import de.warsteiner.jobs.events.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -37,10 +38,6 @@ import de.warsteiner.jobs.command.playercommand.LeaveSub;
 import de.warsteiner.jobs.command.playercommand.LimitSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.SubHelp;
-import de.warsteiner.jobs.events.BlockFireWorkDamage;
-import de.warsteiner.jobs.events.PlayerExistEvent;
-import de.warsteiner.jobs.events.PlayerLevelEvent;
-import de.warsteiner.jobs.events.PlayerRewardCommandEvent;
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
@@ -128,6 +125,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new AreYouSureMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerLevelEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerRewardCommandEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
 
 		// events
 		loadEvents();
@@ -137,7 +135,7 @@ public class UltimateJobs extends JavaPlugin {
 			getLogger().info("§6Loaded PlaceHolderAPI for UltimateJobs");
 		}
 
-		if (isInstalledNotQuest()) {
+		if (isInstalledNotQuests()) {
 			getNotQuestManager().setClass();
 		}
 
@@ -266,17 +264,17 @@ public class UltimateJobs extends JavaPlugin {
 		return notquest;
 	}
 
-	public boolean isInstalledNotQuest() {
-		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("NotQuests");
-		if (wgPlugin != null) {
+	public boolean isInstalledNotQuests() {
+		Plugin nqPlugin = Bukkit.getServer().getPluginManager().getPlugin("NotQuests");
+		if (nqPlugin != null) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean isInstalledPlaceHolder() {
-		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI");
-		if (wgPlugin != null) {
+		Plugin papiPlugin = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI");
+		if (papiPlugin != null) {
 			return true;
 		}
 		return false;
