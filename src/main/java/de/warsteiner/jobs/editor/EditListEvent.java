@@ -127,6 +127,12 @@ public class EditListEvent implements Listener {
 		if(name.equalsIgnoreCase("Lore")) {
 			return job.getLore();
 		}
+		if(name.equalsIgnoreCase("PermLore")) {
+			return job.getPermissionsLore();
+		}
+		if(name.equalsIgnoreCase("Stats")) {
+			return job.getStatsMessage();
+		}
 		return null;
 	}
 	

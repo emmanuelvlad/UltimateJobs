@@ -3,8 +3,7 @@ package de.warsteiner.jobs.events;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,9 +18,7 @@ import de.warsteiner.jobs.manager.JobsEditorManager;
 public class PlayerEditorChatEvent implements Listener {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-
-	private List<String> blocked = Arrays.asList(new String[] { "JOBS_LIST_WORLDS_ADD", "JOBS_LIST_LORE_ADD" });
-
+ 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChat(AsyncPlayerChatEvent event) {
 		JobsEditorManager m = plugin.getEditorManager();
@@ -190,18 +187,47 @@ public class PlayerEditorChatEvent implements Listener {
 				player.sendMessage(plugin.getAPI().getPrefix() + " §7Added Line to the Lore-List!");
 
 				plugin.getEditorMenuManager().openTwo(player, job, li, "Lore");
+			} else if (mode.equalsIgnoreCase("JOB_LIST_PERMLORE_ADD")) {
+
+				List<String> li = null;
+
+				if (plugin.getEditorManager().getEditList().get(player) == null) {
+					li = new ArrayList<String>();
+				} else {
+					li = plugin.getEditorManager().getEditList().get(player);
+				}
+
+				li.add(message);
+
+				player.sendMessage(plugin.getAPI().getPrefix() + " §7Added Line to the PermissionsLore-List!");
+
+				plugin.getEditorMenuManager().openTwo(player, job, li, "PermLore");
+			} else if (mode.equalsIgnoreCase("JOB_LIST_STATS_ADD")) {
+
+				List<String> li = null;
+
+				if (plugin.getEditorManager().getEditList().get(player) == null) {
+					li = new ArrayList<String>();
+				} else {
+					li = plugin.getEditorManager().getEditList().get(player);
+				}
+
+				li.add(message);
+
+				player.sendMessage(plugin.getAPI().getPrefix() + " §7Added Line to the StatsLore-List!");
+
+				plugin.getEditorMenuManager().openTwo(player, job, li, "Stats");
 			}
 
-			player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-
+			player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1); 
+			
+			if (!plugin.getEditorManager().getBlocked().contains(mode)) {  
+				plugin.getEditorMenuManager().open(player, newj); 
+			}
+			
 			plugin.getEditorManager().getList().remove(player);
 			plugin.getEditorManager().getWhichList().remove(player);
-Bukkit.broadcastMessage("-> "+mode);
-			if (!blocked.contains(mode)) {
-				plugin.getEditorMenuManager().open(player, newj);
-
-			}
-
+  
 			event.setCancelled(true);
 
 		}

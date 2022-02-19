@@ -25,8 +25,16 @@ Cache_Saved_Every: 180
 #change on own risk
 ExecutorServiceThreads: 1
 
-#how many jobs can a player have by default?
+#how many jobs can a player have by default? 
+# 0 equals 1!!!
 MaxDefaultJobs: 0
+
+#if enabled, players can own default jobs
+EnabledDefaultJobs: false
+
+#when a player gets created, he will own this job
+DefaultJobs:
+  - "MINER"
 
 #do you want to use the levels?
 Enable_Levels: true

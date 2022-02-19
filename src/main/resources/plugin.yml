@@ -8,4 +8,6 @@ depend: [SimpleAPI]
 
 commands:
   jobs:
+    aliases: [job]
   jobsadmin:
+    aliases: [jba]

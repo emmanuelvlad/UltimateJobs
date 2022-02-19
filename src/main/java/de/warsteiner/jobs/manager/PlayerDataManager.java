@@ -2,7 +2,10 @@ package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList;
 
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import de.warsteiner.datax.SimpleAPI;
+import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 
 public class PlayerDataManager {
@@ -142,13 +145,13 @@ public class PlayerDataManager {
 		}
 	}
 	
-	public void createPlayer(String UUID, String name) {
+	public void createPlayer(String UUID, String name) { 
 		String mode = SimpleAPI.getPlugin().getPluginMode();
 		if(mode.equalsIgnoreCase("SQL")) {
 			sql.createPlayer(UUID, name);
 		}  else if(mode.equalsIgnoreCase("YML")) {
 			yml.createPlayer(UUID, name);
-		}
+		} 
 	}
 	
 	public ArrayList<String> getOfflinePlayerCurrentJobs(String UUID) {

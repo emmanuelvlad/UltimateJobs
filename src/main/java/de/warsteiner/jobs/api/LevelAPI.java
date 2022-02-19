@@ -2,10 +2,13 @@ package de.warsteiner.jobs.api;
  
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.utils.cevents.PlayerFinishedWorkEvent;
+import de.warsteiner.jobs.utils.cevents.PlayerLevelJobEvent;
 
 public class LevelAPI {
 
@@ -70,9 +73,12 @@ public class LevelAPI {
 					pl.updateLevel(job.getID(), new_level);
 					pl.updateExp(job.getID(), 0);
 					
-					plugin.getEventManager().getLevelDetails().put(""+player.getUniqueId(), new_level);
-					plugin.getEventManager().getLevelQueue().put(""+player.getUniqueId(), job);
- 
+					new BukkitRunnable() {
+						public void run() {
+							new PlayerLevelJobEvent(player, pl, job, new_level);
+						}
+					}.runTaskLater(plugin, 1);
+			 
 					if(job.isVaultOnLevel(new_level)) {
 						double money = job.getVaultOnLevel(new_level); 
 						UltimateJobs.getPlugin().getEco().depositPlayer(player, money);

@@ -1,10 +1,12 @@
 package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block; 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -17,6 +19,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
@@ -25,31 +28,31 @@ import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.utils.Action;
+import de.warsteiner.jobs.utils.cevents.PlayerFinishedWorkEvent;
 
 public class JobWorkManager {
-	
-	
-	private UltimateJobs plugin; 
-	private JobAPI api; 
+
+	private UltimateJobs plugin;
+	private JobAPI api;
 	private PluginAPI up = SimpleAPI.getInstance().getAPI();
 
-	public JobWorkManager(UltimateJobs plugin, JobAPI ap) { 
+	public JobWorkManager(UltimateJobs plugin, JobAPI ap) {
 		this.api = ap;
 		this.plugin = plugin;
 	}
 
 	@SuppressWarnings("deprecation")
-	public void executeHoneyAction(PlayerInteractEvent  event, JobsPlayer pl) {
+	public void executeHoneyAction(PlayerInteractEvent event, JobsPlayer pl) {
 		Player player = event.getPlayer();
 		if (event.isCancelled()) {
 			return;
-		} 
+		}
 		Material item = player.getItemInHand().getType();
-		
-		if(item == null) {
+
+		if (item == null) {
 			return;
 		}
-		
+
 		if (item != Material.GLASS_BOTTLE) {
 			return;
 		}
@@ -58,7 +61,6 @@ public class JobWorkManager {
 		return;
 
 	}
-	
 
 	public void executeEatAction(FoodLevelChangeEvent event, JobsPlayer pl) {
 		if (event.isCancelled()) {
@@ -195,67 +197,80 @@ public class JobWorkManager {
 	}
 
 	public void finalWork(String id, Player player, JobsPlayer pl, Action ac, String flag, int amount) {
+	 
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
-		plugin.getExecutor().execute(() -> {
+			@Override
+			public void run() {
 
-			String UUID = "" + player.getUniqueId();
+				String UUID = "" + player.getUniqueId();
 
-			if (api.getJobsWithAction(UUID, pl, ac) == null) {
-				return;
-			}
-			ArrayList<String> jobs = api.getJobsWithAction(UUID, pl, ac);
+				if (api.getJobsWithAction(UUID, pl, ac) == null) {
+					return;
+				}
+				ArrayList<String> jobs = api.getJobsWithAction(UUID, pl, ac);
 
-			for (String job : jobs) {
+				for (String job : jobs) {
 
-				Job jb = plugin.getJobCache().get(job);
+					Job jb = plugin.getJobCache().get(job);
 
-				if (jb.getIDList().contains(id.toUpperCase())) {
+					if (jb.getIDList().contains(id.toUpperCase())) {
 
-					if (pl.isInJob(job.toUpperCase())) {
+						if (pl.isInJob(job.toUpperCase())) {
 
-						if (api.canWorkThere(player, jb, flag)) {
+							if (api.canWorkThere(player, jb, flag)) {
 
-							if (api.canReward(player, jb, id)) {
+								if (api.canReward(player, jb, id)) {
 
-								String jobid = jb.getID();
+									String jobid = jb.getID();
+									int lvl = pl.getLevelOf(jobid);
+									double reward = jb.getRewardOf(id);
 
-								double reward = jb.getRewardOf(id);
+									double fixed = reward * amount;
 
-								double fixed = reward * amount;
+									double next = fixed * jb.getMultiOfLevel(lvl);
 
-								UltimateJobs.getPlugin().getEco().depositPlayer(player, fixed);
+									double calc = fixed + next;
 
-								double exp = jb.getExpOf(id) * amount;
-								Integer broken = pl.getBrokenOf(jobid) + amount;
-								double points = jb.getPointsOf(id) * amount;
-								double old_points = pl.getPoints();
+									if (jb.hasVaultReward(id)) {
+										UltimateJobs.getPlugin().getEco().depositPlayer(player, calc);
+									}
 
-								pl.updateBroken(jobid, broken);
+									double exp = jb.getExpOf(id) * amount;
+									Integer broken = pl.getBrokenOf(jobid) + amount;
+									double points = jb.getPointsOf(id) * amount;
+									double old_points = pl.getPoints();
 
-								double exp_old = pl.getExpOf(jobid);
+									pl.updateBroken(jobid, broken);
 
-								pl.changePoints(points + old_points);
+									double exp_old = pl.getExpOf(jobid);
 
-								pl.updateExp(jobid, exp_old + exp);
+									pl.changePoints(points + old_points);
 
-								api.playSound("FINISHED_WORK", player);
-								
-								plugin.getEventManager().getWorkQueue().put(UUID, jb);
-								plugin.getEventManager().getIDQueue().put(UUID, id);
+									pl.updateExp(jobid, exp_old + exp);
+
+									api.playSound("FINISHED_WORK", player);
+
+									new BukkitRunnable() {
+										public void run() {
+											new PlayerFinishedWorkEvent(player, pl, jb, id);
+										}
+									}.runTaskLater(plugin, 1);
 								 
-								if (plugin.getMainConfig().getConfig().getBoolean("Enable_Levels")) {
-									UltimateJobs.getPlugin().getLevelAPI().check(player, jb, pl, id);
-								}
-								UltimateJobs.getPlugin().getAPI().sendReward(pl, player, jb, exp, fixed, id);
-								return;
+									if (plugin.getMainConfig().getConfig().getBoolean("Enable_Levels")) {
+										UltimateJobs.getPlugin().getLevelAPI().check(player, jb, pl, id);
+									}
+									UltimateJobs.getPlugin().getAPI().sendReward(pl, player, jb, exp, calc, id);
+									return;
 
+								}
 							}
 						}
 					}
 				}
 			}
-		});
+		}); 
 		return;
 	}
-	
+
 }

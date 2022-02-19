@@ -21,6 +21,7 @@ import de.warsteiner.datax.utils.other.UpdateChecker;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
+import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
 import de.warsteiner.jobs.api.plugins.NotQuestManager;
 import de.warsteiner.jobs.api.plugins.PlaceHolderManager;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager;
@@ -68,8 +69,7 @@ import de.warsteiner.jobs.manager.YMLPlayerManager;
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.LogType;
 import de.warsteiner.jobs.utils.PluginModule;
-import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry;
-import de.warsteiner.jobs.utils.cevents.CustomEventManager;
+import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry; 
 import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry;
 import net.milkbowl.vault.economy.Economy;
 
@@ -89,8 +89,7 @@ public class UltimateJobs extends JavaPlugin {
 	private SQLPlayerManager sql;
 	private ExecutorService executor;
 	private SubCommandRegistry cmdmanager;
-	private AdminSubCommandRegistry admincmdmanager;
-	private CustomEventManager customevent;
+	private AdminSubCommandRegistry admincmdmanager; 
 	private NotQuestManager notquest;
 	private YMLPlayerManager yml;
 	private PlayerDataManager pmanager;
@@ -99,14 +98,14 @@ public class UltimateJobs extends JavaPlugin {
 	private YamlConfigFile command;
 	private JobsEditorManager editor;
 	private JobsEditorMenuManager ed_menu;
-
+	private AlonsoLevelsManager alonso;
 	public String isLatest = null;
 
 	public void onLoad() {
 
 		plugin = this;
-
-		if (isInstalledWorldGuard()) {
+ 
+		if (isInstalled("WorldGuard")) {
 			WorldGuardManager.setClass();
 			WorldGuardManager.load();
 			getLogger().info("§bLoaded WorldGuard-Support for UltimateJobs!");
@@ -126,7 +125,7 @@ public class UltimateJobs extends JavaPlugin {
 
 		setupEconomy();
 
-		getLogger().info("§bLoaded Vault for UltimateJobs");
+		getLogger().info("§bLoaded Vault...");
 
 		SimpleAPI.getPlugin().getModuleRegistry().getModuleList().add(new PluginModule());
 
@@ -150,14 +149,21 @@ public class UltimateJobs extends JavaPlugin {
 
 		// job events
 		loadEvents();
+		
+		getLogger().info("§bLoaded Events...");
 
-		if (isInstalledPlaceHolder()) {
+		if (isInstalled("PlaceHolderAPI")) {
 			new PlaceHolderManager().register();
-			getLogger().info("§6Loaded PlaceHolderAPI for UltimateJobs");
+			getLogger().info("§6Loaded PlaceHolderAPI Hook for UltimateJobs!");
 		}
 
-		if (isInstalledNotQuest()) {
+		if (isInstalled("NotQuests")) {
 			getNotQuestManager().setClass();
+			getLogger().info("§6Loaded NotQuests Hook for UltimateJobs!");
+		}
+		if (isInstalled("AlonsoLevels")) {
+			getAlonsoManager().setClass();
+			getLogger().info("§6Loaded AlonsoLevels Hook for UltimateJobs!");
 		}
 
 		setupCommands();
@@ -166,19 +172,19 @@ public class UltimateJobs extends JavaPlugin {
 
 		getCommand("jobsadmin").setExecutor(new AdminCommand());
 		getCommand("jobsadmin").setTabCompleter(new AdminTabComplete());
+		
+		getLogger().info("§bLoaded Commands...");
 
 		if (getMessages().getConfig().getBoolean("Reward.Enable_BossBar")) {
 			BossBarHandler.startSystemCheck();
+			getLogger().info("§6Started System Check for BossBars...");
 		}
 
 		pm.startSave();
-
-		customevent.startSystemCheck();
-
-		getLogger().info("§bLoaded UltimateJobs! Jobs: §a" + loaded.size());
-
+		getLogger().info("§6Started Check for Backup-System...");
+  
 		if (config.getConfig().getBoolean("CheckForUpdates")) {
-			new UpdateChecker(plugin, 99198).getVersion(version -> {
+			new UpdateChecker(plugin, 99978).getVersion(version -> {
 				if (!plugin.getDescription().getVersion().equals(version)) {
 					this.getLogger().warning("§7Theres a new Plugin Version §aavailable§7! You run on version : §c"
 							+ plugin.getDescription().getVersion() + " §8-> §7new version : §a" + version);
@@ -188,7 +194,18 @@ public class UltimateJobs extends JavaPlugin {
 				}
 			});
 		}
-
+		
+		getLogger().info("§7");
+		getLogger().info("§7");
+		getLogger().info("  _   _ _  _____ ___ __  __   _ _______ ____  ___ ____  __ __");
+		getLogger().info(" | | | | ||_   _|_ _|  \\/  | /_\\_   _| __| | |/  _ \\| _ ) __|");
+		getLogger().info(" | |_| | |__| |  | || |\\/| |/ _ \\| | | _|  | || (_)|| _ \\__\\");
+		getLogger().info("  \\___/|____|_|  |_||_|  |_/_/ \\_|_| |___\\__/ \\___/|___/___/");
+		getLogger().info("                                                            "); 
+		getLogger().info("       §bRunning plugin UltimateJobs v"+getDescription().getVersion()+" ("+getDescription().getAPIVersion()+")"); 
+		getLogger().info("       §bRunning UltimateJobs with "+getLoaded().size()+" Jobs");
+		getLogger().info("§7");
+		getLogger().info("§7");
 	}
 
 	public void onDisable() {
@@ -205,6 +222,11 @@ public class UltimateJobs extends JavaPlugin {
 		if (getExecutor() != null) {
 			getExecutor().shutdown();
 		}
+		 
+		getLogger().warning("§7");
+		getLogger().warning("     §cPlugin has been disabled!");
+		getLogger().warning("     §cThank you for using my plugin!");
+		getLogger().warning("§7");
 	}
 
 	public void setupCommands() {
@@ -229,7 +251,9 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());
-		getAdminSubCommandManager().getSubCommandList().add(new EditorSub());
+		//getAdminSubCommandManager().getSubCommandList().add(new EditorSub());
+		
+		getLogger().info("§bLoaded Sub-Commands...");
 	}
 
 	public void loadClasses() {
@@ -242,11 +266,10 @@ public class UltimateJobs extends JavaPlugin {
 		api = new JobAPI(plugin, messages.getConfig());
 		gui = new GuiManager(plugin);
 		click = new ClickManager(plugin, this.config.getConfig(), this.gui);
-		admincmdmanager = new AdminSubCommandRegistry();
-		customevent = new CustomEventManager();
+		admincmdmanager = new AdminSubCommandRegistry(); 
 		notquest = new NotQuestManager();
 		work = new JobWorkManager(plugin, this.api);
-
+		alonso = new AlonsoLevelsManager();
 		editor = new JobsEditorManager();
 		ed_menu = new JobsEditorMenuManager(plugin);
 
@@ -255,16 +278,22 @@ public class UltimateJobs extends JavaPlugin {
 		yml = new YMLPlayerManager();
 		if (SimpleAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
 			getSQLPlayerManager().createtables();
-			getLogger().info("SQL for UltimateJobs...");
+			getLogger().info("§6SQL for UltimateJobs...");
 		} else {
 			datafile.create();
-			getLogger().info("YML for UltimateJobs...");
+			getLogger().info("§6YML for UltimateJobs...");
 		}
 		pmanager = new PlayerDataManager(yml, sql);
+		
+		getLogger().info("§bLoaded Classes for UltimateJobs...");
 	}
 	
 	public JobsEditorManager getEditorManager() {
 		return editor;
+	}
+	
+	public AlonsoLevelsManager getAlonsoManager() {
+		return alonso;
 	}
 	
 	public JobsEditorMenuManager getEditorMenuManager() {
@@ -302,34 +331,14 @@ public class UltimateJobs extends JavaPlugin {
 		return notquest;
 	}
 
-	public boolean isInstalledNotQuest() {
-		Plugin nqPlugin = Bukkit.getServer().getPluginManager().getPlugin("NotQuests");
-		if (nqPlugin != null) {
+	public boolean isInstalled(String plugin) {
+		Plugin Plugin = Bukkit.getServer().getPluginManager().getPlugin(plugin);
+		if (Plugin != null) {
 			return true;
 		}
 		return false;
 	}
-
-	public boolean isInstalledPlaceHolder() {
-		Plugin papiPlugin = Bukkit.getServer().getPluginManager().getPlugin("PlaceHolderAPI");
-		if (papiPlugin != null) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean isInstalledWorldGuard() {
-		Plugin wgPlugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-		if (wgPlugin != null) {
-			return true;
-		}
-		return false;
-	}
-
-	public CustomEventManager getEventManager() {
-		return customevent;
-	}
-
+ 
 	public AdminSubCommandRegistry getAdminSubCommandManager() {
 		return admincmdmanager;
 	}
@@ -415,6 +424,7 @@ public class UltimateJobs extends JavaPlugin {
 			config.load();
 			messages.load();
 			command.load();
+			getLogger().info("§bLoaded Configs...");
 		} catch (IOException e) {
 			getLogger().warning("§cFailed to create Config Files");
 			e.printStackTrace();

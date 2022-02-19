@@ -150,6 +150,10 @@ public class Job {
 	public List<String> getLevelCommands(int i) {
 		return cf.getStringList("LEVELS." + i + ".Commands");
 	}
+	
+	public double getMultiOfLevel(int i) {
+		return cf.getDouble("LEVELS." + i + ".EarnMore");
+	}
 
 	public List<String> getPermissionsLore() { 
 		return cf.getStringList("PermLore");
@@ -163,7 +167,7 @@ public class Job {
 		return cf.getString("Permission") != null;
 	}
 
-	public boolean hasByoassPermission() {
+	public boolean hasBypassPermission() {
 		return cf.getString("BypassPermission") != null;
 	}
 	
@@ -241,6 +245,10 @@ public class Job {
 
 	public double getRewardOf(String id) {
 		return cf.getDouble("IDS." + id + ".Money");
+	}
+	
+	public boolean hasVaultReward(String id) {
+		return getRewardOf(id) != 0;
 	}
 
 	public List<String> getCustomitems() {

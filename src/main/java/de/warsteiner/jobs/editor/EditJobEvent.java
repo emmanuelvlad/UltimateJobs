@@ -111,18 +111,18 @@ public class EditJobEvent implements Listener {
 				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Permissions-Message in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
 				plugin.getEditorManager().getList().put(p, "JOB_PERM_MESSAGE");
 				plugin.getEditorManager().getWhichList().put(p, job);
-			}  else if (display.contains("Permissions Lore")) {
-				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
-				p.closeInventory();
-				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Permissions-Lore §7in the chat§7. §7Use §c§l<n> §7to add a Line! §8(§7Use §ccancel §7to cancel the progress§8)");
-				plugin.getEditorManager().getList().put(p, "JOB_PERM_LORE");
-				plugin.getEditorManager().getWhichList().put(p, job);
 			}  else if (display.contains("Job Description")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				plugin.getEditorMenuManager().openEditorForLists(p, job, job.getLore(), "Lore");
 			} else if (display.contains("Worlds")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				plugin.getEditorMenuManager().openEditorForLists(p, job, job.getWorlds(), "Worlds");
+			} else if (display.contains("Permissions Lore")) {
+				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+				plugin.getEditorMenuManager().openEditorForLists(p, job, job.getPermissionsLore(), "PermLore");
+			}  else if (display.contains("Stats Lore")) {
+				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+				plugin.getEditorMenuManager().openEditorForLists(p, job, job.getStatsMessage(), "Stats");
 			}
 			 
 

@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.manager;
  
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,17 @@ public class JobsEditorManager {
 
 	public HashMap<Player, String> getList() {
 		return list;
+	}
+	
+	public ArrayList<String> getBlocked() {
+		ArrayList<String> a = new ArrayList<String>();
+		
+		a.add("JOB_LIST_WORLDS_ADD");
+		a.add("JOB_LIST_LORE_ADD");
+		a.add("JOB_LIST_PERMLORE_ADD");
+		a.add("JOB_LIST_STATS_ADD");
+		
+		return a ;
 	}
 	
 	public boolean isInList(Player player) {

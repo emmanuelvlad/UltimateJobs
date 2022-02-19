@@ -226,7 +226,7 @@ public class GuiManager {
 				meta.setDisplayName("§8< §7Bypass Permission §8>");
 				
 				ArrayList<String> lore = new ArrayList<String>();
-				boolean has = job.hasByoassPermission();
+				boolean has = job.hasBypassPermission();
 				
 				String wh = null;
 				
@@ -326,6 +326,27 @@ public class GuiManager {
 				lore.add("§7");
 				
 				for(String line : job.getWorlds()) {
+					lore.add(up.toHex(line).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§"));
+				}
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "IRON_SWORD");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Stats Lore §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				
+				lore.add("§8> §7Current§8: §b");
+				lore.add("§7");
+				
+				for(String line : job.getStatsMessage()) {
 					lore.add(up.toHex(line).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§"));
 				}
 				

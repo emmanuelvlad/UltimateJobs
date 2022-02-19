@@ -2,15 +2,16 @@ package de.warsteiner.jobs.events;
 
 import java.util.UUID;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import de.warsteiner.datax.utils.Messages;
+ 
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.manager.PlayerDataManager;
 import de.warsteiner.jobs.manager.PlayerManager;
 
@@ -20,7 +21,8 @@ public class PlayerExistEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event) {
-		plugin.getExecutor().execute(() -> {
+		plugin.getExecutor().execute(() -> { 
+			YamlConfiguration config = UltimateJobs.getPlugin().getMainConfig().getConfig();
 			PlayerDataManager pl = UltimateJobs.getPlugin().getPlayerDataModeManager();
 			Player player = event.getPlayer();
 			PlayerManager m = plugin.getPlayerManager();
@@ -29,16 +31,26 @@ public class PlayerExistEvent implements Listener {
 
 			if (pl.ExistPlayer("" + UUID) == false) {
 				pl.createPlayer("" + UUID, name);
-
+ 
 			}
 
 			m.loadData(name, UUID);
+			
+			JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(""+player.getUniqueId()); 
+			
+			if(config.getBoolean("EnabledDefaultJobs")) {
+				for(String job :  config.getStringList("DefaultJobs")) {
+					if(!pl.getOfflinePlayerOwnedJobs(""+UUID).contains(job)) {
+						plugin.getPlayerManager().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
+					}
+				}
+			}
 
 			if (player.hasPermission("ultimatejobs.check.updates")) {
 
 				if (plugin.isLatest != null && !plugin.isLatest.equalsIgnoreCase("LATEST")) {
 
-					player.sendMessage(Messages.prefix
+					player.sendMessage(plugin.getAPI().getPrefix()
 							+ "§7There is a new Version of §9UltimateJobs §7available! Download now: https://www.spigotmc.org/resources/ultimatejobs-reloaded.99198/");
 
 				}
@@ -59,10 +71,7 @@ public class PlayerExistEvent implements Listener {
 
 			pl.savePlayer(plugin.getPlayerManager().getOnlineJobPlayers().get("" + UUID), "" + UUID);
 			m.removePlayerFromCache("" + UUID);
-
-			if (plugin.getEventManager().getLevelQueue().containsKey("" + player.getUniqueId())) {
-				plugin.getEventManager().getLevelQueue().remove("" + player.getUniqueId());
-			}
+ 
 		});
 	}
 

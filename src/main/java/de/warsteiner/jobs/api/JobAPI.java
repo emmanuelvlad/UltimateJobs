@@ -56,6 +56,12 @@ public class JobAPI {
 	public void playSound(String ty, Player player) {
 		YamlConfiguration config = plugin.getMainConfig().getConfig();
 		if (config.contains("Sounds." + ty + ".Sound")) {
+			
+			if( Sound.valueOf(config.getString("Sounds." + ty + ".Sound")) == null) {
+				plugin.getLogger().warning("§cFailed to get Sound from : "+config.getString("Sounds." + ty + ".Sound"));
+				return;
+			}
+			
 			Sound sound = Sound.valueOf(config.getString("Sounds." + ty + ".Sound"));
 			int vol = config.getInt("Sounds." + ty + ".Volume");
 			int pitch = config.getInt("Sounds." + ty + ".Pitch");
@@ -144,13 +150,15 @@ public class JobAPI {
 		for (int i = 0; i < files.length; i++) {
 			String name = files[i].getName();
 			File file = files[i];
-
-			if (file.isFile()) {
+			plugin.getLogger().info("§aChecking File "+name+"...");
+			if (file.isFile()) {  
 				YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 				Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
 				plugin.getLoaded().add(job.getID());
 				plugin.getID().put(job.getID(), job);
-			} else if (file.isDirectory()) {
+				plugin.getLogger().info("§aLoaded Job "+job.getID()+" from File "+name+"!");
+			} else {
+				plugin.getLogger().warning("§cFound File in Jobs Folder which isnt a real Job!");
 			}
 		}
 	}
@@ -164,6 +172,8 @@ public class JobAPI {
 
 		plugin.getLoaded().add(job.getID());
 		plugin.getID().put(job.getID(), job);
+		
+		plugin.getLogger().info("§aLoaded Job "+job.getID()+" from File "+file.getName()+"!");
 
 		return job;
 	}
@@ -198,7 +208,7 @@ public class JobAPI {
 	}
 
 	public List<String> canGetJobWithSubOptions(Player player, Job job) {
-		if (job.hasNotQuestCon() == true && plugin.isInstalledNotQuest()
+		if (job.hasNotQuestCon() == true && plugin.isInstalled("NotQuests")
 				&& !plugin.getNotQuestManager().canHaveJob(player, job)) {
 			return job.getNotQuestConLore();
 		}
@@ -213,10 +223,10 @@ public class JobAPI {
 	}
 
 	public boolean canByPass(Player player, Job job) {
-		if (job.hasByoassPermission()) {
+		if (job.hasBypassPermission()) {
 			return player.hasPermission(job.getByPassPermission());
 		}
-		if (job.hasByPassNotQuestCon() == true && plugin.isInstalledNotQuest()) {
+		if (job.hasByPassNotQuestCon() == true && plugin.isInstalled("NotQuests")) {
 			return plugin.getNotQuestManager().canBypassJob(player, job);
 		}
 		return false;
@@ -259,7 +269,7 @@ public class JobAPI {
 	}
 
 	public String canWorkInRegion(Player player, Job j, String st) {
-		if (plugin.isInstalledWorldGuard()) {
+		if (plugin.isInstalled("WorldGuard")) {
 			String ac = "" + j.getAction();
 			String flag = ac.toLowerCase() + "_action";
 			return WorldGuardManager.checkFlag(player.getLocation(), flag, player, st);
