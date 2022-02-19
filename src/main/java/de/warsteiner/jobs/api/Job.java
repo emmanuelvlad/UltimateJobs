@@ -1,5 +1,8 @@
 package de.warsteiner.jobs.api;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.boss.BarColor;
@@ -22,8 +25,9 @@ public class Job {
 	private List<String> worlds;
 	private List<String> lore;
 	private List<String> idslist;
-
-	public Job(String id, YamlConfiguration cfg) {
+	private File file;
+	
+	public Job(String id, YamlConfiguration cfg, File f) {
 		idt = id;
 		cf = cfg;
 		display = cfg.getString("Display");
@@ -36,9 +40,101 @@ public class Job {
 		worlds = cfg.getStringList("Worlds");
 		lore = cfg.getStringList("Lore");
 		idslist = cfg.getStringList("IDS.List");
-
+		file = f;
+	}
+	
+	public void updateList(String mode, List<String> list) {
+		cf.set(mode, list);
+		save();
+	}
+	
+	public void updateDesc(ArrayList<String> d) {
+		cf.set("Lore", d);
+		save();
+	}
+	
+	public void updatePermissionLore(ArrayList<String> d) {
+		cf.set("PermLore", d);
+		save();
+	}
+	
+	public void updatePermissionMessage(String d) {
+		cf.set("PermMessage", d);
+		save();
+	}
+	
+	public void updatePermission(String value) {
+		if(value.toLowerCase().equalsIgnoreCase("none")) {
+			cf.set("Permission", null);
+			cf.set("PermLore", null);
+			cf.set("PermMessage", null);
+			save();
+		} else {
+			
+			ArrayList<String> example = new ArrayList<String>();
+			
+			example.add("§7This is a example Lore");
+			
+			cf.set("Permission", value);
+			cf.set("PermLore", example);
+			cf.set("PermMessage", "<prefix> &7This is a example Message!");
+			save();
+		}
+	}
+	
+	public void updateBypassPermission(String value) {
+		if(value.toLowerCase().equalsIgnoreCase("none")) {
+			cf.set("BypassPermission", null);
+			save();
+		} else {
+			cf.set("BypassPermission", value);
+			save();
+		}
+	}
+	
+	public void updateSlot(String d) {
+		cf.set("Slot", Integer.valueOf(d));
+		save();
+	}
+	
+	public void updatePrice(String d) {
+		cf.set("Price", Integer.valueOf(d));
+		save();
+	}
+	
+	public void updateIcon(String d) {
+		cf.set("Material", d);
+		save();
+	}
+	
+	
+	public void updateDisplayName(String d) {
+		cf.set("Display", d);
+		save();
+	}
+	
+	public void updateJobBarColor(String action) {
+		cf.set("ColorOfBossBar", action);
+		save();
+	}
+	
+	public void updateJobAction(String action) {
+		cf.set("Action", action);
+		save();
+	}
+	
+	public void save() {
+		try {
+			cf.save(file);
+		} catch (IOException e) { 
+			e.printStackTrace();
+		}
 	}
 
+	public File getFile() {
+		return file;
+	}
+	
 	public BarColor getBarColor() {
 		return BarColor.valueOf(cf.getString("ColorOfBossBar"));
 	}
@@ -52,7 +148,7 @@ public class Job {
 	}
 
 	public List<String> getLevelCommands(int i) {
-		return cf.getStringList("LEVELS." + i + ".Command");
+		return cf.getStringList("LEVELS." + i + ".Commands");
 	}
 
 	public List<String> getPermissionsLore() { 

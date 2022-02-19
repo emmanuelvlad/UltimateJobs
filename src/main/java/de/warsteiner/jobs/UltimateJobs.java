@@ -14,7 +14,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.warsteiner.datax.SimpleAPI; 
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.utils.files.PlayerDataFile;
 import de.warsteiner.datax.utils.files.YamlConfigFile;
 import de.warsteiner.datax.utils.other.UpdateChecker;
@@ -39,8 +39,10 @@ import de.warsteiner.jobs.command.playercommand.LeaveSub;
 import de.warsteiner.jobs.command.playercommand.LimitSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.SubHelp;
+import de.warsteiner.jobs.editor.EditJobEvent;
+import de.warsteiner.jobs.editor.EditListEvent;
+import de.warsteiner.jobs.editor.EditorClickEvent;
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
-import de.warsteiner.jobs.inventorys.EditorClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
 import de.warsteiner.jobs.jobs.JobActionAdvancement;
@@ -57,6 +59,8 @@ import de.warsteiner.jobs.jobs.JobActionShear;
 import de.warsteiner.jobs.manager.ClickManager;
 import de.warsteiner.jobs.manager.GuiManager;
 import de.warsteiner.jobs.manager.JobWorkManager;
+import de.warsteiner.jobs.manager.JobsEditorManager;
+import de.warsteiner.jobs.manager.JobsEditorMenuManager;
 import de.warsteiner.jobs.manager.PlayerDataManager;
 import de.warsteiner.jobs.manager.PlayerManager;
 import de.warsteiner.jobs.manager.SQLPlayerManager;
@@ -66,7 +70,7 @@ import de.warsteiner.jobs.utils.LogType;
 import de.warsteiner.jobs.utils.PluginModule;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry;
 import de.warsteiner.jobs.utils.cevents.CustomEventManager;
-import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry; 
+import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry;
 import net.milkbowl.vault.economy.Economy;
 
 public class UltimateJobs extends JavaPlugin {
@@ -75,7 +79,7 @@ public class UltimateJobs extends JavaPlugin {
 	private Economy econ;
 	private PlayerManager pm;
 	private LevelAPI levels;
-	private ArrayList<Job> loaded;
+	private ArrayList<String> loaded;
 	private HashMap<String, Job> ld;
 	private de.warsteiner.jobs.manager.GuiManager gui;
 	private YamlConfigFile config;
@@ -93,6 +97,8 @@ public class UltimateJobs extends JavaPlugin {
 	private PlayerDataFile datafile;
 	private JobWorkManager work;
 	private YamlConfigFile command;
+	private JobsEditorManager editor;
+	private JobsEditorMenuManager ed_menu;
 
 	public String isLatest = null;
 
@@ -123,7 +129,7 @@ public class UltimateJobs extends JavaPlugin {
 		getLogger().info("§bLoaded Vault for UltimateJobs");
 
 		SimpleAPI.getPlugin().getModuleRegistry().getModuleList().add(new PluginModule());
-		
+
 		api.loadJobs(getLogger());
 
 		// basic events
@@ -134,11 +140,13 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new AreYouSureMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerLevelEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerRewardCommandEvent(), this);
- 
+
 		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
- 
+
 		Bukkit.getPluginManager().registerEvents(new EditorClickEvent(), this);
-		
+		Bukkit.getPluginManager().registerEvents(new PlayerEditorChatEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new EditJobEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new EditListEvent(), this);
 
 		// job events
 		loadEvents();
@@ -162,7 +170,7 @@ public class UltimateJobs extends JavaPlugin {
 		if (getMessages().getConfig().getBoolean("Reward.Enable_BossBar")) {
 			BossBarHandler.startSystemCheck();
 		}
- 
+
 		pm.startSave();
 
 		customevent.startSystemCheck();
@@ -181,7 +189,6 @@ public class UltimateJobs extends JavaPlugin {
 			});
 		}
 
-		 
 	}
 
 	public void onDisable() {
@@ -225,32 +232,44 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new EditorSub());
 	}
 
-	  public void loadClasses() {
-		    loaded = new ArrayList<>();
-		    pm = new PlayerManager(plugin);
-		    ld = new HashMap<>();
-		    levels = new LevelAPI(plugin, this.messages.getConfig());
-		   executor = Executors.newFixedThreadPool(this.config.getConfig().getInt("ExecutorServiceThreads"));
-		    cmdmanager = new SubCommandRegistry();
-		    api = new JobAPI(plugin, messages.getConfig());
-		    gui = new GuiManager(plugin);
-		    click = new ClickManager(plugin, this.config.getConfig(), this.gui);
-		    admincmdmanager = new AdminSubCommandRegistry();
-		    customevent = new CustomEventManager();
-		    notquest = new NotQuestManager();
-		    work = new JobWorkManager(plugin, this.api);
-		   datafile = new PlayerDataFile("jobs");
-		   sql = new SQLPlayerManager();
-		    yml = new YMLPlayerManager();
-		    if (SimpleAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
-		      getSQLPlayerManager().createtables();
-		      getLogger().info("SQL for UltimateJobs...");
-		    } else {
-		      datafile.create();
-		      getLogger().info("YML for UltimateJobs...");
-		    } 
-		    pmanager = new PlayerDataManager(yml, sql);
-		  }
+	public void loadClasses() {
+		loaded = new ArrayList<>();
+		pm = new PlayerManager(plugin);
+		ld = new HashMap<>();
+		levels = new LevelAPI(plugin, this.messages.getConfig());
+		executor = Executors.newFixedThreadPool(this.config.getConfig().getInt("ExecutorServiceThreads"));
+		cmdmanager = new SubCommandRegistry();
+		api = new JobAPI(plugin, messages.getConfig());
+		gui = new GuiManager(plugin);
+		click = new ClickManager(plugin, this.config.getConfig(), this.gui);
+		admincmdmanager = new AdminSubCommandRegistry();
+		customevent = new CustomEventManager();
+		notquest = new NotQuestManager();
+		work = new JobWorkManager(plugin, this.api);
+
+		editor = new JobsEditorManager();
+		ed_menu = new JobsEditorMenuManager(plugin);
+
+		datafile = new PlayerDataFile("jobs");
+		sql = new SQLPlayerManager();
+		yml = new YMLPlayerManager();
+		if (SimpleAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
+			getSQLPlayerManager().createtables();
+			getLogger().info("SQL for UltimateJobs...");
+		} else {
+			datafile.create();
+			getLogger().info("YML for UltimateJobs...");
+		}
+		pmanager = new PlayerDataManager(yml, sql);
+	}
+	
+	public JobsEditorManager getEditorManager() {
+		return editor;
+	}
+	
+	public JobsEditorMenuManager getEditorMenuManager() {
+		return ed_menu;
+	}
 
 	public void doLog(LogType t, String m) {
 		if (config.getConfig().getBoolean("Debug")) {
@@ -266,7 +285,7 @@ public class UltimateJobs extends JavaPlugin {
 	public JobWorkManager getJobWorkManager() {
 		return work;
 	}
-	
+
 	public PlayerDataFile getPlayerDataFile() {
 		return datafile;
 	}
@@ -426,12 +445,12 @@ public class UltimateJobs extends JavaPlugin {
 	public YamlConfigFile getMessages() {
 		return messages;
 	}
-	
+
 	public YamlConfigFile getCommandConfig() {
 		return command;
 	}
 
-	public ArrayList<Job> getLoaded() {
+	public ArrayList<String> getLoaded() {
 		return loaded;
 	}
 

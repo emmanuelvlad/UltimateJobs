@@ -18,18 +18,18 @@ public class ClickManager {
 	private UltimateJobs plugin;
 	private JobAPI api = UltimateJobs.getPlugin().getAPI();
 	private PluginAPI up = SimpleAPI.getInstance().getAPI();
-	private YamlConfiguration cfg;
+	private YamlConfiguration cfg2;
 	private GuiManager gui;
 
 	public ClickManager(UltimateJobs plugin, YamlConfiguration cfg, GuiManager gui) {
 		this.plugin = plugin;
 		this.gui = gui;
-		this.cfg = cfg;
+		this.cfg2 = cfg;
 	}
 
 	public void executeCustomItemInSubMenu(Job job, String display, final Player player, String prefix,
 			YamlConfiguration cf) {
-		String item = api.isCustomItem(display, player, prefix, cf);
+		String item = api.isCustomItem(display, prefix, cf);
 		JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());
 		if (!item.equalsIgnoreCase("NOT_FOUND")) {
 			String action = cf.getString(prefix + "." + item + ".Action");
@@ -61,7 +61,7 @@ public class ClickManager {
 		new BukkitRunnable() {
 			public void run() {
 				gui.setCustomitems(player, player.getName(), player.getOpenInventory(),
-						"Main_Custom.", cfg.getStringList("Main_Custom.List"), name, cfg);
+						"Main_Custom.", cfg2.getStringList("Main_Custom.List"), name, cfg2);
 				gui.setMainInventoryJobItems(player.getOpenInventory(), player, name);
 			}
 		}.runTaskLater(plugin, 1);
@@ -71,17 +71,17 @@ public class ClickManager {
 
 	public void executeJobClickEvent(String display, Player player) {
 
-		List<Job> jobs = plugin.getLoaded();
+		List<String> jobs = plugin.getLoaded();
 
 		JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());
 
 		for (int i = 0; i <= jobs.size() - 1; i++) {
-			Job j = jobs.get(i);
+			Job j = plugin.getJobCache().get(jobs.get(i));
 			String dis = j.getDisplay();
 			if (display.equalsIgnoreCase(dis)) {
 				String job = j.getID();
 
-				String name = cfg.getString("Main_Name");
+				String name = cfg2.getString("Main_Name");
 				if (api.canBuyWithoutPermissions(player, j)) {
 					if (jb.ownJob(job) == true || api.canByPass(player, j) == true) {
 
@@ -106,7 +106,7 @@ public class ClickManager {
 						double money = j.getPrice();
 						if (plugin.getEco().getBalance(player) >= money) {
 							
-							if(cfg.getBoolean("Jobs.AreYouSureGUIonBuy")) {
+							if(cfg2.getBoolean("Jobs.AreYouSureGUIonBuy")) {
 								gui.createAreYouSureGUI(player, j);
 								return;
 							} else {
@@ -142,7 +142,7 @@ public class ClickManager {
 	
 		String title = player.getOpenInventory().getTitle();
 		
-		if(title.equalsIgnoreCase(up.toHex(cfg.getString("Main_Name")).replaceAll("&", "§"))) {
+		if(title.equalsIgnoreCase(up.toHex(cfg2.getString("Main_Name")).replaceAll("&", "§"))) {
 			gui.UpdateMainInventory(player, title);
 		} else {
 			gui.createMainGUIOfJobs(player);
@@ -152,7 +152,7 @@ public class ClickManager {
 	}
 
 	public void executeCustomItem(String display, final Player player, String name, YamlConfiguration cf) {
-		String item = api.isCustomItem(display, player, name, cf);
+		String item = api.isCustomItem(display, name, cf);
 		JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());
 		if (!item.equalsIgnoreCase("NOT_FOUND")) {
 			String action = cf.getString(name+"." + item + ".Action");
@@ -166,7 +166,7 @@ public class ClickManager {
 				if (jb.getCurrentJobs().size() >= 1) { 
 					api.playSound("LEAVE_ALL", player);
 					jb.updateCurrentJobs(null);
-					gui.UpdateMainInventory(player, cfg.getString("Main_Name"));
+					gui.UpdateMainInventory(player, cfg2.getString("Main_Name"));
 					player.sendMessage(api.getMessage("Leave_All"));
 				} else {
 					player.sendMessage(api.getMessage("Already_Left_All"));

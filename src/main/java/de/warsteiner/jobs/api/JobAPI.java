@@ -38,20 +38,20 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 public class JobAPI {
-	
-	  private UltimateJobs plugin;
-	  
-	  private YamlConfiguration tr;
-	  
-	  private PluginAPI up = SimpleAPI.getInstance().getAPI();
-	  
-	  public HashMap<String, Date> lastworked_list;
-	  
-	  public JobAPI(UltimateJobs plugin, YamlConfiguration tr) {
-	    this.lastworked_list = new HashMap<>();
-	    this.tr = tr;
-	    this.plugin = plugin;
-	  }
+
+	private UltimateJobs plugin;
+
+	private YamlConfiguration tr;
+
+	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+
+	public HashMap<String, Date> lastworked_list;
+
+	public JobAPI(UltimateJobs plugin, YamlConfiguration tr) {
+		this.lastworked_list = new HashMap<>();
+		this.tr = tr;
+		this.plugin = plugin;
+	}
 
 	public void playSound(String ty, Player player) {
 		YamlConfiguration config = plugin.getMainConfig().getConfig();
@@ -103,8 +103,7 @@ public class JobAPI {
 				if (lastworked_list.containsKey(p.getName()))
 					lastworked_list.remove(p.getName());
 				lastworked_list.put(p.getName(), isago5seconds);
-				double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore(UUID, job, level),
-						need);
+				double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore(UUID, job, level), need);
 				BarColor color = job.getBarColor();
 				String message = up.toHex(tr.getString("Reward.BossBar").replaceAll("<prefix>", getPrefix())
 						.replaceAll("<exp>", Format(all_exp)).replaceAll("<level_name>", job.getLevelDisplay(level))
@@ -138,24 +137,43 @@ public class JobAPI {
 	public void loadJobs(Logger logger) {
 		File dataFolder = new File(plugin.getMainConfig().getConfig().getString("LoadJobsFrom"));
 		File[] files = dataFolder.listFiles();
+
+		plugin.getLoaded().clear();
+		plugin.getID().clear();
+
 		for (int i = 0; i < files.length; i++) {
 			String name = files[i].getName();
 			File file = files[i];
+
 			if (file.isFile()) {
 				YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-				Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file));
-				plugin.getLoaded().add(job);
+				Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
+				plugin.getLoaded().add(job.getID());
 				plugin.getID().put(job.getID(), job);
 			} else if (file.isDirectory()) {
 			}
 		}
 	}
 
+	public Job loadSingleJob(Logger logger, File file, Job oldjob) {
+		YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+		Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
+
+		plugin.getLoaded().remove(oldjob.getID());
+		plugin.getID().remove(oldjob.getID());
+
+		plugin.getLoaded().add(job.getID());
+		plugin.getID().put(job.getID(), job);
+
+		return job;
+	}
+
 	public Job isSettingsGUI(String menu) {
-		for (Job j : plugin.getLoaded()) {
+		for (String list : plugin.getLoaded()) {
+			Job j = plugin.getJobCache().get(list);
 			String dis = j.getDisplay();
-			String fin = up.toHex(plugin.getMainConfig().getConfig().getString("Settings_Name")
-					.replaceAll("<job>", dis).replaceAll("&", "§"));
+			String fin = up.toHex(plugin.getMainConfig().getConfig().getString("Settings_Name").replaceAll("<job>", dis)
+					.replaceAll("&", "§"));
 			if (fin.equalsIgnoreCase(menu))
 				return j;
 		}
@@ -169,10 +187,10 @@ public class JobAPI {
 		return false;
 	}
 
-	public String isCustomItem(String display, Player player, String path, YamlConfiguration cf) {
+	public String isCustomItem(String display, String path, YamlConfiguration cf) {
 		List<String> custom_items = cf.getStringList(path + ".List");
 		for (String b : custom_items) {
-			String dis = up.toHex(cf.getString(path + "." + path + ".Display").replaceAll("&", "§"));
+			String dis = up.toHex(cf.getString(path + "." + b + ".Display").replaceAll("&", "§"));
 			if (display.equalsIgnoreCase(dis))
 				return b;
 		}
@@ -262,13 +280,16 @@ public class JobAPI {
 
 	public ArrayList<String> getJobsInListAsID() {
 		ArrayList<String> list = new ArrayList<>();
-		for (Job job : plugin.getLoaded())
-			list.add(job.getID().toLowerCase());
+		for (String l : plugin.getLoaded()) {
+			Job j = plugin.getJobCache().get(l);
+			list.add(j.getID().toLowerCase());
+		}
 		return list;
 	}
 
 	public Job isJobFromConfigID(String id) {
-		for (Job job : plugin.getLoaded()) {
+		for (String list : plugin.getLoaded()) {
+			Job job = plugin.getJobCache().get(list);
 			String cfg_id = job.getID();
 			if (cfg_id.equalsIgnoreCase(id))
 				return job;

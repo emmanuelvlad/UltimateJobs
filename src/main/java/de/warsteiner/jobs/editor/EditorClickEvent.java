@@ -1,5 +1,6 @@
-package de.warsteiner.jobs.inventorys;
+package de.warsteiner.jobs.editor;
  
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,18 +49,22 @@ public class EditorClickEvent  implements Listener {
 			
 			Job j = null;
 			
-			for(Job job : plugin.getLoaded()) {
+			for (String list : plugin.getLoaded()) {
+				Job job = plugin.getJobCache().get(list);
 				if(job.getDisplay().equalsIgnoreCase(display)) {
 					j = job;
 				}
 			}
 			
 			if(j != null) {
-				p.sendMessage("yes");
+				
+				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+				
+				plugin.getGUI().EditJobMenu(p, j);
 			}
 			
 			e.setCancelled(true);
-		}
+		}  
 		
 	}
 }

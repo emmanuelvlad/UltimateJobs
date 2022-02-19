@@ -46,7 +46,8 @@ public class AreYouSureMenuClickEvent implements Listener {
 		
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
  
-		for(Job job : plugin.getLoaded()) {
+		for (String list : plugin.getLoaded()) {
+			Job job = plugin.getJobCache().get(list);
 			String mm = job.getDisplay();
 			String newname = up.toHex(name).replaceAll("<job>", mm).replaceAll("&", "§");
 			if(e.getView().getTitle().equalsIgnoreCase(newname)) {

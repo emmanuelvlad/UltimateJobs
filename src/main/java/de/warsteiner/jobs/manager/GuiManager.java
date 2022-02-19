@@ -35,6 +35,326 @@ public class GuiManager {
 		this.plugin = plugin;
 	}
 	
+	public void EditJobMenu(Player player, Job job) {  
+		String name = "§6Job Settings";
+		gm.openInventory(player, 5, name);
+		
+		InventoryView inv = player.getOpenInventory();
+		
+		plugin.getExecutor().execute(() -> { 
+			
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "GRAY_STAINED_GLASS_PANE");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8-/-");
+				  
+				it.setItemMeta(meta);
+				  
+				inv.setItem(0, it); 
+				inv.setItem(1, it); 
+				inv.setItem(2, it); 
+				inv.setItem(3, it); 
+				inv.setItem(4, it); 
+				inv.setItem(5, it); 
+				inv.setItem(6, it); 
+				inv.setItem(7, it); 
+				inv.setItem(8, it); 
+				inv.setItem(36, it); 
+				inv.setItem(37, it); 
+				inv.setItem(38, it); 
+				inv.setItem(39, it);  
+				inv.setItem(41, it);
+				inv.setItem(42, it); 
+				inv.setItem(43, it); 
+				inv.setItem(44, it); 
+	 
+			}
+			
+			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "BEACON");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7"+job.getID()+" §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				  
+				lore.add("§8> §7You edit the Job "+job.getDisplay());
+				
+				meta.setLore(lore);
+				  
+				it.setItemMeta(meta);
+				   
+				inv.setItem(4, it); 
+	 
+			}
+			
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "RED_DYE");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §cGo Back §8>");
+				  
+				it.setItemMeta(meta); 
+				
+				inv.setItem(40, it); 
+			}
+			
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "PAPER");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Change Job Action §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				  
+				lore.add("§8> §7Current§8: §b"+job.getAction());
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), job.getIcon());
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Change Job Icon §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				  
+				lore.add("§8> §7Current§8: §b"+job.getIcon());
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "CHEST");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Job Description §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				
+				lore.add("§8> §7Current§8: §b");
+				lore.add("§7");
+				
+				for(String line : job.getLore()) {
+					lore.add(up.toHex(line).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§"));
+				}
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "NAME_TAG");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Change Job Display §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				  
+				lore.add("§8> §7Current§8: §b"+job.getDisplay());
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), job.getBarColor()+"_DYE");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Change BossBar Color §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				  
+				lore.add("§8> §7Current§8: §b"+job.getBarColor());
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "LEVER");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Change Job Slot §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				  
+				lore.add("§8> §7Current§8: §b"+job.getSlot());
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "EMERALD");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Change Job Price §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				  
+				lore.add("§8> §7Current§8: §b"+job.getPrice());
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "NETHER_STAR");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Bypass Permission §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				boolean has = job.hasByoassPermission();
+				
+				String wh = null;
+				
+				if(has) {
+					wh = "§aYes";
+				} else {
+					wh = "§cNone";
+				}
+				
+				lore.add("§8> §7Has§8: §b"+wh);
+				if(has) {
+					lore.add("§8> §7Current§8: §b"+job.getByPassPermission());
+				}
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "ENDER_PEARL");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Job Permission §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				boolean has = job.hasPermission();
+				
+				String wh = null;
+				
+				if(has) {
+					wh = "§aYes";
+				} else {
+					wh = "§cNone";
+				}
+				
+				lore.add("§8> §7Has§8: §b"+wh);
+				if(has) {
+					lore.add("§8> §7Current§8: §b"+job.getPermission());
+				}
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			} 
+			if(job.hasPermission()) {
+				if(inv.getTitle().equalsIgnoreCase(name)) {
+					ItemStack it = im.createItemStack(player.getName(), "BOOK");
+					ItemMeta meta = it.getItemMeta();
+					
+					meta.setDisplayName("§8< §7Permissions Lore §8>");
+					
+					ArrayList<String> lore = new ArrayList<String>(); 
+					lore.add("§8> §7Current§8:");
+					lore.add("§8");
+					for(String line : job.getPermissionsLore()) {
+						lore.add(up.toHex(line).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§"));
+					}
+					
+					meta.setLore(lore);
+					
+					it.setItemMeta(meta); 
+					
+					items.add(it);
+				}
+				if(inv.getTitle().equalsIgnoreCase(name)) {
+					ItemStack it = im.createItemStack(player.getName(), "TORCH");
+					ItemMeta meta = it.getItemMeta();
+					
+					meta.setDisplayName("§8< §7Permissions Message §8>");
+					
+					ArrayList<String> lore = new ArrayList<String>(); 
+					lore.add("§8> §7Current§8:"); 
+					lore.add("§7");
+					lore.add(up.toHex(job.getPermMessage()).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§"));
+				  
+					meta.setLore(lore);
+					
+					it.setItemMeta(meta); 
+					
+					items.add(it);
+				}
+			}
+			
+			if(inv.getTitle().equalsIgnoreCase(name)) {
+				ItemStack it = im.createItemStack(player.getName(), "GRASS_BLOCK");
+				ItemMeta meta = it.getItemMeta();
+				
+				meta.setDisplayName("§8< §7Worlds §8>");
+				
+				ArrayList<String> lore = new ArrayList<String>();
+				
+				lore.add("§8> §7List§8: §b");
+				lore.add("§7");
+				
+				for(String line : job.getWorlds()) {
+					lore.add(up.toHex(line).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§"));
+				}
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta); 
+				
+				items.add(it);
+			}
+			
+			int size = items.size();
+			
+			for (int i = 0; i < size; i++) {
+
+				if (size >= i) {
+					
+					ItemStack item = items.get(i);
+					
+					int slot = 9 + i;
+					
+					inv.setItem(slot, item);
+					
+				}
+			}
+			
+		});
+		 
+	}
+	
 	public void EditorChooseJob(Player player, boolean sound) {  
 		String name = "§6Jobs Editor";
 		gm.openInventory(player, 5, name);
@@ -86,7 +406,7 @@ public class GuiManager {
 				inv.setItem(40, it); 
 			}
 			
-			ArrayList<Job> jobs = plugin.getLoaded();
+			ArrayList<String> jobs = plugin.getLoaded();
 			int size = jobs.size();
 			
 			if(size == 0) {
@@ -107,7 +427,7 @@ public class GuiManager {
 
 					if (size >= i) {
 						
-						Job job = jobs.get(i);
+						Job job = plugin.getJobCache().get(jobs.get(i));
 						
 						ItemStack it = im.createItemStack(player.getName(), job.getIcon());
 						ItemMeta meta = it.getItemMeta();
@@ -258,10 +578,12 @@ public class GuiManager {
 			String need = up.toHex(name).replaceAll("&", "§");
 			if (title.equalsIgnoreCase(need)) {
 
-				ArrayList<Job> jobs = plugin.getLoaded();
+				ArrayList<String> jobs = plugin.getLoaded();
 
-				for (Job j : jobs) {
+				for (String li : jobs) {
 
+					Job j = plugin.getJobCache().get(li);;
+					
 					String display = up.toHex(j.getDisplay().replaceAll("&", "§"));
 					int slot = j.getSlot();
 					List<String> lore = j.getLore();
