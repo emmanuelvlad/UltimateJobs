@@ -60,7 +60,30 @@ public class EditorClickEvent  implements Listener {
 				
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				
-				plugin.getGUI().EditJobMenu(p, j);
+				plugin.getEditorMenuManager().EditJobMenu(p, j);
+			}
+			
+			e.setCancelled(true);
+		}   else if(e.getView().getTitle().equalsIgnoreCase("§eJobs Levels Editor")) {
+			
+			if(display.equalsIgnoreCase("§8< §cClose §8>")) {
+				p.closeInventory();
+			}
+			
+			Job j = null;
+			
+			for (String list : plugin.getLoaded()) {
+				Job job = plugin.getJobCache().get(list);
+				if(job.getDisplay().equalsIgnoreCase(display)) {
+					j = job;
+				}
+			}
+			
+			if(j != null) {
+				
+				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+				
+				plugin.getEditorMenuManager().EditLevelsList(p, j, 1);
 			}
 			
 			e.setCancelled(true);

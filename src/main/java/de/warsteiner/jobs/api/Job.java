@@ -199,12 +199,52 @@ public class Job {
 		return cf.contains("ReqNotQuestCond");
 	}
 	
+	public void updateReqNotQuestsCon(String value) {
+		if(value.toLowerCase().equalsIgnoreCase("none")) {
+			cf.set("ReqNotQuestCond", null);
+			cf.set("ReqNotQuestCondLore", null); 
+			save();
+		} else {
+			
+			ArrayList<String> example = new ArrayList<String>();
+			ArrayList<String> example_2 = new ArrayList<String>();
+			
+			example.add("§7This is a example Lore");
+			example_2.add("Condition1");
+			example_2.add("Condition2");
+			
+			cf.set("ReqNotQuestCond", example_2);
+			cf.set("ReqNotQuestCondLore", example); 
+			save();
+		}
+	}
+	
 	public List<String> getNotQuestCon() {
 		return cf.getStringList("ReqNotQuestCond");
 	}
 	
 	public List<String> getNotQuestConLore() {
 		return cf.getStringList("ReqNotQuestCondLore");
+	}
+	
+	public boolean hasAlonsoLevelsReq() {
+		return cf.contains("AlonsoLevelReq");
+	}
+	
+	public int getAlonsoLevelsReq() {
+		return cf.getInt("AlonsoLevelReq");
+	}
+	
+	public List<String> getAlonsoLevelsLore() {
+		return cf.getStringList("AlonsoLevelLore");
+	}
+	
+	public boolean hasBypassAlonsoLevelsReq() {
+		return cf.contains("AlonsoLevelReqBypass");
+	}
+	
+	public int getBypassAlonsoLevelsReq() {
+		return cf.getInt("AlonsoLevelReqBypass");
 	}
 
 	public boolean isCommand(int level) {
@@ -214,7 +254,45 @@ public class Job {
 	public double getVaultOnLevel(int level) {
 		return cf.getDouble("LEVELS." + level + ".Money");
 	} 
+	
+	public int getCountOfLevels() {
+		return cf.getInt("LEVELS.CountOfLevels");
+	}
 
+	public void addLevel() {
+		
+		int befor = getCountOfLevels();
+		int old = befor + 1;
+		
+		ArrayList<String> list = new ArrayList<String>();
+		
+		list.add("say hello <name>");
+		 
+		cf.set("LEVELS.CountOfLevels", old); 
+		cf.set("LEVELS." + old + ".Money", 500);
+		cf.set("LEVELS." + old + ".Need", 1000);
+		cf.set("LEVELS." + old + ".Display","&6Example Display Level "+old);
+		cf.set("LEVELS." + old + ".EarnMore", 0);
+		cf.set("LEVELS." + old + ".Commands", list);
+		save();
+		
+	}
+	
+	public void remLevel() {
+		
+		int befor = getCountOfLevels();
+		int old = befor - 1;
+	 
+		cf.set("LEVELS.CountOfLevels", old); 
+		cf.set("LEVELS." + befor + ".Money", null);
+		cf.set("LEVELS." + befor + ".Need", null);
+		cf.set("LEVELS." + befor + ".Display",null);
+		cf.set("LEVELS." + befor + ".EarnMore", null);
+		cf.set("LEVELS." + befor + ".Commands", null);
+		save();
+		
+	}
+	
 	public boolean isVaultOnLevel(int level) {
 		return cf.getString("LEVELS." + level + ".Money") != null;
 	}

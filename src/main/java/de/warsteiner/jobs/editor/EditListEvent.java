@@ -71,7 +71,7 @@ public class EditListEvent implements Listener {
 			if (display.equalsIgnoreCase("§8< §cGo Back §8>")) {
 
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
-				plugin.getGUI().EditJobMenu(p, job);
+				plugin.getEditorMenuManager().EditJobMenu(p, job);
 				
 				if(	plugin.getEditorManager().getEditList().containsKey(p)) {
 					plugin.getEditorManager().getList().remove(p);
@@ -97,7 +97,7 @@ public class EditListEvent implements Listener {
 				
 				p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1); 
 				p.sendMessage(plugin.getAPI().getPrefix()+" §7Update List : §b"+modeofitem2+" §7for Job "+newj.getDisplay()+"§7!");
-				plugin.getGUI().EditJobMenu(p, newj);
+				plugin.getEditorMenuManager().EditJobMenu(p, newj);
 			} else if(display.contains("§8< §cRemove one Line §8>")) {
 				
 				if(toeditlist == null) {

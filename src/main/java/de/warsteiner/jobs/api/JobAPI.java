@@ -212,6 +212,10 @@ public class JobAPI {
 				&& !plugin.getNotQuestManager().canHaveJob(player, job)) {
 			return job.getNotQuestConLore();
 		}
+		if (job.hasAlonsoLevelsReq() == true && plugin.isInstalled("AlonsoLevels")
+				&& !plugin.getAlonsoManager().canHaveJob(player, job)) {
+			return job.getAlonsoLevelsLore();
+		}
 		return null;
 	}
 
@@ -228,6 +232,9 @@ public class JobAPI {
 		}
 		if (job.hasByPassNotQuestCon() == true && plugin.isInstalled("NotQuests")) {
 			return plugin.getNotQuestManager().canBypassJob(player, job);
+		}
+		if (job.hasBypassAlonsoLevelsReq() == true && plugin.isInstalled("AlonsoLevels")) {
+			return plugin.getAlonsoManager().canBypassJob(player, job);
 		}
 		return false;
 	}

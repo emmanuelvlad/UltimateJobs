@@ -28,9 +28,10 @@ import de.warsteiner.jobs.api.plugins.WorldGuardManager;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
-import de.warsteiner.jobs.command.JobsCommand;
-import de.warsteiner.jobs.command.admincommand.EditorSub;
+import de.warsteiner.jobs.command.JobsCommand; 
 import de.warsteiner.jobs.command.admincommand.HelpSub;
+import de.warsteiner.jobs.command.admincommand.JobEditorSub;
+import de.warsteiner.jobs.command.admincommand.LevelEditorSub;
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
 import de.warsteiner.jobs.command.admincommand.SetPointsSub;
@@ -161,8 +162,7 @@ public class UltimateJobs extends JavaPlugin {
 			getNotQuestManager().setClass();
 			getLogger().info("§6Loaded NotQuests Hook for UltimateJobs!");
 		}
-		if (isInstalled("AlonsoLevels")) {
-			getAlonsoManager().setClass();
+		if (isInstalled("AlonsoLevels")) { 
 			getLogger().info("§6Loaded AlonsoLevels Hook for UltimateJobs!");
 		}
 
@@ -251,7 +251,10 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());
-		//getAdminSubCommandManager().getSubCommandList().add(new EditorSub());
+		
+		//editor
+		getAdminSubCommandManager().getSubCommandList().add(new JobEditorSub());
+		getAdminSubCommandManager().getSubCommandList().add(new LevelEditorSub());
 		
 		getLogger().info("§bLoaded Sub-Commands...");
 	}

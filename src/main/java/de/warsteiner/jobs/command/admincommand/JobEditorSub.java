@@ -7,11 +7,11 @@ import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 
-public class EditorSub  extends AdminSubCommand {
+public class JobEditorSub  extends AdminSubCommand {
 
 	@Override
 	public String getName() {
-		return "editor";
+		return "job-editor";
 	}
 
 	@Override
@@ -23,9 +23,9 @@ public class EditorSub  extends AdminSubCommand {
 	public void perform(CommandSender sender, String[] args) {
 		Player player = (Player) sender;
 		if (args.length == 1) {
-			UltimateJobs.getPlugin().getGUI().EditorChooseJob(player, true);
+			UltimateJobs.getPlugin().getEditorMenuManager().EditorChooseJob(player, true, "§6Jobs Editor");
 		} else {
-			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin editor");
+			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin job-editor");
 		}
 	}
 
@@ -36,7 +36,7 @@ public class EditorSub  extends AdminSubCommand {
 
 	@Override
 	public String FormatTab() {
-		return "command editor";
+		return "command job-editor";
 	}
 
 }

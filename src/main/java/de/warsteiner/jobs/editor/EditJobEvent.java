@@ -43,12 +43,13 @@ public class EditJobEvent implements Listener {
 		if (e.getCurrentItem().getItemMeta().getDisplayName() == null) {
 			return;
 		}
- 
+
 		Player p = (Player) e.getWhoClicked();
 
 		InventoryView inv = e.getView();
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
-		if (e.getView().getTitle().contains("§6Job Settings")) {
+
+		if (e.getView().getTitle().contains("§eJob Levels")) {
 
 			if (inv.getItem(4) == null) {
 				return;
@@ -57,61 +58,135 @@ public class EditJobEvent implements Listener {
 			ItemStack item = inv.getItem(4);
 			String[] displayofitem = item.getItemMeta().getDisplayName().split(" ");
 			String jobasstring = displayofitem[1].replaceAll("§7", " ").replaceAll(" ", "");
-			Job job = plugin.getJobCache().get(jobasstring); 
+			Job job = plugin.getJobCache().get(jobasstring);
+			
+			ItemStack item2 = inv.getItem(43);
+			String[] displayofitem2 = item2.getItemMeta().getDisplayName().split(" ");
+			String page = displayofitem2[2].replaceAll("§7", " ").replaceAll(" ", "");
+
+			if (display.equalsIgnoreCase("§8< §cGo Back §8>")) {
+
+				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+				plugin.getEditorMenuManager().EditorChooseJob(p, false, "§eJobs Levels Editor");
+			} else if (display.equalsIgnoreCase("§8< §aAdd new Level §8>")) {
+
+				job.addLevel();
+
+				p.sendMessage(plugin.getAPI().getPrefix() + " §7Added new Level -> §6Level " + job.getCountOfLevels());
+
+				p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+				plugin.getEditorMenuManager().EditLevelsList(p, job, Integer.valueOf(page));
+			} else if (display.equalsIgnoreCase("§8< §cRemove one Level §8>")) {
+
+				if (job.getCountOfLevels() <= 0) {
+					p.sendMessage(plugin.getAPI().getPrefix() + " §cCant remove Level!");
+					e.setCancelled(true);
+					return;
+				} else {
+					job.remLevel();
+
+					p.sendMessage(
+							plugin.getAPI().getPrefix() + " §7Removed Level -> §6Level " + job.getCountOfLevels());
+
+					p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+					plugin.getEditorMenuManager().EditLevelsList(p, job, Integer.valueOf(page));
+				}
+			} else if (display.equalsIgnoreCase("§8< §aNext Page §8>")) {
+
+				
+				p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+				plugin.getEditorMenuManager().EditLevelsList(p, job, Integer.valueOf(page) + 1);
+			} else if (display.equalsIgnoreCase("§8< §cPrevious Page §8>")) {
+ 
+				if (Integer.valueOf(page) != 1) {
+
+					p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+
+					plugin.getEditorMenuManager().EditLevelsList(p, job, Integer.valueOf(page) - 1);
+				}
+			} else if (display.contains("§8< §6Level")) {
+				
+				String[] split = display.split(" ");
+				
+				int level = Integer.valueOf(split[1]);
+				
+				p.sendMessage("-> "+level);
+				
+			}
+
+			e.setCancelled(true);
+
+		} else if (e.getView().getTitle().contains("§6Job Settings")) {
+
+			if (inv.getItem(4) == null) {
+				return;
+			}
+
+			ItemStack item = inv.getItem(4);
+			String[] displayofitem = item.getItemMeta().getDisplayName().split(" ");
+			String jobasstring = displayofitem[1].replaceAll("§7", " ").replaceAll(" ", "");
+			Job job = plugin.getJobCache().get(jobasstring);
 
 			if (display.contains("§8< §cGo Back §8>")) {
 
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
-				plugin.getGUI().EditorChooseJob(p, false);
+				plugin.getEditorMenuManager().EditorChooseJob(p, false, "§6Jobs Editor");
 			} else if (display.contains("Change Job Action")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				plugin.getEditorMenuManager().openEditMenuOfActions(p, job);
 			} else if (display.contains("Change BossBar Color")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				plugin.getEditorMenuManager().openEditMenuOfBarColor(p, job);
-			}  else if (display.contains("Change Job Display")) {
+			} else if (display.contains("Change Job Display")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				p.closeInventory();
-				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Job-Display Name in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
+				p.sendMessage(plugin.getAPI().getPrefix()
+						+ " §7Write the new Job-Display Name in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
 				plugin.getEditorManager().getList().put(p, "JOB_DISPLAY");
 				plugin.getEditorManager().getWhichList().put(p, job);
-			}  else if (display.contains("Change Job Icon")) {
+			} else if (display.contains("Change Job Icon")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				p.closeInventory();
-				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Job-Icon in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
+				p.sendMessage(plugin.getAPI().getPrefix()
+						+ " §7Write the new Job-Icon in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
 				plugin.getEditorManager().getList().put(p, "JOB_ICON");
 				plugin.getEditorManager().getWhichList().put(p, job);
-			}  else if (display.contains("Change Job Slot")) {
+			} else if (display.contains("Change Job Slot")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				p.closeInventory();
-				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Job-Slot in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
+				p.sendMessage(plugin.getAPI().getPrefix()
+						+ " §7Write the new Job-Slot in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
 				plugin.getEditorManager().getList().put(p, "JOB_SLOT");
 				plugin.getEditorManager().getWhichList().put(p, job);
 			} else if (display.contains("Change Job Price")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				p.closeInventory();
-				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Job-Price in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
+				p.sendMessage(plugin.getAPI().getPrefix()
+						+ " §7Write the new Job-Price in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
 				plugin.getEditorManager().getList().put(p, "JOB_PRICE");
 				plugin.getEditorManager().getWhichList().put(p, job);
 			} else if (display.contains("Bypass Permission")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				p.closeInventory();
-				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Bypass Permission in the chat§7. Use §c§lnone §7to remove it! §8(§7Use §ccancel §7to cancel the progress§8)");
+				p.sendMessage(plugin.getAPI().getPrefix()
+						+ " §7Write the new Bypass Permission in the chat§7. Use §c§lnone §7to remove it! §8(§7Use §ccancel §7to cancel the progress§8)");
 				plugin.getEditorManager().getList().put(p, "JOB_BYPASS");
 				plugin.getEditorManager().getWhichList().put(p, job);
-			}  else if (display.contains("Job Permission")) {
+			} else if (display.contains("Job Permission")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				p.closeInventory();
-				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Permission in the chat§7. Use §c§lnone §7to remove it! §8(§7Use §ccancel §7to cancel the progress§8)");
+				p.sendMessage(plugin.getAPI().getPrefix()
+						+ " §7Write the new Permission in the chat§7. Use §c§lnone §7to remove it! §8(§7Use §ccancel §7to cancel the progress§8)");
 				plugin.getEditorManager().getList().put(p, "JOB_PERM");
 				plugin.getEditorManager().getWhichList().put(p, job);
 			} else if (display.contains("Permissions Message")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				p.closeInventory();
-				p.sendMessage(plugin.getAPI().getPrefix()+" §7Write the new Permissions-Message in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
+				p.sendMessage(plugin.getAPI().getPrefix()
+						+ " §7Write the new Permissions-Message in the chat§7. §8(§7Use §ccancel §7to cancel the progress§8)");
 				plugin.getEditorManager().getList().put(p, "JOB_PERM_MESSAGE");
 				plugin.getEditorManager().getWhichList().put(p, job);
-			}  else if (display.contains("Job Description")) {
+			} else if (display.contains("Job Description")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				plugin.getEditorMenuManager().openEditorForLists(p, job, job.getLore(), "Lore");
 			} else if (display.contains("Worlds")) {
@@ -120,11 +195,10 @@ public class EditJobEvent implements Listener {
 			} else if (display.contains("Permissions Lore")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				plugin.getEditorMenuManager().openEditorForLists(p, job, job.getPermissionsLore(), "PermLore");
-			}  else if (display.contains("Stats Lore")) {
+			} else if (display.contains("Stats Lore")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
 				plugin.getEditorMenuManager().openEditorForLists(p, job, job.getStatsMessage(), "Stats");
 			}
-			 
 
 			e.setCancelled(true);
 
@@ -137,11 +211,11 @@ public class EditJobEvent implements Listener {
 			ItemStack item = inv.getItem(4);
 			String[] displayofitem = item.getItemMeta().getDisplayName().split(" ");
 			String jobasstring = displayofitem[1].replaceAll("§7", " ").replaceAll(" ", "");
-			Job job = plugin.getJobCache().get(jobasstring); 
-			
+			Job job = plugin.getJobCache().get(jobasstring);
+
 			if (display.contains("§8< §cGo Back §8>")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
-				plugin.getGUI().EditJobMenu(p, job);
+				plugin.getEditorMenuManager().EditJobMenu(p, job);
 			} else if (display.contains("§8<") && display.contains("§8>") && !display.contains("Back")) {
 
 				String[] ac = display.split(" ");
@@ -151,7 +225,7 @@ public class EditJobEvent implements Listener {
 				if (Action.valueOf(action) == null) {
 					return;
 				}
-				 
+
 				job.updateJobAction(action);
 
 				Job newj = plugin.getAPI().loadSingleJob(plugin.getLogger(), job.getFile(), job);
@@ -175,11 +249,11 @@ public class EditJobEvent implements Listener {
 			ItemStack item = inv.getItem(4);
 			String[] displayofitem = item.getItemMeta().getDisplayName().split(" ");
 			String jobasstring = displayofitem[1].replaceAll("§7", " ").replaceAll(" ", "");
-			Job job = plugin.getJobCache().get(jobasstring); 
-			
+			Job job = plugin.getJobCache().get(jobasstring);
+
 			if (display.contains("§8< §cGo Back §8>")) {
 				p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
-				plugin.getGUI().EditJobMenu(p, job);
+				plugin.getEditorMenuManager().EditJobMenu(p, job);
 			} else if (display.contains("§8<") && display.contains("§8>") && !display.contains("Back")) {
 
 				String[] ac = display.split(" ");
@@ -189,7 +263,7 @@ public class EditJobEvent implements Listener {
 				if (BarColor.valueOf(color) == null) {
 					return;
 				}
-				 
+
 				job.updateJobBarColor(color);
 
 				Job newj = plugin.getAPI().loadSingleJob(plugin.getLogger(), job.getFile(), job);
@@ -207,7 +281,5 @@ public class EditJobEvent implements Listener {
 		}
 
 	}
-
-	 
 
 }
