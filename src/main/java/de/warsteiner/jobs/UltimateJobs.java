@@ -21,6 +21,7 @@ import de.warsteiner.datax.utils.other.UpdateChecker;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
+import de.warsteiner.jobs.api.PluginAPI;
 import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
 import de.warsteiner.jobs.api.plugins.NotQuestManager;
 import de.warsteiner.jobs.api.plugins.PlaceHolderManager;
@@ -29,21 +30,17 @@ import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
 import de.warsteiner.jobs.command.JobsCommand; 
-import de.warsteiner.jobs.command.admincommand.HelpSub;
-import de.warsteiner.jobs.command.admincommand.JobEditorSub;
-import de.warsteiner.jobs.command.admincommand.LevelEditorSub;
+import de.warsteiner.jobs.command.admincommand.HelpSub; 
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
 import de.warsteiner.jobs.command.admincommand.SetPointsSub;
 import de.warsteiner.jobs.command.admincommand.UpdateSub;
+import de.warsteiner.jobs.command.admincommand.VersionSub;
 import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
 import de.warsteiner.jobs.command.playercommand.LeaveSub;
 import de.warsteiner.jobs.command.playercommand.LimitSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
-import de.warsteiner.jobs.command.playercommand.SubHelp;
-import de.warsteiner.jobs.editor.EditJobEvent;
-import de.warsteiner.jobs.editor.EditListEvent;
-import de.warsteiner.jobs.editor.EditorClickEvent;
+import de.warsteiner.jobs.command.playercommand.SubHelp; 
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
@@ -60,15 +57,12 @@ import de.warsteiner.jobs.jobs.JobActionPlace;
 import de.warsteiner.jobs.jobs.JobActionShear;
 import de.warsteiner.jobs.manager.ClickManager;
 import de.warsteiner.jobs.manager.GuiManager;
-import de.warsteiner.jobs.manager.JobWorkManager;
-import de.warsteiner.jobs.manager.JobsEditorManager;
-import de.warsteiner.jobs.manager.JobsEditorMenuManager;
+import de.warsteiner.jobs.manager.JobWorkManager; 
 import de.warsteiner.jobs.manager.PlayerDataManager;
 import de.warsteiner.jobs.manager.PlayerManager;
 import de.warsteiner.jobs.manager.SQLPlayerManager;
 import de.warsteiner.jobs.manager.YMLPlayerManager;
-import de.warsteiner.jobs.utils.BossBarHandler;
-import de.warsteiner.jobs.utils.LogType;
+import de.warsteiner.jobs.utils.BossBarHandler; 
 import de.warsteiner.jobs.utils.PluginModule;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry; 
 import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry;
@@ -96,19 +90,19 @@ public class UltimateJobs extends JavaPlugin {
 	private PlayerDataManager pmanager;
 	private PlayerDataFile datafile;
 	private JobWorkManager work;
-	private YamlConfigFile command;
-	private JobsEditorManager editor;
-	private JobsEditorMenuManager ed_menu;
+	private YamlConfigFile command; 
 	private AlonsoLevelsManager alonso;
 	public String isLatest = null;
+	public PluginAPI plapi;
 
 	public void onLoad() {
 
 		plugin = this;
+		plapi = new PluginAPI();
  
-		if (isInstalled("WorldGuard")) {
+		if (getPluginAPI().isInstalled("WorldGuard")) {
 			WorldGuardManager.setClass();
-			WorldGuardManager.load();
+			WorldGuardManager.load(); 
 			getLogger().info("§bLoaded WorldGuard-Support for UltimateJobs!");
 		}
 	}
@@ -142,29 +136,28 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerRewardCommandEvent(), this);
 
 		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
-
-		Bukkit.getPluginManager().registerEvents(new EditorClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerEditorChatEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new EditJobEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new EditListEvent(), this);
-
+ 
 		// job events
 		loadEvents();
 		
 		getLogger().info("§bLoaded Events...");
+		
+		getLogger().info("§bLoading Supported Plugins...");
 
-		if (isInstalled("PlaceHolderAPI")) {
+		if (getPluginAPI().isInstalled("PlaceHolderAPI")) {
 			new PlaceHolderManager().register();
 			getLogger().info("§6Loaded PlaceHolderAPI Hook for UltimateJobs!");
 		}
 
-		if (isInstalled("NotQuests")) {
+		if (getPluginAPI().isInstalled("NotQuests")) {
 			getNotQuestManager().setClass();
 			getLogger().info("§6Loaded NotQuests Hook for UltimateJobs!");
 		}
-		if (isInstalled("AlonsoLevels")) { 
+		if (getPluginAPI().isInstalled("AlonsoLevels")) { 
 			getLogger().info("§6Loaded AlonsoLevels Hook for UltimateJobs!");
 		}
+		
+		getLogger().info("§bLoading Addons..."); 
 
 		setupCommands();
 		getCommand("jobs").setExecutor(new JobsCommand());
@@ -251,11 +244,8 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());
-		
-		//editor
-		getAdminSubCommandManager().getSubCommandList().add(new JobEditorSub());
-		getAdminSubCommandManager().getSubCommandList().add(new LevelEditorSub());
-		
+		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
+		 
 		getLogger().info("§bLoaded Sub-Commands...");
 	}
 
@@ -272,10 +262,7 @@ public class UltimateJobs extends JavaPlugin {
 		admincmdmanager = new AdminSubCommandRegistry(); 
 		notquest = new NotQuestManager();
 		work = new JobWorkManager(plugin, this.api);
-		alonso = new AlonsoLevelsManager();
-		editor = new JobsEditorManager();
-		ed_menu = new JobsEditorMenuManager(plugin);
-
+		alonso = new AlonsoLevelsManager(); 
 		datafile = new PlayerDataFile("jobs");
 		sql = new SQLPlayerManager();
 		yml = new YMLPlayerManager();
@@ -291,29 +278,14 @@ public class UltimateJobs extends JavaPlugin {
 		getLogger().info("§bLoaded Classes for UltimateJobs...");
 	}
 	
-	public JobsEditorManager getEditorManager() {
-		return editor;
+	public PluginAPI getPluginAPI() {
+		return plapi;
 	}
-	
+ 
 	public AlonsoLevelsManager getAlonsoManager() {
 		return alonso;
 	}
-	
-	public JobsEditorMenuManager getEditorMenuManager() {
-		return ed_menu;
-	}
-
-	public void doLog(LogType t, String m) {
-		if (config.getConfig().getBoolean("Debug")) {
-			if (t == LogType.FAILED) {
-				getLogger().warning(t.getColor() + m);
-			} else {
-				getLogger().info(t.getColor() + m);
-			}
-		}
-
-	}
-
+ 
 	public JobWorkManager getJobWorkManager() {
 		return work;
 	}
@@ -332,14 +304,6 @@ public class UltimateJobs extends JavaPlugin {
 
 	public NotQuestManager getNotQuestManager() {
 		return notquest;
-	}
-
-	public boolean isInstalled(String plugin) {
-		Plugin Plugin = Bukkit.getServer().getPluginManager().getPlugin(plugin);
-		if (Plugin != null) {
-			return true;
-		}
-		return false;
 	}
  
 	public AdminSubCommandRegistry getAdminSubCommandManager() {
@@ -394,7 +358,7 @@ public class UltimateJobs extends JavaPlugin {
 			File folder_1 = new File(getDataFolder(), "jobs");
 
 			folder_1.mkdir();
-
+  
 			getLogger().info("§6Created Folders for UltimateJobs");
 		}
 

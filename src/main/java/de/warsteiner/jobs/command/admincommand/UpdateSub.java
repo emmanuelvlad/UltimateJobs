@@ -32,7 +32,7 @@ public class UpdateSub extends AdminSubCommand {
 			}
 			
 		} else {
-			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin update");
+			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
 		}
 	}
 
@@ -46,4 +46,9 @@ public class UpdateSub extends AdminSubCommand {
 		return "command update";
 	}
 
+	@Override
+	public String getUsage() { 
+		return "/JobsAdmin update";
+	}
+	
 }

@@ -87,7 +87,7 @@ public class SetLevelSub extends AdminSubCommand {
 			}
 
 		} else {
-			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin setlevel <name> <job> <value>");
+			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
 		}
 	}
 
@@ -99,6 +99,11 @@ public class SetLevelSub extends AdminSubCommand {
 	@Override
 	public String FormatTab() {
 		return "command setlevel players_online jobs_listed";
+	}
+	
+	@Override
+	public String getUsage() { 
+		return "/JobsAdmin setlevel <name> <job> <value>";
 	}
 
 }

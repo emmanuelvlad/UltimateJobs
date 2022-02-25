@@ -30,7 +30,7 @@ public class NotQuestManager {
 				return true;
 			}
 
-			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getOrCreateQuestPlayer(player.getUniqueId());
 
 			for(final Condition c : conditions){
 				if(!c.check(questPlayer).isBlank()){
@@ -50,7 +50,7 @@ public class NotQuestManager {
 				return true;
 			}
 
-			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getQuestPlayer(player.getUniqueId());
+			final QuestPlayer questPlayer = notQuestsInstance.getQuestPlayerManager().getOrCreateQuestPlayer(player.getUniqueId());
 
 			for(final Condition c : conditions){
 				if(!c.check(questPlayer).isBlank()){

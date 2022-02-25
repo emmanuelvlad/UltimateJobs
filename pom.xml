@@ -78,7 +78,7 @@
 			<artifactId>notquests</artifactId>
 			<version>4.15.0</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/notquests-4.15.0.jar</systemPath>
+			<systemPath>${project.basedir}/lib/notquests.jar</systemPath>
 		</dependency>
 
 		<dependency>

@@ -22,7 +22,7 @@ public class HelpSub extends AdminSubCommand {
 		if (args.length == 1) {
 			AdminCommand.sendHelp(sender);
 		} else {
-			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin help");
+			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
 		}
 	}
 
@@ -34,6 +34,11 @@ public class HelpSub extends AdminSubCommand {
 	@Override
 	public String FormatTab() {
 		return "command help";
+	}
+
+	@Override
+	public String getUsage() { 
+		return "/JobsAdmin help";
 	}
 
 }

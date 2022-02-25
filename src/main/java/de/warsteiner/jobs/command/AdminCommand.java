@@ -56,16 +56,11 @@ public class AdminCommand implements CommandExecutor {
 	public static void sendHelp(CommandSender sender) {
 		sender.sendMessage("§7");
 		sender.sendMessage(" §8| §9UltimateJobs §8- §4Admin Help §8|");
-		sender.sendMessage("§8-> §6/JobsAdmin setlevel <name> <job> <value>");
-		sender.sendMessage("§8-> §6/JobsAdmin setmax <name> <value>");
-		sender.sendMessage("§8-> §6/JobsAdmin setpoints <name> <value>"); 
-		sender.sendMessage("§8-> §6/JobsAdmin help");   
-		sender.sendMessage("§8-> §6/JobsAdmin update"); 
-		sender.sendMessage("§8-> §6/JobsAdmin version"); 
-		sender.sendMessage("§8-> §6/JobsAdmin job-editor"); 
-		sender.sendMessage("§8-> §6/JobsAdmin id-editor"); 
-		sender.sendMessage("§8-> §6/JobsAdmin levels-editor"); 
-		 
+		
+		for(AdminSubCommand cmd : plugin.getAdminSubCommandManager().getSubCommandList()) {
+			sender.sendMessage("§8-> §6"+cmd.getUsage()+" §8| §7"+cmd.getDescription()); 
+		} 
+		
 		sender.sendMessage("§7");
 	}
 

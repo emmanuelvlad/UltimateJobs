@@ -147,18 +147,20 @@ public class JobAPI {
 		plugin.getLoaded().clear();
 		plugin.getID().clear();
 
-		for (int i = 0; i < files.length; i++) {
-			String name = files[i].getName();
-			File file = files[i];
-			plugin.getLogger().info("§aChecking File "+name+"...");
-			if (file.isFile()) {  
-				YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-				Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
-				plugin.getLoaded().add(job.getID());
-				plugin.getID().put(job.getID(), job);
-				plugin.getLogger().info("§aLoaded Job "+job.getID()+" from File "+name+"!");
-			} else {
-				plugin.getLogger().warning("§cFound File in Jobs Folder which isnt a real Job!");
+		if(files != null) {
+			for (int i = 0; i < files.length; i++) {
+				String name = files[i].getName();
+				File file = files[i];
+				plugin.getLogger().info("§aChecking File "+name+"...");
+				if (file.isFile()) {  
+					YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+					Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
+					plugin.getLoaded().add(job.getID());
+					plugin.getID().put(job.getID(), job);
+					plugin.getLogger().info("§aLoaded Job "+job.getID()+" from File "+name+"!");
+				} else {
+					plugin.getLogger().warning("§cFound File in Jobs Folder which isnt a real Job!");
+				}
 			}
 		}
 	}
@@ -208,11 +210,11 @@ public class JobAPI {
 	}
 
 	public List<String> canGetJobWithSubOptions(Player player, Job job) {
-		if (job.hasNotQuestCon() == true && plugin.isInstalled("NotQuests")
+		if (job.hasNotQuestCon() == true && plugin.getPluginAPI().isInstalled("NotQuests")
 				&& !plugin.getNotQuestManager().canHaveJob(player, job)) {
 			return job.getNotQuestConLore();
 		}
-		if (job.hasAlonsoLevelsReq() == true && plugin.isInstalled("AlonsoLevels")
+		if (job.hasAlonsoLevelsReq() == true && plugin.getPluginAPI().isInstalled("AlonsoLevels")
 				&& !plugin.getAlonsoManager().canHaveJob(player, job)) {
 			return job.getAlonsoLevelsLore();
 		}
@@ -230,10 +232,10 @@ public class JobAPI {
 		if (job.hasBypassPermission()) {
 			return player.hasPermission(job.getByPassPermission());
 		}
-		if (job.hasByPassNotQuestCon() == true && plugin.isInstalled("NotQuests")) {
+		if (job.hasByPassNotQuestCon() == true && plugin.getPluginAPI().isInstalled("NotQuests")) {
 			return plugin.getNotQuestManager().canBypassJob(player, job);
 		}
-		if (job.hasBypassAlonsoLevelsReq() == true && plugin.isInstalled("AlonsoLevels")) {
+		if (job.hasBypassAlonsoLevelsReq() == true && plugin.getPluginAPI().isInstalled("AlonsoLevels")) {
 			return plugin.getAlonsoManager().canBypassJob(player, job);
 		}
 		return false;
@@ -276,7 +278,7 @@ public class JobAPI {
 	}
 
 	public String canWorkInRegion(Player player, Job j, String st) {
-		if (plugin.isInstalled("WorldGuard")) {
+		if (plugin.getPluginAPI().isInstalled("WorldGuard")) {
 			String ac = "" + j.getAction();
 			String flag = ac.toLowerCase() + "_action";
 			return WorldGuardManager.checkFlag(player.getLocation(), flag, player, st);

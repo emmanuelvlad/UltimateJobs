@@ -67,7 +67,7 @@ public class SetPointsSub extends AdminSubCommand {
 			}
 
 		} else {
-			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin setpoints <name> <value>");
+			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
 		}
 	}
 
@@ -79,6 +79,11 @@ public class SetPointsSub extends AdminSubCommand {
 	@Override
 	public String FormatTab() {
 		return "command setpoints players_online";
+	}
+	
+	@Override
+	public String getUsage() { 
+		return "/JobsAdmin setpoints <name> <value>";
 	}
 
 }

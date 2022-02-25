@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.utils.LogType;
+import de.warsteiner.jobs.api.JobsPlayer; 
 
 public class PlayerManager {
 
@@ -38,8 +37,7 @@ public class PlayerManager {
 					for (Player p : Bukkit.getOnlinePlayers()) {
 						if (players.contains(""+p.getUniqueId())) {
 							JobsPlayer jb = pllist.get("" + p.getUniqueId());
-							pl.savePlayer(jb, "" + p.getUniqueId());
-							UltimateJobs.getPlugin().doLog(LogType.SAVED, "Auto-Save executed");
+							pl.savePlayer(jb, "" + p.getUniqueId()); 
 						}
 					}
 				});
@@ -53,13 +51,11 @@ public class PlayerManager {
 
 			players.remove(uuid);
 			pllist.remove("" + uuid);
-
-			UltimateJobs.getPlugin().doLog(LogType.REMOVED, "Removed Data of " + uuid + " from cache");
+ 
 		});
 	}
 
-	public boolean existInCacheByUUID(String uuid) {
-		UltimateJobs.getPlugin().doLog(LogType.CHECK, "Check for Data in Cache of : " + uuid);
+	public boolean existInCacheByUUID(String uuid) { 
 		return this.players.contains(uuid);
 	}
 
@@ -94,8 +90,7 @@ public class PlayerManager {
 					plm.getMax("" + UUID));
 			 
 			pllist.put("" + UUID, jp);
-			players.add(""+UUID);
-			UltimateJobs.getPlugin().doLog(LogType.LOADED, "Loaded Data from : " + name + " : " + UUID);
+			players.add(""+UUID); 
 		});
 	}
 
@@ -115,8 +110,7 @@ public class PlayerManager {
 				levels.put(j, plm.getLevelOf("" + UUID, j));
 				broken.put(j, plm.getBrokenOf("" + UUID, j));
 				exp.put(j, plm.getExpOf("" + UUID, j));
-				date.put(j, plm.getDateOf("" + UUID, j));
-				UltimateJobs.getPlugin().doLog(LogType.UPDATED, "Updated Jobs of : " + UUID);
+				date.put(j, plm.getDateOf("" + UUID, j)); 
 			}
 		});
 	}

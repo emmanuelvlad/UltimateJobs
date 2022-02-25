@@ -67,7 +67,7 @@ public class SetMaxSub extends AdminSubCommand {
 			}
 
 		} else {
-			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6/JobsAdmin setmax <name> <value>");
+			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
 		}
 	}
 
@@ -79,6 +79,11 @@ public class SetMaxSub extends AdminSubCommand {
 	@Override
 	public String FormatTab() {
 		return "command setmax players_online";
+	}
+	
+	@Override
+	public String getUsage() { 
+		return "/JobsAdmin setmax <name> <job> <value>";
 	}
 
 }
