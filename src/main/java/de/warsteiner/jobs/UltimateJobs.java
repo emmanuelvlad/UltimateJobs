@@ -33,9 +33,9 @@ import de.warsteiner.jobs.command.JobsCommand;
 import de.warsteiner.jobs.command.admincommand.HelpSub; 
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
-import de.warsteiner.jobs.command.admincommand.SetPointsSub;
-import de.warsteiner.jobs.command.admincommand.UpdateSub;
+import de.warsteiner.jobs.command.admincommand.SetPointsSub; 
 import de.warsteiner.jobs.command.admincommand.VersionSub;
+import de.warsteiner.jobs.command.playercommand.JoinSub;
 import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
 import de.warsteiner.jobs.command.playercommand.LeaveSub;
 import de.warsteiner.jobs.command.playercommand.LimitSub;
@@ -91,41 +91,52 @@ public class UltimateJobs extends JavaPlugin {
 	private PlayerDataFile datafile;
 	private JobWorkManager work;
 	private YamlConfigFile command; 
-	private AlonsoLevelsManager alonso;
-	public String isLatest = null;
+	private AlonsoLevelsManager alonso; 
 	public PluginAPI plapi;
 
 	public void onLoad() {
 
 		plugin = this;
 		plapi = new PluginAPI();
- 
+		 
+		createFolders();
+
+		setupConfigs();
+
+		executor = Executors.newFixedThreadPool(this.config.getConfig().getInt("ExecutorServiceThreads"));
+		
 		if (getPluginAPI().isInstalled("WorldGuard")) {
 			WorldGuardManager.setClass();
 			WorldGuardManager.load(); 
 			getLogger().info("§bLoaded WorldGuard-Support for UltimateJobs!");
 		}
+		
+		if(getPluginAPI().isInstalled("SimpleAPI")) {
+			getExecutor().execute(() -> {   
+				if(config.getConfig().getBoolean("CheckForUpdates")) {
+					SimpleAPI.getPlugin().getWebManager().loadVersionAndCheckUpdate("https://api.war-projects.com/v1/ultimatejobs/version.txt", "UltimateJobs",getDescription().getVersion());
+				}
+				SimpleAPI.getPlugin().getModuleRegistry().getModuleList().add(new PluginModule());
+				this.getLogger().info("§6Hooked into SimpleAPI!");
+			});
+		}
+		
 	}
 
 	@Override
 	public void onEnable() {
 
-		createFolders();
-
-		setupConfigs();
-
-		getLogger().info("§bLoading UltimateJobs...");
-
-		loadClasses();
-
+		 
 		setupEconomy();
 
 		getLogger().info("§bLoaded Vault...");
-
-		SimpleAPI.getPlugin().getModuleRegistry().getModuleList().add(new PluginModule());
+  
+		loadClasses(); 
 
 		api.loadJobs(getLogger());
-
+		
+		getLogger().info("§bLoading UltimateJobs...");
+		
 		// basic events
 		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new MainMenuClickEvent(), this);
@@ -175,19 +186,7 @@ public class UltimateJobs extends JavaPlugin {
 
 		pm.startSave();
 		getLogger().info("§6Started Check for Backup-System...");
-  
-		if (config.getConfig().getBoolean("CheckForUpdates")) {
-			new UpdateChecker(plugin, 99978).getVersion(version -> {
-				if (!plugin.getDescription().getVersion().equals(version)) {
-					this.getLogger().warning("§7Theres a new Plugin Version §aavailable§7! You run on version : §c"
-							+ plugin.getDescription().getVersion() + " §8-> §7new version : §a" + version);
-					isLatest = version;
-				} else {
-					isLatest = "LATEST";
-				}
-			});
-		}
-		
+    
 		getLogger().info("§7");
 		getLogger().info("§7");
 		getLogger().info("  _   _ _  _____ ___ __  __   _ _______ ____  ___ ____  __ __");
@@ -238,10 +237,12 @@ public class UltimateJobs extends JavaPlugin {
 		if (getCommandConfig().getConfig().getBoolean("Command.LIMIT.Enabled")) {
 			getSubCommandManager().getSubCommandList().add(new LimitSub());
 		}
+		if (getCommandConfig().getConfig().getBoolean("Command.JOIN.Enabled")) {
+			getSubCommandManager().getSubCommandList().add(new JoinSub());
+		}
 
 		getAdminSubCommandManager().getSubCommandList().add(new HelpSub());
-		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
-		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub());
+		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub()); 
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());
 		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
@@ -254,7 +255,7 @@ public class UltimateJobs extends JavaPlugin {
 		pm = new PlayerManager(plugin);
 		ld = new HashMap<>();
 		levels = new LevelAPI(plugin, this.messages.getConfig());
-		executor = Executors.newFixedThreadPool(this.config.getConfig().getInt("ExecutorServiceThreads"));
+		 
 		cmdmanager = new SubCommandRegistry();
 		api = new JobAPI(plugin, messages.getConfig());
 		gui = new GuiManager(plugin);

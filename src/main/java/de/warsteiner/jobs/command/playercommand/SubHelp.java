@@ -53,5 +53,5 @@ public class SubHelp extends SubCommand {
 	public boolean isEnabled() { 
 		return plugin.getCommandConfig().getConfig().getBoolean("Command.HELP.Enabled");
 	}
-
+  
 }

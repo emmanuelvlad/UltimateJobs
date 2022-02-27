@@ -45,18 +45,7 @@ public class PlayerExistEvent implements Listener {
 					}
 				}
 			}
-
-			if (player.hasPermission("ultimatejobs.check.updates")) {
-
-				if (plugin.isLatest != null && !plugin.isLatest.equalsIgnoreCase("LATEST")) {
-
-					player.sendMessage(plugin.getAPI().getPrefix()
-							+ " §7There is a new Version of §9UltimateJobs §7available! Download now: https://www.spigotmc.org/resources/ultimatejobs-reloaded.99198/");
-
-				}
-
-			}
-
+  
 		});
 
 	}

@@ -3,6 +3,7 @@ package de.warsteiner.jobs.manager;
 import java.util.ArrayList; 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -182,6 +183,7 @@ public class GuiManager {
 
 					if (api.canBuyWithoutPermissions(player, j)) {
 						List<String> d = api.canGetJobWithSubOptions(player, j);
+						
 						if(d == null) {
 							if (jb.ownJob(id) == true || api.canByPass(player, j) == true) {
 	
@@ -205,32 +207,58 @@ public class GuiManager {
 					} else {
 						see = j.getPermissionsLore();
 					}
-
+				
 					List<String> filore = new ArrayList<String>();
-					for (String l : lore) {
-						filore.add(up.toHex(l).replaceAll("&", "§"));
+					if(lore != null) {
+						for (String l : lore) {
+							filore.add(up.toHex(l).replaceAll("&", "§"));
+						}
 					}
+				 
 					if (jb.isInJob(id)) {
 
 						int level =  jb.getLevelOf(id);
 						double exp = jb.getExpOf(id);
 						String bought = jb.getDateOfJob(id);
+						String usedbuy = "";
 						String lvl = j.getLevelDisplay(level);
+						String usedlvl = "";
 						Integer broken = jb.getBrokenOf(id);
-						
-						for (String l : j.getStatsMessage()) {
-
-							filore.add(up.toHex(l).replaceAll("<stats_args_4>", lvl)
-									.replaceAll("<stats_args_3>", "" + level)
-									.replaceAll("<stats_args_2>", "" + broken)
-									.replaceAll("<stats_args_6>",
-											"" + api.Format(plugin.getLevelAPI().getJobNeedExp(j, jb)))
-									.replaceAll("<stats_args_5>", "" + api.Format(exp))
-									.replaceAll("<stats_args_1>",""+ bought).replaceAll("&", "§"));
-						}
+					 
+							if(j.getStatsMessage() != null) {
+							
+								if(lvl == null) {
+									usedlvl = "Error";
+								} else {
+									usedlvl = lvl;
+								}
+								if(bought == null) {
+									usedbuy = "Error";
+								} else {
+									usedbuy = bought;
+								}
+								
+								for (String l : j.getStatsMessage()) {
+									
+									filore.add(up.toHex(l).replaceAll("<stats_args_4>", usedlvl)
+											.replace("<earned>", ""+api.Format(plugin.getPlayerDataModeManager().getEarnedAtDate(""+player.getUniqueId(), id, plugin.getAPI().getDate())))
+											.replaceAll("<stats_args_3>", "" + level)
+											.replaceAll("<stats_args_2>", "" + broken)
+											.replaceAll("<stats_args_6>",
+													"" + api.Format(plugin.getLevelAPI().getJobNeedExp(j, jb)))
+											.replaceAll("<stats_args_5>", "" + api.Format(exp))
+											.replaceAll("<stats_args_1>",""+ usedbuy).replaceAll("&", "§"));
+								} 
+							}
+						 
 					}
-					for (String l : see) {
-						filore.add(up.toHex(l).replaceAll("<price>", "" + price).replaceAll("&", "§"));
+					 
+					if(see != null) {
+						for (String l : see) {
+						 
+							filore.add(up.toHex(l).replaceAll("<price>", "" + price).replaceAll("&", "§"));
+							 
+						}
 					}
 					meta.setLore(filore);
 

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.api.JobsPlayer; 
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class JobTabComplete implements TabCompleter {
@@ -28,8 +28,8 @@ public class JobTabComplete implements TabCompleter {
 
 			if (args.length == 1) {
 
-				for (String found : find(1)) {
-					l.add(found);
+				for (SubCommand found : plugin.getSubCommandManager().getSubCommandList()) {
+					l.add(found.getName());
 				}
 
 			} else if (args.length != 1) {
@@ -58,7 +58,13 @@ public class JobTabComplete implements TabCompleter {
 										for (Player b : Bukkit.getOnlinePlayers()) {
 											l.add(b.getName());
 										}
-									}
+									} else if (type.equalsIgnoreCase("JOBS_OWNED")) {
+										if (jb.getOwnJobs() != null) {
+											for (String b : jb.getOwnJobs()) {
+												l.add(b.toLowerCase());
+											}
+										}
+									} 
 								}
 							}
 						}
@@ -71,19 +77,7 @@ public class JobTabComplete implements TabCompleter {
 		return l;
 
 	}
-
-	public ArrayList<String> find(int length) {
-		ArrayList<String> list = new ArrayList<String>();
-		for (SubCommand c : plugin.getSubCommandManager().getSubCommandList()) {
-			if(c.isEnabled()) {
-				if (getFromFormat(1, c) != null) {
-					list.add(c.getName().toLowerCase());
-				}
-			}
-		}
-		return list;
-	}
-
+ 
 	public String getFromFormat(int length, SubCommand c) {
 		String[] format = c.FormatTab().split(" ");
 		if (format.length <= length) {

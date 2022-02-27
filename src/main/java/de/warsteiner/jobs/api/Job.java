@@ -20,8 +20,7 @@ public class Job {
 	private String icon;
 	private int slot;
 	private double price;
-	private String perm;
-	private List<String> stats_message;
+	private String perm; 
 	private List<String> worlds;
 	private List<String> lore;
 	private List<String> idslist;
@@ -35,8 +34,7 @@ public class Job {
 		action = Action.valueOf(cfg.getString("Action"));
 		icon = cfg.getString("Material");
 		slot = cfg.getInt("Slot");
-		price = cfg.getDouble("Price");
-		stats_message = cfg.getStringList("Stats");
+		price = cfg.getDouble("Price"); 
 		worlds = cfg.getStringList("Worlds");
 		lore = cfg.getStringList("Lore");
 		idslist = cfg.getStringList("IDS.List");
@@ -243,6 +241,14 @@ public class Job {
 		return cf.contains("AlonsoLevelReqBypass");
 	}
 	
+	public boolean hasMaxEarningsPerDay() {
+		return cf.contains("MaxEarnings");
+	}
+	
+	public double getMaxEarningsPerDay() {
+		return cf.getDouble("MaxEarnings");
+	}
+	
 	public int getBypassAlonsoLevelsReq() {
 		return cf.getInt("AlonsoLevelReqBypass");
 	}
@@ -354,7 +360,7 @@ public class Job {
 	}
 
 	public List<String> getStatsMessage() {
-		return stats_message;
+		return cf.getStringList("Stats");
 	}
 
 	public double getPrice() {

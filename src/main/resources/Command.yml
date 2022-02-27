@@ -18,10 +18,20 @@ Command:
     Enabled: true
 
     Usage: "help"
-
+ 
     Desc: "Display all Commands"
 
     Syntax: "<prefix> &7Use &6/Jobs help"
+
+  JOIN:
+
+    Enabled: true
+
+    Usage: "join"
+
+    Desc: "Join a Job"
+
+    Syntax: "<prefix> &7Use &6/Jobs join <job>"
 
   LEAVE:
 

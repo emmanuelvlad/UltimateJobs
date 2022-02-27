@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -197,13 +198,15 @@ public class JobWorkManager {
 	}
 
 	public void finalWork(String id, Player player, JobsPlayer pl, Action ac, String flag, int amount) {
-	 
+
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
 			@Override
 			public void run() {
 
 				String UUID = "" + player.getUniqueId();
+				PlayerDataManager dt = plugin.getPlayerDataModeManager();
+				YamlConfiguration cfg = plugin.getMainConfig().getConfig();
 
 				if (api.getJobsWithAction(UUID, pl, ac) == null) {
 					return;
@@ -222,33 +225,62 @@ public class JobWorkManager {
 
 								if (api.canReward(player, jb, id)) {
 
+									boolean can = api.checkforDailyMaxEarnings(player, jb);
+
+									String date = api.getDate();
+
 									String jobid = jb.getID();
 									int lvl = pl.getLevelOf(jobid);
 									double reward = jb.getRewardOf(id);
-
+									
+									double exp_old = pl.getExpOf(jobid);
+									double exp = jb.getExpOf(id) * amount;
+									Integer broken = pl.getBrokenOf(jobid) + amount;
+									double points = jb.getPointsOf(id) * amount;
+									double old_points = pl.getPoints();
+									
 									double fixed = reward * amount;
 
 									double next = fixed * jb.getMultiOfLevel(lvl);
 
 									double calc = fixed + next;
+									
+									int times_old = dt.getTimesEarnedOf(UUID, jobid, id);
+									double earned_old = dt.getAmountEarnedOf(UUID, jobid, id);
 
+									double new_earned = calc + dt.getEarnedAtDate(UUID, jobid, date);
+								   
 									if (jb.hasVaultReward(id)) {
-										UltimateJobs.getPlugin().getEco().depositPlayer(player, calc);
+										if(can) {
+											UltimateJobs.getPlugin().getEco().depositPlayer(player, calc);
+										}
 									}
-
-									double exp = jb.getExpOf(id) * amount;
-									Integer broken = pl.getBrokenOf(jobid) + amount;
-									double points = jb.getPointsOf(id) * amount;
-									double old_points = pl.getPoints();
-
-									pl.updateBroken(jobid, broken);
-
-									double exp_old = pl.getExpOf(jobid);
-
-									pl.changePoints(points + old_points);
-
-									pl.updateExp(jobid, exp_old + exp);
-
+									
+									if(can == false) {
+										
+										if(cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Exp")) {
+											pl.updateExp(jobid, exp_old + exp);
+										}
+										if(cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Points")) {
+											pl.changePoints(points + old_points);
+										}
+										if(cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Stats")) {
+											pl.updateBroken(jobid, broken);
+											dt.updateEarningsAtDate(UUID, jobid, date, new_earned);
+											
+											dt.updateAmountTimesOf(UUID, jobid, id, times_old+1);
+											dt.updateAmountEarnedOf(UUID, jobid, id, earned_old+calc);
+										}
+										
+									} else {
+										pl.updateExp(jobid, exp_old + exp);
+										pl.changePoints(points + old_points);
+										pl.updateBroken(jobid, broken);
+										dt.updateEarningsAtDate(UUID, jobid, date, new_earned);
+										dt.updateAmountTimesOf(UUID, jobid, id, times_old+1);
+										dt.updateAmountEarnedOf(UUID, jobid, id, earned_old+calc);
+									}
+ 
 									api.playSound("FINISHED_WORK", player);
 
 									new BukkitRunnable() {
@@ -256,20 +288,23 @@ public class JobWorkManager {
 											new PlayerFinishedWorkEvent(player, pl, jb, id);
 										}
 									}.runTaskLater(plugin, 1);
-								 
+
 									if (plugin.getMainConfig().getConfig().getBoolean("Enable_Levels")) {
 										UltimateJobs.getPlugin().getLevelAPI().check(player, jb, pl, id);
 									}
-									UltimateJobs.getPlugin().getAPI().sendReward(pl, player, jb, exp, calc, id);
+									UltimateJobs.getPlugin().getAPI().sendReward(pl, player, jb, exp, calc, id, can);
 									return;
 
 								}
+
+							} else {
+								player.sendMessage("max  reached");
 							}
 						}
 					}
 				}
 			}
-		}); 
+		});
 		return;
 	}
 

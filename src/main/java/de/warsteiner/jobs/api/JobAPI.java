@@ -56,12 +56,13 @@ public class JobAPI {
 	public void playSound(String ty, Player player) {
 		YamlConfiguration config = plugin.getMainConfig().getConfig();
 		if (config.contains("Sounds." + ty + ".Sound")) {
-			
-			if( Sound.valueOf(config.getString("Sounds." + ty + ".Sound")) == null) {
-				plugin.getLogger().warning("§cFailed to get Sound from : "+config.getString("Sounds." + ty + ".Sound"));
+
+			if (Sound.valueOf(config.getString("Sounds." + ty + ".Sound")) == null) {
+				plugin.getLogger()
+						.warning("§cFailed to get Sound from : " + config.getString("Sounds." + ty + ".Sound"));
 				return;
 			}
-			
+
 			Sound sound = Sound.valueOf(config.getString("Sounds." + ty + ".Sound"));
 			int vol = config.getInt("Sounds." + ty + ".Volume");
 			int pitch = config.getInt("Sounds." + ty + ".Pitch");
@@ -96,7 +97,7 @@ public class JobAPI {
 		return "SQL";
 	}
 
-	public void sendReward(JobsPlayer pl, Player p, Job job, double exp, double reward, String block) {
+	public void sendReward(JobsPlayer pl, Player p, Job job, double exp, double reward, String block, boolean can) {
 		plugin.getExecutor().execute(() -> {
 			String UUID = "" + p.getUniqueId();
 			String ijob = job.getID();
@@ -104,38 +105,54 @@ public class JobAPI {
 			int level = pl.getLevelOf(ijob).intValue();
 			String disofid = job.getDisplayOf(block);
 			double need = plugin.getLevelAPI().getJobNeedExp(job, pl);
-			if (tr.getBoolean("Reward.Enable_BossBar")) {
-				Date isago5seconds = new Date((new Date()).getTime() + 3000L);
-				if (lastworked_list.containsKey(p.getName()))
-					lastworked_list.remove(p.getName());
-				lastworked_list.put(p.getName(), isago5seconds);
-				double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore(UUID, job, level), need);
-				BarColor color = job.getBarColor();
-				String message = up.toHex(tr.getString("Reward.BossBar").replaceAll("<prefix>", getPrefix())
-						.replaceAll("<exp>", Format(all_exp)).replaceAll("<level_name>", job.getLevelDisplay(level))
-						.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-						.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
-				if (!BossBarHandler.exist(p.getName())) {
-					BossBarHandler.createBar(p, message, color, p.getName(), use);
-				} else {
-					BossBarHandler.renameBossBar(message, p.getName());
-					BossBarHandler.recolorBossBar(color, p.getName());
-					BossBarHandler.updateProgress(use, p.getName());
+
+			String prefix = null;
+
+			if (can) {
+				prefix = "Reward";
+			} else {
+				prefix = "MaxEarningsReached";
+			}
+
+			if (prefix != null) {
+
+				if (tr.getBoolean(prefix + ".Enable_BossBar")) {
+					Date isago5seconds = new Date((new Date()).getTime() + 3000L);
+					if (lastworked_list.containsKey(p.getName()))
+						lastworked_list.remove(p.getName());
+					lastworked_list.put(p.getName(), isago5seconds);
+					double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore(UUID, job, level),
+							need);
+					BarColor color = job.getBarColor();
+					String message = up.toHex(tr.getString(prefix + ".BossBar").replaceAll("<prefix>", getPrefix())
+							.replaceAll("<job>", job.getDisplay()).replaceAll("<exp>", Format(all_exp))
+							.replaceAll("<level_name>", job.getLevelDisplay(level))
+							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
+							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
+					if (!BossBarHandler.exist(p.getName())) {
+						BossBarHandler.createBar(p, message, color, p.getName(), use);
+					} else {
+						BossBarHandler.renameBossBar(message, p.getName());
+						BossBarHandler.recolorBossBar(color, p.getName());
+						BossBarHandler.updateProgress(use, p.getName());
+					}
 				}
-			}
-			if (tr.getBoolean("Reward.Enable_Message")) {
-				String message = up.toHex(tr.getString("Reward.Message").replaceAll("<prefix>", getPrefix())
-						.replaceAll("<exp>", Format(all_exp)).replaceAll("<level_name>", job.getLevelDisplay(level))
-						.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-						.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
-				p.sendMessage(message);
-			}
-			if (tr.getBoolean("Reward.Enabled_Actionbar")) {
-				String message = up.toHex(tr.getString("Reward.Actionbar").replaceAll("<prefix>", getPrefix())
-						.replaceAll("<exp>", Format(all_exp)).replaceAll("<level_name>", job.getLevelDisplay(level))
-						.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-						.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
-				p.spigot().sendMessage(ChatMessageType.ACTION_BAR, (BaseComponent) new TextComponent(message));
+				if (tr.getBoolean(prefix + ".Enable_Message")) {
+					String message = up.toHex(tr.getString(prefix + ".Message").replaceAll("<prefix>", getPrefix())
+							.replaceAll("<job>", job.getDisplay()).replaceAll("<exp>", Format(all_exp))
+							.replaceAll("<level_name>", job.getLevelDisplay(level))
+							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
+							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
+					p.sendMessage(message);
+				}
+				if (tr.getBoolean(prefix + ".Enabled_Actionbar")) {
+					String message = up.toHex(tr.getString(prefix + ".Actionbar").replaceAll("<prefix>", getPrefix())
+							.replaceAll("<job>", job.getDisplay()).replaceAll("<exp>", Format(all_exp))
+							.replaceAll("<level_name>", job.getLevelDisplay(level))
+							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
+							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
+					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, (BaseComponent) new TextComponent(message));
+				}
 			}
 		});
 	}
@@ -147,17 +164,17 @@ public class JobAPI {
 		plugin.getLoaded().clear();
 		plugin.getID().clear();
 
-		if(files != null) {
+		if (files != null) {
 			for (int i = 0; i < files.length; i++) {
 				String name = files[i].getName();
 				File file = files[i];
-				plugin.getLogger().info("§aChecking File "+name+"...");
-				if (file.isFile()) {  
+				plugin.getLogger().info("§aChecking File " + name + "...");
+				if (file.isFile()) {
 					YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 					Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
 					plugin.getLoaded().add(job.getID());
 					plugin.getID().put(job.getID(), job);
-					plugin.getLogger().info("§aLoaded Job "+job.getID()+" from File "+name+"!");
+					plugin.getLogger().info("§aLoaded Job " + job.getID() + " from File " + name + "!");
 				} else {
 					plugin.getLogger().warning("§cFound File in Jobs Folder which isnt a real Job!");
 				}
@@ -174,8 +191,8 @@ public class JobAPI {
 
 		plugin.getLoaded().add(job.getID());
 		plugin.getID().put(job.getID(), job);
-		
-		plugin.getLogger().info("§aLoaded Job "+job.getID()+" from File "+file.getName()+"!");
+
+		plugin.getLogger().info("§aLoaded Job " + job.getID() + " from File " + file.getName() + "!");
 
 		return job;
 	}
@@ -225,6 +242,24 @@ public class JobAPI {
 		if (job.hasPermission() == true) {
 			return player.hasPermission(job.getPermission());
 		}
+		return true;
+	}
+
+	public boolean checkforDailyMaxEarnings(Player player, Job job) {
+
+		if (job.hasMaxEarningsPerDay()) {
+
+			double max = job.getMaxEarningsPerDay();
+
+			double current = plugin.getPlayerDataModeManager().getEarnedAtDate("" + player.getUniqueId(), job.getID(),
+					getDate());
+
+			if (current >= max) {
+				return false;
+			}
+
+		}
+
 		return true;
 	}
 

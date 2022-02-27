@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand; 
@@ -27,8 +27,8 @@ public class AdminTabComplete implements TabCompleter {
 
 			if (args.length == 1) {
 
-				for (String found : find(1)) {
-					l.add(found);
+				for (AdminSubCommand found : plugin.getAdminSubCommandManager().getSubCommandList()) {
+					l.add(found.getName());
 				}
 
 			} else if (args.length != 1) {
@@ -66,17 +66,7 @@ public class AdminTabComplete implements TabCompleter {
 		return l;
 
 	}
-
-	public ArrayList<String> find(int length) {
-		ArrayList<String> list = new ArrayList<String>();
-		for (AdminSubCommand c : plugin.getAdminSubCommandManager().getSubCommandList()) {
-			if (getFromFormat(1, c) != null) {
-				list.add(c.getName().toLowerCase());
-			}
-		}
-		return list;
-	}
-
+ 
 	public String getFromFormat(int length, AdminSubCommand c) {
 		String[] format = c.FormatTab().split(" ");
 		if (format.length <= length) {

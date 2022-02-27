@@ -1,11 +1,9 @@
 package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList;
+ 
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.datax.SimpleAPI; 
 import de.warsteiner.jobs.api.JobsPlayer;
 
 public class PlayerDataManager {
@@ -27,6 +25,62 @@ public class PlayerDataManager {
 		}
 	}
 	
+	public void updateEarningsAtDate(String UUID, String job, String date, double money) {
+		String mode = SimpleAPI.getPlugin().getPluginMode();
+		if(mode.equalsIgnoreCase("SQL")) {
+			sql.updateEarnings(UUID, job, date, money);
+		}  else if(mode.equalsIgnoreCase("YML")) {
+			yml.updateEarnings(UUID, job, date, money);
+		}
+	}
+	
+	public double getEarnedAtDate(String UUID, String job, String date) {
+		String mode = SimpleAPI.getPlugin().getPluginMode();
+		if(mode.equalsIgnoreCase("SQL")) {
+			return sql.getEarnedAt(UUID, job, date);
+		}  else if(mode.equalsIgnoreCase("YML")) {
+			return yml.getEarnedAt(UUID, job, date);
+		}
+		return 0;
+	}
+	
+	public double getAmountEarnedOf(String UUID, String job, String id) {
+		String mode = SimpleAPI.getPlugin().getPluginMode();
+		if(mode.equalsIgnoreCase("SQL")) {
+			return sql.getEarnedOfBlock(UUID, job, id);
+		}  else if(mode.equalsIgnoreCase("YML")) {
+			return yml.getEarnedOfBlock(UUID, job, id);
+		}
+		return 0;
+	}
+	
+	public void updateAmountTimesOf(String UUID, String job, String id, int amount) {
+		String mode = SimpleAPI.getPlugin().getPluginMode();
+		if(mode.equalsIgnoreCase("SQL")) {
+			sql.updateEarningsTimesOf(UUID, job, id, amount);
+		}  else if(mode.equalsIgnoreCase("YML")) {
+			yml.updateEarningsTimesOf(UUID, job, id, amount);
+		}
+	}
+	
+	public void updateAmountEarnedOf(String UUID, String job, String id, double calc) {
+		String mode = SimpleAPI.getPlugin().getPluginMode();
+		if(mode.equalsIgnoreCase("SQL")) {
+			sql.updateEarningsAmountOf(UUID, job, id, calc);
+		}  else if(mode.equalsIgnoreCase("YML")) {
+			yml.updateEarningsAmountOf(UUID, job, id, calc);
+		}
+	}
+	
+	public int getTimesEarnedOf(String UUID, String job, String id) {
+		String mode = SimpleAPI.getPlugin().getPluginMode();
+		if(mode.equalsIgnoreCase("SQL")) {
+			return sql.getBrokenTimesOfBlock(UUID, job, id);
+		}  else if(mode.equalsIgnoreCase("YML")) {
+			return yml.getBrokenTimesOfBlock(UUID, job, id);
+		}
+		return 0;
+	}
 	
 	public void createJobData(String UUID, String job) {
 		String mode = SimpleAPI.getPlugin().getPluginMode();

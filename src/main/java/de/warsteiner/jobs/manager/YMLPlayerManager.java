@@ -29,7 +29,76 @@ public class YMLPlayerManager {
 		cfg.set("Jobs."+UUID+"."+job+".Level", value);
 		save(cfg, file);
 	}
+	
+	public void updateEarnings(String UUID, String job , String date, double money) {
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		cfg.set("Earnings."+UUID+"."+date+"."+job, money);
+		save(cfg, file);
+	}
+	
+	public double getEarnedAt(String UUID, String job, String date) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		
+		if(cfg.contains("Earnings."+UUID+"."+date+"."+job)) {
+			return cfg.getDouble("Earnings."+UUID+"."+date+"."+job);
+		} else {
+			cfg.set("Earnings."+UUID+"."+date+"."+job, 0);
+			save(cfg, file);
+		}
+		return 0;
+		
+	}
+	
+	public double getEarnedOfBlock(String UUID, String job, String id) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		
+		if(cfg.contains("Earnings."+UUID+"."+job+"."+id+".Money")) {
+			return cfg.getDouble("Earnings."+UUID+"."+job+"."+id+".Money");
+		} else {
+			cfg.set("Earnings."+UUID+"."+job+"."+id+".Money", 0);
+			save(cfg, file);
+		}
+		return 0;
+		
+	}
+	
+	public void updateEarningsTimesOf(String UUID, String job , String id, int time) {
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+	 
+			cfg.set("Earnings."+UUID+"."+job+"."+id+".Times", 0);
+			save(cfg, file);
+		 
+	}
+	
+	public void updateEarningsAmountOf(String UUID, String job , String id, double money) {
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		cfg.set("Earnings."+UUID+"."+job+"."+id+".Money", 0);
+		save(cfg, file);
+	}
+	
 
+	public int getBrokenTimesOfBlock(String UUID, String job, String id) {
+		
+		FileConfiguration cfg = plugin.getPlayerDataFile().get();
+		File file = plugin.getPlayerDataFile().getfile();
+		
+		if(cfg.contains("Earnings."+UUID+"."+job+"."+id+".Times")) {
+			return cfg.getInt("Earnings."+UUID+"."+job+"."+id+".Times");
+		} else {
+			cfg.set("Earnings."+UUID+"."+job+"."+id+".Times", 0);
+			save(cfg, file);
+		}
+		return 0;
+		
+	}
+	
 	public void updateMax(String UUID, int value) {
 		
 		FileConfiguration cfg = plugin.getPlayerDataFile().get();

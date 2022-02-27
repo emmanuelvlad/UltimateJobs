@@ -31,9 +31,121 @@ public class SQLPlayerManager {
 					"CREATE TABLE IF NOT EXISTS earnings_all (UUID varchar(200), JOB varchar(200), DATE varchar(200), MONEY double)");
 
 			s.executeUpdate(
-					"CREATE TABLE IF NOT EXISTS earnings_stats (UUID varchar(200), JOB varchar(200), BLOCK varchar(200), TIMES int)");
+					"CREATE TABLE IF NOT EXISTS earnings_stats (UUID varchar(200), JOB varchar(200), ID varchar(200), TIMES int, MONEY double)");
  
 		});
+	}
+	
+	public void updateEarningsTimesOf(String UUID, String job , String id, int time) {
+		final String insertQuery = "UPDATE `earnings_stats` SET `TIMES`='" + time + "' WHERE UUID='" + UUID + "' AND JOB= '" + job + "' AND ID= '"+id+"' ";
+		mg.executeUpdate(insertQuery); 
+	}
+	
+	public void updateEarningsAmountOf(String UUID, String job , String id, double money) {
+		final String insertQuery = "UPDATE `earnings_stats` SET `MONEY`='" + money + "' WHERE UUID='" + UUID + "' AND JOB= '" + job + "' AND ID= '"+id+"' ";
+		mg.executeUpdate(insertQuery); 
+	}
+	
+	public boolean ExistEarningsOfBlock(String UUID, String job, String id) {
+		AtomicReference<String> a = new AtomicReference<String>();
+
+		mg.executeQuery("SELECT * FROM earnings_stats WHERE UUID= '" + UUID + "' AND JOB= '" + job + "' AND ID= '"+id+"'", rs -> {
+			if (rs.next()) {
+				a.set(rs.getString("ID"));
+			}
+			return 1;
+		}); 
+		return a.get() != null;
+	}
+	
+	public int getBrokenTimesOfBlock(String UUID, String job, String id) {
+		if(ExistEarningsOfBlock(UUID, job, id)) {
+			AtomicInteger a = new AtomicInteger();
+
+			mg.executeQuery("SELECT * FROM earnings_stats WHERE UUID= '" + UUID + "' AND JOB= '" + job + "' AND ID= '"+id+"'", rs -> {
+				if (rs.next()) {
+					a.set(rs.getInt("TIMES"));
+				}
+				return 0;
+			}); 
+			return a.get();
+		} else {
+			createEarningsOfBlock(UUID, job, id);
+		}
+		return 0;
+	}
+	
+	public double getEarnedOfBlock(String UUID, String job, String id) {
+		if(ExistEarningsOfBlock(UUID, job, id)) {
+			AtomicDouble a = new AtomicDouble();
+
+			mg.executeQuery("SELECT * FROM earnings_stats WHERE UUID= '" + UUID + "' AND JOB= '" + job + "' AND ID= '"+id+"'", rs -> {
+				if (rs.next()) {
+					a.set(rs.getDouble("MONEY"));
+				}
+				return 0;
+			}); 
+			return a.get();
+		} else {
+			createEarningsOfBlock(UUID, job, id);
+		}
+		return 0;
+	}
+	 
+	public void createEarningsOfBlock(String UUID, String job, String id) { 
+		final String insertQuery = "INSERT INTO earnings_stats(UUID,JOB,ID,TIMES,MONEY) VALUES(?,?,?,?,?)";
+		mg.executeUpdate(insertQuery, ps -> {
+			ps.setString(1, UUID);
+			ps.setString(2, job);
+			ps.setString(3, id);
+			ps.setInt(4, 0); 
+			ps.setDouble(5, 0); 
+		}); 
+	}
+	
+	public boolean ExistEarningsDataToday(String UUID, String job, String date) {
+		AtomicReference<String> a = new AtomicReference<String>();
+
+		mg.executeQuery("SELECT * FROM earnings_all WHERE UUID= '" + UUID + "' AND JOB= '" + job + "' AND DATE= '"+date+"'", rs -> {
+			if (rs.next()) {
+				a.set(rs.getString("DATE"));
+			}
+			return 1;
+		}); 
+		return a.get() != null;
+	}
+	
+	public void updateEarnings(String UUID, String job , String date, double money) {
+		final String insertQuery = "UPDATE `earnings_all` SET `MONEY`='" + money + "' WHERE UUID='" + UUID + "' AND JOB= '" + job + "' AND DATE= '"+date+"' ";
+		mg.executeUpdate(insertQuery); 
+	}
+ 
+	public double getEarnedAt(String UUID, String job, String date) {
+		if(ExistEarningsDataToday(UUID, job, date)) {
+			AtomicDouble a = new AtomicDouble();
+
+			mg.executeQuery("SELECT * FROM earnings_all WHERE UUID= '" + UUID + "' AND JOB= '" + job + "' AND DATE= '"+date+"'", rs -> {
+				if (rs.next()) {
+					a.set(rs.getDouble("MONEY"));
+				}
+				return 0;
+			}); 
+			return a.get();
+		} else {
+			createEarningsData(UUID, job, date);
+		}
+		return 0;
+	}
+	 
+	public void createEarningsData(String UUID, String job, String date) { 
+		final String insertQuery = "INSERT INTO earnings_all(UUID,JOB,DATE,MONEY) VALUES(?,?,?,?)";
+		mg.executeUpdate(insertQuery, ps -> {
+			ps.setString(1, UUID);
+			ps.setString(2, job);
+			ps.setString(3, date);
+			ps.setInt(4, 0); 
+
+		}); 
 	}
 	
 	public void updatePoints(String UUID, double value) {

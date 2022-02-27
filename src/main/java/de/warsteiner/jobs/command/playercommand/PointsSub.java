@@ -48,20 +48,20 @@ public class PointsSub extends SubCommand {
 					double points = plugin.getPlayerManager().getOnlineJobPlayers().get(uuid).getPoints();
 					player.sendMessage(
 							up.toHex(plugin.getMessages().getConfig().getString("Points_Other")
-									.replaceAll("<name>",  args[1]).replaceAll("<points>", ""+points).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
+									.replaceAll("<name>",  args[1]).replaceAll("<points>", plugin.getAPI().Format(points)).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
 					return;
 				} else {  
 					double points = plm.getPoints(uuid);
 					player.sendMessage(
 							up.toHex(plugin.getMessages().getConfig().getString("Points_Other")
-									.replaceAll("<name>",  args[1]).replaceAll("<points>", ""+points).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
+									.replaceAll("<name>",  args[1]).replaceAll("<points>", plugin.getAPI().Format(points)).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
 					return;
 				}
 			} 
 		} else if(args.length == 1) { 
 			player.sendMessage(
 					up.toHex(plugin.getMessages().getConfig().getString("Points_Self")
-							.replaceAll("<points>", ""+jb.getPoints()).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
+							.replaceAll("<points>", plugin.getAPI().Format(jb.getPoints())).replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
 			return;
 		}
 		else {
