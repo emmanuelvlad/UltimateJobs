@@ -89,7 +89,12 @@ public class JobsPlayer {
 	}
 
 	public Integer getLevelOf(String job) {
-		return getLevels().get(job);
+		
+		if( getLevels().get(job) == null) {
+			return 1;
+		}
+		
+		return  getLevels().get(job);
 	}
 
 	public void updateLevel(String job, int nw) {

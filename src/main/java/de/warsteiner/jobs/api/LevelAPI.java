@@ -63,6 +63,10 @@ public class LevelAPI {
 			
 			int old_level = pl.getLevelOf(job.getID());
 			int new_level = old_level + 1;
+			
+			if(old_level >= job.getCountOfLevels()) {
+				return;
+			}
 
 			if (!canLevelMore(UUID, job, new_level)) {
 
@@ -84,7 +88,7 @@ public class LevelAPI {
 						UltimateJobs.getPlugin().getEco().depositPlayer(player, money);
 					}
 				
-					String level_name = job.getNameOfLevel(new_level);
+					String level_name = job.getLevelDisplay(new_level);
 
 					if (tr.getBoolean("Levels.Enable_Title")) {
 						String title_1 = api.toHex(tr.getString("Levels.Ttitle_1")

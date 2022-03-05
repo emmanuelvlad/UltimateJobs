@@ -21,7 +21,6 @@ import de.warsteiner.datax.utils.other.UpdateChecker;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
-import de.warsteiner.jobs.api.PluginAPI;
 import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
 import de.warsteiner.jobs.api.plugins.NotQuestManager;
 import de.warsteiner.jobs.api.plugins.PlaceHolderManager;
@@ -42,6 +41,7 @@ import de.warsteiner.jobs.command.playercommand.LimitSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.SubHelp; 
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
+import de.warsteiner.jobs.inventorys.HelpMenuClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
 import de.warsteiner.jobs.jobs.JobActionAdvancement;
@@ -60,6 +60,7 @@ import de.warsteiner.jobs.manager.GuiManager;
 import de.warsteiner.jobs.manager.JobWorkManager; 
 import de.warsteiner.jobs.manager.PlayerDataManager;
 import de.warsteiner.jobs.manager.PlayerManager;
+import de.warsteiner.jobs.manager.PluginManager;
 import de.warsteiner.jobs.manager.SQLPlayerManager;
 import de.warsteiner.jobs.manager.YMLPlayerManager;
 import de.warsteiner.jobs.utils.BossBarHandler; 
@@ -92,12 +93,12 @@ public class UltimateJobs extends JavaPlugin {
 	private JobWorkManager work;
 	private YamlConfigFile command; 
 	private AlonsoLevelsManager alonso; 
-	public PluginAPI plapi;
+	public PluginManager plapi;
 
 	public void onLoad() {
 
 		plugin = this;
-		plapi = new PluginAPI();
+		plapi = new PluginManager();
 		 
 		createFolders();
 
@@ -105,13 +106,13 @@ public class UltimateJobs extends JavaPlugin {
 
 		executor = Executors.newFixedThreadPool(this.config.getConfig().getInt("ExecutorServiceThreads"));
 		
-		if (getPluginAPI().isInstalled("WorldGuard")) {
+		if (getPluginManager().isInstalled("WorldGuard")) {
 			WorldGuardManager.setClass();
 			WorldGuardManager.load(); 
 			getLogger().info("§bLoaded WorldGuard-Support for UltimateJobs!");
 		}
 		
-		if(getPluginAPI().isInstalled("SimpleAPI")) {
+		if(getPluginManager().isInstalled("SimpleAPI")) {
 			getExecutor().execute(() -> {   
 				if(config.getConfig().getBoolean("CheckForUpdates")) {
 					SimpleAPI.getPlugin().getWebManager().loadVersionAndCheckUpdate("https://api.war-projects.com/v1/ultimatejobs/version.txt", "UltimateJobs",getDescription().getVersion());
@@ -145,7 +146,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new AreYouSureMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerLevelEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerRewardCommandEvent(), this);
-
+		Bukkit.getPluginManager().registerEvents(new HelpMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
  
 		// job events
@@ -155,16 +156,16 @@ public class UltimateJobs extends JavaPlugin {
 		
 		getLogger().info("§bLoading Supported Plugins...");
 
-		if (getPluginAPI().isInstalled("PlaceHolderAPI")) {
+		if (getPluginManager().isInstalled("PlaceHolderAPI")) {
 			new PlaceHolderManager().register();
 			getLogger().info("§6Loaded PlaceHolderAPI Hook for UltimateJobs!");
 		}
 
-		if (getPluginAPI().isInstalled("NotQuests")) {
+		if (getPluginManager().isInstalled("NotQuests")) {
 			getNotQuestManager().setClass();
 			getLogger().info("§6Loaded NotQuests Hook for UltimateJobs!");
 		}
-		if (getPluginAPI().isInstalled("AlonsoLevels")) { 
+		if (getPluginManager().isInstalled("AlonsoLevels")) { 
 			getLogger().info("§6Loaded AlonsoLevels Hook for UltimateJobs!");
 		}
 		
@@ -279,7 +280,7 @@ public class UltimateJobs extends JavaPlugin {
 		getLogger().info("§bLoaded Classes for UltimateJobs...");
 	}
 	
-	public PluginAPI getPluginAPI() {
+	public PluginManager getPluginManager() {
 		return plapi;
 	}
  

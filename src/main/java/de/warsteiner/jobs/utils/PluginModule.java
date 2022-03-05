@@ -14,9 +14,8 @@ public class PluginModule extends SimplePluginModule {
 
 	@Override
 	public void reloadConfig(CommandSender arg0) {
-		UltimateJobs.getPlugin().getAPI().loadJobs(UltimateJobs.getPlugin().getLogger());
 		UltimateJobs.getPlugin().setupConfigs();
-		
+		UltimateJobs.getPlugin().getAPI().loadJobs(UltimateJobs.getPlugin().getLogger()); 
 	}
  
  

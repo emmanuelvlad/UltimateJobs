@@ -17,7 +17,7 @@ public class YMLPlayerManager {
 		FileConfiguration cfg = plugin.getPlayerDataFile().get();
 		File file = plugin.getPlayerDataFile().getfile();
 		
-		cfg.set("Player."+UUID+".Points", value);
+		cfg.set("Player."+UUID+".Points", value); 
 		save(cfg, file);
 	}
 
@@ -26,14 +26,14 @@ public class YMLPlayerManager {
 		FileConfiguration cfg = plugin.getPlayerDataFile().get();
 		File file = plugin.getPlayerDataFile().getfile();
 		
-		cfg.set("Jobs."+UUID+"."+job+".Level", value);
+		cfg.set("Jobs."+UUID+"."+job+".Level", value); 
 		save(cfg, file);
 	}
 	
 	public void updateEarnings(String UUID, String job , String date, double money) {
 		FileConfiguration cfg = plugin.getPlayerDataFile().get();
 		File file = plugin.getPlayerDataFile().getfile();
-		cfg.set("Earnings."+UUID+"."+date+"."+job, money);
+		cfg.set("Earnings."+UUID+"."+date+"."+job, money); 
 		save(cfg, file);
 	}
 	
@@ -248,11 +248,13 @@ public class YMLPlayerManager {
 
 	
 	public void save(FileConfiguration cfg, File file) {
-		try {
-			cfg.save(file);
-		} catch (IOException e) {
-			plugin.getLogger().warning("§4§lFalied to save Data-File!");
-			e.printStackTrace();
+		if(file != null) {
+			try {
+				cfg.save(file);
+			} catch (IOException e) { 
+				e.printStackTrace();
+			}
+		} else { 
 		}
 	}
 	

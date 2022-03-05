@@ -29,9 +29,14 @@ public class SubHelp extends SubCommand {
 	public void perform(CommandSender sender, String[] args, JobsPlayer jb) {
 		final Player player = (Player) sender;
 		if (args.length == 1) {
-			YamlConfiguration mg = plugin.getMessages().getConfig();
-			for (String m : mg.getStringList("Help")) {
-				player.sendMessage(up.toHex(m).replaceAll("&", "§"));
+			String mode = plugin.getMainConfig().getConfig().getString("Help_Mode").toUpperCase();
+			if(mode.equalsIgnoreCase("GUI")) {
+				plugin.getGUI().createHelpGUI(player);
+			} else {
+				YamlConfiguration mg = plugin.getMessages().getConfig();
+				for (String m : mg.getStringList("Help")) {
+					player.sendMessage(up.toHex(m).replaceAll("&", "§"));
+				}
 			}
 		} else {
 			player.sendMessage(up.toHex(plugin.getCommandConfig().getConfig().getString("Command.HELP.Syntax")

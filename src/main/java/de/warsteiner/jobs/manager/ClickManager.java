@@ -61,7 +61,7 @@ public class ClickManager {
 		new BukkitRunnable() {
 			public void run() {
 				gui.setCustomitems(player, player.getName(), player.getOpenInventory(), "Main_Custom.",
-						cfg2.getStringList("Main_Custom.List"), name, cfg2);
+						cfg2.getStringList("Main_Custom.List"), name, cfg2, plugin.getJobCache().get(job));
 				gui.setMainInventoryJobItems(player.getOpenInventory(), player, name);
 			}
 		}.runTaskLater(plugin, 1);

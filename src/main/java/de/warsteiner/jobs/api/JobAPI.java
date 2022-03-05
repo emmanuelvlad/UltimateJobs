@@ -227,11 +227,11 @@ public class JobAPI {
 	}
 
 	public List<String> canGetJobWithSubOptions(Player player, Job job) {
-		if (job.hasNotQuestCon() == true && plugin.getPluginAPI().isInstalled("NotQuests")
+		if (job.hasNotQuestCon() == true && plugin.getPluginManager().isInstalled("NotQuests")
 				&& !plugin.getNotQuestManager().canHaveJob(player, job)) {
 			return job.getNotQuestConLore();
 		}
-		if (job.hasAlonsoLevelsReq() == true && plugin.getPluginAPI().isInstalled("AlonsoLevels")
+		if (job.hasAlonsoLevelsReq() == true && plugin.getPluginManager().isInstalled("AlonsoLevels")
 				&& !plugin.getAlonsoManager().canHaveJob(player, job)) {
 			return job.getAlonsoLevelsLore();
 		}
@@ -267,10 +267,10 @@ public class JobAPI {
 		if (job.hasBypassPermission()) {
 			return player.hasPermission(job.getByPassPermission());
 		}
-		if (job.hasByPassNotQuestCon() == true && plugin.getPluginAPI().isInstalled("NotQuests")) {
+		if (job.hasByPassNotQuestCon() == true && plugin.getPluginManager().isInstalled("NotQuests")) {
 			return plugin.getNotQuestManager().canBypassJob(player, job);
 		}
-		if (job.hasBypassAlonsoLevelsReq() == true && plugin.getPluginAPI().isInstalled("AlonsoLevels")) {
+		if (job.hasBypassAlonsoLevelsReq() == true && plugin.getPluginManager().isInstalled("AlonsoLevels")) {
 			return plugin.getAlonsoManager().canBypassJob(player, job);
 		}
 		return false;
@@ -313,7 +313,7 @@ public class JobAPI {
 	}
 
 	public String canWorkInRegion(Player player, Job j, String st) {
-		if (plugin.getPluginAPI().isInstalled("WorldGuard")) {
+		if (plugin.getPluginManager().isInstalled("WorldGuard")) {
 			String ac = "" + j.getAction();
 			String flag = ac.toLowerCase() + "_action";
 			return WorldGuardManager.checkFlag(player.getLocation(), flag, player, st);

@@ -1,15 +1,11 @@
-package de.warsteiner.jobs.api;
-
-import java.io.File; 
-import java.util.logging.Logger; 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration; 
+package de.warsteiner.jobs.manager;
+ 
+import org.bukkit.Bukkit; 
 import org.bukkit.plugin.Plugin; 
 
 import de.warsteiner.jobs.UltimateJobs;  
 
-public class PluginAPI {
+public class PluginManager {
 
 	private UltimateJobs plugin = UltimateJobs.getPlugin();
   
@@ -20,5 +16,5 @@ public class PluginAPI {
 		}
 		return false;
 	}
-	
+	 
 }

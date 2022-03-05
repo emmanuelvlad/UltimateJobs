@@ -64,7 +64,7 @@ public class PlayerManager {
 		plugin.getExecutor().execute(() -> {
 
 			if (existInCacheByUUID(""+UUID)) {
-				removePlayerFromCache(""+UUID);
+				removePlayerFromCache(""+UUID); 
 			}
 
 			PlayerDataManager plm = UltimateJobs.getPlugin().getPlayerDataModeManager();

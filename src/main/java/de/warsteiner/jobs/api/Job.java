@@ -9,6 +9,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.warsteiner.datax.SimpleAPI;
+import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.utils.Action;
 
 public class Job {
@@ -125,23 +126,50 @@ public class Job {
 		try {
 			cf.save(file);
 		} catch (IOException e) { 
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to save File for Job "+getID()+"!");
 			e.printStackTrace();
 		}
 	}
 
 	public File getFile() {
+		
+		if(file == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job File for Job "+getID()+"!");
+		}
+		
 		return file;
 	}
 	
 	public BarColor getBarColor() {
+		
+		if(BarColor.valueOf(cf.getString("ColorOfBossBar")) == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Bar Color for Job "+getID()+"!");
+			return BarColor.RED;
+		}
+		
 		return BarColor.valueOf(cf.getString("ColorOfBossBar"));
 	}
 	
 	public YamlConfiguration getConfig() {
+		if(cf == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job Config for Job "+getID()+"!");
+		}
 		return cf;
 	}
+	
+	public void updateLevelDisplay(int i, String d) {
+		cf.set("LEVELS." + i + ".Display", d);
+		save();
+	}
+	
+	
 
 	public String getLevelDisplay(int i) {
+		
+		if(cf.getString("LEVELS." + i + ".Display") == null) {
+			return "Error";
+		}
+		
 		return cf.getString("LEVELS." + i + ".Display");
 	}
 
@@ -152,12 +180,25 @@ public class Job {
 	public double getMultiOfLevel(int i) {
 		return cf.getDouble("LEVELS." + i + ".EarnMore");
 	}
+	
+	public void updateMultiOfLevel(int i, double d) {
+		cf.set("LEVELS." + i + ".EarnMore", d);
+		save();
+	}
 
 	public List<String> getPermissionsLore() { 
+		
+		if(!cf.contains("PermLore")) {
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermLore for Job "+getID()+"!");
+		}
+		
 		return cf.getStringList("PermLore");
 	}
   
 	public String getPermMessage() { 
+		if(!cf.contains("PermMessage")) {
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermMessage for Job "+getID()+"!");
+		}
 		return cf.getString("PermMessage");
 	}
 
@@ -257,6 +298,11 @@ public class Job {
 		return cf.getStringList("LEVELS." + level + ".Commands") != null;
 	}
 	
+	public void updateLevelVault(int i, double d) {
+		cf.set("LEVELS." + i + ".Money", d);
+		save();
+	}
+	
 	public double getVaultOnLevel(int level) {
 		return cf.getDouble("LEVELS." + level + ".Money");
 	} 
@@ -303,12 +349,13 @@ public class Job {
 		return cf.getString("LEVELS." + level + ".Money") != null;
 	}
  
-	public String getNameOfLevel(int level) {
-		return cf.getString("LEVELS." + level + ".Display");
-	}
-
 	public double getExpOfLevel(int level) {
 		return cf.getDouble("LEVELS." + level + ".Need");
+	}
+	
+	public void updateExpofLevel(int i, double d) {
+		cf.set("LEVELS." + i + ".Need", d);
+		save();
 	}
 	
 	public List<String> getCommandsOfBlock(String id) {
@@ -340,10 +387,19 @@ public class Job {
 	}
 
 	public double getExpOf(String id) {
+		
+		if(!cf.contains("IDS." + id + ".Exp")) {
+			return 0;
+		}
+		
 		return cf.getDouble("IDS." + id + ".Exp");
 	}
 
 	public double getPointsOf(String id) {
+
+		if(!cf.contains("IDS." + id + ".Points")) {
+			return 0;
+		}
 		return cf.getDouble("IDS." + id + ".Points");
 	}
 
@@ -372,14 +428,29 @@ public class Job {
 	}
 
 	public String getIcon() {
+		
+		if(icon == null) {
+			return "BARRIER";
+		}
+		
 		return icon;
 	}
 
 	public Action getAction() {
+		
+		if(action == null) {
+			return Action.BREAK;
+		}
+		
 		return action;
 	}
 
 	public String getDisplay() {
+		
+		if(display == null) {
+			return "Error";
+		}
+		
 		return SimpleAPI.getInstance().getAPI().toHex(display).replaceAll("&", "§");
 	}
 
