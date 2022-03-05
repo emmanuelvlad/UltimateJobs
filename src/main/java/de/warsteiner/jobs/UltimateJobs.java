@@ -136,7 +136,7 @@ public class UltimateJobs extends JavaPlugin {
 
 		api.loadJobs(getLogger());
 		
-		getLogger().info("§bLoading UltimateJobs...");
+		getLogger().info("§aLoading UltimateJobs...");
 		
 		// basic events
 		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
