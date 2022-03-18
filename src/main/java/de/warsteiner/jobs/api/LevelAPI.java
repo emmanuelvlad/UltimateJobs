@@ -1,22 +1,22 @@
 package de.warsteiner.jobs.api;
  
+import java.util.UUID;
+
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.utils.cevents.PlayerFinishedWorkEvent;
+import de.warsteiner.jobs.UltimateJobs; 
 import de.warsteiner.jobs.utils.cevents.PlayerLevelJobEvent;
 
 public class LevelAPI {
 
-	private UltimateJobs plugin;
-	private YamlConfiguration tr;
+	private UltimateJobs plugin; 
 
-	public LevelAPI(UltimateJobs plugin, YamlConfiguration tr) {
-		this.tr = tr;
+	public LevelAPI(UltimateJobs plugin) { 
 		this.plugin = plugin;
 	}
 
@@ -35,7 +35,7 @@ public class LevelAPI {
 	}
 
 	public boolean canLevelMore(String uuid, Job job, int level) {
-		if (job.getLevelDisplay(level) != null) {
+		if (job.getLevelDisplay(level, uuid) != null) {
 			return false;
 		}
 		return true;
@@ -55,11 +55,11 @@ public class LevelAPI {
 	@SuppressWarnings("deprecation")
 	public void check(Player player, Job job, JobsPlayer pl, String block) {
 		plugin.getExecutor().execute(() -> {
-			String UUID = "" + player.getUniqueId();
+			UUID UUID =  player.getUniqueId();
 
 			PluginAPI api = SimpleAPI.getInstance().getAPI();
-
-			String prefix = plugin.getAPI().getPrefix();
+			FileConfiguration cfg = plugin.getFileManager().getConfig();
+			String prefix = plugin.getPluginManager().getPrefix(UUID);
 			
 			int old_level = pl.getLevelOf(job.getID());
 			int new_level = old_level + 1;
@@ -68,7 +68,7 @@ public class LevelAPI {
 				return;
 			}
 
-			if (!canLevelMore(UUID, job, new_level)) {
+			if (!canLevelMore(""+UUID, job, new_level)) {
 
 				if (canlevelUp(job, pl)) {
 
@@ -88,28 +88,28 @@ public class LevelAPI {
 						UltimateJobs.getPlugin().getEco().depositPlayer(player, money);
 					}
 				
-					String level_name = job.getLevelDisplay(new_level);
+					String level_name = job.getLevelDisplay(new_level, ""+UUID);
 
-					if (tr.getBoolean("Levels.Enable_Title")) {
-						String title_1 = api.toHex(tr.getString("Levels.Ttitle_1")
+					if (cfg.getBoolean("Levels.Enable_Title")) {
+						String title_1 = api.toHex(plugin.getPluginManager().getMessage(UUID, "Levels.Ttitle_1")
 								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
 								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 
-						String title_2 = api.toHex(tr.getString("Levels.Ttitle_2")
+						String title_2 = api.toHex(plugin.getPluginManager().getMessage(UUID,"Levels.Ttitle_2")
 								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
 								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 						player.sendTitle(title_1, title_2);
 					}
 
-					if (tr.getBoolean("Levels.Enable_Message")) {
-						String message = api.toHex(tr.getString("Levels.Message")
+					if (cfg.getBoolean("Levels.Enable_Message")) {
+						String message = api.toHex(plugin.getPluginManager().getMessage(UUID,"Levels.Message")
 								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
 								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 						player.sendMessage(message);
 					}
 
-					if (tr.getBoolean("Levels.Enabled_Actionbar")) {
-						String message = api.toHex(tr.getString("Levels.Actionbar")
+					if (cfg.getBoolean("Levels.Enabled_Actionbar")) {
+						String message = api.toHex(plugin.getPluginManager().getMessage(UUID,"Levels.Actionbar")
 								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
 								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 						player.sendMessage(message);

@@ -1,6 +1,6 @@
 package de.warsteiner.jobs.inventorys;
 
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration; 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,24 +38,27 @@ public class AreYouSureMenuClickEvent implements Listener {
 			return;
 		}
 
-		YamlConfiguration config = plugin.getMainConfig().getConfig();
-		
-		String name = config.getString("AreYouSureGUI_Name");
-		
+		FileConfiguration config = plugin.getFileManager().getConfirm();
+		  
 		Player p = (Player) e.getWhoClicked();
-		
+		String UUID = ""+p.getUniqueId();
+		java.util.UUID ID = p.getUniqueId();
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
+		String name =  plugin.getPluginManager().getSomethingFromPath(ID, config.getString("AreYouSureGUI_Name"));
  
 		for (String list : plugin.getLoaded()) {
 			Job job = plugin.getJobCache().get(list);
-			String mm = job.getDisplay();
+			String mm = job.getDisplay(UUID);
 			String newname = up.toHex(name).replaceAll("<job>", mm).replaceAll("&", "§");
 			if(e.getView().getTitle().equalsIgnoreCase(newname)) {
 				plugin.getClickManager().executeCustomItem(display, p, "AreYouSureGUI_Custom", config);
 				 
-				JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(""+p.getUniqueId());
-				String yes =  up.toHex(config.getString("AreYouSureItems.Button_YES.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
-				String no =  up.toHex(config.getString("AreYouSureItems.Button_NO.Display")).replaceAll("<job>", job.getDisplay()).replaceAll("&", "§");
+				String name_yes =  plugin.getPluginManager().getSomethingFromPath(ID, config.getString("AreYouSureItems.Button_YES.Display"));
+				String name_no =  plugin.getPluginManager().getSomethingFromPath(ID, config.getString("AreYouSureItems.Button_NO.Display"));
+				
+				JobsPlayer jb =plugin.getPlayerManager().getRealJobPlayer(UUID);
+				String yes =  up.toHex(name_yes).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
+				String no =  up.toHex(name_no).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
 				
 				if(display.equalsIgnoreCase(yes)) {
 				 

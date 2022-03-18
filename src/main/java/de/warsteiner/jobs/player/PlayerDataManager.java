@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.manager;
+package de.warsteiner.jobs.player;
 
 import java.util.ArrayList;
  

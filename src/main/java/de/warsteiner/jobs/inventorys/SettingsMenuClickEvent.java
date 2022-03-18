@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.inventorys;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,15 +38,18 @@ public class SettingsMenuClickEvent implements Listener {
 			return;
 		}
 
-		YamlConfiguration config = plugin.getMainConfig().getConfig();
+		FileConfiguration config = plugin.getFileManager().getSettings();
 
 		Player p = (Player) e.getWhoClicked();
 
+		String UUID = ""+p.getUniqueId();
+		String name =  plugin.getPluginManager().getSomethingFromPath(p.getUniqueId(), config.getString("Settings_Name"));
+		
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
-		String title = up.toHex(e.getView().getTitle().replaceAll("&", "§"));
+		String title = up.toHex(name.replaceAll("&", "§"));
 
-		if (plugin.getAPI().isSettingsGUI(title) != null) {
-			Job job = plugin.getAPI().isSettingsGUI(title);
+		if (plugin.getGUI().isSettingsGUI(title, UUID) != null) {
+			Job job = plugin.getGUI().isSettingsGUI(title, UUID);
 			plugin.getClickManager().executeCustomItemInSubMenu(job, display, p, "Settings_Custom", config);
 			e.setCancelled(true);
 		}

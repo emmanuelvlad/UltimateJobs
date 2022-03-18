@@ -1,7 +1,8 @@
 package de.warsteiner.jobs.command.playercommand;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
+import java.util.UUID;
+
+import org.bukkit.command.CommandSender; 
 import org.bukkit.entity.Player;
 
 import de.warsteiner.datax.SimpleAPI;
@@ -16,31 +17,31 @@ public class SubHelp extends SubCommand {
 	private PluginAPI up = SimpleAPI.getInstance().getAPI();
 
 	@Override
-	public String getName() {
-		return plugin.getCommandConfig().getConfig().getString("Command.HELP.Usage");
+	public String getName(UUID UUID) {
+		return  plugin.getPluginManager().getMessage(UUID, "Commands.Help.Usage");
 	}
 
 	@Override
-	public String getDescription() {
-		return plugin.getCommandConfig().getConfig().getString("Command.HELP.Desc");
+	public String getDescription(UUID UUID) {
+		return  plugin.getPluginManager().getMessage(UUID, "Commands.Help.Description");
 	}
 
 	@Override
 	public void perform(CommandSender sender, String[] args, JobsPlayer jb) {
 		final Player player = (Player) sender;
+		UUID UUID = player.getUniqueId();
 		if (args.length == 1) {
-			String mode = plugin.getMainConfig().getConfig().getString("Help_Mode").toUpperCase();
+			String mode = plugin.getFileManager().getHelpSettings().getString("Help_Mode").toUpperCase();
 			if(mode.equalsIgnoreCase("GUI")) {
 				plugin.getGUI().createHelpGUI(player);
 			} else {
-				YamlConfiguration mg = plugin.getMessages().getConfig();
-				for (String m : mg.getStringList("Help")) {
+		 
+				for (String m :plugin.getPluginManager().getMessageList(UUID, "Commands.Help.List")) {
 					player.sendMessage(up.toHex(m).replaceAll("&", "§"));
 				}
 			}
 		} else {
-			player.sendMessage(up.toHex(plugin.getCommandConfig().getConfig().getString("Command.HELP.Syntax")
-					.replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
+			player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -56,7 +57,12 @@ public class SubHelp extends SubCommand {
 	
 	@Override
 	public boolean isEnabled() { 
-		return plugin.getCommandConfig().getConfig().getBoolean("Command.HELP.Enabled");
+		return  plugin.getFileManager().getCMDSettings().getBoolean("Commands.Help.Enabled");
+	}
+
+	@Override
+	public String getUsage(UUID UUID) { 
+		return plugin.getPluginManager().getMessage(UUID, "Commands.Help.UsageMessage");
 	}
   
 }

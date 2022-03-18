@@ -3,8 +3,7 @@ package de.warsteiner.jobs.api.plugins;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
-
-import com.alonsoaliaga.alonsolevels.AlonsoLevels;
+ 
 import com.alonsoaliaga.alonsolevels.api.AlonsoLevelsAPI;
 
 import de.warsteiner.jobs.api.Job;

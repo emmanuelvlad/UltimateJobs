@@ -1,6 +1,8 @@
 package de.warsteiner.jobs.command;
  
 
+import java.util.UUID;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +23,8 @@ public class JobsCommand implements CommandExecutor {
 		 
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			JobsPlayer j = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getUniqueId());
+			String UUID = ""+player.getUniqueId();
+			JobsPlayer jb =plugin.getPlayerManager().getRealJobPlayer(UUID);
 			GuiManager gui = plugin.getGUI();
 
 			if (length == 0) {
@@ -30,17 +33,17 @@ public class JobsCommand implements CommandExecutor {
 			} else {
 				String ar = args[0].toLowerCase();
 
-				if (find(ar) == null) {
-					player.sendMessage(plugin.getAPI().getMessage("Not_Found_Command"));
+				if (find(ar, jb.getUUID()) == null) {
+					player.sendMessage(plugin.getPluginManager().getMessage(jb.getUUID(), "command_notfound").replaceAll("<cmd>", ar));
 					return true;
 				} else {
 
-					SubCommand cmd = find(ar);
+					SubCommand cmd = find(ar, jb.getUUID());
 
 					if(cmd.isEnabled()) {
-						cmd.perform(player, args, j);
+						cmd.perform(player, args, jb);
 					} else {
-						player.sendMessage(plugin.getAPI().getMessage("Not_Found_Command"));
+						player.sendMessage(plugin.getPluginManager().getMessage(jb.getUUID(), "command_notfound").replaceAll("<cmd>", ar));
 						return true;
 					}
 
@@ -48,15 +51,15 @@ public class JobsCommand implements CommandExecutor {
 
 			}
 		} else {
-			plugin.getLogger().warning("§cThis Command is only for Players. Please use /Jobsadmin.");
+			sender.sendMessage("§c§lThis Command is only for players!");
 		}
 
 		return false;
 	}
 
-	public SubCommand find(String given) {
+	public SubCommand find(String given, UUID UUID) {
 		for (SubCommand subCommand : plugin.getSubCommandManager().getSubCommandList()) {
-			if (given.equalsIgnoreCase(subCommand.getName().toLowerCase())) {
+			if (given.equalsIgnoreCase(subCommand.getName(UUID).toLowerCase())) {
 				return subCommand;
 			}
 		}

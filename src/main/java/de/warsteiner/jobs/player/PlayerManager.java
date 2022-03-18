@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.manager;
+package de.warsteiner.jobs.player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import de.warsteiner.datax.SimpleAPI;
+import de.warsteiner.datax.utils.SimplePlayer;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer; 
 
@@ -22,8 +24,12 @@ public class PlayerManager {
 		plugin = main;
 	}
 
-	public HashMap<String, JobsPlayer> getOnlineJobPlayers() {
+	public HashMap<String, JobsPlayer> getCacheJobPlayers() {
 		return pllist;
+	}
+	
+	public JobsPlayer getRealJobPlayer(String ID) { 
+		return getCacheJobPlayers().get(ID);
 	}
 
 	public void startSave() {
@@ -43,7 +49,7 @@ public class PlayerManager {
 				});
 
 			}
-		}.runTaskTimer(plugin, 0, 20 * plugin.getMainConfig().getConfig().getInt("Cache_Saved_Every"));
+		}.runTaskTimer(plugin, 0, 20 * plugin.getFileManager().getConfig().getInt("Cache_Saved_Every"));
 	}
 
 	public void removePlayerFromCache(String uuid) {
@@ -87,9 +93,9 @@ public class PlayerManager {
 			}
 
 			JobsPlayer jp = new JobsPlayer(name, current, owned, levels, exp, broken, plm.getPoints("" + UUID), date,
-					plm.getMax("" + UUID));
+					plm.getMax("" + UUID), ""+UUID, UUID);
 			 
-			pllist.put("" + UUID, jp);
+			pllist.put("" + UUID, jp); 
 			players.add(""+UUID); 
 		});
 	}

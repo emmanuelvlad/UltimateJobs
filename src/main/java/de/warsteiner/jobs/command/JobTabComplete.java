@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import de.warsteiner.datax.utils.Language;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.JobsPlayer; 
@@ -24,12 +25,12 @@ public class JobTabComplete implements TabCompleter {
 			Player p = (Player) s;
 			String UUID = "" + p.getUniqueId();
 			JobAPI api = plugin.getAPI();
-			JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(UUID);
+			JobsPlayer jb =plugin.getPlayerManager().getRealJobPlayer(UUID);
 
 			if (args.length == 1) {
 
 				for (SubCommand found : plugin.getSubCommandManager().getSubCommandList()) {
-					l.add(found.getName());
+					l.add(found.getName(jb.getUUID()));
 				}
 
 			} else if (args.length != 1) {
@@ -38,7 +39,7 @@ public class JobTabComplete implements TabCompleter {
 
 					if (c.getTabLength() <= args.length) {
 
-						if (args[0].toLowerCase().equalsIgnoreCase(c.getName().toLowerCase())) {
+						if (args[0].toLowerCase().equalsIgnoreCase(c.getName(jb.getUUID()).toLowerCase())) {
 							if (!getFromFormat(args.length, c).equalsIgnoreCase("NOT_FOUND")) {
 
 								if(c.isEnabled()) {
@@ -62,6 +63,12 @@ public class JobTabComplete implements TabCompleter {
 										if (jb.getOwnJobs() != null) {
 											for (String b : jb.getOwnJobs()) {
 												l.add(b.toLowerCase());
+											}
+										}
+									}   else if (type.equalsIgnoreCase("LANGUAGES")) {
+										if (jb.getOwnJobs() != null) {
+											for (Language b : plugin.getPluginManager().getLanguagesAsArray()) {
+												l.add(b.getID().toLowerCase());
 											}
 										}
 									} 

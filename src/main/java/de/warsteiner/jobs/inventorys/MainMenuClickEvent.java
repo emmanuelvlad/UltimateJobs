@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.inventorys;
  
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,12 +37,11 @@ public class MainMenuClickEvent implements Listener {
 			return;
 		}
 
-		YamlConfiguration config = plugin.getMainConfig().getConfig();
-		
-		String name = config.getString("Main_Name");
-		
+		FileConfiguration config = plugin.getFileManager().getGUI();
 		Player p = (Player) e.getWhoClicked();
-		
+		String UUID = ""+p.getUniqueId();
+		String name =  plugin.getPluginManager().getSomethingFromPath(p.getUniqueId(), config.getString("Main_Name"));
+		 
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
  
 		if (e.getView().getTitle().equalsIgnoreCase(up.toHex(name).replaceAll("&", "§"))) {

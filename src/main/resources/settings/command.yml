@@ -8,67 +8,36 @@
 #| |   `._____.'  | || |   `.____.'   | || ||_____||_____|| || ||_____||_____|| || ||____|  |____|| || ||_____|\____| | || | |________.'  | |
 #| |              | || |              | || |              | || |              | || |              | || |              | || |              | |
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
-# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-Command:
+Commands:
 
-  #do not remove something here, if you dont want to use it, put "false" on Enabled!
-  HELP:
-
+  Help:
+  
     Enabled: true
 
-    Usage: "help"
- 
-    Desc: "Display all Commands"
-
-    Syntax: "<prefix> &7Use &6/Jobs help"
-
-  JOIN:
-
+  Points:
+  
     Enabled: true
 
-    Usage: "join"
-
-    Desc: "Join a Job"
-
-    Syntax: "<prefix> &7Use &6/Jobs join <job>"
-
-  LEAVE:
-
+  Limit:
+  
     Enabled: true
 
-    Usage: "leave"
-
-    Desc: "Leave a job"
-
-    Syntax: "<prefix> &7Use &6/Jobs leave <job>"
-
-  LIMIT:
-
+  Leave:
+  
     Enabled: true
 
-    Usage: "limit"
-
-    Desc: "Display player job limits"
-
-    Syntax: "<prefix> &7Use &6/Jobs limit <name>"
-
-  POINTS:
-
+  LeaveALL:
+  
     Enabled: true
 
-    Usage: "points"
-
-    Desc: "Display points"
-
-    Syntax: "<prefix> &7Use &6/Jobs points <name>"
-
-  LEAVEALL:
-
+  Join:
+  
     Enabled: true
-
-    Usage: "leaveall"
-
-    Desc: "Leave all jobs"
-
-    Syntax: "<prefix> &7Use &6/Jobs leaveall"
+    
+  Language:
+  
+    Enabled: true
+    
+    

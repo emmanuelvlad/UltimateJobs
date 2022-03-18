@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.manager;
+package de.warsteiner.jobs.player;
  
 import java.util.ArrayList;
 import java.util.Collection; 
@@ -177,7 +177,7 @@ public class SQLPlayerManager {
 		final String insertQuery_player = "INSERT INTO job_players(UUID,DATE,POINTS,MAX) VALUES(?,?,?,?)";
 		mg.executeUpdate(insertQuery_player, ps -> {
 			ps.setString(1, UUID);
-			ps.setString(2, UltimateJobs.getPlugin().getAPI().getDate());
+			ps.setString(2, UltimateJobs.getPlugin().getPluginManager().getDate());
 			ps.setDouble(3, points);
 			ps.setInt(4, max);
 
@@ -220,7 +220,7 @@ public class SQLPlayerManager {
 	}
 
 	public void createJobData(String UUID, String job) {
-		String date = UltimateJobs.getPlugin().getAPI().getDate();
+		String date = UltimateJobs.getPlugin().getPluginManager().getDate();
 		final String insertQuery = "INSERT INTO job_stats(UUID,JOB,DATE,LEVEL,EXP,BROKEN) VALUES(?,?,?,?,?,?)";
 		mg.executeUpdate(insertQuery, ps -> {
 			ps.setString(1, UUID);
@@ -348,12 +348,12 @@ public class SQLPlayerManager {
 	}
 
 	public void createPlayer(String UUID, String name) {
-		String date = UltimateJobs.getPlugin().getAPI().getDate();
+		String date = UltimateJobs.getPlugin().getPluginManager().getDate();
 		createPlayerDetails(UUID, date); 
 	}
 
 	public void createPlayerDetails(String UUID, String date) {
-		int max = UltimateJobs.getPlugin().getMainConfig().getConfig().getInt("MaxDefaultJobs");
+		int max = UltimateJobs.getPlugin().getFileManager().getConfig().getInt("MaxDefaultJobs");
 		final String insertQuery = "INSERT INTO job_players(UUID,DATE,POINTS,MAX) VALUES(?,?,?,?)";
 		mg.executeUpdate(insertQuery, ps -> {
 			ps.setString(1, UUID);

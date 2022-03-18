@@ -17,7 +17,7 @@ public class JobActionKillMob implements Listener {
 			return;
 		}
 		
-		plugin.getJobWorkManager().executeKillWork(event, plugin.getPlayerManager().getOnlineJobPlayers().get(""+event.getEntity().getKiller().getUniqueId()));
+		plugin.getJobWorkManager().executeKillWork(event, plugin.getPlayerManager().getRealJobPlayer(""+event.getEntity().getKiller().getUniqueId()));
 	}
 
 }

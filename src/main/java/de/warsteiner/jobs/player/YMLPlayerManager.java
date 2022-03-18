@@ -1,4 +1,4 @@
-package de.warsteiner.jobs.manager;
+package de.warsteiner.jobs.player;
 
 import java.io.File;
 import java.io.IOException;
@@ -119,7 +119,7 @@ public class YMLPlayerManager {
 		double points = pl.getPoints();
 		
 		cfg.set("Player."+UUID+".Points", points);
-		cfg.set("Player."+UUID+".Date", UltimateJobs.getPlugin().getAPI().getDate());
+		cfg.set("Player."+UUID+".Date", plugin.getPluginManager().getDate());
 		cfg.set("Player."+UUID+".Max", max); 
   
 		ArrayList<String> newowned = new ArrayList<String>();
@@ -150,7 +150,7 @@ public class YMLPlayerManager {
 		FileConfiguration cfg = plugin.getPlayerDataFile().get();
 		File file = plugin.getPlayerDataFile().getfile();
 		
-		String date = plugin.getAPI().getDate();
+		String date =plugin.getPluginManager().getDate();
 		
 		cfg.set("Jobs."+UUID+"."+job+".Date", date);
 		cfg.set("Jobs."+UUID+"."+job+".Level", 1);
@@ -224,14 +224,14 @@ public class YMLPlayerManager {
 	}
 
 	public void createPlayer(String UUID, String name) {
-		String date = UltimateJobs.getPlugin().getAPI().getDate();
+		String date = plugin.getPluginManager().getDate();
 		createPlayerDetails(UUID, date); 
 	}
 
 	public void createPlayerDetails(String UUID, String date) {
 		FileConfiguration cfg = plugin.getPlayerDataFile().get(); 
 		File file = plugin.getPlayerDataFile().getfile();
-		int max = UltimateJobs.getPlugin().getMainConfig().getConfig().getInt("MaxDefaultJobs"); 
+		int max = UltimateJobs.getPlugin().getFileManager().getConfig().getInt("MaxDefaultJobs"); 
 		ArrayList<String> list = new ArrayList<String>();
 		cfg.set("Player."+UUID+".Points", 0);
 		cfg.set("Player."+UUID+".Max", max);

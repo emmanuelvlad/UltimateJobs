@@ -1,12 +1,9 @@
 package de.warsteiner.jobs.api.plugins;
 
 import java.util.Collection; 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.OfflinePlayer; 
 import org.jetbrains.annotations.NotNull;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobsPlayer;
@@ -14,8 +11,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class PlaceHolderManager extends PlaceholderExpansion {
 
-	private UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = SimpleAPI.getPlugin().getAPI();
+	private UltimateJobs plugin = UltimateJobs.getPlugin(); 
 
 	@Override
 	public @NotNull String getIdentifier() {
@@ -39,12 +35,10 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 
 	@Override
 	public String onRequest(OfflinePlayer player, String pr) {
-
-		JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get("" + player.getPlayer().getUniqueId());
-
-		YamlConfiguration cfg = plugin.getMessages().getConfig();
-
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(""+player.getUniqueId());
+ 
 		if (jb != null) {
+			String UUID = ""+player.getUniqueId();
 			Collection<String> jobs = jb.getCurrentJobs();
 			if (pr.contains("job_current_name")) {
 				String[] split = pr.split("_");
@@ -55,13 +49,13 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 					if (jobs.size() >= Integer.valueOf(split[3])) {
 
 						Job job = plugin.getJobCache().get(jb.getCurrentJobs().get(which));
-						return job.getDisplay();
+						return job.getDisplay(UUID);
 
 					} else {
-						return up.toHex(cfg.getString("PlaceHolders.No_Job")).replaceAll("&", "§");
+						return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_job");
 					}
 				} else {
-					return up.toHex(cfg.getString("PlaceHolders.No_Job")).replaceAll("&", "§");
+					return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_job");
 				}
 			} else if (pr.contains("job_current_level")) {
 				String[] split = pr.split("_");
@@ -72,10 +66,10 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 					if (jobs.size() >= Integer.valueOf(split[3])) {
 						return "" + jb.getLevelOf(jb.getCurrentJobs().get(which));
 					} else {
-						return up.toHex(cfg.getString("PlaceHolders.No_Level")).replaceAll("&", "§");
+						return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_level");
 					}
 				} else {
-					return up.toHex(cfg.getString("PlaceHolders.No_Level")).replaceAll("&", "§");
+					return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_level");
 				}
 			} else if (pr.contains("job_current_exp")) {
 				String[] split = pr.split("_");
@@ -84,10 +78,10 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 					if (jobs.size() >= Integer.valueOf(split[3])) {
 						return "" + jb.getExpOf(jb.getCurrentJobs().get(which));
 					} else {
-						return up.toHex(cfg.getString("PlaceHolders.No_Exp")).replaceAll("&", "§");
+						return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_exp");
 					}
 				} else {
-					return up.toHex(cfg.getString("PlaceHolders.No_Exp")).replaceAll("&", "§");
+					return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_exp");
 				}
 			}
 

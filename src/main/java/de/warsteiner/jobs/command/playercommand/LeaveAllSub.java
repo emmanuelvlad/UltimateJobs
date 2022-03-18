@@ -1,45 +1,41 @@
 package de.warsteiner.jobs.command.playercommand;
 
+import java.util.UUID;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobAPI;
+ 
+import de.warsteiner.jobs.UltimateJobs; 
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class LeaveAllSub extends SubCommand {
-
-	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+ 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 
 	@Override
-	public String getName() {
-		return plugin.getCommandConfig().getConfig().getString("Command.LEAVEALL.Usage");
+	public String getName(UUID UUID) {
+		return  plugin.getPluginManager().getMessage(UUID, "Commands.LeaveALL.Usage");
 	}
 
 	@Override
-	public String getDescription() {
-		return plugin.getCommandConfig().getConfig().getString("Command.LEAVEALL.Desc");
+	public String getDescription(UUID UUID) {
+		return  plugin.getPluginManager().getMessage(UUID, "Commands.LeaveALL.Description");
 	}
 
 	@Override
 	public void perform(CommandSender sender, String[] args, JobsPlayer jb) {
 		final Player player = (Player) sender;
-		JobAPI api = plugin.getAPI();
+		UUID UUID = player.getUniqueId(); 
 		if (args.length == 1) {
 			if (jb.getCurrentJobs() != null) {
-				jb.updateCurrentJobs(null);
-				player.sendMessage(api.getMessage("Leave_All"));
+				jb.updateCurrentJobs(null); 
+				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_leaveall_message"));
 			} else {
-				player.sendMessage(api.getMessage("Already_Left_All"));
+				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_leaveall_already"));
 			}
 		} else {
-			player.sendMessage(
-					up.toHex(plugin.getCommandConfig().getConfig().getString("Command.LEAVEALL.Syntax")
-							.replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
+			player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -55,7 +51,12 @@ public class LeaveAllSub extends SubCommand {
 
 	@Override
 	public boolean isEnabled() { 
-		return plugin.getCommandConfig().getConfig().getBoolean("Command.LEAVEALL.Enabled");
+		return  plugin.getFileManager().getCMDSettings().getBoolean("Commands.LeaveALL.Enabled");
+	}
+
+	@Override
+	public String getUsage(UUID UUID) { 
+		return plugin.getPluginManager().getMessage(UUID, "Commands.LeaveALL.UsageMessage");
 	}
 
 }

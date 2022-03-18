@@ -2,7 +2,7 @@ package de.warsteiner.jobs.events;
 
 import java.util.UUID;
 
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration; 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,8 +12,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
  
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.manager.PlayerDataManager;
-import de.warsteiner.jobs.manager.PlayerManager;
+import de.warsteiner.jobs.player.PlayerDataManager;
+import de.warsteiner.jobs.player.PlayerManager;
 
 public class PlayerExistEvent implements Listener {
 
@@ -22,7 +22,7 @@ public class PlayerExistEvent implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event) {
 		plugin.getExecutor().execute(() -> { 
-			YamlConfiguration config = UltimateJobs.getPlugin().getMainConfig().getConfig();
+			FileConfiguration config = UltimateJobs.getPlugin().getFileManager().getConfig();
 			PlayerDataManager pl = UltimateJobs.getPlugin().getPlayerDataModeManager();
 			Player player = event.getPlayer();
 			PlayerManager m = plugin.getPlayerManager();
@@ -36,7 +36,7 @@ public class PlayerExistEvent implements Listener {
 
 			m.loadData(name, UUID);
 			
-			JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(""+player.getUniqueId()); 
+			JobsPlayer jb =plugin.getPlayerManager().getRealJobPlayer(""+UUID);
 			
 			if(config.getBoolean("EnabledDefaultJobs")) {
 				for(String job :  config.getStringList("DefaultJobs")) {
@@ -58,7 +58,7 @@ public class PlayerExistEvent implements Listener {
 			PlayerManager m = plugin.getPlayerManager();
 			UUID UUID = player.getUniqueId();
 
-			pl.savePlayer(plugin.getPlayerManager().getOnlineJobPlayers().get("" + UUID), "" + UUID);
+			pl.savePlayer(plugin.getPlayerManager().getRealJobPlayer(""+UUID), "" + UUID);
 			m.removePlayerFromCache("" + UUID);
  
 		});

@@ -6,15 +6,14 @@ import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager;
 import de.warsteiner.jobs.utils.Action;
 import de.warsteiner.jobs.utils.BossBarHandler;
-import java.io.File;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import java.io.File; 
+import java.text.DecimalFormat; 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Logger;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -26,7 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -37,24 +36,24 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
+import com.alonsoaliaga.alonsolevels.others.Sounds;
+
 public class JobAPI {
 
 	private UltimateJobs plugin;
-
-	private YamlConfiguration tr;
+ 
 
 	private PluginAPI up = SimpleAPI.getInstance().getAPI();
 
 	public HashMap<String, Date> lastworked_list;
 
-	public JobAPI(UltimateJobs plugin, YamlConfiguration tr) {
+	public JobAPI(UltimateJobs plugin) {
 		this.lastworked_list = new HashMap<>();
-		this.tr = tr;
 		this.plugin = plugin;
 	}
 
 	public void playSound(String ty, Player player) {
-		YamlConfiguration config = plugin.getMainConfig().getConfig();
+		FileConfiguration config = plugin.getFileManager().getConfig();
 		if (config.contains("Sounds." + ty + ".Sound")) {
 
 			if (Sound.valueOf(config.getString("Sounds." + ty + ".Sound")) == null) {
@@ -62,7 +61,7 @@ public class JobAPI {
 						.warning("§cFailed to get Sound from : " + config.getString("Sounds." + ty + ".Sound"));
 				return;
 			}
-
+		 
 			Sound sound = Sound.valueOf(config.getString("Sounds." + ty + ".Sound"));
 			int vol = config.getInt("Sounds." + ty + ".Volume");
 			int pitch = config.getInt("Sounds." + ty + ".Pitch");
@@ -83,11 +82,11 @@ public class JobAPI {
 		fw2.setFireworkMeta(fwm);
 	}
 
-	public boolean checkIfJobIsReal(String arg, CommandSender s) {
+	public boolean checkIfJobIsReal(String arg, Player player) {
 		String id = arg.toUpperCase();
 		if (plugin.getAPI().isJobFromConfigID(id) != null)
 			return true;
-		s.sendMessage(plugin.getAPI().getMessage("Not_Found_Job").replaceAll("<job>", arg.toLowerCase()));
+		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
 		return false;
 	}
 
@@ -99,11 +98,11 @@ public class JobAPI {
 
 	public void sendReward(JobsPlayer pl, Player p, Job job, double exp, double reward, String block, boolean can) {
 		plugin.getExecutor().execute(() -> {
-			String UUID = "" + p.getUniqueId();
+			UUID UUID = p.getUniqueId();
 			String ijob = job.getID();
-			double all_exp = pl.getExpOf(ijob).doubleValue();
+			double all_exp = pl.getExpOf(ijob);
 			int level = pl.getLevelOf(ijob).intValue();
-			String disofid = job.getDisplayOf(block);
+			String disofid = job.getDisplayOf(block, ""+UUID);
 			double need = plugin.getLevelAPI().getJobNeedExp(job, pl);
 
 			String prefix = null;
@@ -113,20 +112,20 @@ public class JobAPI {
 			} else {
 				prefix = "MaxEarningsReached";
 			}
-
+			String prt = plugin.getPluginManager().getMessage(UUID, "prefix");
 			if (prefix != null) {
 
-				if (tr.getBoolean(prefix + ".Enable_BossBar")) {
+				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_BossBar")) {
 					Date isago5seconds = new Date((new Date()).getTime() + 3000L);
 					if (lastworked_list.containsKey(p.getName()))
 						lastworked_list.remove(p.getName());
 					lastworked_list.put(p.getName(), isago5seconds);
-					double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore(UUID, job, level),
+					double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore(""+UUID, job, level),
 							need);
 					BarColor color = job.getBarColor();
-					String message = up.toHex(tr.getString(prefix + ".BossBar").replaceAll("<prefix>", getPrefix())
-							.replaceAll("<job>", job.getDisplay()).replaceAll("<exp>", Format(all_exp))
-							.replaceAll("<level_name>", job.getLevelDisplay(level))
+					String message = up.toHex(plugin.getPluginManager().getMessage(UUID, prefix + ".BossBar").replaceAll("<prefix>", prt)
+							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
+							.replaceAll("<level_name>", job.getLevelDisplay(level, ""+UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
 							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
 					if (!BossBarHandler.exist(p.getName())) {
@@ -137,18 +136,18 @@ public class JobAPI {
 						BossBarHandler.updateProgress(use, p.getName());
 					}
 				}
-				if (tr.getBoolean(prefix + ".Enable_Message")) {
-					String message = up.toHex(tr.getString(prefix + ".Message").replaceAll("<prefix>", getPrefix())
-							.replaceAll("<job>", job.getDisplay()).replaceAll("<exp>", Format(all_exp))
-							.replaceAll("<level_name>", job.getLevelDisplay(level))
+				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_Message")) {
+					String message = up.toHex(plugin.getPluginManager().getMessage(UUID, prefix + ".Message").replaceAll("<prefix>", prt)
+							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
+							.replaceAll("<level_name>", job.getLevelDisplay(level, ""+UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
 							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
 					p.sendMessage(message);
 				}
-				if (tr.getBoolean(prefix + ".Enabled_Actionbar")) {
-					String message = up.toHex(tr.getString(prefix + ".Actionbar").replaceAll("<prefix>", getPrefix())
-							.replaceAll("<job>", job.getDisplay()).replaceAll("<exp>", Format(all_exp))
-							.replaceAll("<level_name>", job.getLevelDisplay(level))
+				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enabled_Actionbar")) {
+					String message = up.toHex(plugin.getPluginManager().getMessage(UUID, prefix + ".Actionbar").replaceAll("<prefix>",prt)
+							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
+							.replaceAll("<level_name>", job.getLevelDisplay(level,""+ UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
 							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
 					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, (BaseComponent) new TextComponent(message));
@@ -158,7 +157,7 @@ public class JobAPI {
 	}
 
 	public void loadJobs(Logger logger) {
-		File dataFolder = new File(plugin.getMainConfig().getConfig().getString("LoadJobsFrom"));
+		File dataFolder = new File(plugin.getFileManager().getConfig().getString("LoadJobsFrom"));
 		File[] files = dataFolder.listFiles();
 
 		plugin.getLoaded().clear();
@@ -197,43 +196,24 @@ public class JobAPI {
 		return job;
 	}
 
-	public Job isSettingsGUI(String menu) {
-		for (String list : plugin.getLoaded()) {
-			Job j = plugin.getJobCache().get(list);
-			String dis = j.getDisplay();
-			String fin = up.toHex(plugin.getMainConfig().getConfig().getString("Settings_Name").replaceAll("<job>", dis)
-					.replaceAll("&", "§"));
-			if (fin.equalsIgnoreCase(menu))
-				return j;
-		}
-		return null;
-	}
+ 
 
-	public boolean checkPermissions(CommandSender s, String text) {
-		if (s.hasPermission("ultimatejobs." + text) || s.hasPermission("ultimatejobs.admin.all"))
+	public boolean checkPermissions(Player player, String text) {
+		if (player.hasPermission("ultimatejobs." + text) ||player.hasPermission("ultimatejobs.admin.all"))
 			return true;
-		s.sendMessage(plugin.getAPI().getMessage("No_Perm"));
+		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "noperm"));
 		return false;
 	}
-
-	public String isCustomItem(String display, String path, YamlConfiguration cf) {
-		List<String> custom_items = cf.getStringList(path + ".List");
-		for (String b : custom_items) {
-			String dis = up.toHex(cf.getString(path + "." + b + ".Display").replaceAll("&", "§"));
-			if (display.equalsIgnoreCase(dis))
-				return b;
-		}
-		return "NOT_FOUND";
-	}
-
+ 
 	public List<String> canGetJobWithSubOptions(Player player, Job job) {
+		String UUID = ""+player.getUniqueId();
 		if (job.hasNotQuestCon() == true && plugin.getPluginManager().isInstalled("NotQuests")
 				&& !plugin.getNotQuestManager().canHaveJob(player, job)) {
-			return job.getNotQuestConLore();
+			return job.getNotQuestConLore(UUID);
 		}
 		if (job.hasAlonsoLevelsReq() == true && plugin.getPluginManager().isInstalled("AlonsoLevels")
 				&& !plugin.getAlonsoManager().canHaveJob(player, job)) {
-			return job.getAlonsoLevelsLore();
+			return job.getAlonsoLevelsLore(UUID);
 		}
 		return null;
 	}
@@ -252,7 +232,7 @@ public class JobAPI {
 			double max = job.getMaxEarningsPerDay();
 
 			double current = plugin.getPlayerDataModeManager().getEarnedAtDate("" + player.getUniqueId(), job.getID(),
-					getDate());
+					plugin.getPluginManager().getDate());
 
 			if (current >= max) {
 				return false;
@@ -368,23 +348,9 @@ public class JobAPI {
 	}
 
 	public String Format(double i) {
-		DecimalFormat t = new DecimalFormat(plugin.getMainConfig().getConfig().getString("Format"));
+		DecimalFormat t = new DecimalFormat(plugin.getFileManager().getConfig().getString("Format"));
 		String b = t.format(i).replaceAll(",", ".");
 		return b;
 	}
-
-	public String getDate() {
-		DateFormat format = new SimpleDateFormat(plugin.getMainConfig().getConfig().getString("Date"));
-		Date data = new Date();
-		return format.format(data);
-	}
-
-	public String getMessage(String path) {
-		return up.toHex(plugin.getMessages().getConfig().getString(path).replaceAll("<prefix>", getPrefix())
-				.replaceAll("&", "§"));
-	}
-
-	public String getPrefix() {
-		return up.toHex(plugin.getMessages().getConfig().getString("Prefix").replaceAll("&", "§"));
-	}
+ 
 }

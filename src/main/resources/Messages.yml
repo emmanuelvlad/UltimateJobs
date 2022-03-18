@@ -91,16 +91,14 @@ Levels:
   Actionbar: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
 
 Reward:
-
-  Enable_BossBar: true
-
+ 
   BossBar: "&a+ &7<money> Dollars from <id>"
 
-  Enable_Message: false
+   
 
   Message: "<prefix> &7Added <money>  Dollars as Reward from <id>&7!"
 
-  Enabled_Actionbar: false
+   
 
   Actionbar: "<prefix> &7Added <money>  Dollars as Reward from <id>"
   

@@ -37,42 +37,11 @@ DefaultJobs:
 #do you want to use the levels?
 Enable_Levels: true
 
-Levels:
-
-  #get a firework on a level up?
-  FireWork: true
-
-#you can find the types in the github wiki
-Sounds:
-
-  LEVEL_UP:
-
-    Sound: "ENTITY_PLAYER_LEVELUP"
-
-    Volume: 1
-
-    Pitch: 1
-
 #Date-Format
 Date: "dd/MM/yyyy"
 
 #format of example money, 10.05
 Format: "0.00"
-
-# .----------------.  .----------------.  .----------------.  .-----------------.  .----------------.  .----------------.  .----------------. 
-#| .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. || .--------------. || .--------------. |
-#| | ____    ____ | || |      __      | || |     _____    | || | ____  _____  | | | |    ______    | || | _____  _____ | || |     _____    | |
-#| ||_   \  /   _|| || |     /  \     | || |    |_   _|   | || ||_   \|_   _| | | | |  .' ___  |   | || ||_   _||_   _|| || |    |_   _|   | |
-#| |  |   \/   |  | || |    / /\ \    | || |      | |     | || |  |   \ | |   | | | | / .'   \_|   | || |  | |    | |  | || |      | |     | |
-#| |  | |\  /| |  | || |   / ____ \   | || |      | |     | || |  | |\ \| |   | | | | | |    ____  | || |  | '    ' |  | || |      | |     | |
-#| | _| |_\/_| |_ | || | _/ /    \ \_ | || |     _| |_    | || | _| |_\   |_  | | | | \ `.___]  _| | || |   \ `--' /   | || |     _| |_    | |
-#| ||_____||_____|| || ||____|  |____|| || |    |_____|   | || ||_____|\____| | | | |  `._____.'   | || |    `.__.'    | || |    |_____|   | |
-#| |              | || |              | || |              | || |              | | | |              | || |              | || |              | |
-#| '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' || '--------------' || '--------------' |
-# '----------------'  '----------------'  '----------------'  '----------------'   '----------------'  '----------------'  '----------------' 
- 
-#config of the main gui
-Main_Name: "#15f249#Jobs"
 
 #options to the job items
 Jobs:
@@ -89,384 +58,102 @@ Jobs:
     
     #can the player's stats change when the max. amount is reached?
     IfReached_Can_Stats: false
+    
+# .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |   _____      | || |      __      | || | ____  _____  | || |    ______    | || | _____  _____ | || |      __      | || |    ______    | || |  _________   | |
+#| |  |_   _|     | || |     /  \     | || ||_   \|_   _| | || |  .' ___  |   | || ||_   _||_   _|| || |     /  \     | || |  .' ___  |   | || | |_   ___  |  | |
+#| |    | |       | || |    / /\ \    | || |  |   \ | |   | || | / .'   \_|   | || |  | |    | |  | || |    / /\ \    | || | / .'   \_|   | || |   | |_  \_|  | |
+#| |    | |   _   | || |   / ____ \   | || |  | |\ \| |   | || | | |    ____  | || |  | '    ' |  | || |   / ____ \   | || | | |    ____  | || |   |  _|  _   | |
+#| |   _| |__/ |  | || | _/ /    \ \_ | || | _| |_\   |_  | || | \ `.___]  _| | || |   \ `--' /   | || | _/ /    \ \_ | || | \ `.___]  _| | || |  _| |___/ |  | |
+#| |  |________|  | || ||____|  |____|| || ||_____|\____| | || |  `._____.'   | || |    `.__.'    | || ||____|  |____|| || |  `._____.'   | || | |_________|  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-  Lore:
+#
+# - Important -
+# You can change the default language of players in the config of SimpleAPI.
+# Located in: /plugins/simpleapi/config.yml
+#
 
-    Bought:
-      - "&7"
-      - "&aYou own this Job."
+#which language should the admin commands be?
+DefaultPluginLanguage: "en-US"
+ 
+# .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |    _______   | || |     ____     | || | _____  _____ | || | ____  _____  | || |  ________    | || |    _______   | |
+#| |   /  ___  |  | || |   .'    `.   | || ||_   _||_   _|| || ||_   \|_   _| | || | |_   ___ `.  | || |   /  ___  |  | |
+#| |  |  (__ \_|  | || |  /  .--.  \  | || |  | |    | |  | || |  |   \ | |   | || |   | |   `. \ | || |  |  (__ \_|  | |
+#| |   '.___`-.   | || |  | |    | |  | || |  | '    ' |  | || |  | |\ \| |   | || |   | |    | | | || |   '.___`-.   | |
+#| |  |`\____) |  | || |  \  `--'  /  | || |   \ `--' /   | || | _| |_\   |_  | || |  _| |___.' / | || |  |`\____) |  | |
+#| |  |_______.'  | || |   `.____.'   | || |    `.__.'    | || ||_____|\____| | || | |________.'  | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-    In:
-      - "&7"
-      - "&bYou are in this Job."
+#you can find the types in the github wiki
+Sounds:
 
-    Price:
-      - "&7"
-      - "&cClick to buy this job for <price> Dollars."
+  LEVEL_UP:
 
-# -> 3 * 9
-Main_Size: 5
+    Sound: "ENTITY_PLAYER_LEVELUP"
 
-Main_Custom:
+    Volume: 1
 
-  List:
-    - "Close"
-    - "Leave"
-    - "Info"
+    Pitch: 1
 
-  Close:
-
-    Display: "&8< &cClose Menu &8>"
-
-    Action: "CLOSE"
-
-    Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
-
-    Slot: 41
-
-  Leave:
-
-    Display: "&8< #9b0411#Leave all Jobs &8>"
-
-    Action: "LEAVE"
-
-    Lore:
-      - "&7Click here to leave all jobs"
-
-    Material: "BARRIER"
-
-    Slot: 39
-
-  Info:
-
-    Display: "&8<| #44ead4#Informations &8|>"
-
-    Action: "NOTHING"
-
-    Lore:
-      - "&8&m-------------------"
-      - "&cWhy i should get an job?"
-      - "&7"
-      - "&7You need an Job to earn money, "
-      - "&7to raise your Kids! :)"
-      - "&8"
-      - "&8-> &7You can have &c<max> &7Jobs."
-      - "&8-> &7You have &a<points> &7Points."
-
-    Material: "url;http://textures.minecraft.net/texture/352723aa0637ea5204447be536151f529fe4906826d8c066c4dcc50079a64465"
-
-    Slot: 4
-
-Main_Place:
-  - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:1:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:2:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:3:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:4:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:5:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:6:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:7:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:8:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:9:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:10:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:11:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:17:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:18:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:26:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:27:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:35:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:36:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:37:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:38:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:39:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:40:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:41:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:42:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:43:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:44:&8-/-"
-
-# .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------. 
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
-#| |     ____     | || |   ______     | || |  _________   | || |     _____    | || |     ____     | || | ____  _____  | || |    _______   | |
-#| |   .'    `.   | || |  |_   __ \   | || | |  _   _  |  | || |    |_   _|   | || |   .'    `.   | || ||_   \|_   _| | || |   /  ___  |  | |
-#| |  /  .--.  \  | || |    | |__) |  | || | |_/ | | \_|  | || |      | |     | || |  /  .--.  \  | || |  |   \ | |   | || |  |  (__ \_|  | |
-#| |  | |    | |  | || |    |  ___/   | || |     | |      | || |      | |     | || |  | |    | |  | || |  | |\ \| |   | || |   '.___`-.   | |
-#| |  \  `--'  /  | || |   _| |_      | || |    _| |_     | || |     _| |_    | || |  \  `--'  /  | || | _| |_\   |_  | || |  |`\____) |  | |
-#| |   `.____.'   | || |  |_____|     | || |   |_____|    | || |    |_____|   | || |   `.____.'   | || ||_____|\____| | || |  |_______.'  | |
+#| |  _______     | || |  _________   | || | _____  _____ | || |      __      | || |  _______     | || |  ________    | || |    _______   | |
+#| | |_   __ \    | || | |_   ___  |  | || ||_   _||_   _|| || |     /  \     | || | |_   __ \    | || | |_   ___ `.  | || |   /  ___  |  | |
+#| |   | |__) |   | || |   | |_  \_|  | || |  | | /\ | |  | || |    / /\ \    | || |   | |__) |   | || |   | |   `. \ | || |  |  (__ \_|  | |
+#| |   |  __ /    | || |   |  _|  _   | || |  | |/  \| |  | || |   / ____ \   | || |   |  __ /    | || |   | |    | | | || |   '.___`-.   | |
+#| |  _| |  \ \_  | || |  _| |___/ |  | || |  |   /\   |  | || | _/ /    \ \_ | || |  _| |  \ \_  | || |  _| |___.' / | || |  |`\____) |  | |
+#| | |____| |___| | || | |_________|  | || |  |__/  \__|  | || ||____|  |____|| || | |____| |___| | || | |________.'  | || |  |_______.'  | |
 #| |              | || |              | || |              | || |              | || |              | || |              | || |              | |
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
- 
-Settings_Name: "#285416#Job Options &8- <job>"
 
-Settings_Size: 5
+Reward:
 
-Settings_Custom:
-
-  List:
-    - "Close"
-    - "Back"
-    - "Earnings"
-    - "Leave"
-    - "MoneyList"
-    - "Skull"
-
-  Skull:
-
-    Display: "&8<| #44ead4#Informations &8|>"
-
-    Action: "NOTHING"
-
-    Material: "name;<name>"
-    
-    Lore:
-      - "&7Bought on &8: &b<stats_args_1>"
-      - "&7Blocks &8: &b<stats_args_2>" 
-      - "&7Earned Today&8: &a<earned> Dollars"
-      - "&7" 
-      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
-      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
-
-    Slot: 22
-
-  Close:
-
-    Display: "&8< &cClose Menu &8>"
-
-    Action: "CLOSE"
-
-    Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
-
-    Slot: 40
-
-  Leave:
-
-    Display: "&8< &c&lLeave this Job &8>"
-
-    Action: "LEAVE"
-
-    Material: "REDSTONE"
-
-    Slot: 41
-
-  Earnings:
-
-    Display: "&8< &7My #edb51c#Earnings &7this Month &8>"
-
-    Action: "COMMAND"
-
-    Command: "jobs earnings <job>"
-
-    Lore:
-      - "&7This works only when the addon is installed."
-
-    Material: "EMERALD"
-
-    Slot: 20
-
-  MoneyList:
-
-    Display: "&8< &7See #92f4ab#Earnings &7for different Blocks &8>"
-
-    Action: "COMMAND"
-
-    Command: "jobs rewards <job>"
-
-    Lore:
-      - "&7This works only when the addon is installed."
-
-    Material: "BOOK"
-
-    Slot: 24
-
-  Back:
-
-    Display: "&8< &4Go Back &8>"
-
-    Action: "BACK"
-
-    Lore:
-      - "&8< &7Click here to get back to the main menu &8>"
-
-    Material: "name;Mhf_ArrowLeft"
-
-    Slot: 39
-
-Settings_Place:
-  - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:1:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:2:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:3:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:4:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:5:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:6:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:7:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:8:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:9:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:17:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:18:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:26:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:27:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:35:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:36:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:37:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:38:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:39:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:40:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:41:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:42:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:43:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:44:&8-/-"
-
-# .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------.   
-#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |  
-#| |     ______   | || |     ____     | || | ____  _____  | || |  _________   | || |     _____    | || |  _______     | || | ____    ____ | |  
-#| |   .' ___  |  | || |   .'    `.   | || ||_   \|_   _| | || | |_   ___  |  | || |    |_   _|   | || | |_   __ \    | || ||_   \  /   _|| |  
-#| |  / .'   \_|  | || |  /  .--.  \  | || |  |   \ | |   | || |   | |_  \_|  | || |      | |     | || |   | |__) |   | || |  |   \/   |  | |  
-#| |  | |         | || |  | |    | |  | || |  | |\ \| |   | || |   |  _|      | || |      | |     | || |   |  __ /    | || |  | |\  /| |  | |  
-#| |  \ `.___.'\  | || |  \  `--'  /  | || | _| |_\   |_  | || |  _| |_       | || |     _| |_    | || |  _| |  \ \_  | || | _| |_\/_| |_ | |  
-#| |   `._____.'  | || |   `.____.'   | || ||_____|\____| | || | |_____|      | || |    |_____|   | || | |____| |___| | || ||_____||_____|| |  
-#| |              | || |              | || |              | || |              | || |              | || |              | || |              | |  
-#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |  
-# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  
-
-AreYouSureGUI_Name: "&7You want to buy <job>&7?"
-
-AreYouSureGUI_Size: 3
-
-AreYouSureItems:
-
-  Button_NO:
+  Enable_BossBar: true
   
-    Icon: "RED_DYE"
-    
-    Display: "&8<| &cNo &8|>"
-    
-    Slot: 15
-    
-    Lore:
-      - "&7Cancel this progress."
-
-  Button_YES:
+  Enable_Message: false
   
-    Icon: "GREEN_DYE"
-    
-    Display: "&8<| &aYes, I'm Sure &8|>"
-    
-    Slot: 11
-    
-    Lore:
-      - "&7You want to buy this Job?"
-
-AreYouSureGUI_Custom:
-
-  List:
-    - "Back"
-
-  Back:
-
-    Display: "&8< &4Go Back &8>"
-
-    Action: "BACK"
-
-    Lore:
-      - "&7Click here to get back to the main menu"
-
-    Material: "name;Mhf_ArrowLeft"
-
-    Slot: 26
-
-AreYouSureGUI_Place:
-  - "BLACK_STAINED_GLASS_PANE:13:&8-/-"
+  Enabled_Actionbar: false
   
-# .----------------.  .----------------.  .----------------.  .----------------.   .----------------.  .----------------.  .----------------. 
-#| .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. || .--------------. || .--------------. |
-#| |  ____  ____  | || |  _________   | || |   _____      | || |   ______     | | | |    ______    | || | _____  _____ | || |     _____    | |
-#| | |_   ||   _| | || | |_   ___  |  | || |  |_   _|     | || |  |_   __ \   | | | |  .' ___  |   | || ||_   _||_   _|| || |    |_   _|   | |
-#| |   | |__| |   | || |   | |_  \_|  | || |    | |       | || |    | |__) |  | | | | / .'   \_|   | || |  | |    | |  | || |      | |     | |
-#| |   |  __  |   | || |   |  _|  _   | || |    | |   _   | || |    |  ___/   | | | | | |    ____  | || |  | '    ' |  | || |      | |     | |
-#| |  _| |  | |_  | || |  _| |___/ |  | || |   _| |__/ |  | || |   _| |_      | | | | \ `.___]  _| | || |   \ `--' /   | || |     _| |_    | |
-#| | |____||____| | || | |_________|  | || |  |________|  | || |  |_____|     | | | |  `._____.'   | || |    `.__.'    | || |    |_____|   | |
-#| |              | || |              | || |              | || |              | | | |              | || |              | || |              | |
-#| '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' || '--------------' || '--------------' 
-# '----------------'  '----------------'  '----------------'  '----------------'   '----------------'  '----------------'  '----------------' 
+MaxEarningsReached:
 
-#
-# Choose between "GUI" or "MESSAGE"
-#
+  Enable_BossBar: true
+  
+  Enable_Message: false
+  
+  Enabled_Actionbar: false
+  
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |   _____      | || |  _________   | || | ____   ____  | || |  _________   | || |   _____      | || |    _______   | |
+#| |  |_   _|     | || | |_   ___  |  | || ||_  _| |_  _| | || | |_   ___  |  | || |  |_   _|     | || |   /  ___  |  | |
+#| |    | |       | || |   | |_  \_|  | || |  \ \   / /   | || |   | |_  \_|  | || |    | |       | || |  |  (__ \_|  | |
+#| |    | |   _   | || |   |  _|  _   | || |   \ \ / /    | || |   |  _|  _   | || |    | |   _   | || |   '.___`-.   | |
+#| |   _| |__/ |  | || |  _| |___/ |  | || |    \ ' /     | || |  _| |___/ |  | || |   _| |__/ |  | || |  |`\____) |  | |
+#| |  |________|  | || | |_________|  | || |     \_/      | || | |_________|  | || |  |________|  | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-Help_Mode: "MESSAGE"
+Levels:
 
-Help_Name: "#285416#Help Menu"
-
-Help_Size: 5
-
-Help_Custom:
-
-  List:
-    - "Close"
-    - "Info1"
-    - "Info2"
-
-  Info2:
-
-    Display: "&8< &6/Jobs points &8>"
-
-    Action: "NOTHING"
-
-    Material: "PAPER"
-    
-    Lore:
-      - "&7See your current Points with this Command"
-
-    Slot: 11
-
-  Info1:
-
-    Display: "&8< &6/Jobs limit &8>"
-
-    Action: "NOTHING"
-
-    Material: "PAPER"
-    
-    Lore:
-      - "&7See your current Jobs-Limit with this Command"
-
-    Slot: 10
-
-  Close:
-
-    Display: "&8< &cClose Menu &8>"
-
-    Action: "CLOSE"
-
-    Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
-
-    Slot: 40
-
-
-Help_Place:
-  - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:1:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:2:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:3:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:4:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:5:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:6:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:7:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:8:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:9:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:17:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:18:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:26:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:27:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:35:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:36:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:37:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:38:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:39:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:40:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:41:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:42:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:43:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:44:&8-/-"
+  Firework: true
+  
+  BroadCastLevelUps: true
+  
+  #title on levelup?
+  Enable_Title: true
+  
+  #message on levelup?
+  Enable_Message: false
+  
+  #actionbar on levelup?
+  Enabled_Actionbar: false

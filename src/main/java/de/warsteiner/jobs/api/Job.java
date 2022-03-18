@@ -1,8 +1,7 @@
 package de.warsteiner.jobs.api;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.IOException; 
 import java.util.List;
 
 import org.bukkit.boss.BarColor;
@@ -15,113 +14,29 @@ import de.warsteiner.jobs.utils.Action;
 public class Job {
 
 	private String idt;
-	private YamlConfiguration cf;
-	private String display;
+	private YamlConfiguration cf; 
 	private Action action;
 	private String icon;
 	private int slot;
 	private double price;
 	private String perm; 
-	private List<String> worlds;
-	private List<String> lore;
+	private List<String> worlds; 
 	private List<String> idslist;
 	private File file;
 	
 	public Job(String id, YamlConfiguration cfg, File f) {
 		idt = id;
-		cf = cfg;
-		display = cfg.getString("Display");
+		cf = cfg; 
 		perm = cfg.getString("Permission");
 		action = Action.valueOf(cfg.getString("Action"));
 		icon = cfg.getString("Material");
 		slot = cfg.getInt("Slot");
 		price = cfg.getDouble("Price"); 
-		worlds = cfg.getStringList("Worlds");
-		lore = cfg.getStringList("Lore");
+		worlds = cfg.getStringList("Worlds"); 
 		idslist = cfg.getStringList("IDS.List");
 		file = f;
 	}
-	
-	public void updateList(String mode, List<String> list) {
-		cf.set(mode, list);
-		save();
-	}
-	
-	public void updateDesc(ArrayList<String> d) {
-		cf.set("Lore", d);
-		save();
-	}
-	
-	public void updatePermissionLore(ArrayList<String> d) {
-		cf.set("PermLore", d);
-		save();
-	}
-	
-	public void updatePermissionMessage(String d) {
-		cf.set("PermMessage", d);
-		save();
-	}
-	
-	public void updatePermission(String value) {
-		if(value.toLowerCase().equalsIgnoreCase("none")) {
-			cf.set("Permission", null);
-			cf.set("PermLore", null);
-			cf.set("PermMessage", null);
-			save();
-		} else {
-			
-			ArrayList<String> example = new ArrayList<String>();
-			
-			example.add("§7This is a example Lore");
-			
-			cf.set("Permission", value);
-			cf.set("PermLore", example);
-			cf.set("PermMessage", "<prefix> &7This is a example Message!");
-			save();
-		}
-	}
-	
-	public void updateBypassPermission(String value) {
-		if(value.toLowerCase().equalsIgnoreCase("none")) {
-			cf.set("BypassPermission", null);
-			save();
-		} else {
-			cf.set("BypassPermission", value);
-			save();
-		}
-	}
-	
-	public void updateSlot(String d) {
-		cf.set("Slot", Integer.valueOf(d));
-		save();
-	}
-	
-	public void updatePrice(String d) {
-		cf.set("Price", Integer.valueOf(d));
-		save();
-	}
-	
-	public void updateIcon(String d) {
-		cf.set("Material", d);
-		save();
-	}
-	
-	
-	public void updateDisplayName(String d) {
-		cf.set("Display", d);
-		save();
-	}
-	
-	public void updateJobBarColor(String action) {
-		cf.set("ColorOfBossBar", action);
-		save();
-	}
-	
-	public void updateJobAction(String action) {
-		cf.set("Action", action);
-		save();
-	}
-	
+ 
 	public void save() {
 		try {
 			cf.save(file);
@@ -156,21 +71,15 @@ public class Job {
 		}
 		return cf;
 	}
-	
-	public void updateLevelDisplay(int i, String d) {
-		cf.set("LEVELS." + i + ".Display", d);
-		save();
-	}
-	
-	
-
-	public String getLevelDisplay(int i) {
-		
+ 
+	public String getLevelDisplay(int i, String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
 		if(cf.getString("LEVELS." + i + ".Display") == null) {
 			return "Error";
 		}
 		
-		return cf.getString("LEVELS." + i + ".Display");
+		return UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("LEVELS." + i + ".Display")); 
+			 
 	}
 
 	public List<String> getLevelCommands(int i) {
@@ -186,20 +95,21 @@ public class Job {
 		save();
 	}
 
-	public List<String> getPermissionsLore() { 
-		
+	public List<String> getPermissionsLore(String UUID) { 
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
 		if(!cf.contains("PermLore")) {
 			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermLore for Job "+getID()+"!");
 		}
 		
-		return cf.getStringList("PermLore");
+		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("PermLore"));  
 	}
   
-	public String getPermMessage() { 
+	public String getPermMessage(String UUID) { 
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
 		if(!cf.contains("PermMessage")) {
 			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermMessage for Job "+getID()+"!");
 		}
-		return cf.getString("PermMessage");
+		return UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("PermMessage")); 
 	}
 
 	public boolean hasPermission() {
@@ -237,33 +147,14 @@ public class Job {
 	public boolean hasNotQuestCon() {
 		return cf.contains("ReqNotQuestCond");
 	}
-	
-	public void updateReqNotQuestsCon(String value) {
-		if(value.toLowerCase().equalsIgnoreCase("none")) {
-			cf.set("ReqNotQuestCond", null);
-			cf.set("ReqNotQuestCondLore", null); 
-			save();
-		} else {
-			
-			ArrayList<String> example = new ArrayList<String>();
-			ArrayList<String> example_2 = new ArrayList<String>();
-			
-			example.add("§7This is a example Lore");
-			example_2.add("Condition1");
-			example_2.add("Condition2");
-			
-			cf.set("ReqNotQuestCond", example_2);
-			cf.set("ReqNotQuestCondLore", example); 
-			save();
-		}
-	}
-	
+ 
 	public List<String> getNotQuestCon() {
 		return cf.getStringList("ReqNotQuestCond");
 	}
 	
-	public List<String> getNotQuestConLore() {
-		return cf.getStringList("ReqNotQuestCondLore");
+	public List<String> getNotQuestConLore(String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
+		return  UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("ReqNotQuestCondLore"));  
 	}
 	
 	public boolean hasAlonsoLevelsReq() {
@@ -274,8 +165,9 @@ public class Job {
 		return cf.getInt("AlonsoLevelReq");
 	}
 	
-	public List<String> getAlonsoLevelsLore() {
-		return cf.getStringList("AlonsoLevelLore");
+	public List<String> getAlonsoLevelsLore(String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
+		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("AlonsoLevelLore")); 
 	}
 	
 	public boolean hasBypassAlonsoLevelsReq() {
@@ -310,41 +202,7 @@ public class Job {
 	public int getCountOfLevels() {
 		return cf.getInt("LEVELS.CountOfLevels");
 	}
-
-	public void addLevel() {
-		
-		int befor = getCountOfLevels();
-		int old = befor + 1;
-		
-		ArrayList<String> list = new ArrayList<String>();
-		
-		list.add("say hello <name>");
-		 
-		cf.set("LEVELS.CountOfLevels", old); 
-		cf.set("LEVELS." + old + ".Money", 500);
-		cf.set("LEVELS." + old + ".Need", 1000);
-		cf.set("LEVELS." + old + ".Display","&6Example Display Level "+old);
-		cf.set("LEVELS." + old + ".EarnMore", 0);
-		cf.set("LEVELS." + old + ".Commands", list);
-		save();
-		
-	}
-	
-	public void remLevel() {
-		
-		int befor = getCountOfLevels();
-		int old = befor - 1;
-	 
-		cf.set("LEVELS.CountOfLevels", old); 
-		cf.set("LEVELS." + befor + ".Money", null);
-		cf.set("LEVELS." + befor + ".Need", null);
-		cf.set("LEVELS." + befor + ".Display",null);
-		cf.set("LEVELS." + befor + ".EarnMore", null);
-		cf.set("LEVELS." + befor + ".Commands", null);
-		save();
-		
-	}
-	
+ 
 	public boolean isVaultOnLevel(int level) {
 		return cf.getString("LEVELS." + level + ".Money") != null;
 	}
@@ -366,8 +224,9 @@ public class Job {
 		return cf.getStringList("IDS." + id + ".Commands") != null;
 	}
 
-	public String getDisplayOf(String id) {
-		return cf.getString("IDS." + id + ".Display");
+	public String getDisplayOf(String id, String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
+		return  UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("IDS." + id + ".Display")); 
 	}
 
 	public int getChanceOf(String id) {
@@ -407,16 +266,18 @@ public class Job {
 		return idslist;
 	}
 
-	public List<String> getLore() {
-		return lore;
+	public List<String> getLore(String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
+		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("Lore"));
 	}
 
 	public List<String> getWorlds() {
 		return worlds;
 	}
 
-	public List<String> getStatsMessage() {
-		return cf.getStringList("Stats");
+	public List<String> getStatsMessage(String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
+		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("Stats"));
 	}
 
 	public double getPrice() {
@@ -445,7 +306,9 @@ public class Job {
 		return action;
 	}
 
-	public String getDisplay() {
+	public String getDisplay(String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
+		String display = UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("Display"));
 		
 		if(display == null) {
 			return "Error";

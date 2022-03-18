@@ -1,7 +1,7 @@
 package de.warsteiner.jobs.events;
 
-import org.bukkit.Bukkit; 
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration; 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,8 +18,8 @@ public class PlayerLevelEvent implements Listener {
 	@EventHandler
 	public void onLevelUp(PlayerLevelJobEvent event) {
 		Player player = event.getPlayer();
-		YamlConfiguration config = UltimateJobs.getPlugin().getMainConfig().getConfig();
-		YamlConfiguration me = UltimateJobs.getPlugin().getMessages().getConfig();
+		FileConfiguration config = UltimateJobs.getPlugin().getFileManager().getConfig();
+		String me = UltimateJobs.getPlugin().getPluginManager().getMessage(player.getUniqueId(), "Levels.BoardCastMessage");
 		UltimateJobs.getPlugin().getAPI().playSound("LEVEL_UP", player);
 		
 		Job job = event.getJob();
@@ -28,9 +28,8 @@ public class PlayerLevelEvent implements Listener {
 		if (config.getBoolean("Levels.FireWork")) {
 			UltimateJobs.getPlugin().getAPI().spawnFireworks(player.getLocation());
 		} 
-		if(me.getBoolean("Levels.BroadCastLevelUps")) {
-			String message = me.getString("Levels.BoardCastMessage");
-			Bukkit.broadcastMessage(plugin.getAPI().toHex(message).replaceAll("<level>", ""+event.getNewLevel()).replaceAll("<job>", job.getDisplay()).replaceAll("<name>", name).replaceAll("&", "§"));
+		if(config.getBoolean("Levels.BroadCastLevelUps")) { 
+			Bukkit.broadcastMessage(plugin.getAPI().toHex(me).replaceAll("<level>", ""+event.getNewLevel()).replaceAll("<job>", job.getDisplay(""+player.getUniqueId())).replaceAll("<name>", name).replaceAll("&", "§"));
 		}
 	}
 

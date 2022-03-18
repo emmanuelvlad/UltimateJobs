@@ -5,6 +5,8 @@ author: Warsteiner37
 api-version: 1.13
 softdepend: [WorldGuard, AlonsoLevels, WorldEdit, PlaceHolderAPI]
 depend: [SimpleAPI]
+description: Let Players work with this high quality Jobs Plugin!
+website: https://war-projects.com
 
 commands:
   jobs:

@@ -1,0 +1,474 @@
+# .----------------.  .-----------------. .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |  _________   | || | ____  _____  | || |              | || | _____  _____ | || |    _______   | |
+#| | |_   ___  |  | || ||_   \|_   _| | || |              | || ||_   _||_   _|| || |   /  ___  |  | |
+#| |   | |_  \_|  | || |  |   \ | |   | || |    ______    | || |  | |    | |  | || |  |  (__ \_|  | |
+#| |   |  _|  _   | || |  | |\ \| |   | || |   |______|   | || |  | '    ' |  | || |   '.___`-.   | |
+#| |  _| |___/ |  | || | _| |_\   |_  | || |              | || |   \ `--' /   | || |  |`\____) |  | |
+#| | |_________|  | || ||_____|\____| | || |              | || |    `.__.'    | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
+
+#used on /jobs language <lang>
+LanguageName: "english"
+
+prefix: "&8[#14e0ba#Jobs&8]"
+
+job_not_found: "<prefix> &cThe Job <job> does not exist!"
+
+noperm: "<prefix> &cYou dont have permissions!"
+
+#placeholders
+placeholder_no_job: "&cNo Job"
+placeholder_no_level: "&cNo Level"
+placeholder_no_exp: "&cNo Exp"
+
+#commands
+command_notfound: "<prefix> &7Cannot find command &6<cmd>&7!"
+command_usage: "<prefix> &7Please use &6<usage>&7."
+
+#command /job language
+command_language_NotFound: "<prefix> &cCannot find that language!"
+command_language_Already: "<prefix> &cYou already have that language!"
+command_language_Changed: "<prefix> &aYou changed your language to <lang>!"
+
+#command /job join
+command_join_Joined: "<prefix> &7You joined the Job <job>&7!"
+command_join_max: "<prefix> &7You reached the maxium Jobs!"
+command_join_already: "<prefix> &7You are already in that Job!"
+command_join_not_own: "<prefix> &7You dont own that Job!"
+
+#command /job leaveall
+command_leaveall_message: "<prefix> &7You left all &6current &7Jobs."
+command_leaveall_already: "<prefix> &cYou are not in any Job!"
+
+#command /job leave
+command_leave_message: "<prefix> &7You have left the Job <job>&7."
+command_leave_already: "<prefix> &cYou are not in that Job!"
+
+#command /job limit
+command_limit_other: "<prefix> &7<name> can have &a<max> &7Jobs."
+command_limit_not_found: "<prefix> &cCannot find player <name>."
+command_limit_self: "<prefix> &7You can have &b<max> &7Jobs."
+
+#command /job points
+command_points_not_found: "<prefix> &cCannot find player <name>."
+command_points_self: "<prefix> &7You have &b<points> &7Points."
+command_points_other: "<prefix> &7<name> owns &b<points> &7Points."
+
+#other messages
+Other:
+
+  Bought_Job: "<prefix> &7You bought the Job <job>&7." 
+  
+  Not_Enough_Money: "<prefix> &7You dont have enough money."
+  
+  Full: "<prefix> &7You already reached the &cmaximum &7of Jobs."
+  
+  Joined: "<prefix> &7You joined the Job <job>&7."
+
+  Left_Job: "<prefix> &7You have left the Job <job>&7."
+  
+  Leave_All: "<prefix> &7You left all &6current &7Jobs."
+  
+  Already_Left_All: "<prefix> &7You are &6not &7in any Job."
+
+#config of levels
+Levels:
+
+  BoardCastMessage: "&6Server &8| &7Player &c<name> &7reached Level &b<level> &7in the <job> Job&7!"
+
+  Ttitle_1: "&8| &b&lLevel UP &8|"
+
+  Ttitle_2: "&7New level <level_int> &8/ <level_name>"
+  
+  Message: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
+  
+  Actionbar: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
+  
+#config of reward messages & max earings
+Reward:
+
+  BossBar: "&a+ &7<money> Dollars from <id>"
+  
+  Message: "<prefix> &7Added <money>  Dollars as Reward from <id>&7!"
+  
+  Actionbar: "<prefix> &7Added <money>  Dollars as Reward from <id>"
+  
+MaxEarningsReached:
+
+  BossBar: "&cYou reached the max Earnings for today in the Job <job>"
+  
+  Message: "<prefix> &cYou reached the max Earnings for today in the Job <job>"
+  
+  Actionbar: "<prefix> &cYou reached the max Earnings for today in the Job <job>"
+  
+#confog of commands
+Commands:
+
+  Language:
+  
+    Usage: "language"
+    
+    UsageMessage: "/Jobs language <name>"
+    
+    Description: "Change your Language"
+
+  Help:
+  
+    Usage: "help"
+    
+    UsageMessage: "/Jobs help"
+    
+    List:
+      - "&8"
+      - " &8| &9UltimateJobs &8- &7Help &8| "
+      - "&8-> &6/Jobs leave <job> &8| &7Leave a Job"
+      - "&8-> &6/Jobs join <job> &8| &7Join a Job"
+      - "&8-> &6/Jobs leaveall &8| &7Leave all current Jobs"
+      - "&8-> &6/Jobs help &8| &7This Page" 
+      - "&8-> &6/Jobs limit <name> &8| &7View a Jobs-Limit"
+      - "&8"
+ 
+    Description: "See more help"
+
+  Points:
+  
+    Usage: "points"
+    
+    UsageMessage: "/Jobs points <name>"
+    
+    Description: "See your Points"
+
+  Limit:
+  
+    Usage: "limit"
+    
+    UsageMessage: "/Jobs limit <name>"
+    
+    Description: "See your Job Limit"
+
+  Leave:
+  
+    Usage: "leave"
+    
+    UsageMessage: "/Jobs leave <job>"
+    
+    Description: "Leave a Job"
+
+  LeaveALL:
+  
+    Usage: "leaveall"
+    
+    UsageMessage: "/Jobs leaveall"
+    
+    Description: "Leave all Jobs"
+
+  Join:
+  
+    Usage: "join"
+    
+    UsageMessage: "/Jobs join <job>"
+    
+    Description: "Join A Job"
+     
+# .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. |
+#| |    ______    | || | _____  _____ | || |     _____    | || |    _______   | |
+#| |  .' ___  |   | || ||_   _||_   _|| || |    |_   _|   | || |   /  ___  |  | |
+#| | / .'   \_|   | || |  | |    | |  | || |      | |     | || |  |  (__ \_|  | |
+#| | | |    ____  | || |  | '    ' |  | || |      | |     | || |   '.___`-.   | |
+#| | \ `.___]  _| | || |   \ `--' /   | || |     _| |_    | || |  |`\____) |  | |
+#| |  `._____.'   | || |    `.__.'    | || |    |_____|   | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------' 
+
+#config of main gui
+Main_Name: "#15f249#Jobs"
+
+Main_Job_Items:
+
+  Lore:
+
+    Bought:
+      - "&7"
+      - "&aYou own this Job."
+
+    In:
+      - "&7"
+      - "&bYou are in this Job."
+
+    Price:
+      - "&7"
+      - "&cClick to buy this job for <price> Dollars."
+      
+Main_Custom:
+
+  Close:
+    
+    Display: "&8< &cClose Menu &8>"
+    
+  Leave:
+    
+    Display: "&8< #9b0411#Leave all Jobs &8>"
+    
+    Lore:
+      - "&7Click here to leave all jobs"
+    
+  Info:
+    
+    Display: "&8<| #44ead4#Informations &8|>"
+    
+    Lore:
+      - "&8&m-------------------"
+      - "&cWhy i should get an job?"
+      - "&7"
+      - "&7You need an Job to earn money, "
+      - "&7to raise your Kids! :)"
+      - "&8"
+      - "&8-> &7You can have &c<max> &7Jobs."
+      - "&8-> &7You have &a<points> &7Points."
+      
+# .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. |
+#| |  ____  ____  | || |  _________   | || |   _____      | || |   ______     | |
+#| | |_   ||   _| | || | |_   ___  |  | || |  |_   _|     | || |  |_   __ \   | |
+#| |   | |__| |   | || |   | |_  \_|  | || |    | |       | || |    | |__) |  | |
+#| |   |  __  |   | || |   |  _|  _   | || |    | |   _   | || |    |  ___/   | |
+#| |  _| |  | |_  | || |  _| |___/ |  | || |   _| |__/ |  | || |   _| |_      | |
+#| | |____||____| | || | |_________|  | || |  |________|  | || |  |_____|     | |
+#| |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'
+      
+#config of help gui
+Help_Name: "#285416#Help Menu"
+ 
+Help_Custom:
+
+  Close:
+    
+    Display: "&8< &cClose Menu &8>"
+
+  Info1:
+    
+    Display: "&8< &6/Jobs limit &8>"
+    
+    Lore:
+      - "&7See your current Jobs-Limit with this Command"
+    
+  Info2:
+    
+    Display: "&8< &6/Jobs points &8>"
+    
+    Lore:
+      - "&7See your current Points with this Command"
+      
+# .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |     ______   | || |     ____     | || | ____  _____  | || |  _________   | || |     _____    | || |  _______     | || | ____    ____ | |
+#| |   .' ___  |  | || |   .'    `.   | || ||_   \|_   _| | || | |_   ___  |  | || |    |_   _|   | || | |_   __ \    | || ||_   \  /   _|| |
+#| |  / .'   \_|  | || |  /  .--.  \  | || |  |   \ | |   | || |   | |_  \_|  | || |      | |     | || |   | |__) |   | || |  |   \/   |  | |
+#| |  | |         | || |  | |    | |  | || |  | |\ \| |   | || |   |  _|      | || |      | |     | || |   |  __ /    | || |  | |\  /| |  | |
+#| |  \ `.___.'\  | || |  \  `--'  /  | || | _| |_\   |_  | || |  _| |_       | || |     _| |_    | || |  _| |  \ \_  | || | _| |_\/_| |_ | |
+#| |   `._____.'  | || |   `.____.'   | || ||_____|\____| | || | |_____|      | || |    |_____|   | || | |____| |___| | || ||_____||_____|| |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+#config of help gui
+AreYouSureGUI_Name:  "&6You want to buy <job>&6?"
+
+AreYouSureItems:
+
+  Button_NO:
+
+    Display: "&8<| &cNo &8|>"
+
+    Lore:
+      - "&7Cancel this progress."
+
+  Button_YES:
+
+    Display: "&8<| &aYes, I'm Sure &8|>"
+
+    Lore:
+      - "&7You want to buy this Job?"
+
+AreYouSureGUI_Custom:
+
+  Back:
+    
+    Display: "&8< &4Go Back &8>"
+    
+    Lore:
+      - "&7Click here to get back to the main menu"
+
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |    _______   | || |  _________   | || |  _________   | || |  _________   | || |     _____    | || | ____  _____  | || |    ______    | || |    _______   | |
+#| |   /  ___  |  | || | |_   ___  |  | || | |  _   _  |  | || | |  _   _  |  | || |    |_   _|   | || ||_   \|_   _| | || |  .' ___  |   | || |   /  ___  |  | |
+#| |  |  (__ \_|  | || |   | |_  \_|  | || | |_/ | | \_|  | || | |_/ | | \_|  | || |      | |     | || |  |   \ | |   | || | / .'   \_|   | || |  |  (__ \_|  | |
+#| |   '.___`-.   | || |   |  _|  _   | || |     | |      | || |     | |      | || |      | |     | || |  | |\ \| |   | || | | |    ____  | || |   '.___`-.   | |
+#| |  |`\____) |  | || |  _| |___/ |  | || |    _| |_     | || |    _| |_     | || |     _| |_    | || | _| |_\   |_  | || | \ `.___]  _| | || |  |`\____) |  | |
+#| |  |_______.'  | || | |_________|  | || |   |_____|    | || |   |_____|    | || |    |_____|   | || ||_____|\____| | || |  `._____.'   | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+Settings_Name: "#285416#Job Options &8- <job>"
+
+Settings_Custom:
+
+  Back:
+  
+    Display: "&8< &4Go Back &8>"
+    
+    Lore:
+      - "&8< &7Click here to get back to the main menu &8>"
+
+  MoneyList:
+  
+    Display: "&8< &7See #92f4ab#Earnings &7for different Blocks &8>"
+    
+    Lore:
+      - "&7This works only when the addon is enabled."
+
+  Earnings:
+  
+    Display: "&8< &7My #edb51c#Earnings &7this Month &8>"
+    
+    Lore:
+      - "&7This works only when the addon is enabled."
+
+  Leave:
+  
+    Display: "&8< &c&lLeave this Job &8>"
+
+  Close:
+  
+    Display: "&8< &cClose Menu &8>"
+
+  Skull:
+    
+    Display: "&8<| #44ead4#Informations &8|>"
+    
+    Lore:
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Blocks &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+# .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. |
+#| |     _____    | || |     ____     | || |   ______     | || |    _______   | |
+#| |    |_   _|   | || |   .'    `.   | || |  |_   _ \    | || |   /  ___  |  | |
+#| |      | |     | || |  /  .--.  \  | || |    | |_) |   | || |  |  (__ \_|  | |
+#| |   _  | |     | || |  | |    | |  | || |    |  __'.   | || |   '.___`-.   | |
+#| |  | |_' |     | || |  \  `--'  /  | || |   _| |__) |  | || |  |`\____) |  | |
+#| |  `.___.'     | || |   `.____.'   | || |  |_______/   | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'
+ 
+Jobs:
+  
+  MINER:
+  
+    Display: "#50cbed#Miner"
+    
+    Lore:
+      - "&7Earn Money when breaking blocks!"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Blocks &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "§8-> §a250 Money"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "§8-> §a500 Money"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "§8-> §a1000 Money"
+      
+    IDS:
+
+      STONE:
+      
+        Display: "&7&lStone"
+        
+        Rewards:
+        
+          Display: "&8< &7&lSstone &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Material &8: &bStone"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Rarity &8: &bNormal"
+
+      COBBLESTONE:
+      
+        Display: "&7&lCobblestone"
+        
+        Rewards:
+        
+          Display: "&8< &7&lCobblestone &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Material &8: &bStone"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Rarity &8: &bNormal"
+    
+      COAL_ORE:
+      
+        Display: "&0Coal Ore"
+        
+        Rewards:
+        
+          Display: "&8< &0Coal Ore &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Material &8: &bStone"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Rarity &8: &bRare"

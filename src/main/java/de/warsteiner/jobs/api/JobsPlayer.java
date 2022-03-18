@@ -2,11 +2,13 @@ package de.warsteiner.jobs.api;
 
 import java.util.ArrayList; 
 import java.util.HashMap; 
+import java.util.UUID;
 
 public class JobsPlayer {
 
 	private String name;
-
+	private String UUID;
+	private UUID rUUID;
 	private ArrayList<String> current = new ArrayList<String>();
 	private ArrayList<String> owned = new ArrayList<String>();
 	private HashMap<String, Integer> job_levels = new HashMap<String, Integer>();
@@ -18,16 +20,26 @@ public class JobsPlayer {
 	
 	public JobsPlayer(String name, ArrayList<String> current2, ArrayList<String> owned2, HashMap<String, Integer> levels,
 			HashMap<String, Double> exp, HashMap<String, Integer> broken, double points, HashMap<String, String> date,
-			int max) {
+			int max, String UUID, UUID rUUID) {
 		this.name = name;
+		this.UUID = UUID;
 		this.job_date = date;
 		this.points = points;
 		this.max = max;
 		this.job_levels = levels;
 		this.job_broken = broken;
 		this.owned = owned2;
+		this.rUUID = rUUID;
 		this.job_exp = exp;
 		this.current = current2;
+	}
+	
+	public java.util.UUID getUUID() {
+		return this.rUUID;
+	}
+	
+	public String getUUIDAsString() {
+		return UUID;
 	}
 	
 	public JobsPlayer getJobsPlayer() {
@@ -75,7 +87,12 @@ public class JobsPlayer {
 		return job_broken;
 	}
 
-	public Double getExpOf(String job) {
+	public double getExpOf(String job) {
+		
+		if(!getExpList().containsKey(job)) {
+			return 0.0;
+		}
+		
 		return getExpList().get(job);
 	}
 

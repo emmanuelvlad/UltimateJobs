@@ -6,7 +6,7 @@ import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.command.AdminCommand;
-import de.warsteiner.jobs.manager.PlayerDataManager;
+import de.warsteiner.jobs.player.PlayerDataManager;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 
 public class SetPointsSub extends AdminSubCommand {
@@ -32,12 +32,12 @@ public class SetPointsSub extends AdminSubCommand {
 			String player = args[1];
 			String value = args[2];
 
-			if (ap.getPlayerManager().getUUIDByName(player.toUpperCase()) == null) {
+			if (ap.getPlayerSaveAndLoadManager().getUUIDByName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
 				return;
 			}
  
-			String uuid =  ap.getPlayerManager().getUUIDByName(player.toUpperCase());
+			String uuid =  ap.getPlayerSaveAndLoadManager().getUUIDByName(player.toUpperCase());
 
 			String how = plugin.getAPI().isCurrentlyInCache(uuid);
 
@@ -45,7 +45,7 @@ public class SetPointsSub extends AdminSubCommand {
 
 				if (how.equalsIgnoreCase("CACHE")) {
 
-					JobsPlayer jb = plugin.getPlayerManager().getOnlineJobPlayers().get(uuid);
+					JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(uuid);
 
 					jb.changePoints(Integer.valueOf(value));
 					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7Points to §a" + value

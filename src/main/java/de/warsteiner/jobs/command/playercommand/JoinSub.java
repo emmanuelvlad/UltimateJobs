@@ -1,10 +1,10 @@
 package de.warsteiner.jobs.command.playercommand;
 
+import java.util.UUID;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
@@ -13,22 +13,23 @@ import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class JoinSub extends SubCommand {
 
-	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 	
 	@Override
-	public String getName() {
-		return plugin.getCommandConfig().getConfig().getString("Command.JOIN.Usage");
+	public String getName(UUID UUID) {
+		return plugin.getPluginManager().getMessage(UUID, "Commands.Join.Usage");
 	}
 
 	@Override
-	public String getDescription() {
-		return plugin.getCommandConfig().getConfig().getString("Command.JOIN.Desc");
+	public String getDescription(UUID UUID) {
+		return  plugin.getPluginManager().getMessage(UUID, "Commands.Join.Description");
 	}
 
 	@Override
 	public void perform(CommandSender sender, String[] args, JobsPlayer jb) {
 		final Player player = (Player) sender;
+		UUID UUID = player.getUniqueId();
+		String ID = ""+UUID;
 		JobAPI api = plugin.getAPI();
 		if (args.length == 2) {
 			String job = args[1].toUpperCase();
@@ -40,21 +41,19 @@ public class JoinSub extends SubCommand {
 					if (jb.getCurrentJobs().size() <= max) {
 						if (!jb.isInJob(file.getID())) {
 							jb.addCurrentJob(file.getID());
-							player.sendMessage(api.getMessage("Command_Joined_Job").replaceAll("<job>", file.getDisplay()));
+							player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_join_Joined").replaceAll("<job>", file.getDisplay(ID)));
 						} else {
-							player.sendMessage(api.getMessage("Command_Already_In_Job").replaceAll("<job>", file.getDisplay()));
+							player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_join_already").replaceAll("<job>", file.getDisplay(ID)));
 						}
 					} else {
-						player.sendMessage(api.getMessage("Command_Reached_Max").replaceAll("<job>", file.getDisplay()));
+						player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_join_max").replaceAll("<job>", file.getDisplay(ID)));
 					}
 				} else {
-					player.sendMessage(api.getMessage("Command_Not_own_Job").replaceAll("<job>", file.getDisplay()));
+					player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_join_not_own").replaceAll("<job>", file.getDisplay(ID)));
 				}
 			}
 		} else {
-			player.sendMessage(
-					up.toHex(plugin.getCommandConfig().getConfig().getString("Command.JOIN.Syntax")
-							.replaceAll("<prefix>", plugin.getAPI().getPrefix()).replaceAll("&", "§")));
+			player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -70,7 +69,12 @@ public class JoinSub extends SubCommand {
 	
 	@Override
 	public boolean isEnabled() { 
-		return plugin.getCommandConfig().getConfig().getBoolean("Command.JOIN.Enabled");
+		return plugin.getFileManager().getCMDSettings().getBoolean("Commands.Join.Enabled");
+	}
+
+	@Override
+	public String getUsage(UUID UUID) { 
+		return plugin.getPluginManager().getMessage(UUID, "Commands.Join.UsageMessage");
 	}
 
 }

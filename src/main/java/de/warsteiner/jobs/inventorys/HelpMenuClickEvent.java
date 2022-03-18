@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.inventorys;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,14 +37,14 @@ public class HelpMenuClickEvent implements Listener {
 			return;
 		}
 
-		YamlConfiguration config = plugin.getMainConfig().getConfig();
+		FileConfiguration config = plugin.getFileManager().getHelpSettings();
 
 		Player p = (Player) e.getWhoClicked();
 
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
 		String title = up.toHex(e.getView().getTitle().replaceAll("&", "§"));
 
-		if (title.equalsIgnoreCase(up.toHex(plugin.getMainConfig().getConfig().getString("Help_Name").replaceAll("&", "§")))) { 
+		if (title.equalsIgnoreCase(up.toHex(config.getString("Help_Name").replaceAll("&", "§")))) { 
 			plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Help_Custom", config);
 			e.setCancelled(true);
 		}

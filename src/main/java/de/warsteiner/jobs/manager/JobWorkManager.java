@@ -1,12 +1,12 @@
 package de.warsteiner.jobs.manager;
 
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.ArrayList; 
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
@@ -28,6 +28,7 @@ import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.player.PlayerDataManager;
 import de.warsteiner.jobs.utils.Action;
 import de.warsteiner.jobs.utils.cevents.PlayerFinishedWorkEvent;
 
@@ -206,7 +207,7 @@ public class JobWorkManager {
 
 				String UUID = "" + player.getUniqueId();
 				PlayerDataManager dt = plugin.getPlayerDataModeManager();
-				YamlConfiguration cfg = plugin.getMainConfig().getConfig();
+				FileConfiguration cfg = plugin.getFileManager().getConfig();
 
 				if (api.getJobsWithAction(UUID, pl, ac) == null) {
 					return;
@@ -227,7 +228,7 @@ public class JobWorkManager {
 
 									boolean can = api.checkforDailyMaxEarnings(player, jb);
 
-									String date = api.getDate();
+									String date = plugin.getPluginManager().getDate();
 
 									String jobid = jb.getID();
 									int lvl = pl.getLevelOf(jobid);
@@ -289,7 +290,7 @@ public class JobWorkManager {
 										}
 									}.runTaskLater(plugin, 1);
 
-									if (plugin.getMainConfig().getConfig().getBoolean("Enable_Levels")) {
+									if (cfg.getBoolean("Enable_Levels")) {
 										UltimateJobs.getPlugin().getLevelAPI().check(player, jb, pl, id);
 									}
 									UltimateJobs.getPlugin().getAPI().sendReward(pl, player, jb, exp, calc, id, can);
@@ -297,9 +298,7 @@ public class JobWorkManager {
 
 								}
 
-							} else {
-								player.sendMessage("max  reached");
-							}
+							}  
 						}
 					}
 				}
