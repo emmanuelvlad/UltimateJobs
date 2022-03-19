@@ -155,7 +155,7 @@ public class PluginManager {
 				YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 				if(cfg.contains("prefix")) {
 					String newname = name.replaceAll(".yml", " ").replaceAll(" ", "");
-					Language lg = new Language(newname, cfg, file, cfg.getString("LanguageName"));
+					Language lg = new Language(newname, cfg, file, cfg.getString("LanguageName"), null, null);
 					arraylangs.add(lg);
 					langs.put(newname, lg);
 					UltimateJobs.getPlugin().getLogger().info("§aLoaded Language : "+newname+"...");
