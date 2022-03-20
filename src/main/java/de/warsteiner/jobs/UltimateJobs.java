@@ -37,11 +37,13 @@ import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
 import de.warsteiner.jobs.command.playercommand.LeaveSub;
 import de.warsteiner.jobs.command.playercommand.LimitSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
+import de.warsteiner.jobs.command.playercommand.StatsSub;
 import de.warsteiner.jobs.command.playercommand.SubHelp;
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
 import de.warsteiner.jobs.inventorys.HelpMenuClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
+import de.warsteiner.jobs.inventorys.StatsMenuClickEvent;
 import de.warsteiner.jobs.jobs.JobActionAdvancement;
 import de.warsteiner.jobs.jobs.JobActionBreak;
 import de.warsteiner.jobs.jobs.JobActionCraft;
@@ -55,6 +57,7 @@ import de.warsteiner.jobs.jobs.JobActionPlace;
 import de.warsteiner.jobs.jobs.JobActionShear;
 import de.warsteiner.jobs.manager.ClickManager;
 import de.warsteiner.jobs.manager.FileManager;
+import de.warsteiner.jobs.manager.GuiAddonManager;
 import de.warsteiner.jobs.manager.GuiManager;
 import de.warsteiner.jobs.manager.JobWorkManager;
 import de.warsteiner.jobs.manager.PluginManager;
@@ -91,6 +94,7 @@ public class UltimateJobs extends JavaPlugin {
 	private AlonsoLevelsManager alonso;
 	private PluginManager plapi;
 	private FileManager filemanager;
+	private GuiAddonManager adddongui;
 
 	public void onLoad() {
 
@@ -138,6 +142,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerRewardCommandEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new HelpMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new StatsMenuClickEvent(), this);
 
 		// job events
 		loadEvents();
@@ -220,6 +225,7 @@ public class UltimateJobs extends JavaPlugin {
 		getSubCommandManager().getSubCommandList().add(new LimitSub()); 	
 		getSubCommandManager().getSubCommandList().add(new JoinSub());
 		getSubCommandManager().getSubCommandList().add(new LangSub());
+		getSubCommandManager().getSubCommandList().add(new StatsSub());
 
 		getAdminSubCommandManager().getSubCommandList().add(new HelpSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
@@ -238,6 +244,7 @@ public class UltimateJobs extends JavaPlugin {
 		cmdmanager = new SubCommandRegistry();
 		api = new JobAPI(plugin);
 		gui = new GuiManager(plugin);
+		adddongui = new GuiAddonManager(plugin);
 		click = new ClickManager(plugin, this.filemanager.getConfig(), this.gui);
 		admincmdmanager = new AdminSubCommandRegistry();
 		notquest = new NotQuestManager();
@@ -254,6 +261,10 @@ public class UltimateJobs extends JavaPlugin {
 		}
 		pmanager = new PlayerDataManager(yml, sql);
 
+	}
+	
+	public GuiAddonManager getGUIAddonManager() {
+		return adddongui;
 	}
 
 	public PluginManager getPluginManager() {
@@ -350,6 +361,12 @@ public class UltimateJobs extends JavaPlugin {
 
 		if (!folder_4.exists()) {
 			folder_4.mkdir();
+		}
+	
+		File folder_5 = new File(getDataFolder(), "addons");
+
+		if (!folder_5.exists()) {
+			folder_5.mkdir();
 		}
 	}
 

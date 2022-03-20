@@ -37,17 +37,36 @@ public class GuiManager {
 	public Job isSettingsGUI(String menu, String UUID) {
 		FileConfiguration cfg = plugin.getFileManager().getSettings();
 		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
+	 
 		for (String list : plugin.getLoaded()) {
 			Job j = plugin.getJobCache().get(list);
-			String dis = j.getDisplay(UUID);
+			String dis = j.getDisplay(UUID); 
 			String named = plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
 			String fin = up.toHex(named.replaceAll("<job>", dis)
 					.replaceAll("&", "§"));
-			 
-			if (up.toHex(fin).equalsIgnoreCase(menu.replaceAll("<job>", dis)))
+		 
+			if (up.toHex(menu.replaceAll("<job>", dis)).equalsIgnoreCase(up.toHex(fin.replaceAll("<job>", dis))))
 				return j;
 		}
 		return null;
+	}
+	
+	
+	public boolean isSettingsGUITitle(String menu, String UUID) {
+		FileConfiguration cfg = plugin.getFileManager().getSettings();
+		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
+	 
+		for (String list : plugin.getLoaded()) {
+			Job j = plugin.getJobCache().get(list);
+			String dis = j.getDisplay(UUID); 
+			String named = plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
+			String fin = up.toHex(named.replaceAll("<job>", dis)
+					.replaceAll("&", "§"));
+		 
+			if (up.toHex(menu.replaceAll("<job>", dis)).equalsIgnoreCase(up.toHex(fin.replaceAll("<job>", dis))))
+				return true;
+		}
+		return false;
 	}
 	
 	public void createHelpGUI(Player player) {
@@ -101,7 +120,7 @@ public class GuiManager {
 				ArrayList<String> l = new ArrayList<String>();
 
 				ItemMeta meta = item.getItemMeta();
-
+ 
 				for (String line : lore) {
 					l.add(up.toHex(line).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§"));
 				}

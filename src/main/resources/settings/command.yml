@@ -35,6 +35,10 @@ Commands:
   Join:
   
     Enabled: true
+ 
+  Stats:
+  
+    Enabled: true
     
   Language:
   

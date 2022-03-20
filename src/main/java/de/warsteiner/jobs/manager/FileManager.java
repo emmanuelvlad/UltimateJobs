@@ -31,6 +31,9 @@ public class FileManager {
 	private  FileConfiguration confirm;
 	private  File confirm_file;
   
+	private  FileConfiguration stats;
+	private  File stats_file;
+	
 	private List<String> defaultlanguages = Arrays.asList("en-US");
 	
 	public  boolean generateFiles() {
@@ -41,6 +44,9 @@ public class FileManager {
 		createSettingsGUIFile();
 		createConfirmGUIFIle();
 		createCFGFile();
+		
+		//addons
+		createAddonStatsFiles();
 		return true;
 	}
 	
@@ -125,6 +131,31 @@ public class FileManager {
 	
 	public  File getConfigFile() {
 		return cfg_file;
+	}
+	
+	public  FileConfiguration getStatsConfig() {
+		return stats;
+	}
+	
+	public  File getStatsFile() {
+		return stats_file;
+	}
+	
+	public boolean createAddonStatsFiles() {
+		stats_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "stats.yml");
+        if (!stats_file.exists()) {
+        	stats_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "stats.yml", false);
+        }
+        
+        stats = new YamlConfiguration();
+        try {
+        	stats.load(stats_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
 	}
 	
 	public boolean createCFGFile() {

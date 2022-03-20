@@ -57,6 +57,9 @@ command_points_not_found: "<prefix> &cCannot find player <name>."
 command_points_self: "<prefix> &7You have &b<points> &7Points."
 command_points_other: "<prefix> &7<name> owns &b<points> &7Points."
 
+#command /job stats
+command_stats_not_found: "<prefix> &cCannot find player <name>."
+
 #other messages
 Other:
 
@@ -106,6 +109,14 @@ MaxEarningsReached:
   
 #confog of commands
 Commands:
+
+  Stats:
+  
+    Usage: "stats"
+    
+    UsageMessage: "/Jobs stats <name>"
+    
+    Description: "View Player Stats"
 
   Language:
   
@@ -362,6 +373,64 @@ Settings_Custom:
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |    _______   | || |  _________   | || |      __      | || |  _________   | || |    _______   | |
+#| |   /  ___  |  | || | |  _   _  |  | || |     /  \     | || | |  _   _  |  | || |   /  ___  |  | |
+#| |  |  (__ \_|  | || | |_/ | | \_|  | || |    / /\ \    | || | |_/ | | \_|  | || |  |  (__ \_|  | |
+#| |   '.___`-.   | || |     | |      | || |   / ____ \   | || |     | |      | || |   '.___`-.   | |
+#| |  |`\____) |  | || |    _| |_     | || | _/ /    \ \_ | || |    _| |_     | || |  |`\____) |  | |
+#| |  |_______.'  | || |   |_____|    | || ||____|  |____|| || |   |_____|    | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
+
+#config of stats gui - self
+Self_Name: "#285416#Your Stats"
+ 
+Self_Custom:
+
+  NotFound:
+  
+    Display: "&8/ Not Found &8/"
+    
+    Lore: "&8Player has no current job s"
+
+  Close:
+    
+    Display: "&8< &cClose Menu &8>"
+
+  Skull:
+    
+    Display: "&8< &bYour Stats &8>"
+    
+    Lore:
+      - "&7Limit&8: &c<max>"
+      - "&7Points&8: &b<points>"
+      
+#config of stats gui - other
+Other_Name: "#285416#Stats of <name>"
+ 
+Other_Custom:
+
+  NotFound:
+  
+    Display: "&8/ Not Found &8/"
+    
+    Lore: "&8Player has no current job s"
+
+  Close:
+    
+    Display: "&8< &cClose Menu &8>"
+
+  Skull:
+    
+    Display: "&8< &bStats of <name> &8>"
+    
+    Lore:
+      - "&7Limit&8: &c<max>"
+      - "&7Points&8: &b<points>"
       
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -376,6 +445,94 @@ Settings_Custom:
 # '----------------'  '----------------'  '----------------'  '----------------'
  
 Jobs:
+
+  LUMBER:
+  
+    Display: "&6Lumberjack"
+    
+    Lore:
+      - "&7Earn Money when breaking blocks!"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Blocks &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &6Lumberjack &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Blocks &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Your Stats in this Job&8:"
+           - "&8&m--------------------------" 
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Blocks &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a250 Money"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a500 Money"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a1000 Money"
+      
+    IDS:
+
+      OAK_LOG:
+      
+        Display: "&6Log"
+        
+        Rewards:
+        
+          Display: "&8< &6Log &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Material &8: &bStone"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Rarity &8: &bNormal"
   
   MINER:
   
@@ -394,6 +551,32 @@ Jobs:
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
       
+    StatsGUI:
+    
+       Display: "&8< | #50cbed#Miner &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Blocks &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Your Stats in this Job&8:"
+           - "&8&m--------------------------" 
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Blocks &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
     Levels:
     
       1:  
@@ -404,21 +587,21 @@ Jobs:
         
         Lore:
           - "&7Rewards of this Level&8:"
-          - "§8-> §a250 Money"
+          - "&8-> &a250 Money"
       
       3:  
         Display: "&6Level III"
         
         Lore:
           - "&7Rewards of this Level&8:"
-          - "§8-> §a500 Money"
+          - "&8-> &a500 Money"
       
       4: 
         Display: "&6Level IV"
         
         Lore:
           - "&7Rewards of this Level&8:"
-          - "§8-> §a1000 Money"
+          - "&8-> &a1000 Money"
       
     IDS:
 

@@ -1,19 +1,16 @@
 package de.warsteiner.jobs.inventorys;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import de.warsteiner.datax.SimpleAPI; 
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.Job;
 
-public class SettingsMenuClickEvent implements Listener {
+public class StatsMenuClickEvent implements Listener {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 	private PluginAPI up = SimpleAPI.getInstance().getAPI();
@@ -39,20 +36,20 @@ public class SettingsMenuClickEvent implements Listener {
 			return;
 		}
 
-		FileConfiguration config = plugin.getFileManager().getSettings();
+		FileConfiguration config = plugin.getFileManager().getStatsConfig();
 
 		Player p = (Player) e.getWhoClicked();
 
-		String UUID = ""+p.getUniqueId();
-		 
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
-		 
-		if(plugin.getGUI().isSettingsGUITitle(e.getView().getTitle(), UUID)) { 
-			if (plugin.getGUI().isSettingsGUI(e.getView().getTitle(), UUID) != null) {
-				Job job = plugin.getGUI().isSettingsGUI(e.getView().getTitle(), UUID);
-				plugin.getClickManager().executeCustomItemInSubMenu(job, display, p, "Settings_Custom", config);
-				e.setCancelled(true);
-			}
+		String title = up.toHex(e.getView().getTitle().replaceAll("&", "§"));
+
+		if (title.equalsIgnoreCase(up.toHex(plugin.getPluginManager().getSomethingFromPath(p.getUniqueId(), config.getString("Self_Name")).replaceAll("&", "§")))) { 
+			plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Self_Custom", config);
+			e.setCancelled(true);
+		} else if(plugin.getGUIAddonManager().isStatsGUI(title, p.getUniqueId())) {
+			plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Other_Custom", config);
+			e.setCancelled(true);
 		}
+
 	}
 }

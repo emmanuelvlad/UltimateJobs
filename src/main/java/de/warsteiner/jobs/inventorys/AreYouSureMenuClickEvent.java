@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.inventorys;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration; 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -50,6 +51,7 @@ public class AreYouSureMenuClickEvent implements Listener {
 			Job job = plugin.getJobCache().get(list);
 			String mm = job.getDisplay(UUID);
 			String newname = up.toHex(name).replaceAll("<job>", mm).replaceAll("&", "§");
+		 
 			if(e.getView().getTitle().equalsIgnoreCase(newname)) {
 				plugin.getClickManager().executeCustomItem(display, p, "AreYouSureGUI_Custom", config);
 				 
