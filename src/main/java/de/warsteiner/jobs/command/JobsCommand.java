@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.manager.GuiManager;
@@ -28,7 +29,7 @@ public class JobsCommand implements CommandExecutor {
 			GuiManager gui = plugin.getGUI();
 
 			if (length == 0) {
-				gui.createMainGUIOfJobs(player);
+				gui.createMainGUIOfJobs(player, UpdateTypes.OPEN);
 
 			} else {
 				String ar = args[0].toLowerCase();

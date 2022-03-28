@@ -20,9 +20,7 @@ public class AdminTabComplete implements TabCompleter {
 	public List<String> onTabComplete(CommandSender s, Command arg1, String arg2, String[] args) {
 
 		ArrayList<String> l = new ArrayList<String>();
-
-		JobAPI api = plugin.getAPI();
-
+ 
 		if (s.hasPermission("ultimatejobs.complete")) {
 
 			if (args.length == 1) {
@@ -42,15 +40,16 @@ public class AdminTabComplete implements TabCompleter {
 
 								String type = getFromFormat(args.length, c).toUpperCase();
 
-								if (type.equalsIgnoreCase("JOBS_LISTED")) {
-									for (String b : api.getJobsInListAsID()) {
-										l.add(b);
-									}
-								} else if (type.equalsIgnoreCase("PLAYERS_ONLINE")) {
+								 if (type.equalsIgnoreCase("PLAYERS_ONLINE")) {
 									for (Player b : Bukkit.getOnlinePlayers()) {
 										l.add(b.getName());
 									}
-								}  
+								}   else if (type.equalsIgnoreCase("JOBS_LISTED")) {
+									for (String b : plugin.getLoaded()) {
+										String id = plugin.getJobCache().get(b).getConfigID();
+										l.add(id);
+									}
+								}
 
 							}
 						}

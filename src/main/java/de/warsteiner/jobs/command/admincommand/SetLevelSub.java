@@ -52,9 +52,9 @@ public class SetLevelSub extends AdminSubCommand {
 
 						JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(uuid);
 
-						if(jb.ownJob(j.getID())) {
-							jb.updateLevel(j.getID(), Integer.valueOf(value));
-							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getID()
+						if(jb.ownJob(j.getConfigID())) {
+							jb.updateLevel(j.getConfigID(), Integer.valueOf(value));
+							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
 									+ " §7to §6"+value+". §8(§eCache§8)");
 							return;
 						} else {
@@ -65,9 +65,9 @@ public class SetLevelSub extends AdminSubCommand {
 					} else {
 
 						if(pl.getOfflinePlayerOwnedJobs(uuid).contains(job.toUpperCase())) {
-							pl.updateLevel(uuid, Integer.valueOf(value), j.getID());
+							pl.updateLevel(uuid, Integer.valueOf(value), j.getConfigID());
 
-							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getID()
+							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
 							+ " §7to §6"+value+". §8(§bSQL§8)");
 							 
 							return;

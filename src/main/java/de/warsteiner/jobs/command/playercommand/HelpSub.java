@@ -7,11 +7,12 @@ import org.bukkit.entity.Player;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
+import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
-public class SubHelp extends SubCommand {
+public class HelpSub extends SubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 	private PluginAPI up = SimpleAPI.getInstance().getAPI();
@@ -33,7 +34,7 @@ public class SubHelp extends SubCommand {
 		if (args.length == 1) {
 			String mode = plugin.getFileManager().getHelpSettings().getString("Help_Mode").toUpperCase();
 			if(mode.equalsIgnoreCase("GUI")) {
-				plugin.getGUI().createHelpGUI(player);
+				plugin.getGUI().createHelpGUI(player, UpdateTypes.OPEN);
 			} else {
 		 
 				for (String m :plugin.getPluginManager().getMessageList(UUID, "Commands.Help.List")) {

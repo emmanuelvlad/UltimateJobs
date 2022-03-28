@@ -32,6 +32,7 @@ public class WorldGuardManager {
 	public static StateFlag AD_ACTION;
 	public static StateFlag EAT_ACTION;
 	public static StateFlag HONEY_ACTION;
+	public static StateFlag STRIP_ACTION;
 
 	public WorldGuardManager getManager() {
 		return this;
@@ -60,9 +61,11 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (AD_ACTION = new StateFlag("advancement-action", false))); 
 		flagRegistry.register((Flag) (EAT_ACTION = new StateFlag("eat-action", false))); 
 		flagRegistry.register((Flag) (HONEY_ACTION = new StateFlag("honey-action", false))); 
+		flagRegistry.register((Flag) (STRIP_ACTION = new StateFlag("strip-action", false))); 
 	}
 	
 	public static StateFlag getFlagFromName(String b) {
+		if(b.equalsIgnoreCase("strip-action")) { return STRIP_ACTION; }
 		if(b.equalsIgnoreCase("honey-action")) { return HONEY_ACTION; }
 		if(b.equalsIgnoreCase("eat-action")) { return EAT_ACTION; }
 		if(b.equalsIgnoreCase("advancement-action")) { return AD_ACTION; }

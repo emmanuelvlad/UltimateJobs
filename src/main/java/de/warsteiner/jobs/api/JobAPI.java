@@ -3,9 +3,10 @@ package de.warsteiner.jobs.api;
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.plugins.WorldGuardManager;
-import de.warsteiner.jobs.utils.Action;
+import de.warsteiner.jobs.api.plugins.WorldGuardManager; 
 import de.warsteiner.jobs.utils.BossBarHandler;
+import de.warsteiner.jobs.utils.JobAction;
+
 import java.io.File; 
 import java.text.DecimalFormat; 
 import java.util.ArrayList;
@@ -84,10 +85,26 @@ public class JobAPI {
 
 	public boolean checkIfJobIsReal(String arg, Player player) {
 		String id = arg.toUpperCase();
-		if (plugin.getAPI().isJobFromConfigID(id) != null)
+		if (isJobFromConfigID(id) != null) {
 			return true;
+		}
+		if(isJobFromDisplayID(id, ""+player.getUniqueId()) != null) { 
+			return true;
+		}
 		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
 		return false;
+	}
+ 
+	public Job checkIfJobIsRealAndGet(String arg, Player player) {
+		String id = arg.toUpperCase();
+		if (isJobFromConfigID(id) != null) {
+			return isJobFromConfigID(id);
+		}
+		if(isJobFromDisplayID(id, ""+player.getUniqueId()) != null) { 
+			return isJobFromDisplayID(id, ""+player.getUniqueId());
+		}
+		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
+		return null;
 	}
 
 	public String isCurrentlyInCache(String uuid) {
@@ -96,13 +113,13 @@ public class JobAPI {
 		return "SQL";
 	}
 
-	public void sendReward(JobsPlayer pl, Player p, Job job, double exp, double reward, String block, boolean can) {
+	public void sendReward(JobsPlayer pl, Player p, Job job, double exp, double reward, String block, boolean can, JobAction ac) {
 		plugin.getExecutor().execute(() -> {
 			UUID UUID = p.getUniqueId();
-			String ijob = job.getID();
+			String ijob = job.getConfigID();
 			double all_exp = pl.getExpOf(ijob);
 			int level = pl.getLevelOf(ijob).intValue();
-			String disofid = job.getDisplayOf(block, ""+UUID);
+			String disofid = job.getDisplayOf(block, ""+UUID, ac);
 			double need = plugin.getLevelAPI().getJobNeedExp(job, pl);
 
 			String prefix = null;
@@ -127,7 +144,7 @@ public class JobAPI {
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, ""+UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
+							.replaceAll("<action>", ac.toString().toLowerCase()).replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
 					if (!BossBarHandler.exist(p.getName())) {
 						BossBarHandler.createBar(p, message, color, p.getName(), use);
 					} else {
@@ -141,7 +158,7 @@ public class JobAPI {
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, ""+UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
+							.replaceAll("<action>", ac.toString().toLowerCase()).replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
 					p.sendMessage(message);
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enabled_Actionbar")) {
@@ -149,7 +166,7 @@ public class JobAPI {
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level,""+ UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-							.replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
+							.replaceAll("<action>", ac.toString().toLowerCase()).replaceAll("<money>", Format(reward)).replaceAll("&", "§"));
 					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, (BaseComponent) new TextComponent(message));
 				}
 			}
@@ -171,9 +188,9 @@ public class JobAPI {
 				if (file.isFile()) {
 					YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 					Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
-					plugin.getLoaded().add(job.getID());
-					plugin.getID().put(job.getID(), job);
-					plugin.getLogger().info("§aLoaded Job " + job.getID() + " from File " + name + "!");
+					plugin.getLoaded().add(job.getConfigID());
+					plugin.getID().put(job.getConfigID(), job);
+					plugin.getLogger().info("§aLoaded Job " + job.getConfigID() + " from File " + name + "!");
 				} else {
 					plugin.getLogger().warning("§cFound File in Jobs Folder which isnt a real Job!");
 				}
@@ -185,13 +202,13 @@ public class JobAPI {
 		YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 		Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
 
-		plugin.getLoaded().remove(oldjob.getID());
-		plugin.getID().remove(oldjob.getID());
+		plugin.getLoaded().remove(oldjob.getConfigID());
+		plugin.getID().remove(oldjob.getConfigID());
 
-		plugin.getLoaded().add(job.getID());
-		plugin.getID().put(job.getID(), job);
+		plugin.getLoaded().add(job.getConfigID());
+		plugin.getID().put(job.getConfigID(), job);
 
-		plugin.getLogger().info("§aLoaded Job " + job.getID() + " from File " + file.getName() + "!");
+		plugin.getLogger().info("§aLoaded Job " + job.getConfigID() + " from File " + file.getName() + "!");
 
 		return job;
 	}
@@ -231,7 +248,7 @@ public class JobAPI {
 
 			double max = job.getMaxEarningsPerDay();
 
-			double current = plugin.getPlayerDataModeManager().getEarnedAtDate("" + player.getUniqueId(), job.getID(),
+			double current = plugin.getPlayerDataModeManager().getEarnedAtDate("" + player.getUniqueId(), job.getConfigID(),
 					plugin.getPluginManager().getDate());
 
 			if (current >= max) {
@@ -262,12 +279,15 @@ public class JobAPI {
 		return false;
 	}
 
-	public ArrayList<String> getJobsWithAction(String UUID, JobsPlayer pl, Action ac) {
+	public ArrayList<String> getJobsWithAction(String UUID, JobsPlayer pl, JobAction ac) {
 		ArrayList<String> l = new ArrayList<>();
 		for (String j : pl.getCurrentJobs()) {
 			Job jb = (Job) plugin.getJobCache().get(j);
-			if (jb.getAction().equals(ac))
-				l.add(jb.getID());
+			for(JobAction actn : jb.getActionList()) {
+				if (actn.equals(ac))
+					l.add(jb.getConfigID());
+			}
+		 
 		}
 		return l;
 	}
@@ -294,29 +314,31 @@ public class JobAPI {
 
 	public String canWorkInRegion(Player player, Job j, String st) {
 		if (plugin.getPluginManager().isInstalled("WorldGuard")) {
-			String ac = "" + j.getAction();
-			String flag = ac.toLowerCase() + "_action";
-			return WorldGuardManager.checkFlag(player.getLocation(), flag, player, st);
+	 
+			for(JobAction ac : j.getActionList()) {
+				String flag =""+ ac.toString().toLowerCase() + "_action";
+				return WorldGuardManager.checkFlag(player.getLocation(), flag, player, st);
+			}
+			
 		}
 		return "ALLOW";
 	}
 
-	public boolean canReward(Player player, Job j, String id) {
-		double chance = j.getChanceOf(id);
-		if (j.getIDList().contains(id)) {
+	public boolean canReward(Player player, Job j, String id, JobAction ac) {
+		double chance = j.getChanceOf(id, ac);  
 			Random r = new Random();
 			int chance2 = r.nextInt(100);
-			if (chance2 < chance)
+			if (chance2 < chance) {
 				return true;
-		}
+			}
 		return false;
 	}
 
-	public ArrayList<String> getJobsInListAsID() {
+	public ArrayList<String> getJobsInListAsID(String id) {
 		ArrayList<String> list = new ArrayList<>();
 		for (String l : plugin.getLoaded()) {
 			Job j = plugin.getJobCache().get(l);
-			list.add(j.getID().toLowerCase());
+			list.add(j.getDisplayID(id).toLowerCase());
 		}
 		return list;
 	}
@@ -324,8 +346,19 @@ public class JobAPI {
 	public Job isJobFromConfigID(String id) {
 		for (String list : plugin.getLoaded()) {
 			Job job = plugin.getJobCache().get(list);
-			String cfg_id = job.getID();
+			String cfg_id = job.getConfigID();
 			if (cfg_id.equalsIgnoreCase(id))
+				return job;
+		}
+		return null;
+	}
+	
+	public Job isJobFromDisplayID(String id, String UUID) {
+		for (String list : plugin.getLoaded()) {
+			Job job = plugin.getJobCache().get(list);
+			String cfg_id = job.getDisplayID(UUID); 
+			if (cfg_id.toUpperCase().equalsIgnoreCase(id.toUpperCase()))
+				
 				return job;
 		}
 		return null;

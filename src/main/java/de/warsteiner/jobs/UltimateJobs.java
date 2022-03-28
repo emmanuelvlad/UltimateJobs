@@ -26,7 +26,9 @@ import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
 import de.warsteiner.jobs.command.JobsCommand;
+import de.warsteiner.jobs.command.admincommand.AddPointsSub;
 import de.warsteiner.jobs.command.admincommand.HelpSub;
+import de.warsteiner.jobs.command.admincommand.RemovePointsSub;
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
 import de.warsteiner.jobs.command.admincommand.SetPointsSub;
@@ -37,11 +39,12 @@ import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
 import de.warsteiner.jobs.command.playercommand.LeaveSub;
 import de.warsteiner.jobs.command.playercommand.LimitSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
-import de.warsteiner.jobs.command.playercommand.StatsSub;
-import de.warsteiner.jobs.command.playercommand.SubHelp;
+import de.warsteiner.jobs.command.playercommand.RewardsSub;
+import de.warsteiner.jobs.command.playercommand.StatsSub; 
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
 import de.warsteiner.jobs.inventorys.HelpMenuClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
+import de.warsteiner.jobs.inventorys.RewardsMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
 import de.warsteiner.jobs.inventorys.StatsMenuClickEvent;
 import de.warsteiner.jobs.jobs.JobActionAdvancement;
@@ -55,6 +58,7 @@ import de.warsteiner.jobs.jobs.JobActionKillMob;
 import de.warsteiner.jobs.jobs.JobActionMilk;
 import de.warsteiner.jobs.jobs.JobActionPlace;
 import de.warsteiner.jobs.jobs.JobActionShear;
+import de.warsteiner.jobs.jobs.JobActionStripLog;
 import de.warsteiner.jobs.manager.ClickManager;
 import de.warsteiner.jobs.manager.FileManager;
 import de.warsteiner.jobs.manager.GuiAddonManager;
@@ -143,6 +147,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new HelpMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
 		Bukkit.getPluginManager().registerEvents(new StatsMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new RewardsMenuClickEvent(), this);
 
 		// job events
 		loadEvents();
@@ -218,7 +223,7 @@ public class UltimateJobs extends JavaPlugin {
 
 	public void registerSubCommands() {
 
-		getSubCommandManager().getSubCommandList().add(new SubHelp()); 
+		getSubCommandManager().getSubCommandList().add(new de.warsteiner.jobs.command.playercommand.HelpSub()); 
 		getSubCommandManager().getSubCommandList().add(new LeaveSub()); 
 		getSubCommandManager().getSubCommandList().add(new LeaveAllSub()); 
 		getSubCommandManager().getSubCommandList().add(new PointsSub()); 
@@ -226,13 +231,15 @@ public class UltimateJobs extends JavaPlugin {
 		getSubCommandManager().getSubCommandList().add(new JoinSub());
 		getSubCommandManager().getSubCommandList().add(new LangSub());
 		getSubCommandManager().getSubCommandList().add(new StatsSub());
+		getSubCommandManager().getSubCommandList().add(new RewardsSub());
 
 		getAdminSubCommandManager().getSubCommandList().add(new HelpSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());
 		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
-
+		getAdminSubCommandManager().getSubCommandList().add(new AddPointsSub());
+		getAdminSubCommandManager().getSubCommandList().add(new RemovePointsSub());
 	}
 
 	public void loadClasses() {
@@ -363,8 +370,7 @@ public class UltimateJobs extends JavaPlugin {
 			folder_4.mkdir();
 		}
 	
-		File folder_5 = new File(getDataFolder(), "addons");
-
+		File folder_5 = new File(getDataFolder(), "addons"); 
 		if (!folder_5.exists()) {
 			folder_5.mkdir();
 		}
@@ -382,6 +388,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionAdvancement(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionEat(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionHoney(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionStripLog(), this);
 	}
  
 	private boolean setupEconomy() {

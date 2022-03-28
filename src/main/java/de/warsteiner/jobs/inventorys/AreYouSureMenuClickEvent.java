@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
+import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobsPlayer;
@@ -68,7 +69,8 @@ public class AreYouSureMenuClickEvent implements Listener {
 					
 					plugin.getClickManager().buy(money, p, jb, job);
 				} else if(display.equalsIgnoreCase(no)) {
-					plugin.getGUI().createMainGUIOfJobs(p);
+					plugin.getGUI().createMainGUIOfJobs(p, UpdateTypes.REOPEN);
+					plugin.getAPI().playSound("REOPEN_MAIN_GUI", p);
 				}
 				
 				e.setCancelled(true);

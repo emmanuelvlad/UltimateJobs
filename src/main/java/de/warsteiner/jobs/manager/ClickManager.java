@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
+import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
@@ -38,16 +39,18 @@ public class ClickManager {
 					}
 				}.runTaskLater(plugin, 2);
 			} else if (action.equalsIgnoreCase("BACK")) {
-				plugin.getGUI().createMainGUIOfJobs(player);
+				plugin.getAPI().playSound("REOPEN_MAIN_GUI", player);
+				plugin.getGUI().createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 			} else if (action.equalsIgnoreCase("LEAVE")) {
 				api.playSound("LEAVE_SINGLE", player);
-				jb.remoCurrentJob(job.getID());
-				gui.createMainGUIOfJobs(player);
+				jb.remoCurrentJob(job.getConfigID());
+			 
+				plugin.getGUI().createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 
 				player.sendMessage(plugin.getPluginManager().getMessage(jb.getUUID(), "Other.Left_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
 			} else if (action.equalsIgnoreCase("COMMAND")) {
 				player.closeInventory();
-				String cmd = config.getString(prefix + "." + item + ".Command").replaceAll("<job>", job.getID());
+				String cmd = config.getString(prefix + "." + item + ".Command").replaceAll("<job>", job.getConfigID());
 				player.performCommand(cmd);
 			}
 		}
@@ -78,7 +81,7 @@ public class ClickManager {
 			Job j = plugin.getJobCache().get(jobs.get(i));
 			String dis = j.getDisplay(UUID);
 			if (display.equalsIgnoreCase(dis)) {
-				String job = j.getID();
+				String job = j.getConfigID();
 
 				String name =  plugin.getPluginManager().getSomethingFromPath(jb.getUUID(), cfg.getString("Main_Name"));
 				if (api.canBuyWithoutPermissions(player, j)) {
@@ -89,7 +92,7 @@ public class ClickManager {
 						if (jb.ownJob(job) == true || api.canByPass(player, j) == true) {
 
 							if (jb.isInJob(job)) {
-								gui.createSettingsGUI(player, j);
+								gui.createSettingsGUI(player, j, UpdateTypes.OPEN);
 								return;
 							} else {
 
@@ -109,7 +112,7 @@ public class ClickManager {
 							if (plugin.getEco().getBalance(player) >= money) {
 
 								if (plugin.getFileManager().getConfig().getBoolean("Jobs.AreYouSureGUIonBuy")) {
-									gui.createAreYouSureGUI(player, j);
+									gui.createAreYouSureGUI(player, j, UpdateTypes.OPEN);
 									return;
 								} else {
 									buy(money, player, jb, j);
@@ -135,9 +138,9 @@ public class ClickManager {
 	public void buy(double money, Player player, JobsPlayer jb, Job job) {
 		FileConfiguration cfg = plugin.getFileManager().getGUI();
 		plugin.getEco().withdrawPlayer(player, money);
-		jb.addOwnedJob(job.getID());
+		jb.addOwnedJob(job.getConfigID());
 
-		plugin.getPlayerManager().updateJobs(job.getID().toUpperCase(), jb, "" + player.getUniqueId());
+		plugin.getPlayerManager().updateJobs(job.getConfigID().toUpperCase(), jb, "" + player.getUniqueId());
 
 		api.playSound("JOB_BOUGHT", player);
 
@@ -146,7 +149,7 @@ public class ClickManager {
 		if (title.equalsIgnoreCase(up.toHex(cfg.getString("Main_Name")).replaceAll("&", "§"))) {
 			gui.UpdateMainInventoryItems(player, title);
 		} else {
-			gui.createMainGUIOfJobs(player);
+			gui.createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 		}
 
 		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "Other.Bought_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
@@ -189,7 +192,8 @@ public class ClickManager {
 				String cmd = config.getString(name + "." + item + ".Command");
 				player.performCommand(cmd);
 			} else if (action.equalsIgnoreCase("BACK")) {
-				plugin.getGUI().createMainGUIOfJobs(player);
+				plugin.getAPI().playSound("REOPEN_MAIN_GUI", player);
+				plugin.getGUI().createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 			}
 		}
 	}

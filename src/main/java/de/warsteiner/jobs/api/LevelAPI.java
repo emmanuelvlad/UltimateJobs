@@ -22,7 +22,7 @@ public class LevelAPI {
 
 	public double getJobNeedExp(Job job, JobsPlayer pl) {
 
-		int next = pl.getLevelOf(job.getID()) + 1;
+		int next = pl.getLevelOf(job.getConfigID()) + 1;
 
 		return job.getExpOfLevel(next);
 	}
@@ -44,7 +44,7 @@ public class LevelAPI {
 	public boolean canlevelUp(Job Job, JobsPlayer pl) {
 		double need = getJobNeedExp(Job, pl);
 
-		double exp = pl.getExpOf(Job.getID());
+		double exp = pl.getExpOf(Job.getConfigID());
 
 		if (exp == need || exp >= need) {
 			return true;
@@ -61,7 +61,7 @@ public class LevelAPI {
 			FileConfiguration cfg = plugin.getFileManager().getConfig();
 			String prefix = plugin.getPluginManager().getPrefix(UUID);
 			
-			int old_level = pl.getLevelOf(job.getID());
+			int old_level = pl.getLevelOf(job.getConfigID());
 			int new_level = old_level + 1;
 			
 			if(old_level >= job.getCountOfLevels()) {
@@ -74,8 +74,8 @@ public class LevelAPI {
 
 					//rewards
 				 
-					pl.updateLevel(job.getID(), new_level);
-					pl.updateExp(job.getID(), 0);
+					pl.updateLevel(job.getConfigID(), new_level);
+					pl.updateExp(job.getConfigID(), 0);
 					
 					new BukkitRunnable() {
 						public void run() {

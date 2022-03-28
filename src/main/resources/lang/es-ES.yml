@@ -1,111 +1,115 @@
-# .----------------.  .-----------------. .----------------.  .----------------.  .----------------. 
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
-#| |  _________   | || | ____  _____  | || |              | || | _____  _____ | || |    _______   | |
-#| | |_   ___  |  | || ||_   \|_   _| | || |              | || ||_   _||_   _|| || |   /  ___  |  | |
-#| |   | |_  \_|  | || |  |   \ | |   | || |    ______    | || |  | |    | |  | || |  |  (__ \_|  | |
-#| |   |  _|  _   | || |  | |\ \| |   | || |   |______|   | || |  | '    ' |  | || |   '.___`-.   | |
-#| |  _| |___/ |  | || | _| |_\   |_  | || |              | || |   \ `--' /   | || |  |`\____) |  | |
-#| | |_________|  | || ||_____|\____| | || |              | || |    `.__.'    | || |  |_______.'  | |
+#| |  _________   | || |    _______   | || |              | || |  _________   | || |    _______   | |
+#| | |_   ___  |  | || |   /  ___  |  | || |              | || | |_   ___  |  | || |   /  ___  |  | |
+#| |   | |_  \_|  | || |  |  (__ \_|  | || |    ______    | || |   | |_  \_|  | || |  |  (__ \_|  | |
+#| |   |  _|  _   | || |   '.___`-.   | || |   |______|   | || |   |  _|  _   | || |   '.___`-.   | |
+#| |  _| |___/ |  | || |  |`\____) |  | || |              | || |  _| |___/ |  | || |  |`\____) |  | |
+#| | |_________|  | || |  |_______.'  | || |              | || | |_________|  | || |  |_______.'  | |
 #| |              | || |              | || |              | || |              | || |              | |
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
-# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
-
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+ 
+#
+# translated by @Luisito.#9578  <3
+#
+ 
 #used on /jobs language <lang>
-LanguageName: "english"
+LanguageName: "spanish"
 
-prefix: "&8[#14e0ba#Jobs&8]"
+prefix: "&8[#14e0ba#Trabajos&8]"
 
-job_not_found: "<prefix> &cThe Job <job> does not exist!"
+job_not_found: "<prefix> &c¡El trabajo <job> no existe!"
 
-noperm: "<prefix> &cYou dont have permissions!"
+noperm: "<prefix> &c¡Tu no tienes permisos para completar esta accion!"
 
 #placeholders
-placeholder_no_job: "&cNo Job"
-placeholder_no_level: "&cNo Level"
-placeholder_no_exp: "&cNo Exp"
+placeholder_no_job: "&cNo tienes trabajo"
+placeholder_no_level: "&cNo tienes nivel"
+placeholder_no_exp: "&cNo tienes Exp"
 
 #commands
-command_notfound: "<prefix> &7Cannot find command &6<cmd>&7!"
-command_usage: "<prefix> &7Please use &6<usage>&7."
+command_notfound: "<prefix> &7¡No puedo encontrar el comando &6<cmd>&7!"
+command_usage: "<prefix> &7Por favor use &6<usage>&7."
 
 #command /job language
-command_language_NotFound: "<prefix> &cCannot find that language!"
-command_language_Already: "<prefix> &cYou already have that language!"
-command_language_Changed: "<prefix> &aYou changed your language to <lang>!"
+command_language_NotFound: "<prefix> &c¡No puedo encontrar ese idioma!"
+command_language_Already: "<prefix> &c¡Ya tienes ese idioma!"
+command_language_Changed: "<prefix> &a¡Cambiaste tu idioma a <lang>!"
 
 #command /job join
-command_join_Joined: "<prefix> &7You joined the Job <job>&7!"
-command_join_max: "<prefix> &7You reached the maxium Jobs!"
-command_join_already: "<prefix> &7You are already in that Job!"
-command_join_not_own: "<prefix> &7You dont own that Job!"
+command_join_Joined: "<prefix> &7¡Te uniste al Trabajo <job>&7!"
+command_join_max: "<prefix> &7¡Has alcanzado el máximo de trabajos!"
+command_join_already: "<prefix> &7¡Ya estás en ese trabajo!"
+command_join_not_own: "<prefix> &7¡No eres dueño de ese trabajo!"
 
 #command /job leaveall
-command_leaveall_message: "<prefix> &7You left all &6current &7Jobs."
-command_leaveall_already: "<prefix> &cYou are not in any Job!"
+command_leaveall_message: "<prefix> &7Dejaste todos los trabajos &6actuales&7."
+command_leaveall_already: "<prefix> &c¡No estás en ningún trabajo!"
 
 #command /job leave
-command_leave_message: "<prefix> &7You have left the Job <job>&7."
-command_leave_already: "<prefix> &cYou are not in that Job!"
+command_leave_message: "<prefix> &7Has dejado el Trabajo <job>&7."
+command_leave_already: "<prefix> &c¡Usted no está en ese Trabajo!"
 
 #command /job limit
-command_limit_other: "<prefix> &7<name> can have &a<max> &7Jobs."
-command_limit_not_found: "<prefix> &cCannot find player <name>."
-command_limit_self: "<prefix> &7You can have &b<max> &7Jobs."
+command_limit_other: "<prefix> &7<name> puede tener &a<max> &7trabajos."
+command_limit_not_found: "<prefix> &cNo se puede encontrar al jugador <name>."
+command_limit_self: "<prefix> &7Tu puedes tener &b<max> &7trabajos."
 
 #command /job points
-command_points_not_found: "<prefix> &cCannot find player <name>."
-command_points_self: "<prefix> &7You have &b<points> &7Points."
-command_points_other: "<prefix> &7<name> owns &b<points> &7Points."
+command_points_not_found: "<prefix> &cNo se puede encontrar al jugador <name>."
+command_points_self: "<prefix> &7Tu tienes &b<points> &7Puntos."
+command_points_other: "<prefix> &7<name> posee &b<points> &7Puntos."
 
 #command /job stats
-command_stats_not_found: "<prefix> &cCannot find player <name>."
+command_stats_not_found: "<prefix> &cNo se puede encontrar el jugador <name>."
 
 #other messages
 Other:
 
-  Bought_Job: "<prefix> &7You bought the Job <job>&7." 
+  Bought_Job: "<prefix> &7Compraste el trabajo <job>&7." 
   
-  Not_Enough_Money: "<prefix> &7You dont have enough money."
+  Not_Enough_Money: "<prefix> &7No tienes suficiente dinero."
   
-  Full: "<prefix> &7You already reached the &cmaximum &7of Jobs."
+  Full: "<prefix> &7Ya llegaste a la Cantidad &cMaxima &7de trabajos."
   
-  Joined: "<prefix> &7You joined the Job <job>&7."
+  Joined: "<prefix> &7Te uniste al Trabajo <job>&7."
 
-  Left_Job: "<prefix> &7You have left the Job <job>&7."
+  Left_Job: "<prefix> &7Has dejado el Trabajo <job>&7."
   
-  Leave_All: "<prefix> &7You left all &6current &7Jobs."
+  Leave_All: "<prefix> &7Dejaste todo los trabajos &6Actuales&7."
   
-  Already_Left_All: "<prefix> &7You are &6not &7in any Job."
+  Already_Left_All: "<prefix> &7Tu no estas en &6ningun &7trabajo."
 
 #config of levels
 Levels:
 
-  BoardCastMessage: "&6Server &8| &7Player &c<name> &7reached Level &b<level> &7in the <job> Job&7!"
+  BoardCastMessage: "&6Server &8| &7jugador &c<name> &7nivel alcanzado &b<level> &7en el <job> Trabajo&7!"
 
-  Ttitle_1: "&8| &b&lLevel UP &8|"
+  Ttitle_1: "&8| &b&lAscenso Nivel &8|"
 
-  Ttitle_2: "&7New level <level_int> &8/ <level_name>"
+  Ttitle_2: "&7Nuevo nivel <level_int> &8/ <level_name>"
   
-  Message: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
+  Message: "<prefix> &7¡Has alcanzado un nuevo nivel! &8(&7<level_int> &8/ <level_name>&8)"
   
-  Actionbar: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
+  Actionbar: "<prefix> &7¡Has alcanzado un nuevo nivel! &8(&7<level_int> &8/ <level_name>&8)"
   
 #config of reward messages & max earings
 Reward:
 
-  BossBar: "&a+ &7<money> Dollars from <id> &8(&4<action>&8)"
+  BossBar: "&a+ &7<money> dolares desde <id> &8(&4<action>&8)"
   
-  Message: "<prefix> &7Added <money>  Dollars as Reward from <id>&7! &8(&4<action>&8)"
+  Message: "<prefix> &7Añadido <money>  Dólares como recompensa de <id>&7! &8(&4<action>&8)"
   
-  Actionbar: "<prefix> &7Added <money>  Dollars as Reward from <id> &8(&4<action>&8)"
+  Actionbar: "<prefix> &7Añadido <money>  Dólares como recompensa de <id> &8(&4<action>&8)"
   
 MaxEarningsReached:
 
-  BossBar: "&cYou reached the max Earnings for today in the Job <job>"
+  BossBar: "&cAlcanzaste las ganancias máximas para hoy en el trabajo <job>"
   
-  Message: "<prefix> &cYou reached the max Earnings for today in the Job <job>"
+  Message: "<prefix> &cAlcanzaste las ganancias máximas para hoy en el trabajo <job>"
   
-  Actionbar: "<prefix> &cYou reached the max Earnings for today in the Job <job>"
+  Actionbar: "<prefix> &cAlcanzaste las ganancias máximas para hoy en el trabajo <job>"
   
 #confog of commands
 Commands:
@@ -114,25 +118,25 @@ Commands:
   
     Usage: "rewards"
     
-    UsageMessage: "/Jobs rewards <job>"
+    UsageMessage: "/Jobs rewards <trabajo>"
     
-    Description: "View Earnings of Jobs"
+    Description: "Ver ganancias de trabajos"
 
   Stats:
   
     Usage: "stats"
     
-    UsageMessage: "/Jobs stats <name>"
+    UsageMessage: "/Jobs stats <nombre>"
     
-    Description: "View Player Stats"
+    Description: "Ver estadísticas del jugador"
 
   Language:
   
     Usage: "language"
     
-    UsageMessage: "/Jobs language <name>"
+    UsageMessage: "/Jobs language <nombre>"
     
-    Description: "Change your Language"
+    Description: "Cambia tu idioma"
 
   Help:
   
@@ -142,39 +146,39 @@ Commands:
     
     List:
       - "&8"
-      - " &8| &9UltimateJobs &8- &7Help &8| "
-      - "&8-> &6/Jobs leave <job> &8| &7Leave a Job"
-      - "&8-> &6/Jobs join <job> &8| &7Join a Job"
-      - "&8-> &6/Jobs leaveall &8| &7Leave all current Jobs"
-      - "&8-> &6/Jobs help &8| &7This Page" 
-      - "&8-> &6/Jobs limit <name> &8| &7View a Jobs-Limit"
+      - " &8| &9UltimateJobs &8- &7Ayuda &8| "
+      - "&8-> &6/Jobs leave <trabajo> &8| &7dejar un trabajo"
+      - "&8-> &6/Jobs join <trabajo> &8| &7Join a Job"
+      - "&8-> &6/Jobs leaveall &8| &7Dejar todos los trabajos actuales"
+      - "&8-> &6/Jobs help &8| &7Esta página" 
+      - "&8-> &6/Jobs limit <name> &8| &7Ver un límite de trabajos"
       - "&8"
  
-    Description: "See more help"
+    Description: "Ver para más ayuda"
 
   Points:
   
     Usage: "points"
     
-    UsageMessage: "/Jobs points <name>"
+    UsageMessage: "/Jobs points <nombre>"
     
-    Description: "See your Points"
+    Description: "Vea tus puntos"
 
   Limit:
   
     Usage: "limit"
     
-    UsageMessage: "/Jobs limit <name>"
+    UsageMessage: "/Jobs limit <nombre>"
     
-    Description: "See your Job Limit"
+    Description: "Vea su límite de trabajo"
 
   Leave:
   
     Usage: "leave"
     
-    UsageMessage: "/Jobs leave <job>"
+    UsageMessage: "/Jobs leave <trabajo>"
     
-    Description: "Leave a Job"
+    Description: "dejar un trabajo"
 
   LeaveALL:
   
@@ -182,15 +186,15 @@ Commands:
     
     UsageMessage: "/Jobs leaveall"
     
-    Description: "Leave all Jobs"
+    Description: "Dejar todos los trabajos"
 
   Join:
   
     Usage: "join"
     
-    UsageMessage: "/Jobs join <job>"
+    UsageMessage: "/Jobs join <trabajo>"
     
-    Description: "Join A Job"
+    Description: "Únase a un trabajo"
      
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -205,7 +209,7 @@ Commands:
 # '----------------'  '----------------'  '----------------'  '----------------' 
 
 #config of main gui
-Main_Name: "#15f249#Jobs"
+Main_Name: "#15f249#Trabajos"
 
 Main_Job_Items:
 
@@ -213,42 +217,42 @@ Main_Job_Items:
 
     Bought:
       - "&7"
-      - "&aYou own this Job."
+      - "&aEres dueño de este trabajo."
 
     In:
       - "&7"
-      - "&bYou are in this Job."
+      - "&bUsted está en este Trabajo."
 
     Price:
       - "&7"
-      - "&cClick to buy this job for <price> Dollars."
+      - "&cHaga clic para comprar este trabajo por <price> Dolares."
       
 Main_Custom:
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cCerrar Menú &8>"
     
   Leave:
     
-    Display: "&8< #9b0411#Leave all Jobs &8>"
+    Display: "&8< #9b0411#Dejar todos los trabajos &8>"
     
     Lore:
-      - "&7Click here to leave all jobs"
+      - "&7Haga clic aquí para dejar todos los trabajos"
     
   Info:
     
-    Display: "&8<| #44ead4#Informations &8|>"
+    Display: "&8<| #44ead4#Informaciones &8|>"
     
     Lore:
       - "&8&m-------------------"
-      - "&cWhy i should get an job?"
+      - "&c¿Por qué debería conseguir un trabajo?"
       - "&7"
-      - "&7You need an Job to earn money, "
-      - "&7to raise your Kids! :)"
+      - "&7¡Necesitas un trabajo para ganar dinero, "
+      - "&7para poder criar a tus hijos! :)"
       - "&8"
-      - "&8-> &7You can have &c<max> &7Jobs."
-      - "&8-> &7You have &a<points> &7Points."
+      - "&8-> &7Tu puedes tener &c<max> &7Trabajos."
+      - "&8-> &7Tu tienes &a<points> &7Puntos."
       
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -263,27 +267,27 @@ Main_Custom:
 # '----------------'  '----------------'  '----------------'  '----------------'
       
 #config of help gui
-Help_Name: "#285416#Help Menu"
+Help_Name: "#285416#Menú de ayuda"
  
 Help_Custom:
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cCerrar Menú &8>"
 
   Info1:
     
     Display: "&8< &6/Jobs limit &8>"
     
     Lore:
-      - "&7See your current Jobs-Limit with this Command"
+      - "&7Vea su límite de trabajos actual con este comando"
     
   Info2:
     
     Display: "&8< &6/Jobs points &8>"
     
     Lore:
-      - "&7See your current Points with this Command"
+      - "&7Vea sus Puntos actuales con este Comando"
       
 # .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -298,7 +302,7 @@ Help_Custom:
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
 #config of help gui
-AreYouSureGUI_Name:  "&6You want to buy <job>&6?"
+AreYouSureGUI_Name:  "&6Tú quieres comprar <job>&6?"
 
 AreYouSureItems:
 
@@ -307,23 +311,23 @@ AreYouSureItems:
     Display: "&8<| &cNo &8|>"
 
     Lore:
-      - "&7Cancel this progress."
+      - "&7Cancele este progreso."
 
   Button_YES:
 
-    Display: "&8<| &aYes, I'm Sure &8|>"
+    Display: "&8<| &aSi, Estoy seguro &8|>"
 
     Lore:
-      - "&7You want to buy this Job?"
+      - "&7¿Quieres comprar este trabajo?"
 
 AreYouSureGUI_Custom:
 
   Back:
     
-    Display: "&8< &4Go Back &8>"
+    Display: "&8< &4Regresa &8>"
     
     Lore:
-      - "&7Click here to get back to the main menu"
+      - "&7Haga clic aquí para volver al menú principal"
 
 # .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -337,49 +341,49 @@ AreYouSureGUI_Custom:
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-Settings_Name: "#285416#Job Options &8- <job>"
+Settings_Name: "#285416#Opciones de trabajo &8- <job>"
 
 Settings_Custom:
 
   Back:
   
-    Display: "&8< &4Go Back &8>"
+    Display: "&8< &4Regresa &8>"
     
     Lore:
-      - "&8< &7Click here to get back to the main menu &8>"
+      - "&8< &7Haga clic aquí para volver al menú principal &8>"
 
   MoneyList:
   
-    Display: "&8< &7See #92f4ab#Earnings &7for different Blocks &8>"
+    Display: "&8< &7Ver #92f4ab#Ganancias &7para diferentes bloques &8>"
     
     Lore:
-      - "&7This works only when the addon is enabled."
+      - "&7Esto funciona solo cuando el complemento está habilitado."
 
   Earnings:
   
-    Display: "&8< &7My #edb51c#Earnings &7this Month &8>"
+    Display: "&8< &7Mis #edb51c#Ganancias &7de este mes &8>"
     
     Lore:
-      - "&7This works only when the addon is enabled."
+      - "&7Esto funciona solo cuando el complemento está habilitado."
 
   Leave:
   
-    Display: "&8< &c&lLeave this Job &8>"
+    Display: "&8< &c&ldejar este trabajo &8>"
 
   Close:
   
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cCerrar Menú &8>"
 
   Skull:
     
-    Display: "&8<| #44ead4#Informations &8|>"
+    Display: "&8<| #44ead4#Informaciones &8|>"
     
     Lore:
-      - "&7Bought on &8: &b<stats_args_1>"
-      - "&7Blocks &8: &b<stats_args_2>" 
-      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7comprado en&8: &b<stats_args_1>"
+      - "&7Bloques &8: &b<stats_args_2>" 
+      - "&7Ganado hoy&8: &a<earned> Dolares"
       - "&7" 
-      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Nivel &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
 
 # .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
@@ -394,31 +398,31 @@ Settings_Custom:
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-Rewards_Name: "#eabb10#Rewards of &8: <job>"
+Rewards_Name: "#eabb10#Recompensas de &8: <job>"
  
 Rewards_Custom:
 
   Previous:
   
-    Display: "&8<| &7Previous Page &8|>"
+    Display: "&8<| &7Pagina anterior &8|>"
     
-    Message_NotFound: "&8[&6RewardsGUI&8] &cCannot find a previous page!"
+    Message_NotFound: "&8[&6RecompensasGUI&8] &c¡No se puede encontrar una página anterior!"
     
     Lore:
-      - "&8Go to the previous Page!"
+      - "&8¡Ir a la página anterior!"
 
   Next:
   
-    Display: "&8<| &7Next Page &8|>"
+    Display: "&8<| &7Siguiente página &8|>"
     
-    Message_NotFound: "&8[&6RewardsGUI&8] &cCannot find a next page!"
+    Message_NotFound: "&8[&6RecompensasGUI&8] &c¡No se puede encontrar una página siguiente!"
     
     Lore:
-      - "&8Go to the next Page!"
+      - "&8¡Pasa a la página siguiente!"
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cCerrar Menú &8>"
 
 # .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -433,50 +437,50 @@ Rewards_Custom:
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
 
 #config of stats gui - self
-Self_Name: "#285416#Your Stats"
+Self_Name: "#285416#Tus estadísticas"
  
 Self_Custom:
 
   NotFound:
   
-    Display: "&8/ Not Found &8/"
+    Display: "&8/ No encontrado &8/"
     
-    Lore: "&8Player has no current job s"
+    Lore: "&8El jugador no tiene trabajo actuales"
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cCerrar Menú &8>"
 
   Skull:
     
-    Display: "&8< &bYour Stats &8>"
+    Display: "&8< &bTus estadísticas &8>"
     
     Lore:
-      - "&7Limit&8: &c<max>"
-      - "&7Points&8: &b<points>"
+      - "&7Límite&8: &c<max>"
+      - "&7Puntos&8: &b<points>"
       
 #config of stats gui - other
-Other_Name: "#285416#Stats of <name>"
+Other_Name: "#285416#Estadísticas de <name>"
  
 Other_Custom:
 
   NotFound:
   
-    Display: "&8/ Not Found &8/"
+    Display: "&8/ No encontrado &8/"
     
-    Lore: "&8Player has no current job s"
+    Lore: "&8El jugador no tiene trabajos actuales"
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cCerrar Menú &8>"
 
   Skull:
     
-    Display: "&8< &bStats of <name> &8>"
+    Display: "&8< &bEstadícas de <name> &8>"
     
     Lore:
-      - "&7Limit&8: &c<max>"
-      - "&7Points&8: &b<points>"
+      - "&7Límite&8: &c<max>"
+      - "&7Puntos&8: &b<points>"
       
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -494,45 +498,45 @@ Jobs:
 
   LUMBER:
   
-    Display: "&6Lumberjack"
+    Display: "&6Leñador"
     
     DisplayID: "lumberjack"
     
     Lore:
-      - "&7Earn Money when breaking blocks!"
+      - "&7¡Gana dinero al romper bloques!"
     
     Stats:
       - "&7"
-      - "&aStats&8:"
-      - "&7Bought on &8: &b<stats_args_1>"
-      - "&7Blocks &8: &b<stats_args_2>" 
-      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&aEstadísticas&8:"
+      - "&7Comprado en &8: &b<stats_args_1>"
+      - "&7Bloques &8: &b<stats_args_2>" 
+      - "&7Ganado hoy&8: &a<earned> Dolares"
       - "&7" 
-      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Nivel &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
 
     StatsGUI:
     
-       Display: "&8< | &6Lumberjack &8| >"
+       Display: "&8< | &6Leñador &8| >"
        
        Lore:
 
          Other: 
-           - "&7<name>'s Stats in this Job&8:"
+           - "&7Estadísticas de <name> en este trabajo&8:"
            - "&8&m--------------------------"
-           - "&7Bought on &8: &b<stats_args_1>"
-           - "&7Blocks &8: &b<stats_args_2>" 
-           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7Comprado en &8: &b<stats_args_1>"
+           - "&7Bloques &8: &b<stats_args_2>" 
+           - "&7Ganado hoy&8: &a<earned> Dollars"
            - "&7" 
-           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Nivel &8: &b<stats_args_3> &8/ <stats_args_4>"
            - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
        
          Self: 
-           - "&7Your Stats in this Job&8:"
+           - "&7Tus estadísticas en este trabajo&8:"
            - "&8&m--------------------------" 
-           - "&7Bought on &8: &b<stats_args_1>"
-           - "&7Blocks &8: &b<stats_args_2>" 
-           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7Comprado en &8: &b<stats_args_1>"
+           - "&7Bloques &8: &b<stats_args_2>" 
+           - "&7Ganado hoy&8: &a<earned> Dollars"
            - "&7" 
            - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
            - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -540,190 +544,190 @@ Jobs:
     Levels:
     
       1:  
-        Display: "&6Level I"
+        Display: "&6Nivel I"
      
       2:  
-        Display: "&6Level II"
+        Display: "&6Nivel II"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a250 Money"
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a250 Monedas"
       
       3:  
-        Display: "&6Level III"
+        Display: "&6Nivel III"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a500 Money"
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a500 Monedas"
       
       4: 
-        Display: "&6Level IV"
+        Display: "&6Nivel IV"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a1000 Money"
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a1000 Monedas"
       
     IDS:
 
       OAK_LOG_STRIPPED:
       
-        Display: "&6Stripped Log"
+        Display: "&6Tronco despojado"
         
         Rewards:
         
-          Display: "&8< &6Stripped Log &8>"
+          Display: "&8< &6Tronco despojado &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
+            - "&7Material &8: &bRoca"
+            - "&7Recompensa &8: &c$<money>"
+            - "&7Oportunidad &8: &9<chance>%"
             - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &6&lStripp"
-            - "&7Rarity &8: &bNormal"
+            - "&7Puntos &8: &6<points>"
+            - "&7Acción &8: &6&lDespojar"
+            - "&7Rareza &8: &bNormal"
 
       OAK_LOG:
       
-        Display: "&6Log"
+        Display: "&6Tronco"
         
         Rewards:
         
-          Display: "&8< &6Log &8>"
+          Display: "&8< &6Tronco &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
+            - "&7Material &8: &bPiedra"
+            - "&7Recompensa &8: &c$<money>"
+            - "&7Oportunidad &8: &9<chance>%"
             - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Rarity &8: &bNormal"
+            - "&7Puntos &8: &6<points>"
+            - "&7Acción &8: &4Romper"
+            - "&7Rareza &8: &bNormal"
   
   MINER:
   
-    Display: "#50cbed#Miner"
+    Display: "#50cbed#Minero"
     
     DisplayID: "miner"
     
     Lore:
-      - "&7Earn Money when breaking blocks!"
+      - "&7¡Gana dinero al romper bloques!"
     
     Stats:
       - "&7"
-      - "&aStats&8:"
-      - "&7Bought on &8: &b<stats_args_1>"
-      - "&7Blocks &8: &b<stats_args_2>" 
-      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&aEstadísticas&8:"
+      - "&7Comprado en &8: &b<stats_args_1>"
+      - "&7Bloques &8: &b<stats_args_2>" 
+      - "&7Ganado hoy&8: &a<earned> Dolares"
       - "&7" 
-      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Nivel &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
       
     StatsGUI:
     
-       Display: "&8< | #50cbed#Miner &8| >"
+       Display: "&8< | #50cbed#Minero &8| >"
        
        Lore:
 
          Other: 
-           - "&7<name>'s Stats in this Job&8:"
+           - "&7Estadísticas de <name> en este trabajo&8:"
            - "&8&m--------------------------"
-           - "&7Bought on &8: &b<stats_args_1>"
-           - "&7Blocks &8: &b<stats_args_2>" 
-           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7Comprado en &8: &b<stats_args_1>"
+           - "&7Bloques &8: &b<stats_args_2>" 
+           - "&7Ganado hoy&8: &a<earned> Dollars"
            - "&7" 
-           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Nivel &8: &b<stats_args_3> &8/ <stats_args_4>"
            - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
        
          Self: 
-           - "&7Your Stats in this Job&8:"
+           - "&7Tus estadísticas en este trabajo&8:"
            - "&8&m--------------------------" 
-           - "&7Bought on &8: &b<stats_args_1>"
-           - "&7Blocks &8: &b<stats_args_2>" 
-           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7Comprado en &8: &b<stats_args_1>"
+           - "&7Bloques &8: &b<stats_args_2>" 
+           - "&7Ganado hoy&8: &a<earned> Dollars"
            - "&7" 
-           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Nivel &8: &b<stats_args_3> &8/ <stats_args_4>"
            - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
       
     Levels:
     
       1:  
-        Display: "&6Level I"
+        Display: "&6Nivel I"
      
       2:  
-        Display: "&6Level II"
+        Display: "&6Nivel II"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a250 Money"
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a250 Monedas"
       
       3:  
-        Display: "&6Level III"
+        Display: "&6Nivel III"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a500 Money"
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a500 Monedas"
       
       4: 
-        Display: "&6Level IV"
+        Display: "&6Nivel IV"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a1000 Money"
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a1000 Monedas"
       
     IDS:
 
       STONE:
       
-        Display: "&7&lStone"
+        Display: "&7&lPiedra"
         
         Rewards:
         
-          Display: "&8< &7&lStone &8>"
+          Display: "&8< &7&lPiedra &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
+            - "&7Material &8: &bPiedra"
+            - "&7Recompensa &8: &c$<money>"
+            - "&7Oportunidad &8: &9<chance>%"
             - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Rarity &8: &bNormal"
+            - "&7Puntos &8: &6<points>"
+            - "&7Acción &8: &4Romper"
+            - "&7Rareza &8: &bNormal"
 
       COBBLESTONE:
       
-        Display: "&7&lCobblestone"
+        Display: "&7&lAdoquines"
         
         Rewards:
         
-          Display: "&8< &7&lCobblestone &8>"
+          Display: "&8< &7&lAdoquines &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
+            - "&7Material &8: &bPiedra"
+            - "&7Recompensa &8: &c$<money>"
+            - "&7Oportunidad &8: &9<chance>%"
             - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Rarity &8: &bNormal"
+            - "&7Puntos &8: &6<points>"
+            - "&7Acción &8: &4Romper"
+            - "&7Rareza &8: &bNormal"
     
       COAL_ORE:
       
-        Display: "&0Coal Ore"
+        Display: "&0Mineral de carbón"
         
         Rewards:
         
-          Display: "&8< &0Coal Ore &8>"
+          Display: "&8< &0Mineral de carbón &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
+            - "&7Material &8: &bPiedra"
+            - "&7Recompensa &8: &c$<money>"
+            - "&7Oportunidad &8: &9<chance>%"
             - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Rarity &8: &bRare"
+            - "&7Puntos &8: &6<points>"
+            - "&7Acción &8: &4Romper"
+            - "&7Rareza &8: &bRaro"

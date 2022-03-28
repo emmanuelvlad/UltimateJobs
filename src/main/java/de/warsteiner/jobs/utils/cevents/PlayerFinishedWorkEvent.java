@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
 
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.JobAction;
 
 public class PlayerFinishedWorkEvent  extends Event {
 
@@ -19,13 +20,19 @@ public class PlayerFinishedWorkEvent  extends Event {
 	public Job job;
 	public String ID;
 	public Player player; 
-
-	public PlayerFinishedWorkEvent(Player player, JobsPlayer plt, Job job, String id) { 
+	public JobAction ac;
+	
+	public PlayerFinishedWorkEvent(Player player, JobsPlayer plt, Job job, String id, JobAction ac) { 
 		this.pl = plt; 
+		this.ac = ac;
 		this.ID = id;
 		this.job = job;
 		this.player = player;
 		Bukkit.getPluginManager().callEvent(this);
+	}
+	
+	public JobAction getActionUsed() {
+		return ac;
 	}
 	
 	public String getID() {

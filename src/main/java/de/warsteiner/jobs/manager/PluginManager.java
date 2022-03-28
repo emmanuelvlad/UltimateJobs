@@ -34,7 +34,7 @@ public class PluginManager {
 		DateFormat format = new SimpleDateFormat(plugin.getFileManager().getConfig().getString("Date"));
 		Date data = new Date();
 		return format.format(data);
-	}
+	} 
 
 	private HashMap<String, Language> langs = new HashMap<String, Language>();
 	private ArrayList<Language> arraylangs = new ArrayList<Language>();

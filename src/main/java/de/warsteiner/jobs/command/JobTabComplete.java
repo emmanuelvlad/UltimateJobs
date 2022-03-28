@@ -48,11 +48,13 @@ public class JobTabComplete implements TabCompleter {
 									if (type.equalsIgnoreCase("JOBS_IN")) {
 										if (jb.getCurrentJobs() != null) {
 											for (String b : jb.getCurrentJobs()) {
-												l.add(b.toLowerCase());
+												if(plugin.getJobCache().get(b) != null) {
+													l.add(plugin.getJobCache().get(b).getDisplayID(UUID));
+												}
 											}
 										}
 									} else if (type.equalsIgnoreCase("JOBS_LISTED")) {
-										for (String b : api.getJobsInListAsID()) {
+										for (String b : api.getJobsInListAsID(UUID)) {
 											l.add(b);
 										}
 									} else if (type.equalsIgnoreCase("PLAYERS_ONLINE")) {
@@ -62,7 +64,9 @@ public class JobTabComplete implements TabCompleter {
 									} else if (type.equalsIgnoreCase("JOBS_OWNED")) {
 										if (jb.getOwnJobs() != null) {
 											for (String b : jb.getOwnJobs()) {
-												l.add(b.toLowerCase());
+												if(plugin.getJobCache().get(b) != null) {
+													l.add(plugin.getJobCache().get(b).getDisplayID(UUID));
+												}
 											}
 										}
 									}   else if (type.equalsIgnoreCase("LANGUAGES")) {

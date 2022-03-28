@@ -1,7 +1,9 @@
 package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -16,16 +18,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.ItemAPI;
 import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.datax.managers.GUIManager;
-import de.warsteiner.datax.player.PlayerSaveAndLoadManager;
-import de.warsteiner.datax.utils.Language;
-import de.warsteiner.datax.utils.SimplePlayer;
+import de.warsteiner.datax.managers.GUIManager; 
 import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.JobsPlayer;
 import de.warsteiner.jobs.player.PlayerDataManager;
+import de.warsteiner.jobs.utils.JobAction;
 
 public class GuiAddonManager {
 
@@ -39,6 +39,163 @@ public class GuiAddonManager {
 		this.plugin = plugin;
 	}
 
+	public void createRewardsGUI(Player player, UpdateTypes t, Job job) {
+		FileConfiguration cfg = plugin.getFileManager().getRewardsConfig();
+		String UUID = "" + player.getUniqueId();
+		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
+		String name = plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), cfg.getString("Rewards_Name")).replaceAll("<job>", job.getDisplay(UUID));
+		int size = cfg.getInt("Rewards_Size");
+
+		gm.openInventory(player, size, name);
+
+		if (t.equals(UpdateTypes.OPEN)) {
+			api.playSound("OPEN_REWARDS_GUI", player);
+		}
+
+		InventoryView inv_view = player.getOpenInventory();
+
+		plugin.getGUI().setPlaceHolders(player, inv_view, cfg.getStringList("Rewards_Place"), name);
+		plugin.getGUI().setCustomitems(player, player.getName(), inv_view, "Rewards_Custom.",
+				cfg.getStringList("Rewards_Custom.List"), name, cfg, null); 
+		setRewardsItems(inv_view, name, cfg, player, job);
+	}
+	
+	public void setRewardsItems(InventoryView inv, String name, FileConfiguration cf, Player pl, Job job) {
+		plugin.getExecutor().execute(() -> {
+		 
+			JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(""+pl.getUniqueId());
+			
+			int page = SimpleAPI.getPlugin().getPlayerSaveAndLoadManager().getPageFromID(sp.getUUIDAsString(), "REWARDS_"+job.getConfigID());
+			
+			List<String> slots = cf.getStringList("Rewards_Slots");
+			int pageLength = slots.size();
+			ArrayList<String> li = job.getAllNotRealIDSFromActionsAsArray();
+	
+			int cl = page * pageLength;
+			
+			if(inv != null) {
+				boolean next = true;
+				boolean pre = true;
+				
+				if(cf.getBoolean("PageItems.Next.ShowOnlyIfNextPageExist")) {
+					next = li.size() >= cl;
+				}
+				if(!cf.getBoolean("PageItems.Previous.ShowOnPageOne")) {
+					if(page == 1) {
+						pre = false;
+					}
+				}
+				
+				if(pre) {
+					
+					boolean show = cf.getBoolean("PageItems.Previous.Show");
+					
+					if(show) {
+						String icon = cf.getString("PageItems.Previous.Material");
+						String dis =  plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), cf.getString("PageItems.Previous.Display"));
+						List<String> lore = plugin.getPluginManager().getSomethingAsListFromPath(sp.getUUID(), cf.getString("PageItems.Previous.Lore"));
+						int slot = cf.getInt("PageItems.Previous.Slot");
+						
+						ItemStack it = im.createAndGetItemStack(pl.getName(), icon);
+						ItemMeta meta = it.getItemMeta();
+						
+						meta.setDisplayName(up.toHex(dis).replaceAll("&", "§"));
+						  
+						ArrayList<String> l = new ArrayList<String>();
+						
+						if(lore != null) {
+							for(String b : lore) {
+								l.add(up.toHex(b).replaceAll("&", "§"));
+							}
+						}
+						
+						meta.setLore(l);
+						
+						it.setItemMeta(meta); 
+						
+						inv.setItem(slot, it); 
+					}
+					
+				}
+				
+				if(next) {
+					
+					boolean show = cf.getBoolean("PageItems.Next.Show");
+					
+					if(show) {
+						String icon = cf.getString("PageItems.Next.Material");
+						String dis =  plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), cf.getString("PageItems.Next.Display"));
+						List<String> lore = plugin.getPluginManager().getSomethingAsListFromPath(sp.getUUID(), cf.getString("PageItems.Next.Lore"));
+						int slot = cf.getInt("PageItems.Next.Slot");
+						
+						ItemStack it = im.createAndGetItemStack(pl.getName(), icon);
+						ItemMeta meta = it.getItemMeta();
+						
+						meta.setDisplayName(up.toHex(dis).replaceAll("&", "§"));
+						  
+						ArrayList<String> l = new ArrayList<String>();
+						
+						if(lore != null) {
+							for(String b : lore) {
+								l.add(up.toHex(b).replaceAll("&", "§"));
+							}
+						}
+						
+						meta.setLore(l);
+						
+						it.setItemMeta(meta); 
+						
+						inv.setItem(slot, it); 
+					}
+					
+				}
+			}
+			
+			if(inv != null) {
+			 
+				 for (int i = (page - 1) * pageLength; i < (page * pageLength) && i <li.size(); i++) {
+				  
+					 		String id = li.get(i);
+					 
+							JobAction real= job.getActionofID(id);
+						 
+							YamlConfiguration config = job.getConfig();
+						 
+								String icon = plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), config.getString("IDS." + real.toString() +"."+id+".RewardsGUI.Icon"));
+								String display =  plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), config.getString("IDS." + real.toString() +"."+id+".RewardsGUI.Display"));
+							 
+		
+								ItemStack i2 = im.createAndGetItemStack(pl, icon);
+								ItemMeta m = i2.getItemMeta();
+		
+								ArrayList<String> l = new ArrayList<String>();
+		
+								m.setDisplayName(up.toHex(display).replaceAll("&", "§"));
+		
+								double reward = job.getRewardOf(id, real);
+								int chance = job.getChanceOf(id, real);
+								double points = job.getPointsOf(id, real);
+								double exp = job.getExpOf(id, real);
+		
+								for (String line :  plugin.getPluginManager().getSomethingAsListFromPath(sp.getUUID(), config.getString("IDS." + real.toString() +"."+id+".RewardsGUI.Lore"))) {
+									l.add(up.toHex(line).replaceAll("<exp>", "" + exp).replaceAll("<points>", "" + points)
+											.replaceAll("<chance>", "" + chance).replaceAll("<money>", "" + reward)
+											.replaceAll("&", "§"));
+								}
+		
+								m.setLore(l);
+		
+								i2.setItemMeta(m);
+							 
+								inv.setItem(Integer.valueOf(slots.get(i)), i2);
+							 
+					}
+				
+			}
+			
+		});
+	}
+	
 	public void createSelfStatsGUI(Player player, UpdateTypes t) {
 		FileConfiguration cfg = plugin.getFileManager().getStatsConfig();
 		String UUID = "" + player.getUniqueId();
@@ -208,7 +365,7 @@ public class GuiAddonManager {
 					} else {
 
 						Job job = plugin.getJobCache().get(li.get(i));
-						String id = job.getID();
+						String id = job.getConfigID();
 
 						// loading stats
  
@@ -230,11 +387,11 @@ public class GuiAddonManager {
 						} else {
 							
 							 
-							date = plm.getDateOf(WATCHUUID, job.getID());
-							level =plm.getLevelOf(WATCHUUID, job.getID());
-							exp = plm.getExpOf(WATCHUUID, job.getID());
-							bought = plm.getDateOf(WATCHUUID, job.getID());
-							broken = plm.getBrokenOf(WATCHUUID, job.getID());
+							date = plm.getDateOf(WATCHUUID, job.getConfigID());
+							level =plm.getLevelOf(WATCHUUID, job.getConfigID());
+							exp = plm.getExpOf(WATCHUUID, job.getConfigID());
+							bought = plm.getDateOf(WATCHUUID, job.getConfigID());
+							broken = plm.getBrokenOf(WATCHUUID, job.getConfigID());
 							
 						}
 					  
@@ -244,8 +401,8 @@ public class GuiAddonManager {
 						 
 
 						String item = job.getIcon();
-						String display =  lang.getString("Jobs."+job.getID().toUpperCase()+".StatsGUI.Display");
-						List<String> lore = lang.getStringList("Jobs."+job.getID().toUpperCase()+".StatsGUI.Lore."+prefix);
+						String display =  lang.getString("Jobs."+job.getConfigID().toUpperCase()+".StatsGUI.Display");
+						List<String> lore = lang.getStringList("Jobs."+job.getConfigID().toUpperCase()+".StatsGUI.Lore."+prefix);
 					 
 						ItemStack it = im.createAndGetItemStack(pl, item);
 						ItemMeta m = it.getItemMeta();

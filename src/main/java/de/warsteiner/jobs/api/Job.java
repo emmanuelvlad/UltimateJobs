@@ -1,7 +1,9 @@
 package de.warsteiner.jobs.api;
 
 import java.io.File;
-import java.io.IOException; 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.boss.BarColor;
@@ -9,31 +11,36 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.utils.Action;
+import de.warsteiner.jobs.utils.JobAction; 
 
 public class Job {
 
 	private String idt;
 	private YamlConfiguration cf; 
-	private Action action;
+	private ArrayList<JobAction> action;
 	private String icon;
 	private int slot;
 	private double price;
 	private String perm; 
-	private List<String> worlds; 
-	private List<String> idslist;
+	private List<String> worlds;  
 	private File file;
 	
 	public Job(String id, YamlConfiguration cfg, File f) {
+		
+		ArrayList<JobAction> list = new ArrayList<JobAction>();
+		
+		for(String a : cfg.getStringList("Action")) {
+			list.add(JobAction.valueOf(a.toUpperCase()));
+		}
+		
 		idt = id;
 		cf = cfg; 
 		perm = cfg.getString("Permission");
-		action = Action.valueOf(cfg.getString("Action"));
+		action =  list;
 		icon = cfg.getString("Material");
 		slot = cfg.getInt("Slot");
 		price = cfg.getDouble("Price"); 
-		worlds = cfg.getStringList("Worlds"); 
-		idslist = cfg.getStringList("IDS.List");
+		worlds = cfg.getStringList("Worlds");  
 		file = f;
 	}
  
@@ -41,7 +48,7 @@ public class Job {
 		try {
 			cf.save(file);
 		} catch (IOException e) { 
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to save File for Job "+getID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to save File for Job "+getConfigID()+"!");
 			e.printStackTrace();
 		}
 	}
@@ -49,7 +56,7 @@ public class Job {
 	public File getFile() {
 		
 		if(file == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job File for Job "+getID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job File for Job "+getConfigID()+"!");
 		}
 		
 		return file;
@@ -58,7 +65,7 @@ public class Job {
 	public BarColor getBarColor() {
 		
 		if(BarColor.valueOf(cf.getString("ColorOfBossBar")) == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Bar Color for Job "+getID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Bar Color for Job "+getConfigID()+"!");
 			return BarColor.RED;
 		}
 		
@@ -67,7 +74,7 @@ public class Job {
 	
 	public YamlConfiguration getConfig() {
 		if(cf == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job Config for Job "+getID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job Config for Job "+getConfigID()+"!");
 		}
 		return cf;
 	}
@@ -98,7 +105,7 @@ public class Job {
 	public List<String> getPermissionsLore(String UUID) { 
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
 		if(!cf.contains("PermLore")) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermLore for Job "+getID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermLore for Job "+getConfigID()+"!");
 		}
 		
 		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("PermLore"));  
@@ -107,7 +114,7 @@ public class Job {
 	public String getPermMessage(String UUID) { 
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
 		if(!cf.contains("PermMessage")) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermMessage for Job "+getID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermMessage for Job "+getConfigID()+"!");
 		}
 		return UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("PermMessage")); 
 	}
@@ -216,56 +223,114 @@ public class Job {
 		save();
 	}
 	
-	public List<String> getCommandsOfBlock(String id) {
-		return cf.getStringList("IDS." + id + ".Commands");
+	public List<String> getCommandsOfBlock(String id, JobAction ac) {
+		return cf.getStringList("IDS." + ac.toString() + "." + id + ".Commands");
 	} 
 
-	public boolean isCommandonBlock(String id) {
-		return cf.getStringList("IDS." + id + ".Commands") != null;
+	public boolean isCommandonBlock(String id, JobAction ac) {
+		return cf.getStringList("IDS." + ac.toString() + "." + id + ".Commands") != null;
 	}
 
-	public String getDisplayOf(String id, String UUID) {
+	public String getDisplayOf(String id, String UUID, JobAction ac) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		return  UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("IDS." + id + ".Display")); 
+		return  UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("IDS." + ac.toString() + "." + id + ".Display")); 
 	}
 
-	public int getChanceOf(String id) {
-		return cf.getInt("IDS." + id + ".Chance");
+	public int getChanceOf(String id, JobAction ac) {
+		return cf.getInt("IDS." + ac.toString() + "." + id + ".Chance");
 	}
-
-	public double getRewardOf(String id) {
-		return cf.getDouble("IDS." + id + ".Money");
+	 
+	public String getConfigIDOfRealID(JobAction ac, String real, Job job) {
+		for(String items : getNotRealIDSListByAction(ac)) {
+			if(job.getRealIDOf(ac, items).equalsIgnoreCase(real)) {
+				return items;
+			}
+		}
+		return null;
+	}
+ 
+	public double getRewardOf(String id, JobAction ac) {
+		return cf.getDouble("IDS." + ac.toString() + "." + id + ".Money");
 	}
 	
-	public boolean hasVaultReward(String id) {
-		return getRewardOf(id) != 0;
+	public boolean hasVaultReward(String id, JobAction ac) {
+		return getRewardOf(id, ac) != 0;
 	}
 
 	public List<String> getCustomitems() {
 		return cf.getStringList("Items");
 	}
 
-	public double getExpOf(String id) {
+	public double getExpOf(String id, JobAction ac) {
 		
-		if(!cf.contains("IDS." + id + ".Exp")) {
+		if(!cf.contains("IDS." + ac.toString() + "." + id + ".Exp")) {
 			return 0;
 		}
 		
-		return cf.getDouble("IDS." + id + ".Exp");
+		return cf.getDouble("IDS." + ac.toString() + "." + id + ".Exp");
 	}
 
-	public double getPointsOf(String id) {
+	public double getPointsOf(String id, JobAction ac) {
 
-		if(!cf.contains("IDS." + id + ".Points")) {
+		if(!cf.contains("IDS." + ac.toString() + "." + id + ".Points")) {
 			return 0;
 		}
-		return cf.getDouble("IDS." + id + ".Points");
+		return cf.getDouble("IDS." + ac.toString() + "." + id + ".Points");
 	}
 
-	public List<String> getIDList() {
-		return idslist;
+	public List<String> getNotRealIDSListByAction(JobAction ac) {
+		return cf.getStringList("IDS."+ac.toString()+".List");
 	}
+	
+	public String getRealIDOf(JobAction ac, String id) {
+		return cf.getString("IDS." + ac.toString() + "." + id + ".ID");
+	}
+	
+	public ArrayList<String> getListOfRealIDS(JobAction ac) {
+		ArrayList<String> list = new ArrayList<String>();
+	
+		for(String b : getNotRealIDSListByAction(ac)) {
+			list.add(getRealIDOf(ac, b));
+		}
+		
+		return list;
+	}
+  
+	public JobAction getActionofID(String id) {
 
+		for(JobAction ac : getActionList()) {
+			if(cf.contains("IDS." + ac.toString() + "." + id + ".ID")) {
+				return ac;
+			}
+		}
+		return null;
+		
+	}
+	
+	public HashMap<JobAction, String> getAllNotRealIDSFromActions() {
+		HashMap<JobAction, String> list = new HashMap<JobAction, String>();
+	
+		for(JobAction b : getActionList()) {
+			for(String l : getNotRealIDSListByAction(b)) {
+				list.put(b, l);
+			}
+		}
+		
+		return list;
+	}
+	
+	public ArrayList<String> getAllNotRealIDSFromActionsAsArray() {
+		ArrayList<String> list = new ArrayList<String>();
+	
+		for(JobAction b : getActionList()) {
+			for(String l : getNotRealIDSListByAction(b)) {
+				list.add(l);
+			}
+		}
+		
+		return list;
+	}
+	
 	public List<String> getLore(String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
 		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("Lore"));
@@ -297,12 +362,8 @@ public class Job {
 		return icon;
 	}
 
-	public Action getAction() {
-		
-		if(action == null) {
-			return Action.BREAK;
-		}
-		
+	public ArrayList<JobAction> getActionList() {
+	 
 		return action;
 	}
 
@@ -317,8 +378,13 @@ public class Job {
 		return SimpleAPI.getInstance().getAPI().toHex(display).replaceAll("&", "§");
 	}
 
-	public String getID() {
+	public String getConfigID() {
 		return idt;
+	}
+	
+	public String getDisplayID(String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
+		return UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("DisplayID"));
 	}
 
 }

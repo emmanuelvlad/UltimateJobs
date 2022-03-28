@@ -34,7 +34,10 @@ public class FileManager {
 	private  FileConfiguration stats;
 	private  File stats_file;
 	
-	private List<String> defaultlanguages = Arrays.asList("en-US");
+	private  FileConfiguration rewards;
+	private  File rewards_file;
+	
+	private List<String> defaultlanguages = Arrays.asList("en-US","de-DE","de-BAR","es-ES");
 	
 	public  boolean generateFiles() {
 		createGUIFile();
@@ -44,16 +47,23 @@ public class FileManager {
 		createSettingsGUIFile();
 		createConfirmGUIFIle();
 		createCFGFile();
-		
+	 
 		//addons
 		createAddonStatsFiles();
+		createAddonRewardsFiles(); 
 		return true;
 	}
 	
 	public  boolean reloadFiles() {
 		try {
 			gui = YamlConfiguration.loadConfiguration(gui_file);
-		//	jobs = YamlConfiguration.loadConfiguration(jobs_file); 
+			cfg = YamlConfiguration.loadConfiguration(cfg_file);
+			cmd = YamlConfiguration.loadConfiguration(cmd_file);
+			help = YamlConfiguration.loadConfiguration(help_file);
+			settings = YamlConfiguration.loadConfiguration(settings_file);
+			confirm = YamlConfiguration.loadConfiguration(confirm_file);
+			stats = YamlConfiguration.loadConfiguration(stats_file);
+			rewards = YamlConfiguration.loadConfiguration(rewards_file); 
 			return true;
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -139,6 +149,31 @@ public class FileManager {
 	
 	public  File getStatsFile() {
 		return stats_file;
+	}
+	
+	public  FileConfiguration getRewardsConfig() {
+		return rewards;
+	}
+	
+	public  File getRewardsFile() {
+		return rewards_file;
+	}
+	
+	public boolean createAddonRewardsFiles() {
+		rewards_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "rewards.yml");
+        if (!rewards_file.exists()) {
+        	rewards_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "rewards.yml", false);
+        }
+        
+        rewards = new YamlConfiguration();
+        try {
+        	rewards.load(rewards_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
 	}
 	
 	public boolean createAddonStatsFiles() {
