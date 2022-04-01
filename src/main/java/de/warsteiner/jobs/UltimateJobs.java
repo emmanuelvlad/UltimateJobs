@@ -28,6 +28,7 @@ import de.warsteiner.jobs.command.JobTabComplete;
 import de.warsteiner.jobs.command.JobsCommand;
 import de.warsteiner.jobs.command.admincommand.AddPointsSub;
 import de.warsteiner.jobs.command.admincommand.HelpSub;
+import de.warsteiner.jobs.command.admincommand.ReloadSub;
 import de.warsteiner.jobs.command.admincommand.RemovePointsSub;
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
@@ -240,6 +241,7 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
 		getAdminSubCommandManager().getSubCommandList().add(new AddPointsSub());
 		getAdminSubCommandManager().getSubCommandList().add(new RemovePointsSub());
+		getAdminSubCommandManager().getSubCommandList().add(new ReloadSub());
 	}
 
 	public void loadClasses() {

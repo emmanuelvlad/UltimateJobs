@@ -37,7 +37,7 @@ public class FileManager {
 	private  FileConfiguration rewards;
 	private  File rewards_file;
 	
-	private List<String> defaultlanguages = Arrays.asList("en-US","de-DE","de-BAR","es-ES");
+	private List<String> defaultlanguages = Arrays.asList("en-US","de-DE","de-BAR","es-ES","fr-FR");
 	
 	public  boolean generateFiles() {
 		createGUIFile();
