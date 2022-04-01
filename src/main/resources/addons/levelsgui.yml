@@ -1,0 +1,98 @@
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+# .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |   _____      | || |  _________   | || | ____   ____  | || |  _________   | || |   _____      | || |    _______   | || |    ______    | || | _____  _____ | || |     _____    | |
+#| |  |_   _|     | || | |_   ___  |  | || ||_  _| |_  _| | || | |_   ___  |  | || |  |_   _|     | || |   /  ___  |  | || |  .' ___  |   | || ||_   _||_   _|| || |    |_   _|   | |
+#| |    | |       | || |   | |_  \_|  | || |  \ \   / /   | || |   | |_  \_|  | || |    | |       | || |  |  (__ \_|  | || | / .'   \_|   | || |  | |    | |  | || |      | |     | |
+#| |    | |   _   | || |   |  _|  _   | || |   \ \ / /    | || |   |  _|  _   | || |    | |   _   | || |   '.___`-.   | || | | |    ____  | || |  | '    ' |  | || |      | |     | |
+#| |   _| |__/ |  | || |  _| |___/ |  | || |    \ ' /     | || |  _| |___/ |  | || |   _| |__/ |  | || |  |`\____) |  | || | \ `.___]  _| | || |   \ `--' /   | || |     _| |_    | |
+#| |  |________|  | || | |_________|  | || |     \_/      | || | |_________|  | || |  |________|  | || |  |_______.'  | || |  `._____.'   | || |    `.__.'    | || |    |_____|   | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+Levels_Name: "{language:Levels_Name}"
+
+Rewards_Size: 5
+
+#where are the items displayed?
+Level_Slots:
+  - "18" 
+  - "19"
+  - "20"
+  - "21"
+  
+PageItems:
+
+  Previous:
+  
+    Display: "{language:Levels_Custom.Previous.Display}"
+    
+    Material: "name;Mhf_ArrowLeft"
+    
+    NotFound: "{language:Levels_Custom.Previous.Message_NotFound}"
+    
+    Show: true
+    
+    ShowOnPageOne: true
+    
+    Lore: "{language:Levels_Custom.Previous.Lore}"
+      
+    Slot: 48
+
+  Next:
+  
+    Display: "{language:Levels_Custom.Next.Display}"
+    
+    Material: "name;Mhf_ArrowRight"
+    
+    NotFound: "{language:Levels_Custom.Next.Message_NotFound}"
+    
+    Show: true
+    
+    ShowOnlyIfNextPageExist: false
+    
+    Lore: "{language:Levels_Custom.Next.Lore}"
+      
+    Slot: 50
+ 
+Rewards_Custom:
+
+  List:
+    - "Close" 
+ 
+  Close:
+
+    Display: "{language:Levels_Custom.Close.Display}"
+
+    Action: "CLOSE"
+
+    Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
+
+    Slot: 49
+ 
+Rewards_Place:
+  - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:1:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:2:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:3:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:4:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:5:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:6:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:7:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:8:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:9:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:17:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:18:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:26:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:27:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:35:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:36:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:44:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:45:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:46:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:47:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:48:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:49:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:50:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:51:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:52:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:53:&8-/-"
