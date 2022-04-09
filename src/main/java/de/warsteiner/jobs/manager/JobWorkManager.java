@@ -8,12 +8,15 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
@@ -182,6 +185,38 @@ public class JobWorkManager {
 		String id = event.getCaught().getName().toUpperCase().replaceAll(" ", "_");
 
 		finalWork(id, event.getPlayer(), pl, JobAction.FISH, "fish-action", 1);
+		return;
+	}
+	
+	public void executeBreedWork(EntityBreedEvent event, JobsPlayer pl) {
+		final EntityType type = event.getEntity().getType();
+
+		if (event.isCancelled()) {
+			event.setCancelled(true);
+			return;
+		}
+		
+		if(event.getEntity() == null) {
+			return;
+		}
+
+		finalWork("" + type,(Player) event.getBreeder(), pl, JobAction.BREED, "breed-action", 1);
+		return;
+	}
+	
+	public void executeTameWork(EntityTameEvent event, JobsPlayer pl) {
+		final EntityType type = event.getEntity().getType();
+
+		if (event.isCancelled()) {
+			event.setCancelled(true);
+			return;
+		}
+		
+		if(event.getEntity() == null) {
+			return;
+		}
+
+		finalWork("" + type,(Player) event.getOwner(), pl, JobAction.TAME, "tame-action", 1);
 		return;
 	}
 

@@ -37,6 +37,9 @@ public class FileManager {
 	private  FileConfiguration rewards;
 	private  File rewards_file;
 	
+	private  FileConfiguration levels;
+	private  File levels_file;
+	
 	private List<String> defaultlanguages = Arrays.asList("en-US","de-DE","de-BAR","es-ES","fr-FR");
 	
 	public  boolean generateFiles() {
@@ -47,6 +50,7 @@ public class FileManager {
 		createSettingsGUIFile();
 		createConfirmGUIFIle();
 		createCFGFile();
+		createLevelsFile();
 	 
 		//addons
 		createAddonStatsFiles();
@@ -64,6 +68,7 @@ public class FileManager {
 			confirm = YamlConfiguration.loadConfiguration(confirm_file);
 			stats = YamlConfiguration.loadConfiguration(stats_file);
 			rewards = YamlConfiguration.loadConfiguration(rewards_file); 
+			levels = YamlConfiguration.loadConfiguration(levels_file); 
 			return true;
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -157,6 +162,31 @@ public class FileManager {
 	
 	public  File getRewardsFile() {
 		return rewards_file;
+	}
+	
+	public  FileConfiguration getLevelGUIConfig() {
+		return levels;
+	}
+	
+	public  File getLevelGUIFile() {
+		return levels_file;
+	}
+	
+	public boolean createLevelsFile() {
+		levels_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "levelsgui.yml");
+        if (!levels_file.exists()) {
+        	levels_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "levelsgui.yml", false);
+        }
+        
+        levels = new YamlConfiguration();
+        try {
+        	levels.load(levels_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
 	}
 	
 	public boolean createAddonRewardsFiles() {

@@ -88,6 +88,14 @@ public class Job {
 		return UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("LEVELS." + i + ".Display")); 
 			 
 	}
+	
+	
+	public List<String> getLevelLore(int i, String UUID) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
+		 
+		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("LEVELS." + i + ".Lore")); 
+			 
+	}
 
 	public List<String> getLevelCommands(int i) {
 		return cf.getStringList("LEVELS." + i + ".Commands");
@@ -206,9 +214,15 @@ public class Job {
 		return cf.getDouble("LEVELS." + level + ".Money");
 	} 
 	
+	public String getIconOfLevel(int level) {
+		return cf.getString("LEVELS." + level + ".Icon");
+	}
+	
 	public int getCountOfLevels() {
 		return cf.getInt("LEVELS.CountOfLevels");
 	}
+	
+ 
  
 	public boolean isVaultOnLevel(int level) {
 		return cf.getString("LEVELS." + level + ".Money") != null;

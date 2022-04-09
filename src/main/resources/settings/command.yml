@@ -43,6 +43,10 @@ Commands:
   Stats:
   
     Enabled: true
+
+  Levels:
+  
+    Enabled: true
     
   Language:
   

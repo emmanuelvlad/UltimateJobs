@@ -19,6 +19,7 @@ import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
 import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
+import de.warsteiner.jobs.api.plugins.MythicMobsManager;
 import de.warsteiner.jobs.api.plugins.NotQuestManager;
 import de.warsteiner.jobs.api.plugins.PlaceHolderManager;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager;
@@ -38,28 +39,33 @@ import de.warsteiner.jobs.command.playercommand.JoinSub;
 import de.warsteiner.jobs.command.playercommand.LangSub;
 import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
 import de.warsteiner.jobs.command.playercommand.LeaveSub;
+import de.warsteiner.jobs.command.playercommand.LevelsSub;
 import de.warsteiner.jobs.command.playercommand.LimitSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.RewardsSub;
 import de.warsteiner.jobs.command.playercommand.StatsSub; 
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
 import de.warsteiner.jobs.inventorys.HelpMenuClickEvent;
+import de.warsteiner.jobs.inventorys.LevelsMenuClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
 import de.warsteiner.jobs.inventorys.RewardsMenuClickEvent;
 import de.warsteiner.jobs.inventorys.SettingsMenuClickEvent;
 import de.warsteiner.jobs.inventorys.StatsMenuClickEvent;
 import de.warsteiner.jobs.jobs.JobActionAdvancement;
 import de.warsteiner.jobs.jobs.JobActionBreak;
+import de.warsteiner.jobs.jobs.JobActionBreed;
 import de.warsteiner.jobs.jobs.JobActionCraft;
 import de.warsteiner.jobs.jobs.JobActionEat;
 import de.warsteiner.jobs.jobs.JobActionFarm;
 import de.warsteiner.jobs.jobs.JobActionFish;
 import de.warsteiner.jobs.jobs.JobActionHoney;
 import de.warsteiner.jobs.jobs.JobActionKillMob;
+import de.warsteiner.jobs.jobs.JobActionMMKill;
 import de.warsteiner.jobs.jobs.JobActionMilk;
 import de.warsteiner.jobs.jobs.JobActionPlace;
 import de.warsteiner.jobs.jobs.JobActionShear;
 import de.warsteiner.jobs.jobs.JobActionStripLog;
+import de.warsteiner.jobs.jobs.JobActionTame;
 import de.warsteiner.jobs.manager.ClickManager;
 import de.warsteiner.jobs.manager.FileManager;
 import de.warsteiner.jobs.manager.GuiAddonManager;
@@ -100,6 +106,7 @@ public class UltimateJobs extends JavaPlugin {
 	private PluginManager plapi;
 	private FileManager filemanager;
 	private GuiAddonManager adddongui;
+	private MythicMobsManager mm;
 
 	public void onLoad() {
 
@@ -149,6 +156,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
 		Bukkit.getPluginManager().registerEvents(new StatsMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new RewardsMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new LevelsMenuClickEvent(), this);
 
 		// job events
 		loadEvents();
@@ -232,6 +240,7 @@ public class UltimateJobs extends JavaPlugin {
 		getSubCommandManager().getSubCommandList().add(new JoinSub());
 		getSubCommandManager().getSubCommandList().add(new LangSub());
 		getSubCommandManager().getSubCommandList().add(new StatsSub());
+		getSubCommandManager().getSubCommandList().add(new LevelsSub());
 		getSubCommandManager().getSubCommandList().add(new RewardsSub());
 
 		getAdminSubCommandManager().getSubCommandList().add(new HelpSub());
@@ -390,7 +399,20 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionAdvancement(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionEat(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionHoney(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionTame(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionStripLog(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionBreed(), this);
+		
+		if(getPluginManager().isInstalled("MythicMobs")) {
+			mm = new MythicMobsManager();
+			Bukkit.getPluginManager().registerEvents(new JobActionMMKill(), this);
+			this.getLogger().info("§aLoaded Support for MythicMobs");
+		}
+		
+	}
+	
+	public MythicMobsManager getMythicMobsManager() {
+		return mm;
 	}
  
 	private boolean setupEconomy() {
@@ -409,7 +431,7 @@ public class UltimateJobs extends JavaPlugin {
 	public HashMap<String, Job> getJobCache() {
 		return ld;
 	}
- 
+	
 	public FileManager getFileManager() {
 		return filemanager;
 	}

@@ -33,6 +33,9 @@ public class WorldGuardManager {
 	public static StateFlag EAT_ACTION;
 	public static StateFlag HONEY_ACTION;
 	public static StateFlag STRIP_ACTION;
+	public static StateFlag TAME_ACTION;
+	public static StateFlag BREED_ACTION;
+	public static StateFlag MMKILL_ACTION;
 
 	public WorldGuardManager getManager() {
 		return this;
@@ -62,6 +65,9 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (EAT_ACTION = new StateFlag("eat-action", false))); 
 		flagRegistry.register((Flag) (HONEY_ACTION = new StateFlag("honey-action", false))); 
 		flagRegistry.register((Flag) (STRIP_ACTION = new StateFlag("strip-action", false))); 
+		flagRegistry.register((Flag) (TAME_ACTION = new StateFlag("tame-action", false))); 
+		flagRegistry.register((Flag) (BREED_ACTION = new StateFlag("breed-action", false))); 
+		flagRegistry.register((Flag) (MMKILL_ACTION = new StateFlag("mmkill-action", false))); 
 	}
 	
 	public static StateFlag getFlagFromName(String b) {
@@ -76,7 +82,10 @@ public class WorldGuardManager {
 		if(b.equalsIgnoreCase("fish-action")) { return FISH_ACTION; }
 		if(b.equalsIgnoreCase("milk-action")) { return MILK_ACTION; } 
 		if(b.equalsIgnoreCase("craft-action")) { return CRAFT_ACTION; } 
+		if(b.equalsIgnoreCase("tame-action")) { return TAME_ACTION; } 
 		if(b.equalsIgnoreCase("shear-action")) { return SHEAR_ACTION; } 
+		if(b.equalsIgnoreCase("breed-action")) { return BREED_ACTION; } 
+		if(b.equalsIgnoreCase("mmkill-action")) { return MMKILL_ACTION; } 
 		return null;
 	}
 

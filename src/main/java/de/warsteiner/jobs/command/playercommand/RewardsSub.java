@@ -1,18 +1,19 @@
 package de.warsteiner.jobs.command.playercommand;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
- 
+
 import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.utils.playercommand.SubCommand; 
+import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class RewardsSub extends SubCommand {
 
-	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
+	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 
 	@Override
 	public String getName(UUID UUID) {
@@ -28,16 +29,23 @@ public class RewardsSub extends SubCommand {
 	public void perform(CommandSender sender, String[] args, JobsPlayer jb) {
 		final Player player = (Player) sender;
 		UUID UUID = player.getUniqueId();
-	
+		ArrayList<String> size = jb.getCurrentJobs();
 		if (args.length == 2) {
 			String job = args[1].toUpperCase();
 
-			if(!plugin.getAPI().checkIfJobIsReal(job.toUpperCase(), player)) { 
+			if (!plugin.getAPI().checkIfJobIsReal(job.toUpperCase(), player)) {
 				return;
-			} 
-			
-			plugin.getGUIAddonManager().createRewardsGUI(player, UpdateTypes.OPEN, plugin.getAPI().checkIfJobIsRealAndGet(job.toUpperCase(), player));
-			
+			}
+
+			plugin.getGUIAddonManager().createRewardsGUI(player, UpdateTypes.OPEN,
+					plugin.getAPI().checkIfJobIsRealAndGet(job.toUpperCase(), player));
+
+			return;
+		} else if (args.length == 1 && size.size() == 1) {
+
+			plugin.getGUIAddonManager().createRewardsGUI(player, UpdateTypes.OPEN,
+					plugin.getJobCache().get(size.get(0)));
+
 			return;
 		} else {
 			player.sendMessage(

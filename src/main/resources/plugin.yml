@@ -1,9 +1,9 @@
 main: de.warsteiner.jobs.UltimateJobs
-version: 0.3.4
+version: 0.3.5
 name: UltimateJobs
 author: Warsteiner37
 api-version: 1.13
-softdepend: [WorldGuard, AlonsoLevels, WorldEdit, PlaceHolderAPI]
+softdepend: [WorldGuard, AlonsoLevels, WorldEdit, PlaceHolderAPI, MythicMobs]
 depend: [SimpleAPI]
 description: Let Players work with this high quality Jobs Plugin!
 website: https://war-projects.com

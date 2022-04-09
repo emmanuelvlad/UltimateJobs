@@ -191,6 +191,14 @@ Commands:
     UsageMessage: "/Jobs join <job>"
     
     Description: "Joine oan Job"
+    
+  Levels:
+  
+    Usage: "levels"
+    
+    UsageMessage: "/Jobs levels <job>"
+    
+    Description: "View Job Levels"
      
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -350,7 +358,7 @@ Settings_Custom:
 
   MoneyList:
   
-    Display: "&8< &7Sehe #92f4ob#Belohnunga &7fia vaschiedene Blöcke &8>"
+    Display: "&8< &7Sehe #edb51c#Belohnunga &7fia vaschiedene Blöcke &8>"
     
     Lore:
       - "&7Funktioniad grod, wenn Enobled."
@@ -433,6 +441,20 @@ Rewards_Custom:
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
 Levels_Name: "&6&lLevels vo &8: <job>"
+
+Rewards_Item_Lores:
+
+  Reached:
+    - "&7"
+    - "&aDu hosd des Level eareicht"
+    
+  Currently:
+    - "&7"
+    - "&6Du braast <exp> Exp um dess Level zua daglanga!"
+    
+  Locked:
+    - "&7"
+    - "&cLevel ned vafügbar"
  
 Levels_Custom:
 

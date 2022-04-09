@@ -192,6 +192,14 @@ Commands:
     UsageMessage: "/Jobs join <job>"
     
     Description: "Rejoindre un job"
+    
+  Levels:
+  
+    Usage: "levels"
+    
+    UsageMessage: "/Jobs levels <job>"
+    
+    Description: "View Job Levels"
      
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -433,6 +441,20 @@ Rewards_Custom:
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 Levels_Name: "#eabb10#Niveaux pour &8: <job>"
+
+Rewards_Item_Lores:
+
+  Reached:
+    - "&7"
+    - "&aVous avez atteint ce niveau"
+    
+  Currently:
+    - "&7"
+    - "&6Vous avez besoin <exp> d’Exp plus pour terminer ce niveau!"
+    
+  Locked:
+    - "&7"
+    - "&cCe niveau est verrouillé"
  
 Levels_Custom:
 
