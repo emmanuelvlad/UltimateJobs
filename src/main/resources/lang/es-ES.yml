@@ -647,7 +647,7 @@ Jobs:
             - "&7Acción &8: &6&lDespojar"
             - "&7Rareza &8: &bNormal"
 
-      OAK_LOG:
+      OAK_LOG_BREAK:
       
         Display: "&6Tronco"
         

@@ -52,10 +52,10 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 						return job.getDisplay(UUID);
 
 					} else {
-						return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_job");
+						return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_job");
 					}
 				} else {
-					return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_job");
+					return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_job");
 				}
 			} else if (pr.contains("job_current_level")) {
 				String[] split = pr.split("_");
@@ -66,10 +66,10 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 					if (jobs.size() >= Integer.valueOf(split[3])) {
 						return "" + jb.getLevelOf(jb.getCurrentJobs().get(which));
 					} else {
-						return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_level");
+						return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_level");
 					}
 				} else {
-					return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_level");
+					return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_level");
 				}
 			} else if (pr.contains("job_current_exp")) {
 				String[] split = pr.split("_");
@@ -78,10 +78,10 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 					if (jobs.size() >= Integer.valueOf(split[3])) {
 						return "" + jb.getExpOf(jb.getCurrentJobs().get(which));
 					} else {
-						return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_exp");
+						return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_exp");
 					}
 				} else {
-					return plugin.getPluginManager().getMessage(jb.getUUID(), "placeholder_no_exp");
+					return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_exp");
 				}
 			}
 

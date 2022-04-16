@@ -14,7 +14,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.utils.files.PlayerDataFile; 
+import de.warsteiner.datax.utils.files.PlayerDataFile;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LevelAPI;
@@ -43,7 +43,7 @@ import de.warsteiner.jobs.command.playercommand.LevelsSub;
 import de.warsteiner.jobs.command.playercommand.LimitSub;
 import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.RewardsSub;
-import de.warsteiner.jobs.command.playercommand.StatsSub; 
+import de.warsteiner.jobs.command.playercommand.StatsSub;
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
 import de.warsteiner.jobs.inventorys.HelpMenuClickEvent;
 import de.warsteiner.jobs.inventorys.LevelsMenuClickEvent;
@@ -90,7 +90,7 @@ public class UltimateJobs extends JavaPlugin {
 	private LevelAPI levels;
 	private ArrayList<String> loaded;
 	private HashMap<String, Job> ld;
-	private de.warsteiner.jobs.manager.GuiManager gui; 
+	private de.warsteiner.jobs.manager.GuiManager gui;
 	private JobAPI api;
 	private ClickManager click;
 	private SQLPlayerManager sql;
@@ -114,11 +114,15 @@ public class UltimateJobs extends JavaPlugin {
 		plapi = new PluginManager();
 
 		createFolders();
-		
+
 		filemanager = new FileManager();
 
 		filemanager.generateFiles();
-  
+
+		if (this.filemanager.getConfig().getInt("ExecutorServiceThreads") == 0) {
+			getLogger().warning("§cMissing Option of ExecutorServices in Config.yml");
+		}
+
 		executor = Executors.newFixedThreadPool(this.filemanager.getConfig().getInt("ExecutorServiceThreads"));
 
 		if (getPluginManager().isInstalled("WorldGuard")) {
@@ -168,7 +172,7 @@ public class UltimateJobs extends JavaPlugin {
 		loadClasses();
 
 		api.loadJobs(getLogger());
- 
+
 		if (getPluginManager().isInstalled("PlaceHolderAPI")) {
 			new PlaceHolderManager().register();
 			getLogger().info("§bLoaded PlaceHolderAPI Support...");
@@ -181,7 +185,7 @@ public class UltimateJobs extends JavaPlugin {
 		if (getPluginManager().isInstalled("AlonsoLevels")) {
 			getLogger().info("§bLoaded AlonsoLevels Support...");
 		}
- 
+
 		getCommand("jobs").setExecutor(new JobsCommand());
 		getCommand("jobs").setTabCompleter(new JobTabComplete());
 
@@ -189,7 +193,7 @@ public class UltimateJobs extends JavaPlugin {
 		getCommand("jobsadmin").setTabCompleter(new AdminTabComplete());
 
 		registerSubCommands();
-		
+
 		BossBarHandler.startSystemCheck();
 
 		pm.startSave();
@@ -232,11 +236,11 @@ public class UltimateJobs extends JavaPlugin {
 
 	public void registerSubCommands() {
 
-		getSubCommandManager().getSubCommandList().add(new de.warsteiner.jobs.command.playercommand.HelpSub()); 
-		getSubCommandManager().getSubCommandList().add(new LeaveSub()); 
-		getSubCommandManager().getSubCommandList().add(new LeaveAllSub()); 
-		getSubCommandManager().getSubCommandList().add(new PointsSub()); 
-		getSubCommandManager().getSubCommandList().add(new LimitSub()); 	
+		getSubCommandManager().getSubCommandList().add(new de.warsteiner.jobs.command.playercommand.HelpSub());
+		getSubCommandManager().getSubCommandList().add(new LeaveSub());
+		getSubCommandManager().getSubCommandList().add(new LeaveAllSub());
+		getSubCommandManager().getSubCommandList().add(new PointsSub());
+		getSubCommandManager().getSubCommandList().add(new LimitSub());
 		getSubCommandManager().getSubCommandList().add(new JoinSub());
 		getSubCommandManager().getSubCommandList().add(new LangSub());
 		getSubCommandManager().getSubCommandList().add(new StatsSub());
@@ -273,14 +277,14 @@ public class UltimateJobs extends JavaPlugin {
 		yml = new YMLPlayerManager();
 
 		if (SimpleAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
-			getSQLPlayerManager().createtables(); 
+			getSQLPlayerManager().createtables();
 		} else {
-			datafile.create(); 
+			datafile.create();
 		}
 		pmanager = new PlayerDataManager(yml, sql);
 
 	}
-	
+
 	public GuiAddonManager getGUIAddonManager() {
 		return adddongui;
 	}
@@ -367,6 +371,9 @@ public class UltimateJobs extends JavaPlugin {
 
 		if (!folder_1.exists()) {
 			folder_1.mkdir();
+			
+			//create default jobs
+			getFileManager().createDefaultJobs();
 		}
 
 		File folder_2 = new File(getDataFolder(), "lang");
@@ -374,14 +381,14 @@ public class UltimateJobs extends JavaPlugin {
 		if (!folder_2.exists()) {
 			folder_2.mkdir();
 		}
- 
+
 		File folder_4 = new File(getDataFolder(), "settings");
 
 		if (!folder_4.exists()) {
 			folder_4.mkdir();
 		}
-	
-		File folder_5 = new File(getDataFolder(), "addons"); 
+
+		File folder_5 = new File(getDataFolder(), "addons");
 		if (!folder_5.exists()) {
 			folder_5.mkdir();
 		}
@@ -402,19 +409,19 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionTame(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionStripLog(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionBreed(), this);
-		
-		if(getPluginManager().isInstalled("MythicMobs")) {
+
+		if (getPluginManager().isInstalled("MythicMobs")) {
 			mm = new MythicMobsManager();
 			Bukkit.getPluginManager().registerEvents(new JobActionMMKill(), this);
 			this.getLogger().info("§aLoaded Support for MythicMobs");
 		}
-		
+
 	}
-	
+
 	public MythicMobsManager getMythicMobsManager() {
 		return mm;
 	}
- 
+
 	private boolean setupEconomy() {
 		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
 				.getRegistration(Economy.class);
@@ -431,7 +438,7 @@ public class UltimateJobs extends JavaPlugin {
 	public HashMap<String, Job> getJobCache() {
 		return ld;
 	}
-	
+
 	public FileManager getFileManager() {
 		return filemanager;
 	}

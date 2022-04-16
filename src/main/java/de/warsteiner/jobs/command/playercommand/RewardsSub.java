@@ -17,12 +17,12 @@ public class RewardsSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Rewards.Usage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Rewards.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Rewards.Description");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Rewards.Description");
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class RewardsSub extends SubCommand {
 			return;
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -70,7 +70,7 @@ public class RewardsSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Rewards.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Rewards.UsageMessage");
 	}
 
 }

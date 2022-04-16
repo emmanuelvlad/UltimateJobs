@@ -17,12 +17,12 @@ public class LangSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Language.Usage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Language.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Language.Description");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Language.Description");
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class LangSub extends SubCommand {
 			String lang = args[1];
 
 			if (plugin.getPluginManager().getLanguageFromID(lang) == null) {
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_language_NotFound")
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_language_NotFound")
 						.replaceAll("<lang>", lang));
 				return;
 			} else {
@@ -44,21 +44,21 @@ public class LangSub extends SubCommand {
 				Language file = plugin.getPluginManager().getLanguageFromID(lang);
 
 				if (result.toLowerCase().equalsIgnoreCase(file.getName().toLowerCase())) {
-					player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_language_Already")
+					player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_language_Already")
 							.replaceAll("<lang>", lang));
 					return;
 				}
 
 				SimpleAPI.getPlugin().getPlayerCacheManager().getPluginPlayer(UUID).updateLanguage(file);
 
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_language_Changed")
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_language_Changed")
 						.replaceAll("<lang>", lang));
 				return;
 			}
 
 		} else {	
 			player.sendMessage(
-					plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -79,6 +79,6 @@ public class LangSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Language.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Language.UsageMessage");
 	}
 }

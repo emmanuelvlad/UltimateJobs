@@ -15,12 +15,12 @@ public class LeaveAllSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.LeaveALL.Usage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.LeaveALL.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.LeaveALL.Description");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.LeaveALL.Description");
 	}
 
 	@Override
@@ -30,13 +30,13 @@ public class LeaveAllSub extends SubCommand {
 		if (args.length == 1) {
 			if (jb.getCurrentJobs() != null) {
 				jb.updateCurrentJobs(null);
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_leaveall_message"));
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_leaveall_message"));
 			} else {
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_leaveall_already"));
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_leaveall_already"));
 			}
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -57,7 +57,7 @@ public class LeaveAllSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.LeaveALL.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.LeaveALL.UsageMessage");
 	}
 
 }

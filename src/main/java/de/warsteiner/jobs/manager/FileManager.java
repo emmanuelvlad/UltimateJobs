@@ -41,6 +41,7 @@ public class FileManager {
 	private  File levels_file;
 	
 	private List<String> defaultlanguages = Arrays.asList("en-US","de-DE","de-BAR","es-ES","fr-FR");
+	private List<String> defaultjobs = Arrays.asList("Miner","Lumberjack");
 	
 	public  boolean generateFiles() {
 		createGUIFile();
@@ -76,6 +77,16 @@ public class FileManager {
 		}
 	}
 	
+	public void createDefaultJobs() { 
+		for(String b : defaultjobs) {
+			File f = new File(UltimateJobs.getPlugin().getDataFolder(), "jobs" + File.separatorChar + b+".yml");
+	        if (!f.exists()) {
+	        	f.getParentFile().mkdirs();
+	        	UltimateJobs.getPlugin().saveResource("jobs" + File.separatorChar + b+".yml", false);
+	         }
+		}
+	}
+	
 	public void createDefaultLanguages() { 
 		for(String b : defaultlanguages) {
 			File f = new File(UltimateJobs.getPlugin().getDataFolder(), "lang" + File.separatorChar + b+".yml");
@@ -86,16 +97,6 @@ public class FileManager {
 		}
 	}
  
-	public  boolean reloadGUIFile() {
-		try {
-			gui = YamlConfiguration.loadConfiguration(gui_file);
-			return true;
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			return false;
-		}
-	}
-	
 	/*
 	 * file
 	 */

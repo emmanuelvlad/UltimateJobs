@@ -43,7 +43,7 @@ public class GuiManager {
 		for (String list : plugin.getLoaded()) {
 			Job j = plugin.getJobCache().get(list);
 			String dis = j.getDisplay(UUID);
-			String named = plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
+			String named = plugin.getPluginManager().getFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
 			String fin = up.toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
 
 			if (up.toHex(menu.replaceAll("<job>", dis)).equalsIgnoreCase(up.toHex(fin.replaceAll("<job>", dis))))
@@ -59,7 +59,7 @@ public class GuiManager {
 		for (String list : plugin.getLoaded()) {
 			Job j = plugin.getJobCache().get(list);
 			String dis = j.getDisplay(UUID);
-			String named = plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
+			String named = plugin.getPluginManager().getFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
 			String fin = up.toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
 
 			if (up.toHex(menu.replaceAll("<job>", dis)).equalsIgnoreCase(up.toHex(fin.replaceAll("<job>", dis))))
@@ -72,7 +72,7 @@ public class GuiManager {
 		FileConfiguration cfg = plugin.getFileManager().getHelpSettings();
 		String UUID = "" + player.getUniqueId();
 		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
-		String name = plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), cfg.getString("Help_Name"));
+		String name = plugin.getPluginManager().getFromPath(sp.getUUID(), cfg.getString("Help_Name"));
 		int size = cfg.getInt("Help_Size");
 
 		gm.openInventory(player, size, name);
@@ -92,7 +92,7 @@ public class GuiManager {
 		FileConfiguration cfg = plugin.getFileManager().getConfirm();
 
 		String name = plugin.getPluginManager()
-				.getSomethingFromPath(player.getUniqueId(), cfg.getString("AreYouSureGUI_Name"))
+				.getFromPath(player.getUniqueId(), cfg.getString("AreYouSureGUI_Name"))
 				.replaceAll("<job>", job.getDisplay("" + player.getUniqueId()));
 		int size = cfg.getInt("AreYouSureGUI_Size");
 
@@ -119,11 +119,11 @@ public class GuiManager {
 				ItemStack item = im.createAndGetItemStack(player, cfg.getString("AreYouSureItems.Button_YES.Icon"));
 
 				String dis = up
-						.toHex(plugin.getPluginManager().getSomethingFromPath(sp.getUUID(),
+						.toHex(plugin.getPluginManager().getFromPath(sp.getUUID(),
 								cfg.getString("AreYouSureItems.Button_YES.Display")))
 						.replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
 				int slot = cfg.getInt("AreYouSureItems.Button_YES.Slot");
-				List<String> lore = plugin.getPluginManager().getSomethingAsListFromPath(sp.getUUID(),
+				List<String> lore = plugin.getPluginManager().getListFromPath(sp.getUUID(),
 						cfg.getString("AreYouSureItems.Button_YES.Lore"));
 				ArrayList<String> l = new ArrayList<String>();
 
@@ -148,11 +148,11 @@ public class GuiManager {
 				ItemStack item = im.createAndGetItemStack(player, cfg.getString("AreYouSureItems.Button_NO.Icon"));
 
 				String dis = up
-						.toHex(plugin.getPluginManager().getSomethingFromPath(sp.getUUID(),
+						.toHex(plugin.getPluginManager().getFromPath(sp.getUUID(),
 								cfg.getString("AreYouSureItems.Button_NO.Display")))
 						.replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
 				int slot = cfg.getInt("AreYouSureItems.Button_NO.Slot");
-				List<String> lore = plugin.getPluginManager().getSomethingAsListFromPath(sp.getUUID(),
+				List<String> lore = plugin.getPluginManager().getListFromPath(sp.getUUID(),
 						cfg.getString("AreYouSureItems.Button_NO.Lore"));
 				ArrayList<String> l = new ArrayList<String>();
 
@@ -177,7 +177,7 @@ public class GuiManager {
 
 	public void createMainGUIOfJobs(Player player, UpdateTypes t) {
 		FileConfiguration cfg = plugin.getFileManager().getGUI();
-		String name = plugin.getPluginManager().getSomethingFromPath(player.getUniqueId(), cfg.getString("Main_Name"));
+		String name = plugin.getPluginManager().getFromPath(player.getUniqueId(), cfg.getString("Main_Name"));
 		int size = cfg.getInt("Main_Size");
 
 		gm.openInventory(player, size, name);
@@ -205,7 +205,7 @@ public class GuiManager {
 	public void createSettingsGUI(Player player, Job job, UpdateTypes t) {
 		FileConfiguration cfg = plugin.getFileManager().getSettings();
 		String dis = job.getDisplay("" + player.getUniqueId());
-		String named = plugin.getPluginManager().getSomethingFromPath(player.getUniqueId(),
+		String named = plugin.getPluginManager().getFromPath(player.getUniqueId(),
 				cfg.getString("Settings_Name"));
 		;
 		String name = named.replaceAll("<job>", dis);
@@ -266,15 +266,15 @@ public class GuiManager {
 								if (jb.isInJob(id)) {
 									meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, false);
 
-									see = plugin.getPluginManager().getMessageList(jb.getUUID(),
+									see = plugin.getPluginManager().getListFromLang(jb.getUUID(),
 											"Main_Job_Items.Lore.In");
 								} else {
-									see = plugin.getPluginManager().getMessageList(jb.getUUID(),
+									see = plugin.getPluginManager().getListFromLang(jb.getUUID(),
 											"Main_Job_Items.Lore.Bought");
 								}
 
 							} else {
-								see = plugin.getPluginManager().getMessageList(jb.getUUID(),
+								see = plugin.getPluginManager().getListFromLang(jb.getUUID(),
 										"Main_Job_Items.Lore.Price");
 							}
 
@@ -371,13 +371,13 @@ public class GuiManager {
 						ItemStack item = im.createAndGetItemStack(player, mat);
 						ItemMeta meta = item.getItemMeta();
 
-						meta.setDisplayName(plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), display));
+						meta.setDisplayName(plugin.getPluginManager().getFromPath(sp.getUUID(), display));
 
 						int max = sp.getMaxJobs() + 1;
 
 						if (cfg.contains(prefix + pl + ".Lore")) {
 
-							List<String> lore = plugin.getPluginManager().getSomethingAsListFromPath(sp.getUUID(),
+							List<String> lore = plugin.getPluginManager().getListFromPath(sp.getUUID(),
 									cfg.getString(prefix + pl + ".Lore"));
 
 							List<String> filore = new ArrayList<String>();

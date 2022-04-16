@@ -9,7 +9,7 @@ import java.util.List;
 import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import de.warsteiner.datax.SimpleAPI;
+import de.warsteiner.datax.SimpleAPI; 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.utils.JobAction; 
 
@@ -29,6 +29,10 @@ public class Job {
 		
 		ArrayList<JobAction> list = new ArrayList<JobAction>();
 		
+		if(cfg.getStringList("Action") == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Action");
+		}
+		
 		for(String a : cfg.getStringList("Action")) {
 			list.add(JobAction.valueOf(a.toUpperCase()));
 		}
@@ -37,6 +41,11 @@ public class Job {
 		cf = cfg; 
 		perm = cfg.getString("Permission");
 		action =  list;
+		
+		if(cf.getString("Material") == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Material");
+		}
+		
 		icon = cfg.getString("Material");
 		slot = cfg.getInt("Slot");
 		price = cfg.getDouble("Price"); 
@@ -48,7 +57,7 @@ public class Job {
 		try {
 			cf.save(file);
 		} catch (IOException e) { 
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to save File for Job "+getConfigID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§cFailed to save Config of "+this.getConfigID());
 			e.printStackTrace();
 		}
 	}
@@ -56,7 +65,7 @@ public class Job {
 	public File getFile() {
 		
 		if(file == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job File for Job "+getConfigID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§cFailed to return Job File of "+this.getConfigID());
 		}
 		
 		return file;
@@ -65,35 +74,36 @@ public class Job {
 	public BarColor getBarColor() {
 		
 		if(BarColor.valueOf(cf.getString("ColorOfBossBar")) == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Bar Color for Job "+getConfigID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing  or Wrong Option of "+this.getConfigID()+" Job -> BossBarColor");
 			return BarColor.RED;
 		}
 		
 		return BarColor.valueOf(cf.getString("ColorOfBossBar"));
 	}
 	
-	public YamlConfiguration getConfig() {
-		if(cf == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job Config for Job "+getConfigID()+"!");
-		}
+	public YamlConfiguration getConfig() { 
 		return cf;
 	}
  
 	public String getLevelDisplay(int i, String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		if(cf.getString("LEVELS." + i + ".Display") == null) {
-			return "Error";
+		String where = UltimateJobs.getPlugin().getPluginManager().get(jb.getUUID(), "Jobs."+getConfigID()+".Levels."+i+".Display");
+		 
+		if(where == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Level Display from Level "+i);
 		}
 		
-		return UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("LEVELS." + i + ".Display")); 
+		return where;
 			 
 	}
 	
 	
 	public List<String> getLevelLore(int i, String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		 
-		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("LEVELS." + i + ".Lore")); 
+		
+		List<String> result = UltimateJobs.getPlugin().getPluginManager().getListFromLang(jb.getUUID(), "Jobs."+this.getConfigID()+".Levels."+i+".Lore");
+		  
+		return result; 
 			 
 	}
 
@@ -113,18 +123,18 @@ public class Job {
 	public List<String> getPermissionsLore(String UUID) { 
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
 		if(!cf.contains("PermLore")) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermLore for Job "+getConfigID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Permissions Lore");
 		}
 		
-		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("PermLore"));  
+		return UltimateJobs.getPlugin().getPluginManager().getListFromPath(jb.getUUID(), cf.getString("PermLore"));  
 	}
   
 	public String getPermMessage(String UUID) { 
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
 		if(!cf.contains("PermMessage")) {
-			UltimateJobs.getPlugin().getLogger().warning("§4Failed to return Job PermMessage for Job "+getConfigID()+"!");
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Permissions Message");
 		}
-		return UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("PermMessage")); 
+		return UltimateJobs.getPlugin().getPluginManager().getFromPath(jb.getUUID(), cf.getString("PermMessage")); 
 	}
 
 	public boolean hasPermission() {
@@ -169,7 +179,14 @@ public class Job {
 	
 	public List<String> getNotQuestConLore(String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		return  UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("ReqNotQuestCondLore"));  
+		
+		List<String> result = UltimateJobs.getPlugin().getPluginManager().getListFromPath(jb.getUUID(), cf.getString("ReqNotQuestCondLore"));
+		
+		if(result == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> NotQuests Lore");
+		}
+ 		
+		return  result;  
 	}
 	
 	public boolean hasAlonsoLevelsReq() {
@@ -182,7 +199,14 @@ public class Job {
 	
 	public List<String> getAlonsoLevelsLore(String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("AlonsoLevelLore")); 
+		
+		List<String> result = UltimateJobs.getPlugin().getPluginManager().getListFromPath(jb.getUUID(), cf.getString("AlonsoLevelLore"));
+		
+		if(result == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> AlonsoLevels Lore");
+		}
+		
+		return result; 
 	}
 	
 	public boolean hasBypassAlonsoLevelsReq() {
@@ -247,11 +271,23 @@ public class Job {
 
 	public String getDisplayOf(String id, String UUID, JobAction ac) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		return  UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("IDS." + ac.toString() + "." + id + ".Display")); 
+		
+		String result = UltimateJobs.getPlugin().getPluginManager().get(jb.getUUID(), "Jobs."+this.getConfigID()+".IDS."+id+".Display"); 
+		
+		if(result == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Display of "+id);
+		}
+		
+		return result;
 	}
 
 	public int getChanceOf(String id, JobAction ac) {
-		return cf.getInt("IDS." + ac.toString() + "." + id + ".Chance");
+		int result =  cf.getInt("IDS." + ac.toString() + "." + id + ".Chance");
+	
+		if(result == 0) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Chance if "+id);
+		}
+		return result;
 	}
 	 
 	public String getConfigIDOfRealID(JobAction ac, String real, Job job) {
@@ -293,11 +329,22 @@ public class Job {
 	}
 
 	public List<String> getNotRealIDSListByAction(JobAction ac) {
-		return cf.getStringList("IDS."+ac.toString()+".List");
+		List<String> result = cf.getStringList("IDS."+ac.toString()+".List");
+		
+		if(result == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Real IDs List from Action"+ac);
+		}
+		return result;
 	}
 	
 	public String getRealIDOf(JobAction ac, String id) {
-		return cf.getString("IDS." + ac.toString() + "." + id + ".ID");
+		String result = cf.getString("IDS." + ac.toString() + "." + id + ".ID");
+	
+		if(result == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Real ID of "+id);
+		}
+		
+		return result;
 	}
 	
 	public ArrayList<String> getListOfRealIDS(JobAction ac) {
@@ -347,7 +394,14 @@ public class Job {
 	
 	public List<String> getLore(String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("Lore"));
+		List<String> result = UltimateJobs.getPlugin().getPluginManager().getListFromLang(jb.getUUID(), "Jobs."+this.getConfigID()+".Lore");
+		
+		if(result == null) {
+			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Lore of Job");
+		}
+		
+		return result;
+		
 	}
 
 	public List<String> getWorlds() {
@@ -356,7 +410,7 @@ public class Job {
 
 	public List<String> getStatsMessage(String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		return UltimateJobs.getPlugin().getPluginManager().getSomethingAsListFromPath(jb.getUUID(), cf.getString("Stats"));
+		return UltimateJobs.getPlugin().getPluginManager().getListFromLang(jb.getUUID(), "Jobs."+this.getConfigID()+".Stats");
 	}
 
 	public double getPrice() {
@@ -383,7 +437,7 @@ public class Job {
 
 	public String getDisplay(String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		String display = UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("Display"));
+		String display = UltimateJobs.getPlugin().getPluginManager().get(jb.getUUID(), "Jobs."+this.getConfigID()+".Display");
 		
 		if(display == null) {
 			return "Error";
@@ -398,7 +452,7 @@ public class Job {
 	
 	public String getDisplayID(String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(UUID);
-		return UltimateJobs.getPlugin().getPluginManager().getSomethingFromPath(jb.getUUID(), cf.getString("DisplayID"));
+		return  UltimateJobs.getPlugin().getPluginManager().get(jb.getUUID(), "Jobs."+this.getConfigID()+".DisplayID");
 	}
 
 }

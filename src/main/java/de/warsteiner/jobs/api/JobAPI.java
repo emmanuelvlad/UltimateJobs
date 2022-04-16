@@ -91,7 +91,7 @@ public class JobAPI {
 		if(isJobFromDisplayID(id, ""+player.getUniqueId()) != null) { 
 			return true;
 		}
-		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
+		player.sendMessage(plugin.getPluginManager().getAMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
 		return false;
 	}
  
@@ -103,7 +103,7 @@ public class JobAPI {
 		if(isJobFromDisplayID(id, ""+player.getUniqueId()) != null) { 
 			return isJobFromDisplayID(id, ""+player.getUniqueId());
 		}
-		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
+		player.sendMessage(plugin.getPluginManager().getAMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
 		return null;
 	}
 
@@ -129,7 +129,7 @@ public class JobAPI {
 			} else {
 				prefix = "MaxEarningsReached";
 			}
-			String prt = plugin.getPluginManager().getMessage(UUID, "prefix");
+			String prt = plugin.getPluginManager().getAMessage(UUID, "prefix");
 			if (prefix != null) {
 
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_BossBar")) {
@@ -140,7 +140,7 @@ public class JobAPI {
 					double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore(""+UUID, job, level),
 							need);
 					BarColor color = job.getBarColor();
-					String message = up.toHex(plugin.getPluginManager().getMessage(UUID, prefix + ".BossBar").replaceAll("<prefix>", prt)
+					String message = up.toHex(plugin.getPluginManager().getAMessage(UUID, prefix + ".BossBar").replaceAll("<prefix>", prt)
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, ""+UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
@@ -154,7 +154,7 @@ public class JobAPI {
 					}
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_Message")) {
-					String message = up.toHex(plugin.getPluginManager().getMessage(UUID, prefix + ".Message").replaceAll("<prefix>", prt)
+					String message = up.toHex(plugin.getPluginManager().getAMessage(UUID, prefix + ".Message").replaceAll("<prefix>", prt)
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, ""+UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
@@ -162,7 +162,7 @@ public class JobAPI {
 					p.sendMessage(message);
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enabled_Actionbar")) {
-					String message = up.toHex(plugin.getPluginManager().getMessage(UUID, prefix + ".Actionbar").replaceAll("<prefix>",prt)
+					String message = up.toHex(plugin.getPluginManager().getAMessage(UUID, prefix + ".Actionbar").replaceAll("<prefix>",prt)
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level,""+ UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
@@ -218,7 +218,7 @@ public class JobAPI {
 	public boolean checkPermissions(Player player, String text) {
 		if (player.hasPermission("ultimatejobs." + text) ||player.hasPermission("ultimatejobs.admin.all"))
 			return true;
-		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "noperm"));
+		player.sendMessage(plugin.getPluginManager().getAMessage(player.getUniqueId(), "noperm"));
 		return false;
 	}
  

@@ -35,7 +35,7 @@ public class JobsCommand implements CommandExecutor {
 				String ar = args[0].toLowerCase();
 
 				if (find(ar, jb.getUUID()) == null) {
-					player.sendMessage(plugin.getPluginManager().getMessage(jb.getUUID(), "command_notfound").replaceAll("<cmd>", ar));
+					player.sendMessage(plugin.getPluginManager().getAMessage(jb.getUUID(), "command_notfound").replaceAll("<cmd>", ar));
 					return true;
 				} else {
 
@@ -44,7 +44,7 @@ public class JobsCommand implements CommandExecutor {
 					if(cmd.isEnabled()) {
 						cmd.perform(player, args, jb);
 					} else {
-						player.sendMessage(plugin.getPluginManager().getMessage(jb.getUUID(), "command_notfound").replaceAll("<cmd>", ar));
+						player.sendMessage(plugin.getPluginManager().getAMessage(jb.getUUID(), "command_notfound").replaceAll("<cmd>", ar));
 						return true;
 					}
 

@@ -19,12 +19,12 @@ public class HelpSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return  plugin.getPluginManager().getMessage(UUID, "Commands.Help.Usage");
+		return  plugin.getPluginManager().getAMessage(UUID, "Commands.Help.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return  plugin.getPluginManager().getMessage(UUID, "Commands.Help.Description");
+		return  plugin.getPluginManager().getAMessage(UUID, "Commands.Help.Description");
 	}
 
 	@Override
@@ -37,12 +37,12 @@ public class HelpSub extends SubCommand {
 				plugin.getGUI().createHelpGUI(player, UpdateTypes.OPEN);
 			} else {
 		 
-				for (String m :plugin.getPluginManager().getMessageList(UUID, "Commands.Help.List")) {
+				for (String m :plugin.getPluginManager().getListFromLang(UUID, "Commands.Help.List")) {
 					player.sendMessage(up.toHex(m).replaceAll("&", "§"));
 				}
 			}
 		} else {
-			player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+			player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -63,7 +63,7 @@ public class HelpSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) { 
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Help.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Help.UsageMessage");
 	}
   
 }

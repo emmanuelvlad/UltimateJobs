@@ -19,7 +19,7 @@ public class PlayerLevelEvent implements Listener {
 	public void onLevelUp(PlayerLevelJobEvent event) {
 		Player player = event.getPlayer();
 		FileConfiguration config = UltimateJobs.getPlugin().getFileManager().getConfig();
-		String me = UltimateJobs.getPlugin().getPluginManager().getMessage(player.getUniqueId(), "Levels.BoardCastMessage");
+		String me = UltimateJobs.getPlugin().getPluginManager().getAMessage(player.getUniqueId(), "Levels.BoardCastMessage");
 		UltimateJobs.getPlugin().getAPI().playSound("LEVEL_UP", player);
 		
 		Job job = event.getJob();

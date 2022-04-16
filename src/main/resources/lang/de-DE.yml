@@ -643,7 +643,7 @@ Jobs:
             - "&7Action &8: &6&lStripp"
             - "&7Seltenheut &8: &bNormal"
 
-      OAK_LOG:
+      OAK_LOG_BREAK:
       
         Display: "&6Holz"
         

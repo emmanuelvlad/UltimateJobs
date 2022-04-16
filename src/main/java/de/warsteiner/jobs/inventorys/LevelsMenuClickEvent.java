@@ -51,13 +51,13 @@ public class LevelsMenuClickEvent implements Listener {
 
 		for(String job : plugin.getLoaded()) {
 			Job j = plugin.getJobCache().get(job);
-			String name = plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("Levels_Name")).replaceAll("<job>", j.getDisplay(""+UUID));
+			String name = plugin.getPluginManager().getFromPath(UUID, cfg.getString("Levels_Name")).replaceAll("<job>", j.getDisplay(""+UUID));
 			
 			if(name.equalsIgnoreCase(title)) {
 				plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Levels_Custom", cfg);
 				
-				String next = plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("PageItems.Next.Display"));
-				String pre = plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("PageItems.Previous.Display"));  
+				String next = plugin.getPluginManager().getFromPath(UUID, cfg.getString("PageItems.Next.Display"));
+				String pre = plugin.getPluginManager().getFromPath(UUID, cfg.getString("PageItems.Previous.Display"));  
 				int page = SimpleAPI.getPlugin().getPlayerSaveAndLoadManager().getPageFromID(""+p.getUniqueId(),"LEVELS_"+j.getConfigID());
 				if(display.equalsIgnoreCase(up.toHex(next).replaceAll("&", "§"))) { 
 					int d = cfg.getStringList("Level_Slots").size();
@@ -70,13 +70,13 @@ public class LevelsMenuClickEvent implements Listener {
 						plugin.getAPI().playSound("NEW_PAGE_LEVELS", p);
 						
 					} else {
-						p.sendMessage( plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("PageItems.Next.NotFound")));
+						p.sendMessage( plugin.getPluginManager().getFromPath(UUID, cfg.getString("PageItems.Next.NotFound")));
 						plugin.getAPI().playSound("LEVELS_NO_NEXT", p);
 					}
 					
 				} else if(display.equalsIgnoreCase(up.toHex(pre).replaceAll("&", "§"))) {
 					if(page == 1) {
-						p.sendMessage( plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("PageItems.Previous.NotFound"))); 
+						p.sendMessage( plugin.getPluginManager().getFromPath(UUID, cfg.getString("PageItems.Previous.NotFound"))); 
 						plugin.getAPI().playSound("LEVELS_FIRST_ALREADY", p);
 					} else {
 						SimpleAPI.getPlugin().getPlayerSaveAndLoadManager().removeOnePageFromID(""+p.getUniqueId(),  "LEVELS_"+j.getConfigID());

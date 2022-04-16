@@ -43,7 +43,7 @@ public class StatsMenuClickEvent implements Listener {
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
 		String title = up.toHex(e.getView().getTitle().replaceAll("&", "§"));
 
-		if (title.equalsIgnoreCase(up.toHex(plugin.getPluginManager().getSomethingFromPath(p.getUniqueId(), config.getString("Self_Name")).replaceAll("&", "§")))) { 
+		if (title.equalsIgnoreCase(up.toHex(plugin.getPluginManager().getFromPath(p.getUniqueId(), config.getString("Self_Name")).replaceAll("&", "§")))) { 
 			plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Self_Custom", config);
 			e.setCancelled(true);
 		} else if(plugin.getGUIAddonManager().isStatsGUI(title, p.getUniqueId())) {

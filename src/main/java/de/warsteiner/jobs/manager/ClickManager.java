@@ -47,7 +47,7 @@ public class ClickManager {
 			 
 				plugin.getGUI().createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 
-				player.sendMessage(plugin.getPluginManager().getMessage(jb.getUUID(), "Other.Left_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
+				player.sendMessage(plugin.getPluginManager().getAMessage(jb.getUUID(), "Other.Left_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
 			} else if (action.equalsIgnoreCase("COMMAND")) {
 				player.closeInventory();
 				String cmd = config.getString(prefix + "." + item + ".Command").replaceAll("<job>", job.getConfigID());
@@ -69,7 +69,7 @@ public class ClickManager {
 			}
 		}.runTaskLater(plugin, 1);
 
-		player.sendMessage(up.toHex(plugin.getPluginManager().getMessage(player.getUniqueId(), "Other.Joined").replaceAll("<job>", j.getDisplay(""+player.getUniqueId()))));
+		player.sendMessage(up.toHex(plugin.getPluginManager().getAMessage(player.getUniqueId(), "Other.Joined").replaceAll("<job>", j.getDisplay(""+player.getUniqueId()))));
 	}
 
 	public void executeJobClickEvent(String display, Player player) {
@@ -83,7 +83,7 @@ public class ClickManager {
 			if (display.equalsIgnoreCase(dis)) {
 				String job = j.getConfigID();
 
-				String name =  plugin.getPluginManager().getSomethingFromPath(jb.getUUID(), cfg.getString("Main_Name"));
+				String name =  plugin.getPluginManager().getFromPath(jb.getUUID(), cfg.getString("Main_Name"));
 				if (api.canBuyWithoutPermissions(player, j)) {
 
 					List<String> d = api.canGetJobWithSubOptions(player, j);
@@ -102,7 +102,7 @@ public class ClickManager {
 									joinJob(player, job, jb, name, dis, j);
 									return;
 								} else {
-									player.sendMessage(plugin.getPluginManager().getMessage(jb.getUUID(), "Other.Full").replaceAll("<job>", j.getDisplay(UUID)));
+									player.sendMessage(plugin.getPluginManager().getAMessage(jb.getUUID(), "Other.Full").replaceAll("<job>", j.getDisplay(UUID)));
 									return;
 								}
 
@@ -120,7 +120,7 @@ public class ClickManager {
 								}
 
 							} else {
-								player.sendMessage(plugin.getPluginManager().getMessage(jb.getUUID(), "Other.Not_Enough_Money").replaceAll("<job>", j.getDisplay(UUID)));
+								player.sendMessage(plugin.getPluginManager().getAMessage(jb.getUUID(), "Other.Not_Enough_Money").replaceAll("<job>", j.getDisplay(UUID)));
 								return;
 							}
 						}
@@ -152,14 +152,14 @@ public class ClickManager {
 			gui.createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 		}
 
-		player.sendMessage(plugin.getPluginManager().getMessage(player.getUniqueId(), "Other.Bought_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
+		player.sendMessage(plugin.getPluginManager().getAMessage(player.getUniqueId(), "Other.Bought_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
 	}
 	
 	public String isCustomItem(String display, String path, FileConfiguration config, String UUID) {
 		List<String> custom_items = config.getStringList(path + ".List");
 		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
 		for (String b : custom_items) {
-			String real = plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), config.getString(path + "." + b + ".Display"));
+			String real = plugin.getPluginManager().getFromPath(sp.getUUID(), config.getString(path + "." + b + ".Display"));
 			String dis = up.toHex(real.replaceAll("&", "§"));
 			if (display.equalsIgnoreCase(dis))
 				return b;
@@ -182,10 +182,10 @@ public class ClickManager {
 				if (sp.getCurrentJobs().size() >= 1) {
 					api.playSound("LEAVE_ALL", player);
 					sp.updateCurrentJobs(null);
-					gui.UpdateMainInventoryItems(player, plugin.getPluginManager().getSomethingFromPath(sp.getUUID(), plugin.getFileManager().getGUI().getString("Main_Name")));
-					player.sendMessage(plugin.getPluginManager().getMessage(sp.getUUID(), "Other.Leave_All").replaceAll("<job>", display));
+					gui.UpdateMainInventoryItems(player, plugin.getPluginManager().getFromPath(sp.getUUID(), plugin.getFileManager().getGUI().getString("Main_Name")));
+					player.sendMessage(plugin.getPluginManager().getAMessage(sp.getUUID(), "Other.Leave_All").replaceAll("<job>", display));
 				} else {
-					player.sendMessage(plugin.getPluginManager().getMessage(sp.getUUID(), "Other.Already_Left_All").replaceAll("<job>", display));
+					player.sendMessage(plugin.getPluginManager().getAMessage(sp.getUUID(), "Other.Already_Left_All").replaceAll("<job>", display));
 				}
 			} else if (action.equalsIgnoreCase("COMMAND")) {
 				player.closeInventory();

@@ -20,12 +20,12 @@ public class StatsSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Stats.Usage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Stats.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Stats.Description");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Stats.Description");
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class StatsSub extends SubCommand {
 			String pl = args[1].toUpperCase();
 
 			if (ap.getPlayerSaveAndLoadManager().getUUIDByName(pl.toUpperCase()) == null) {
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_stats_not_found")
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_stats_not_found")
 						.replaceAll("<name>", args[1]));
 				return;
 			} else {
@@ -55,7 +55,7 @@ public class StatsSub extends SubCommand {
 			return;
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -76,7 +76,7 @@ public class StatsSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Stats.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Stats.UsageMessage");
 	}
 
 }

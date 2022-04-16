@@ -46,7 +46,7 @@ public class AreYouSureMenuClickEvent implements Listener {
 		String UUID = ""+p.getUniqueId();
 		java.util.UUID ID = p.getUniqueId();
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
-		String name =  plugin.getPluginManager().getSomethingFromPath(ID, config.getString("AreYouSureGUI_Name"));
+		String name =  plugin.getPluginManager().getFromPath(ID, config.getString("AreYouSureGUI_Name"));
  
 		for (String list : plugin.getLoaded()) {
 			Job job = plugin.getJobCache().get(list);
@@ -56,8 +56,8 @@ public class AreYouSureMenuClickEvent implements Listener {
 			if(e.getView().getTitle().equalsIgnoreCase(newname)) {
 				plugin.getClickManager().executeCustomItem(display, p, "AreYouSureGUI_Custom", config);
 				 
-				String name_yes =  plugin.getPluginManager().getSomethingFromPath(ID, config.getString("AreYouSureItems.Button_YES.Display"));
-				String name_no =  plugin.getPluginManager().getSomethingFromPath(ID, config.getString("AreYouSureItems.Button_NO.Display"));
+				String name_yes =  plugin.getPluginManager().getFromPath(ID, config.getString("AreYouSureItems.Button_YES.Display"));
+				String name_no =  plugin.getPluginManager().getFromPath(ID, config.getString("AreYouSureItems.Button_NO.Display"));
 				
 				JobsPlayer jb =plugin.getPlayerManager().getRealJobPlayer(UUID);
 				String yes =  up.toHex(name_yes).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");

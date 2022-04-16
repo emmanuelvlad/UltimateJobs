@@ -16,12 +16,12 @@ public class LeaveSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Leave.Usage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Leave.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Leave.Description");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Leave.Description");
 	}
 
 	@Override
@@ -39,14 +39,14 @@ public class LeaveSub extends SubCommand {
 
 			if (jb.isInJob(job)) {
 				jb.remoCurrentJob(job);
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_leave_message").replaceAll("<job>",  plugin.getAPI().checkIfJobIsRealAndGet(d.toUpperCase(), player).getDisplay(""+UUID)));
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_leave_message").replaceAll("<job>",  plugin.getAPI().checkIfJobIsRealAndGet(d.toUpperCase(), player).getDisplay(""+UUID)));
 			} else {
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_leave_already"));
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_leave_already"));
 			}
 
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -67,7 +67,7 @@ public class LeaveSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Leave.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Leave.UsageMessage");
 	}
 
 }

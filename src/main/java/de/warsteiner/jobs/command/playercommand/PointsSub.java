@@ -19,12 +19,12 @@ public class PointsSub extends SubCommand {
 	
 	@Override
 	public String getName(UUID UUID) {
-		return  plugin.getPluginManager().getMessage(UUID, "Commands.Points.Usage");
+		return  plugin.getPluginManager().getAMessage(UUID, "Commands.Points.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return  plugin.getPluginManager().getMessage(UUID, "Commands.Points.Description");
+		return  plugin.getPluginManager().getAMessage(UUID, "Commands.Points.Description");
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class PointsSub extends SubCommand {
 			String pl = args[1].toUpperCase();
  
 			if (ap.getPlayerSaveAndLoadManager().getUUIDByName(pl.toUpperCase()) == null) {
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_points_not_found").replaceAll("<name>", args[1])); 
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_points_not_found").replaceAll("<name>", args[1])); 
 				return;
 			} else {
 				String uuid = ap.getPlayerSaveAndLoadManager().getUUIDByName(pl.toUpperCase());
@@ -46,21 +46,21 @@ public class PointsSub extends SubCommand {
 		 
 				if(how.equalsIgnoreCase("CACHE")) {
 					double points = jb.getPoints();
-					player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_points_other").replaceAll("<points>", plugin.getAPI().Format(points)).replaceAll("<name>", args[1])); 
+					player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_points_other").replaceAll("<points>", plugin.getAPI().Format(points)).replaceAll("<name>", args[1])); 
 				 
 					return;
 				} else {  
 					double points = plm.getPoints(uuid);
-					player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_points_other").replaceAll("<points>", plugin.getAPI().Format(points)).replaceAll("<name>", args[1])); 
+					player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_points_other").replaceAll("<points>", plugin.getAPI().Format(points)).replaceAll("<name>", args[1])); 
 					return;
 				}
 			} 
 		} else if(args.length == 1) { 
-			player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_points_self").replaceAll("<points>", plugin.getAPI().Format(jb.getPoints())));  
+			player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_points_self").replaceAll("<points>", plugin.getAPI().Format(jb.getPoints())));  
 			return;
 		}
 		else {
-			player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+			player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -81,7 +81,7 @@ public class PointsSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) { 
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Points.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Points.UsageMessage");
 	}
 
 }

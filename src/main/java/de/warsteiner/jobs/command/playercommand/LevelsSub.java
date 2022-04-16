@@ -17,12 +17,12 @@ public class LevelsSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Levels.Usage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Levels.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Levels.Description");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Levels.Description");
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class LevelsSub extends SubCommand {
 
 		else {
 			player.sendMessage(
-					plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 
 	}
@@ -76,7 +76,7 @@ public class LevelsSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Levels.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Levels.UsageMessage");
 	}
 
 }

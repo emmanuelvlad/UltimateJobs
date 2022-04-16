@@ -51,13 +51,13 @@ public class RewardsMenuClickEvent  implements Listener {
 
 		for(String job : plugin.getLoaded()) {
 			Job j = plugin.getJobCache().get(job);
-			String name = plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("Rewards_Name")).replaceAll("<job>", j.getDisplay(""+UUID));
+			String name = plugin.getPluginManager().getFromPath(UUID, cfg.getString("Rewards_Name")).replaceAll("<job>", j.getDisplay(""+UUID));
 			
 			if(name.equalsIgnoreCase(title)) {
 				plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Rewards_Custom", cfg);
 				
-				String next = plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("PageItems.Next.Display"));
-				String pre = plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("PageItems.Previous.Display"));  
+				String next = plugin.getPluginManager().getFromPath(UUID, cfg.getString("PageItems.Next.Display"));
+				String pre = plugin.getPluginManager().getFromPath(UUID, cfg.getString("PageItems.Previous.Display"));  
 				int page = SimpleAPI.getPlugin().getPlayerSaveAndLoadManager().getPageFromID(""+p.getUniqueId(),"REWARDS_"+j.getConfigID());
 				if(display.equalsIgnoreCase(up.toHex(next).replaceAll("&", "§"))) { 
 					int d = cfg.getStringList("Rewards_Slots").size();
@@ -70,13 +70,13 @@ public class RewardsMenuClickEvent  implements Listener {
 						plugin.getAPI().playSound("NEW_PAGE_REWARDS", p);
 						
 					} else {
-						p.sendMessage( plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("PageItems.Next.NotFound")));
+						p.sendMessage( plugin.getPluginManager().getFromPath(UUID, cfg.getString("PageItems.Next.NotFound")));
 						plugin.getAPI().playSound("REWARDS_NO_NEXT", p);
 					}
 					
 				} else if(display.equalsIgnoreCase(up.toHex(pre).replaceAll("&", "§"))) {
 					if(page == 1) {
-						p.sendMessage( plugin.getPluginManager().getSomethingFromPath(UUID, cfg.getString("PageItems.Previous.NotFound"))); 
+						p.sendMessage( plugin.getPluginManager().getFromPath(UUID, cfg.getString("PageItems.Previous.NotFound"))); 
 						plugin.getAPI().playSound("REWARDS_FIRST_ALREADY", p);
 					} else {
 						SimpleAPI.getPlugin().getPlayerSaveAndLoadManager().removeOnePageFromID(""+p.getUniqueId(),  "REWARDS_"+j.getConfigID());

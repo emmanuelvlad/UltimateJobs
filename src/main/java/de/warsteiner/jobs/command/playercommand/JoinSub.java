@@ -17,12 +17,12 @@ public class JoinSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Join.Usage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Join.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Join.Description");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Join.Description");
 	}
 
 	@Override
@@ -46,24 +46,24 @@ public class JoinSub extends SubCommand {
 				if (jb.getCurrentJobs().size() <= max) {
 					if (!jb.isInJob(file.getConfigID())) {
 						jb.addCurrentJob(file.getConfigID());
-						player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_join_Joined")
+						player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_join_Joined")
 								.replaceAll("<job>", file.getDisplay(ID)));
 					} else {
-						player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_join_already")
+						player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_join_already")
 								.replaceAll("<job>", file.getDisplay(ID)));
 					}
 				} else {
-					player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_join_max")
+					player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_join_max")
 							.replaceAll("<job>", file.getDisplay(ID)));
 				}
 			} else {
-				player.sendMessage(plugin.getPluginManager().getMessage(UUID, "command_join_not_own")
+				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_join_not_own")
 						.replaceAll("<job>", file.getDisplay(ID)));
 
 			}
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -84,7 +84,7 @@ public class JoinSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getMessage(UUID, "Commands.Join.UsageMessage");
+		return plugin.getPluginManager().getAMessage(UUID, "Commands.Join.UsageMessage");
 	}
 
 }
