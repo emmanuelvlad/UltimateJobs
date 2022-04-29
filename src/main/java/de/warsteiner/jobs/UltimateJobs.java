@@ -77,7 +77,6 @@ import de.warsteiner.jobs.player.PlayerManager;
 import de.warsteiner.jobs.player.SQLPlayerManager;
 import de.warsteiner.jobs.player.YMLPlayerManager;
 import de.warsteiner.jobs.utils.BossBarHandler;
-import de.warsteiner.jobs.utils.PluginModule;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry;
 import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry;
 import net.milkbowl.vault.economy.Economy;
@@ -112,10 +111,10 @@ public class UltimateJobs extends JavaPlugin {
 
 		plugin = this;
 		plapi = new PluginManager();
-
-		createFolders();
-
+ 
 		filemanager = new FileManager();
+		
+		createFolders();
 
 		filemanager.generateFiles();
 
@@ -137,7 +136,6 @@ public class UltimateJobs extends JavaPlugin {
 							"https://api.war-projects.com/v1/ultimatejobs/version.txt", "UltimateJobs",
 							getDescription().getVersion());
 				}
-				SimpleAPI.getPlugin().getModuleRegistry().getModuleList().add(new PluginModule());
 			});
 		}
 
@@ -200,14 +198,15 @@ public class UltimateJobs extends JavaPlugin {
 
 		getLogger().info("§7");
 		getLogger().info("§7");
-		getLogger().info("  _   _ _  _____ ___ __  __   _ _______ ____  ___ ____  __ __");
-		getLogger().info(" | | | | ||_   _|_ _|  \\/  | /_\\_   _| __| | |/  _ \\| _ ) __|");
-		getLogger().info(" | |_| | |__| |  | || |\\/| |/ _ \\| | | _|  | || (_)|| _ \\__\\");
-		getLogger().info("  \\___/|____|_|  |_||_|  |_/_/ \\_|_| |___\\__/ \\___/|___/___/");
-		getLogger().info("                                                            ");
+		getLogger().info(",--. ,--.,--.,--------.,--.,--.   ,--.  ,---. ,--------.,------.     ,--. ,-----. ,-----.   ,---.   ");
+		getLogger().info("|  | |  ||  |'--.  .--'|  ||   `.'   | /  O  \\'--.  .--'|  .---'     |  |'  .-.  '|  |) /_ '   .-'  ");
+		getLogger().info("|  | |  ||  |   |  |   |  ||  |'.'|  ||  .-.  |  |  |   |  `--, ,--. |  ||  | |  ||  .-.  \\`.  `-.  ");
+		getLogger().info("'  '-'  '|  '--.|  |   |  ||  |   |  ||  | |  |  |  |   |  `---.|  '-'  /'  '-'  '|  '--' /.-'    | ");
+		getLogger().info(" `-----' `-----'`--'   `--'`--'   `--'`--' `--'  `--'   `------' `-----'  `-----' `------' `-----'  ");
 		getLogger().info("       §bRunning plugin UltimateJobs v" + getDescription().getVersion() + " ("
 				+ getDescription().getAPIVersion() + ")");
 		getLogger().info("       §bRunning UltimateJobs with " + getLoaded().size() + " Jobs");
+		getLogger().info("       §bLoaded " + getPluginManager().getLanguages().size() + " Languages");
 		getLogger().info("§7");
 		getLogger().info("§7");
 

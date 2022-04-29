@@ -16,6 +16,8 @@ LoadJobsFrom: "plugins/UltimateJobs/jobs/"
 
 KickOnReload: true
 
+CancelEvents: false
+
 #default 180 seconds
 #the cache gets saved on join or quit, a low value here can create TPS issues. Change on own risk
 Cache_Saved_Every: 180

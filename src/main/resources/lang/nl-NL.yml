@@ -1,122 +1,122 @@
-# .----------------.  .-----------------. .----------------.  .----------------.  .----------------. 
+# .-----------------. .----------------.  .----------------.  .-----------------. .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
-#| |  _________   | || | ____  _____  | || |              | || | _____  _____ | || |    _______   | |
-#| | |_   ___  |  | || ||_   \|_   _| | || |              | || ||_   _||_   _|| || |   /  ___  |  | |
-#| |   | |_  \_|  | || |  |   \ | |   | || |    ______    | || |  | |    | |  | || |  |  (__ \_|  | |
-#| |   |  _|  _   | || |  | |\ \| |   | || |   |______|   | || |  | '    ' |  | || |   '.___`-.   | |
-#| |  _| |___/ |  | || | _| |_\   |_  | || |              | || |   \ `--' /   | || |  |`\____) |  | |
-#| | |_________|  | || ||_____|\____| | || |              | || |    `.__.'    | || |  |_______.'  | |
+#| | ____  _____  | || |   _____      | || |              | || | ____  _____  | || |   _____      | |
+#| ||_   \|_   _| | || |  |_   _|     | || |              | || ||_   \|_   _| | || |  |_   _|     | |
+#| |  |   \ | |   | || |    | |       | || |    ______    | || |  |   \ | |   | || |    | |       | |
+#| |  | |\ \| |   | || |    | |   _   | || |   |______|   | || |  | |\ \| |   | || |    | |   _   | |
+#| | _| |_\   |_  | || |   _| |__/ |  | || |              | || | _| |_\   |_  | || |   _| |__/ |  | |
+#| ||_____|\____| | || |  |________|  | || |              | || ||_____|\____| | || |  |________|  | |
 #| |              | || |              | || |              | || |              | || |              | |
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
-# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
-
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+ 
 #used on /jobs language <lang>
-LanguageName: "english"
+LanguageName: "nederlands"
 
-prefix: "&8[#14e0ba#Jobs&8]"
+prefix: "&8[#14e0ba#UltimateJobs&8]"
 
-job_not_found: "<prefix> &cThe Job <job> does not exist!"
+job_not_found: "<prefix> &cDe baan <job> bestaat niet!"
 
-noperm: "<prefix> &cYou dont have permissions!"
+noperm: "<prefix> &cJe hebt geen permissie!"
 
 #placeholders
-placeholder_no_job: "&cNo Job"
-placeholder_no_level: "&cNo Level"
-placeholder_no_exp: "&cNo Exp"
+placeholder_no_job: "&cGeen Baan"
+placeholder_no_level: "&cGeen Level"
+placeholder_no_exp: "&cGeen Exp"
 
 #commands
-command_notfound: "<prefix> &7Cannot find command &6<cmd>&7!"
-command_usage: "<prefix> &7Please use &6<usage>&7."
+command_notfound: "<prefix> &7Kan de command &6<cmd>&7 niet vinden!"
+command_usage: "<prefix> &7Gebruik alstublieft &6<usage>&7."
 
 #command /job language
-command_language_NotFound: "<prefix> &cCannot find that language!"
-command_language_Already: "<prefix> &cYou already have that language!"
-command_language_Changed: "<prefix> &aYou changed your language to <lang>!"
+command_language_NotFound: "<prefix> &cKan deze taal niet vinden!"
+command_language_Already: "<prefix> &cJe hebt deze taal al!"
+command_language_Changed: "<prefix> &aJe hebt de taal veranderd naar <lang>!"
 
 #command /job join
-command_join_Joined: "<prefix> &7You joined the Job <job>&7!"
-command_join_max: "<prefix> &7You reached the maximum Jobs!"
-command_join_already: "<prefix> &7You are already in that Job!"
-command_join_not_own: "<prefix> &7You dont own that Job!"
+command_join_Joined: "<prefix> &7Je hebt de baan <job>&7 geaccepteerd!"
+command_join_max: "<prefix> &7Je hebt de maximum banen bereikt!"
+command_join_already: "<prefix> &7Je bent al in deze baan!"
+command_join_not_own: "<prefix> &7Je hebt deze baan niet!"
 
 #command /job leaveall
-command_leaveall_message: "<prefix> &7You left all &6current &7Jobs."
-command_leaveall_already: "<prefix> &cYou are not in any Job!"
+command_leaveall_message: "<prefix> &7Je hebt alle banen verlaten."
+command_leaveall_already: "<prefix> &cJe bent in geen baan.!"
 
 #command /job leave
-command_leave_message: "<prefix> &7You have left the Job <job>&7."
-command_leave_already: "<prefix> &cYou are not in that Job!"
+command_leave_message: "<prefix> &7Je hebt de baan <job> &7verlaten."
+command_leave_already: "<prefix> &cJe bent niet aangenomen in deze baan!"
 
 #command /job limit
-command_limit_other: "<prefix> &7<name> can have &a<max> &7Jobs."
-command_limit_not_found: "<prefix> &cCannot find player <name>."
-command_limit_self: "<prefix> &7You can have &b<max> &7Jobs."
+command_limit_other: "<prefix> &7<name> kan hebben &a<max> &7Jobs."
+command_limit_not_found: "<prefix> &cKan deze speler niet vinden <name>."
+command_limit_self: "<prefix> &7Je kan &b<max> &7banen hebben."
 
 #command /job points
-command_points_not_found: "<prefix> &cCannot find player <name>."
-command_points_self: "<prefix> &7You have &b<points> &7Points."
-command_points_other: "<prefix> &7<name> owns &b<points> &7Points."
+command_points_not_found: "<prefix> &cKan deze speler niet vinden <name>."
+command_points_self: "<prefix> &7Je hebt &b<points> &7Punten."
+command_points_other: "<prefix> &7<name> heeft &b<points> &7Punten."
 
 #command /job stats
-command_stats_not_found: "<prefix> &cCannot find player <name>."
+command_stats_not_found: "<prefix> &cKan deze speler niet vinden <name>."
 
 #other messages
 Other:
 
-  Bought_Job: "<prefix> &7You bought the Job <job>&7." 
+  Bought_Job: "<prefix> &7Je hebt de baan <job> &7gekocht." 
   
-  Not_Enough_Money: "<prefix> &7You dont have enough money."
+  Not_Enough_Money: "<prefix> &7Je hebt niet genoeg geld."
   
-  Full: "<prefix> &7You already reached the &cmaximum &7of Jobs."
+  Full: "<prefix> &7Je hebt al de maximum banen aangenomen."
   
-  Joined: "<prefix> &7You joined the Job <job>&7."
+  Joined: "<prefix> &7Je bent aangenomen in <job>&7."
 
-  Left_Job: "<prefix> &7You have left the Job <job>&7."
+  Left_Job: "<prefix> &7Je hebt deze baan verlaten: <job>&7."
   
-  Leave_All: "<prefix> &7You left all &6current &7Jobs."
+  Leave_All: "<prefix> &7Je hebt alle banen verlaten."
   
-  Already_Left_All: "<prefix> &7You are &6not &7in any Job."
+  Already_Left_All: "<prefix> &7Op het moment ben je in geen baan."
 
 #config of levels
 Levels:
 
-  BoardCastMessage: "&6Server &8| &7Player &c<name> &7reached Level &b<level> &7in the <job> Job&7!"
+  BoardCastMessage: "&6Server &8| &7Speler &c<name> &7Level Bereikt &b<level> &7in de job: <job>&7!"
 
-  Ttitle_1: "&8| &b&lLevel UP &8|"
+  Ttitle_1: "&8| &b&lLevel Omhoog! Gefeliciteerd! &8|"
 
-  Ttitle_2: "&7New level <level_int> &8/ <level_name>"
+  Ttitle_2: "&7Nieuwe level <level_int> &8/ <level_name>"
   
-  Message: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
+  Message: "<prefix> &7Je hebt een nieuwe level bereikt! &8(&7<level_int> &8/ <level_name>&8)"
   
-  Actionbar: "<prefix> &7You reached a new level! &8(&7<level_int> &8/ <level_name>&8)"
+  Actionbar: "<prefix> &7Je hebt een nieuwe level bereikt! &8(&7<level_int> &8/ <level_name>&8)"
   
 #config of reward messages & max earings
 Reward:
 
-  BossBar: "&a+ &7<money> Dollars from <id> &8(&4<action>&8)"
+  BossBar: "&a+ &7<money> Euro from <id> &8(&4<action>&8)"
   
-  Message: "<prefix> &7Added <money>  Dollars as Reward from <id>&7! &8(&4<action>&8)"
+  Message: "<prefix> &7<money> Toegevoegd geld als cadeau <id>&7! &8(&4<action>&8)"
   
-  Actionbar: "<prefix> &7Added <money>  Dollars as Reward from <id> &8(&4<action>&8)"
+  Actionbar: "<prefix> &7Toegevoegd <money>  Geld als cadeau van <id> &8(&4<action>&8)"
   
 MaxEarningsReached:
 
-  BossBar: "&cYou reached the max Earnings for today in the Job <job>"
+  BossBar: "&cJe hebt het maximale wat je kunt verdienen gehaald voor vandaag in de baan <job>."
   
-  Message: "<prefix> &cYou reached the max Earnings for today in the Job <job>"
+  Message: "<prefix> &cJe hebt het maximale wat je kunt verdienen gehaald voor vandaag in de baan <job>."
   
-  Actionbar: "<prefix> &cYou reached the max Earnings for today in the Job <job>"
+  Actionbar: "<prefix> &cJe hebt het maximale wat je kunt verdienen gehaald voor vandaag in de baan <job>."
   
 #confog of commands
 Commands:
 
   Rewards:
   
-    Usage: "rewards"
+    Usage: "cadeaus"
     
     UsageMessage: "/Jobs rewards <job>"
     
-    Description: "View Earnings of Jobs"
+    Description: "Bekijk Loon van verschillende Banen"
 
   Stats:
   
@@ -132,7 +132,7 @@ Commands:
     
     UsageMessage: "/Jobs language <name>"
     
-    Description: "Change your Language"
+    Description: "Verander je taal"
 
   Help:
   
@@ -143,14 +143,14 @@ Commands:
     List:
       - "&8"
       - " &8| &9UltimateJobs &8- &7Help &8| "
-      - "&8-> &6/Jobs leave <job> &8| &7Leave a Job"
-      - "&8-> &6/Jobs join <job> &8| &7Join a Job"
-      - "&8-> &6/Jobs leaveall &8| &7Leave all current Jobs"
-      - "&8-> &6/Jobs help &8| &7This Page" 
-      - "&8-> &6/Jobs limit <name> &8| &7View a Jobs-Limit"
+      - "&8-> &6/Jobs leave <job> &8| &7Verlaat een baan"
+      - "&8-> &6/Jobs join <job> &8| &7Join een baan"
+      - "&8-> &6/Jobs leaveall &8| &7Verlaat alle banen"
+      - "&8-> &6/Jobs help &8| &7Deze pagina" 
+      - "&8-> &6/Jobs limit <name> &8| &7Bekijk baan-limiet"
       - "&8"
  
-    Description: "See more help"
+    Description: "Zie meer help"
 
   Points:
   
@@ -158,7 +158,7 @@ Commands:
     
     UsageMessage: "/Jobs points <name>"
     
-    Description: "See your Points"
+    Description: "Zie je punten"
 
   Limit:
   
@@ -166,7 +166,7 @@ Commands:
     
     UsageMessage: "/Jobs limit <name>"
     
-    Description: "See your Job Limit"
+    Description: "Zie je job limiet"
 
   Leave:
   
@@ -174,7 +174,7 @@ Commands:
     
     UsageMessage: "/Jobs leave <job>"
     
-    Description: "Leave a Job"
+    Description: "Verlaat een job"
 
   LeaveALL:
   
@@ -182,7 +182,7 @@ Commands:
     
     UsageMessage: "/Jobs leaveall"
     
-    Description: "Leave all Jobs"
+    Description: "Verlaat alle jobs"
 
   Join:
   
@@ -190,7 +190,7 @@ Commands:
     
     UsageMessage: "/Jobs join <job>"
     
-    Description: "Join A Job"
+    Description: "Join een baan"
     
   Levels:
   
@@ -198,7 +198,7 @@ Commands:
     
     UsageMessage: "/Jobs levels <job>"
     
-    Description: "View Job Levels"
+    Description: "Bekijk Job Levels"
      
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -221,42 +221,42 @@ Main_Job_Items:
 
     Bought:
       - "&7"
-      - "&aYou own this Job."
+      - "&aJe hebt deze baan."
 
     In:
       - "&7"
-      - "&bYou are in this Job."
+      - "&bJe bent in deze baan."
 
     Price:
       - "&7"
-      - "&cClick to buy this job for <price> Dollars."
+      - "&cKlik om deze baan te kopen voor <price> euro."
       
 Main_Custom:
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cSluit Menu &8>"
     
   Leave:
     
-    Display: "&8< #9b0411#Leave all Jobs &8>"
+    Display: "&8< #9b0411#Verlaat alle banen &8>"
     
     Lore:
-      - "&7Click here to leave all jobs"
+      - "&7Klik hier om alle banen te verlaten."
     
   Info:
     
-    Display: "&8<| #44ead4#Informations &8|>"
+    Display: "&8<| #44ead4#Informatie &8|>"
     
     Lore:
       - "&8&m-------------------"
-      - "&cWhy i should get an job?"
+      - "&cWaarom zou ik een baan krijgen?"
       - "&7"
-      - "&7You need an Job to earn money, "
-      - "&7to raise your Kids! :)"
+      - "&7Je hebt geld nodig, "
+      - "&7om je Kinderen op te voeden! :)"
       - "&8"
-      - "&8-> &7You can have &c<max> &7Jobs."
-      - "&8-> &7You have &a<points> &7Points."
+      - "&8-> &7Je kan maximaal &c<max> &7banen hebben."
+      - "&8-> &7Je hebt &a<points> &7punten."
       
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -277,21 +277,21 @@ Help_Custom:
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cSluit Menu &8>"
 
   Info1:
     
-    Display: "&8< &6/Jobs limit &8>"
+    Display: "&8< &6/Baan Limiet &8>"
     
     Lore:
-      - "&7See your current Jobs-Limit with this Command"
+      - "&7Bekijk je banen die je op het moment hebt"
     
   Info2:
     
     Display: "&8< &6/Jobs points &8>"
     
     Lore:
-      - "&7See your current Points with this Command"
+      - "&7Bekijk je punten met deze command"
       
 # .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -306,32 +306,32 @@ Help_Custom:
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
 #config of help gui
-AreYouSureGUI_Name:  "&6You want to buy <job>&6?"
+AreYouSureGUI_Name:  "&6Wil je de baan <job> &6kopen?"
 
 AreYouSureItems:
 
   Button_NO:
 
-    Display: "&8<| &cNo &8|>"
+    Display: "&8<| &cNee &8|>"
 
     Lore:
-      - "&7Cancel this progress."
+      - "&7Annuleer dit proces."
 
   Button_YES:
 
-    Display: "&8<| &aYes, I'm Sure &8|>"
+    Display: "&8<| &aJa, Ik ben er zeker van. &8|>"
 
     Lore:
-      - "&7You want to buy this Job?"
+      - "&7Wil je deze baan kopen?"
 
 AreYouSureGUI_Custom:
 
   Back:
     
-    Display: "&8< &4Go Back &8>"
+    Display: "&8< &4Ga Terug&8>"
     
     Lore:
-      - "&7Click here to get back to the main menu"
+      - "&6Klik hier om terug te gaan naar het algemene menu"
 
 # .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -345,47 +345,47 @@ AreYouSureGUI_Custom:
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-Settings_Name: "#285416#Job Options &8- <job>"
+Settings_Name: "#285416#Baan Opties &8- <job>"
 
 Settings_Custom:
 
   Back:
   
-    Display: "&8< &4Go Back &8>"
+    Display: "&8< &4Ga Terug&8>"
     
     Lore:
-      - "&8< &7Click here to get back to the main menu &8>"
+      - "&8< &Klik hier om terug te gaan naar het algemene menu &8>"
 
   MoneyList:
   
-    Display: "&8< &7See #92f4ab#Earnings &7for different Blocks &8>"
+    Display: "&8< &7Bekijk #92f4ab#loon &7voor verschillende blokken &8>"
     
     Lore:
-      - "&7This works only when the addon is enabled."
+      - "&7Dit werkt alleen als de addon is geinstalleerd."
 
   Earnings:
   
-    Display: "&8< &7My #edb51c#Earnings &7this Month &8>"
+    Display: "&8< &7My #edb51c#Loon &7van deze Maand &8>"
     
     Lore:
-      - "&7This works only when the addon is enabled."
+      - "&7Dit werkt alleen als de addon is geinstalleerd."
 
   Leave:
   
-    Display: "&8< &c&lLeave this Job &8>"
+    Display: "&8< &c&lVerlaat deze baan &8>"
 
   Close:
   
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cSluit Menu &8>"
 
   Skull:
     
-    Display: "&8<| #44ead4#Informations &8|>"
+    Display: "&8<| #44ead4#Informatie &8|>"
     
     Lore:
-      - "&7Bought on &8: &b<stats_args_1>"
-      - "&7Blocks &8: &b<stats_args_2>" 
-      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7Gekocht op &8: &b<stats_args_1>"
+      - "&7Blokken &8: &b<stats_args_2>" 
+      - "&7Vandaag Verdiend&8: &a<earned> Euro"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -402,45 +402,45 @@ Settings_Custom:
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-Rewards_Name: "#eabb10#Rewards of &8: <job>"
+Rewards_Name: "#eabb10#Cadeaus van&8: <job>"
 
 Rewards_Item_Lores:
 
   Reached:
     - "&7"
-    - "&aYou reached this Level"
+    - "&aJe hebt dit level bereikt!"
     
   Currently:
     - "&7"
-    - "&6You need <exp> Exp more to complete this Level!"
+    - "&6Je hebt <exp> Exp nodig om dit level te halen!"
     
   Locked:
     - "&7"
-    - "&cThis Level is locked"
+    - "&cDeze level is op slot."
  
 Rewards_Custom:
 
   Previous:
   
-    Display: "&8<| &7Previous Page &8|>"
+    Display: "&8<| &7Ga Terug &8|>"
     
-    Message_NotFound: "&8[&6RewardsGUI&8] &cCannot find a previous page!"
+    Message_NotFound: "&8[&6CadeausGUI&8] &cKan het vorige pagina niet vinden!"
     
     Lore:
-      - "&8Go to the previous Page!"
+      - "&8Ga naar de vorige pagina!"
 
   Next:
   
-    Display: "&8<| &7Next Page &8|>"
+    Display: "&8<| &7Volgende Pagina &8|>"
     
-    Message_NotFound: "&8[&6RewardsGUI&8] &cCannot find a next page!"
+    Message_NotFound: "&8[&6CadeausGUI&8] &cKan de volgende pagina niet vinden!"
     
     Lore:
-      - "&8Go to the next Page!"
+      - "&8Ga naar het volgende pagina!"
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cSluit Menu &8>"
     
 # .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
 # .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -454,31 +454,31 @@ Rewards_Custom:
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-Levels_Name: "&6&lLevels of &8: <job>"
+Levels_Name: "&6&lLevels van &8: <job>"
  
 Levels_Custom:
 
   Previous:
   
-    Display: "&8<| &7Previous Page &8|>"
+    Display: "&8<| &7Vorige Pagina &8|>"
     
-    Message_NotFound: "&8[&6LevelsGUI&8] &cCannot find a previous page!"
+    Message_NotFound: "&8[&6LevelsGUI&8] &cKan de vorige pagina niet vinden!"
     
     Lore:
-      - "&8Go to the previous Page!"
+      - "&8Ga naar de vorige pagina!"
 
   Next:
   
-    Display: "&8<| &7Next Page &8|>"
+    Display: "&8<| &7Volgende Pagina &8|>"
     
-    Message_NotFound: "&8[&6LevelsGUI&8] &cCannot find a next page!"
+    Message_NotFound: "&8[&6LevelsGUI&8] &cKan de volgende pagina niet vinden!"
     
     Lore:
-      - "&8Go to the next Page!"
+      - "&8Ga naar de volgende pagina!"
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cSluit Menu &8>"
 
 # .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -493,50 +493,50 @@ Levels_Custom:
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
 
 #config of stats gui - self
-Self_Name: "#285416#Your Stats"
+Self_Name: "#285416#Jou Status"
  
 Self_Custom:
 
   NotFound:
   
-    Display: "&8/ Not Found &8/"
+    Display: "&8/ Niet Gevonden &8/"
     
-    Lore: "&8Player has no current job s"
+    Lore: "&8Speler heeft geen banen."
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cSluit Menu &8>"
 
   Skull:
     
-    Display: "&8< &bYour Stats &8>"
+    Display: "&8< &bJou Status &8>"
     
     Lore:
-      - "&7Limit&8: &c<max>"
-      - "&7Points&8: &b<points>"
+      - "&7Limiet&8: &c<max>"
+      - "&7Punten&8: &b<points>"
       
 #config of stats gui - other
-Other_Name: "#285416#Stats of <name>"
+Other_Name: "#285416#Status van <name>"
  
 Other_Custom:
 
   NotFound:
   
-    Display: "&8/ Not Found &8/"
+    Display: "&8/ Niet Gevonden &8/"
     
-    Lore: "&8Player has no current job s"
+    Lore: "&8Speler is in geen baan."
 
   Close:
     
-    Display: "&8< &cClose Menu &8>"
+    Display: "&8< &cSluit Menu &8>"
 
   Skull:
     
-    Display: "&8< &bStats of <name> &8>"
+    Display: "&8< &bStatus van <name> &8>"
     
     Lore:
-      - "&7Limit&8: &c<max>"
-      - "&7Points&8: &b<points>"
+      - "&7Limiet&8: &c<max>"
+      - "&7Punten&8: &b<points>"
       
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -554,45 +554,45 @@ Jobs:
 
   LUMBER:
   
-    Display: "&6Lumberjack"
+    Display: "&6Houthakker"
     
-    DisplayID: "lumberjack"
+    DisplayID: "Houthakker"
     
     Lore:
-      - "&7Earn Money when breaking blocks!"
+      - "&7Verdiend geld met blokken breken!"
     
     Stats:
       - "&7"
-      - "&aStats&8:"
-      - "&7Bought on &8: &b<stats_args_1>"
-      - "&7Blocks &8: &b<stats_args_2>" 
-      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&aStatus&8:"
+      - "&7Gekocht op&8: &b<stats_args_1>"
+      - "&7Blokken&8: &b<stats_args_2>" 
+      - "&7Vandaag Verdiend&8: &a<earned> Euro"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
 
     StatsGUI:
     
-       Display: "&8< | &6Lumberjack &8| >"
+       Display: "&8< | &6Houthakker &8| >"
        
        Lore:
 
          Other: 
            - "&7<name>'s Stats in this Job&8:"
            - "&8&m--------------------------"
-           - "&7Bought on &8: &b<stats_args_1>"
-           - "&7Blocks &8: &b<stats_args_2>" 
-           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7Gekocht op&8: &b<stats_args_1>"
+           - "&7Blokken&8: &b<stats_args_2>" 
+           - "&7Vandaag Verdiend&8: &a<earned> Euro"
            - "&7" 
            - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
            - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
        
          Self: 
-           - "&7Your Stats in this Job&8:"
+           - "&7Jou status in deze baan&8:"
            - "&8&m--------------------------" 
-           - "&7Bought on &8: &b<stats_args_1>"
-           - "&7Blocks &8: &b<stats_args_2>" 
-           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7Gekocht op&8: &b<stats_args_1>"
+           - "&7Blokken&8: &b<stats_args_2>" 
+           - "&7Vandaag Verdiend&8: &a<earned> Euro"
            - "&7" 
            - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
            - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -606,22 +606,22 @@ Jobs:
         Display: "&6Level II"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a250 Money"
+          - "&7Cadeaus van deze baan&8:"
+          - "&8-> &a250 Euro"
       
       3:  
         Display: "&6Level III"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a500 Money"
+          - "&7Cadeaus van deze baan&8:"
+          - "&8-> &a500 Euro"
       
       4: 
         Display: "&6Level IV"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a1000 Money"
+          - "&7Cadeus van deze baan&8:"
+          - "&8-> &a1000 Euro"
       
     IDS:
 
@@ -631,77 +631,77 @@ Jobs:
         
         Rewards:
         
-          Display: "&8< &6Stripped Log &8>"
+          Display: "&8< &6Gestripe Eikenstam &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
-            - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &6&lStripp"
-            - "&7Rarity &8: &bNormal"
+            - "&7Materiaal&8: Gestripte Eikenstam&b"
+            - "&7Cadeau&8: &c$<money>"
+            - "&7Kans&8: &9<chance>%"
+            - "&7Exp&8: &a<exp>"
+            - "&7Punten&8: &6<points>"
+            - "&7Actie&8: &6&lGestript"
+            - "&7Zeldzaamheid&8: &bNormaal"
 
       OAK_LOG_BREAK:
       
-        Display: "&6Log"
+        Display: "&6Eikenstam"
         
         Rewards:
         
-          Display: "&8< &6Log &8>"
+          Display: "&8< &6Eikenstam &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
-            - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Rarity &8: &bNormal"
+            - "&7Materiaal&8: &bEikenstam"
+            - "&7Cadeau&8: &c$<money>"
+            - "&7Kans&8: &9<chance>%"
+            - "&7Exp&8: &a<exp>"
+            - "&7Punten &8: &6<points>"
+            - "&7Actie&8: &4Breken"
+            - "&7Zeldzaamheid&8: &bNormaal"
   
   MINER:
   
-    Display: "#50cbed#Miner"
+    Display: "#50cbed#Mijner"
     
-    DisplayID: "miner"
+    DisplayID: "mijner"
     
     Lore:
-      - "&7Earn Money when breaking blocks!"
+      - "&7Verdiend geld met blokken breken!"
     
     Stats:
       - "&7"
-      - "&aStats&8:"
-      - "&7Bought on &8: &b<stats_args_1>"
-      - "&7Blocks &8: &b<stats_args_2>" 
-      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&aStatus&8:"
+      - "&7Gekocht op&8: &b<stats_args_1>"
+      - "&7Blokken&8: &b<stats_args_2>" 
+      - "&7Vandaag Verdiend&8: &a<earned> Euro"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
       
     StatsGUI:
     
-       Display: "&8< | #50cbed#Miner &8| >"
+       Display: "&8< | #50cbed#Mijner &8| >"
        
        Lore:
 
          Other: 
            - "&7<name>'s Stats in this Job&8:"
            - "&8&m--------------------------"
-           - "&7Bought on &8: &b<stats_args_1>"
-           - "&7Blocks &8: &b<stats_args_2>" 
-           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7Gekocht op&8: &b<stats_args_1>"
+           - "&7Blokken&8: &b<stats_args_2>" 
+           - "&7Verdiend Vandaag&8: &a<earned> Euro"
            - "&7" 
            - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
            - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
        
          Self: 
-           - "&7Your Stats in this Job&8:"
+           - "&7Jou status in deze baan&8:"
            - "&8&m--------------------------" 
-           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Gekocht op&8: &b<stats_args_1>"
            - "&7Blocks &8: &b<stats_args_2>" 
-           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7Vandaag verdiend&8: &a<earned> Euro"
            - "&7" 
            - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
            - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -715,75 +715,75 @@ Jobs:
         Display: "&6Level II"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a250 Money"
+          - "&7Cadeaus voor deze level&8:"
+          - "&8-> &a250 Euro"
       
       3:  
         Display: "&6Level III"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a500 Money"
+          - "&7Cadeaus voor deze level&8:"
+          - "&8-> &a500 Euro"
       
       4: 
         Display: "&6Level IV"
         
         Lore:
-          - "&7Rewards of this Level&8:"
-          - "&8-> &a1000 Money"
+          - "&7Cadeaus voor deze level&8:"
+          - "&8-> &a1000 Euro"
       
     IDS:
 
       STONE:
       
-        Display: "&7&lStone"
+        Display: "&7&lSteen"
         
         Rewards:
         
-          Display: "&8< &7&lStone &8>"
+          Display: "&8< &7&lSteen &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
-            - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Rarity &8: &bNormal"
+            - "&7Materiaal&8: &bSteen"
+            - "&7Cadeau&8: &c$<money>"
+            - "&7Kans&8: &9<chance>%"
+            - "&7Exp&8: &a<exp>"
+            - "&7Punten&8: &6<points>"
+            - "&7Actie&8: &4Breken"
+            - "&7Zeldzaamheid&8: &bNormaal"
 
       COBBLESTONE:
       
-        Display: "&7&lCobblestone"
+        Display: "&7&lKeisteen"
         
         Rewards:
         
-          Display: "&8< &7&lCobblestone &8>"
+          Display: "&8< &7&lKeisteen &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
-            - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Rarity &8: &bNormal"
+            - "&7Materiaal&8: &bSteen"
+            - "&7Cadeau&8: &c$<money>"
+            - "&7Kans&8: &9<chance>%"
+            - "&7Exp&8: &a<exp>"
+            - "&7Punten&8: &6<points>"
+            - "&7Actie&8: &4Breken"
+            - "&7Zeldzaamheid&8: &bNormaal"
     
       COAL:
       
-        Display: "&0Coal Ore"
+        Display: "&0Steenkoolerts"
         
         Rewards:
         
-          Display: "&8< &0Coal Ore &8>"
+          Display: "&8< &0Steenkoolerts &8>"
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7Reward &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
-            - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Rarity &8: &bRare"
+            - "&7Materiaal&8: &bSteen"
+            - "&7Cadeau&8: &c$<money>"
+            - "&7Kans&8: &9<chance>%"
+            - "&7Exp&8: &a<exp>"
+            - "&7Punten&8: &6<points>"
+            - "&7Actie&8: &4Breken"
+            - "&7Zeldzaamheid&8: &bNormaal"

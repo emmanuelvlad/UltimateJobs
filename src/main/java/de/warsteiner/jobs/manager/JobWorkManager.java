@@ -51,6 +51,9 @@ public class JobWorkManager {
 	public void executeHoneyAction(PlayerInteractEvent event, JobsPlayer pl) {
 		Player player = event.getPlayer();
 		if (event.isCancelled()) {
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 		Material item = player.getItemInHand().getType();
@@ -70,6 +73,9 @@ public class JobWorkManager {
 
 	public void executeEatAction(FoodLevelChangeEvent event, JobsPlayer pl) {
 		if (event.isCancelled()) {
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 		if (event.getItem() == null) {
@@ -99,7 +105,9 @@ public class JobWorkManager {
 			DyeColor color = sheep.getColor();
 
 			if (event.isCancelled()) {
-				event.setCancelled(true);
+				if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+					event.setCancelled(true);
+				}
 				return;
 			}
 
@@ -114,7 +122,9 @@ public class JobWorkManager {
 		final int amount = event.getInventory().getResult().getAmount();
 
 		if (event.isCancelled()) {
-			event.setCancelled(true);
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 
@@ -125,7 +135,9 @@ public class JobWorkManager {
 
 	public void executeStripLogWork(PlayerInteractEvent event, JobsPlayer pl) { 
 		if (event.isCancelled()) {
-			event.setCancelled(true);
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 		
@@ -151,7 +163,9 @@ public class JobWorkManager {
 			return;
 		}
 		if (event.isCancelled()) {
-			event.setCancelled(true);
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 
@@ -164,7 +178,9 @@ public class JobWorkManager {
 		final Material type = event.getBlock().getType();
 
 		if (event.isCancelled()) {
-			event.setCancelled(true);
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 
@@ -174,7 +190,9 @@ public class JobWorkManager {
 
 	public void executeFishWork(PlayerFishEvent event, JobsPlayer pl) {
 		if (event.isCancelled()) {
-			event.setCancelled(true);
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 
@@ -192,7 +210,9 @@ public class JobWorkManager {
 		final EntityType type = event.getEntity().getType();
 
 		if (event.isCancelled()) {
-			event.setCancelled(true);
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 		
@@ -208,7 +228,9 @@ public class JobWorkManager {
 		final EntityType type = event.getEntity().getType();
 
 		if (event.isCancelled()) {
-			event.setCancelled(true);
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 		
@@ -245,7 +267,9 @@ public class JobWorkManager {
 		}
 
 		if (event.isCancelled()) {
-			event.setCancelled(true);
+			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
+				event.setCancelled(true);
+			}
 			return;
 		}
 
