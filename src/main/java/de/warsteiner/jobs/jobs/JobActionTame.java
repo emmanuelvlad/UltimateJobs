@@ -19,7 +19,7 @@ public class JobActionTame implements Listener {
 		
 		if(player instanceof Player) {
 		 
-			plugin.getJobWorkManager().executeTameWork(event, plugin.getPlayerManager().getRealJobPlayer(""+event.getOwner().getUniqueId())); 
+			plugin.getJobWorkManager().executeTameWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getOwner().getUniqueId())); 
 		}
 		
 	}

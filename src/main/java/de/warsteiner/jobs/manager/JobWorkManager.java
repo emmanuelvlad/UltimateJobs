@@ -31,10 +31,10 @@ import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.player.PlayerDataManager;
 import de.warsteiner.jobs.utils.JobAction;
 import de.warsteiner.jobs.utils.cevents.PlayerFinishedWorkEvent;
+import de.warsteiner.jobs.utils.objects.JobStats;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class JobWorkManager {
 
@@ -103,7 +103,7 @@ public class JobWorkManager {
 			Sheep sheep = (Sheep) event.getEntity();
 
 			DyeColor color = sheep.getColor();
-
+ 
 			if (event.isCancelled()) {
 				if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
 					event.setCancelled(true);
@@ -286,7 +286,7 @@ public class JobWorkManager {
 			public void run() {
 
 				String UUID = "" + player.getUniqueId();
-				PlayerDataManager dt = plugin.getPlayerDataModeManager();
+				JobsPlayer jobsplayer = plugin.getPlayerAPI().getRealJobPlayer(UUID);
 				FileConfiguration cfg = plugin.getFileManager().getConfig();
 
 				if (api.getJobsWithAction(UUID, pl, ac) == null) {
@@ -315,14 +315,16 @@ public class JobWorkManager {
 									boolean can = api.checkforDailyMaxEarnings(player, jb);
 
 									String date = plugin.getPluginManager().getDate();
+									
+									JobStats stats = jobsplayer.getStatsOf(jb.getConfigID());
 
 									String jobid = jb.getConfigID();
-									int lvl = pl.getLevelOf(jobid);
+									int lvl = stats.getLevel();
 									double reward = jb.getRewardOf(iD, ac);
 
-									double exp_old = pl.getExpOf(jobid);
+									double exp_old = stats.getExp();
 									double exp = jb.getExpOf(iD, ac) * amount;
-									Integer broken = pl.getBrokenOf(jobid) + amount;
+									Integer broken = stats.getBrokenTimes() + amount;
 									double points = jb.getPointsOf(iD, ac) * amount;
 									double old_points = pl.getPoints();
 
@@ -331,11 +333,11 @@ public class JobWorkManager {
 									double next = fixed * jb.getMultiOfLevel(lvl);
 
 									double calc = fixed + next;
+								 
+									int times_old = stats.getBrokenTimesOf(iD);
+									double earned_old = stats.getBrokenOf(iD);
 
-									int times_old = dt.getTimesEarnedOf(UUID, jobid, iD);
-									double earned_old = dt.getAmountEarnedOf(UUID, jobid, iD);
-
-									double new_earned = calc + dt.getEarnedAtDate(UUID, jobid, date);
+									double new_earned = calc + stats.getEarnings(plugin.getPluginManager().getDate());
 
 									if (jb.hasVaultReward(iD, ac)) {
 										if (can) {
@@ -346,26 +348,28 @@ public class JobWorkManager {
 									if (can == false) {
 
 										if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Exp")) {
-											pl.updateExp(jobid, exp_old + exp);
+											stats.updateExp(exp_old + exp);
 										}
 										if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Points")) {
-											pl.changePoints(points + old_points);
+											jobsplayer.updatePoints(points + old_points);
 										}
 										if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Stats")) {
-											pl.updateBroken(jobid, broken);
-											dt.updateEarningsAtDate(UUID, jobid, date, new_earned);
-
-											dt.updateAmountTimesOf(UUID, jobid, iD, times_old + 1);
-											dt.updateAmountEarnedOf(UUID, jobid, iD, earned_old + calc);
+											stats.updateBrokenTimes(broken);
+											
+											stats.updateEarnings(date, new_earned);
+											
+											stats.updateBrokenOf(iD, earned_old + calc);
+											stats.updateBrokenTimesOf(iD, times_old+1);
+ 
 										}
 
 									} else {
-										pl.updateExp(jobid, exp_old + exp);
-										pl.changePoints(points + old_points);
-										pl.updateBroken(jobid, broken);
-										dt.updateEarningsAtDate(UUID, jobid, date, new_earned);
-										dt.updateAmountTimesOf(UUID, jobid, iD, times_old + 1);
-										dt.updateAmountEarnedOf(UUID, jobid, iD, earned_old + calc);
+										stats.updateExp(exp_old + exp);
+										jobsplayer.updatePoints(points + old_points);
+										stats.updateBrokenTimes(broken);
+										stats.updateEarnings(date, new_earned);
+										stats.updateBrokenOf(iD, earned_old + calc);
+										stats.updateBrokenTimesOf(iD, times_old+1);
 									}
 
 									api.playSound("FINISHED_WORK", player);

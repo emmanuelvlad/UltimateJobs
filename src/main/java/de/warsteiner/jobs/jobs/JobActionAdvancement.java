@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
  
 public class JobActionAdvancement implements Listener  {
 	
@@ -14,6 +14,6 @@ public class JobActionAdvancement implements Listener  {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEvent(PlayerAdvancementDoneEvent   event) { 
-		plugin.getJobWorkManager().executeAchWork(event, plugin.getPlayerManager().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+		plugin.getJobWorkManager().executeAchWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
 	}
 }

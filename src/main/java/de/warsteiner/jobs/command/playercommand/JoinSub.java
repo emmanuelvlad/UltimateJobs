@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class JoinSub extends SubCommand {
@@ -17,12 +17,14 @@ public class JoinSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Join.Usage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Join.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Join.Description");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Join.Description");
 	}
 
 	@Override
@@ -46,24 +48,24 @@ public class JoinSub extends SubCommand {
 				if (jb.getCurrentJobs().size() <= max) {
 					if (!jb.isInJob(file.getConfigID())) {
 						jb.addCurrentJob(file.getConfigID());
-						player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_join_Joined")
+						player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_join_Joined")
 								.replaceAll("<job>", file.getDisplay(ID)));
 					} else {
-						player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_join_already")
+						player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_join_already")
 								.replaceAll("<job>", file.getDisplay(ID)));
 					}
 				} else {
-					player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_join_max")
+					player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_join_max")
 							.replaceAll("<job>", file.getDisplay(ID)));
 				}
 			} else {
-				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_join_not_own")
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_join_not_own")
 						.replaceAll("<job>", file.getDisplay(ID)));
 
 			}
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -84,7 +86,8 @@ public class JoinSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Join.UsageMessage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Join.UsageMessage");
 	}
 
 }

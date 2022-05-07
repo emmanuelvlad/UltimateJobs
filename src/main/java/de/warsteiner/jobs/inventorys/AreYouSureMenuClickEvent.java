@@ -1,6 +1,5 @@
 package de.warsteiner.jobs.inventorys;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.configuration.file.FileConfiguration; 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +11,7 @@ import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class AreYouSureMenuClickEvent implements Listener {
 	
@@ -43,10 +42,12 @@ public class AreYouSureMenuClickEvent implements Listener {
 		FileConfiguration config = plugin.getFileManager().getConfirm();
 		  
 		Player p = (Player) e.getWhoClicked();
-		String UUID = ""+p.getUniqueId();
-		java.util.UUID ID = p.getUniqueId();
+		String UUID = ""+p.getUniqueId(); 
+		
+		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(UUID);
+		
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
-		String name =  plugin.getPluginManager().getFromPath(ID, config.getString("AreYouSureGUI_Name"));
+		String name =  jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("AreYouSureGUI_Name"));
  
 		for (String list : plugin.getLoaded()) {
 			Job job = plugin.getJobCache().get(list);
@@ -56,10 +57,9 @@ public class AreYouSureMenuClickEvent implements Listener {
 			if(e.getView().getTitle().equalsIgnoreCase(newname)) {
 				plugin.getClickManager().executeCustomItem(display, p, "AreYouSureGUI_Custom", config);
 				 
-				String name_yes =  plugin.getPluginManager().getFromPath(ID, config.getString("AreYouSureItems.Button_YES.Display"));
-				String name_no =  plugin.getPluginManager().getFromPath(ID, config.getString("AreYouSureItems.Button_NO.Display"));
-				
-				JobsPlayer jb =plugin.getPlayerManager().getRealJobPlayer(UUID);
+				String name_yes =   jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("AreYouSureItems.Button_YES.Display"));
+				String name_no =  jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("AreYouSureItems.Button_NO.Display"));
+				 
 				String yes =  up.toHex(name_yes).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
 				String no =  up.toHex(name_no).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
 				

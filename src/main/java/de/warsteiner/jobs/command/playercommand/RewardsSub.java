@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class RewardsSub extends SubCommand {
@@ -17,12 +17,14 @@ public class RewardsSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Rewards.Usage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Rewards.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Rewards.Description");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Rewards.Description");
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class RewardsSub extends SubCommand {
 			return;
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -70,7 +72,8 @@ public class RewardsSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Rewards.UsageMessage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Rewards.UsageMessage");
 	}
 
 }

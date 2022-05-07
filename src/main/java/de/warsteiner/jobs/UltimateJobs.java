@@ -1,7 +1,6 @@
 package de.warsteiner.jobs;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.File; 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
@@ -17,7 +16,10 @@ import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.utils.files.PlayerDataFile;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
+import de.warsteiner.jobs.api.LanguageAPI;
 import de.warsteiner.jobs.api.LevelAPI;
+import de.warsteiner.jobs.api.PlayerAPI;
+import de.warsteiner.jobs.api.PlayerDataAPI;
 import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
 import de.warsteiner.jobs.api.plugins.MythicMobsManager;
 import de.warsteiner.jobs.api.plugins.NotQuestManager;
@@ -72,10 +74,6 @@ import de.warsteiner.jobs.manager.GuiAddonManager;
 import de.warsteiner.jobs.manager.GuiManager;
 import de.warsteiner.jobs.manager.JobWorkManager;
 import de.warsteiner.jobs.manager.PluginManager;
-import de.warsteiner.jobs.player.PlayerDataManager;
-import de.warsteiner.jobs.player.PlayerManager;
-import de.warsteiner.jobs.player.SQLPlayerManager;
-import de.warsteiner.jobs.player.YMLPlayerManager;
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry;
 import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry;
@@ -85,20 +83,16 @@ public class UltimateJobs extends JavaPlugin {
 
 	private static UltimateJobs plugin;
 	private Economy econ;
-	private PlayerManager pm;
 	private LevelAPI levels;
 	private ArrayList<String> loaded;
 	private HashMap<String, Job> ld;
 	private de.warsteiner.jobs.manager.GuiManager gui;
 	private JobAPI api;
 	private ClickManager click;
-	private SQLPlayerManager sql;
 	private ExecutorService executor;
 	private SubCommandRegistry cmdmanager;
 	private AdminSubCommandRegistry admincmdmanager;
 	private NotQuestManager notquest;
-	private YMLPlayerManager yml;
-	private PlayerDataManager pmanager;
 	private PlayerDataFile datafile;
 	private JobWorkManager work;
 	private AlonsoLevelsManager alonso;
@@ -107,13 +101,17 @@ public class UltimateJobs extends JavaPlugin {
 	private GuiAddonManager adddongui;
 	private MythicMobsManager mm;
 
+	private PlayerAPI papi;
+	private PlayerDataAPI dataapi;
+	private LanguageAPI langapi;
+
 	public void onLoad() {
 
 		plugin = this;
 		plapi = new PluginManager();
- 
+		langapi = new LanguageAPI();
 		filemanager = new FileManager();
-		
+
 		createFolders();
 
 		filemanager.generateFiles();
@@ -144,7 +142,7 @@ public class UltimateJobs extends JavaPlugin {
 	@Override
 	public void onEnable() {
 
-		plapi.loadLanguages();
+		getLanguageAPI().loadLanguages();
 
 		// basic events
 		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
@@ -194,19 +192,24 @@ public class UltimateJobs extends JavaPlugin {
 
 		BossBarHandler.startSystemCheck();
 
-		pm.startSave();
+		getPlayerAPI().startSave();
 
 		getLogger().info("§7");
 		getLogger().info("§7");
-		getLogger().info(",--. ,--.,--.,--------.,--.,--.   ,--.  ,---. ,--------.,------.     ,--. ,-----. ,-----.   ,---.   ");
-		getLogger().info("|  | |  ||  |'--.  .--'|  ||   `.'   | /  O  \\'--.  .--'|  .---'     |  |'  .-.  '|  |) /_ '   .-'  ");
-		getLogger().info("|  | |  ||  |   |  |   |  ||  |'.'|  ||  .-.  |  |  |   |  `--, ,--. |  ||  | |  ||  .-.  \\`.  `-.  ");
-		getLogger().info("'  '-'  '|  '--.|  |   |  ||  |   |  ||  | |  |  |  |   |  `---.|  '-'  /'  '-'  '|  '--' /.-'    | ");
-		getLogger().info(" `-----' `-----'`--'   `--'`--'   `--'`--' `--'  `--'   `------' `-----'  `-----' `------' `-----'  ");
+		getLogger().info(
+				",--. ,--.,--.,--------.,--.,--.   ,--.  ,---. ,--------.,------.     ,--. ,-----. ,-----.   ,---.   ");
+		getLogger().info(
+				"|  | |  ||  |'--.  .--'|  ||   `.'   | /  O  \\'--.  .--'|  .---'     |  |'  .-.  '|  |) /_ '   .-'  ");
+		getLogger().info(
+				"|  | |  ||  |   |  |   |  ||  |'.'|  ||  .-.  |  |  |   |  `--, ,--. |  ||  | |  ||  .-.  \\`.  `-.  ");
+		getLogger().info(
+				"'  '-'  '|  '--.|  |   |  ||  |   |  ||  | |  |  |  |   |  `---.|  '-'  /'  '-'  '|  '--' /.-'    | ");
+		getLogger().info(
+				" `-----' `-----'`--'   `--'`--'   `--'`--' `--'  `--'   `------' `-----'  `-----' `------' `-----'  ");
 		getLogger().info("       §bRunning plugin UltimateJobs v" + getDescription().getVersion() + " ("
 				+ getDescription().getAPIVersion() + ")");
 		getLogger().info("       §bRunning UltimateJobs with " + getLoaded().size() + " Jobs");
-		getLogger().info("       §bLoaded " + getPluginManager().getLanguages().size() + " Languages");
+		getLogger().info("       §bLoaded " + getLanguageAPI().getLanguages().size() + " Languages");
 		getLogger().info("§7");
 		getLogger().info("§7");
 
@@ -241,7 +244,9 @@ public class UltimateJobs extends JavaPlugin {
 		getSubCommandManager().getSubCommandList().add(new PointsSub());
 		getSubCommandManager().getSubCommandList().add(new LimitSub());
 		getSubCommandManager().getSubCommandList().add(new JoinSub());
-		getSubCommandManager().getSubCommandList().add(new LangSub());
+		if (SimpleAPI.getPlugin().getFileManager().getSystemConfig().getBoolean("EnabledLanguages")) {
+			getSubCommandManager().getSubCommandList().add(new LangSub());
+		}
 		getSubCommandManager().getSubCommandList().add(new StatsSub());
 		getSubCommandManager().getSubCommandList().add(new LevelsSub());
 		getSubCommandManager().getSubCommandList().add(new RewardsSub());
@@ -250,15 +255,14 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());
 		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());
-		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
 		getAdminSubCommandManager().getSubCommandList().add(new AddPointsSub());
 		getAdminSubCommandManager().getSubCommandList().add(new RemovePointsSub());
 		getAdminSubCommandManager().getSubCommandList().add(new ReloadSub());
+		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
 	}
 
 	public void loadClasses() {
 		loaded = new ArrayList<>();
-		pm = new PlayerManager(plugin);
 		ld = new HashMap<>();
 		levels = new LevelAPI(plugin);
 
@@ -272,15 +276,16 @@ public class UltimateJobs extends JavaPlugin {
 		work = new JobWorkManager(plugin, this.api);
 		alonso = new AlonsoLevelsManager();
 		datafile = new PlayerDataFile("jobs");
-		sql = new SQLPlayerManager();
-		yml = new YMLPlayerManager();
+
+		papi = new PlayerAPI(plugin);
 
 		if (SimpleAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
-			getSQLPlayerManager().createtables();
+			getPlayerDataAPI().createtables();
 		} else {
 			datafile.create();
 		}
-		pmanager = new PlayerDataManager(yml, sql);
+
+		dataapi = new PlayerDataAPI();
 
 	}
 
@@ -304,12 +309,16 @@ public class UltimateJobs extends JavaPlugin {
 		return datafile;
 	}
 
-	public PlayerDataManager getPlayerDataModeManager() {
-		return pmanager;
+	public LanguageAPI getLanguageAPI() {
+		return langapi;
 	}
 
-	public YMLPlayerManager getYMLPlayerManager() {
-		return yml;
+	public PlayerAPI getPlayerAPI() {
+		return papi;
+	}
+
+	public PlayerDataAPI getPlayerDataAPI() {
+		return dataapi;
 	}
 
 	public NotQuestManager getNotQuestManager() {
@@ -322,10 +331,6 @@ public class UltimateJobs extends JavaPlugin {
 
 	public SubCommandRegistry getSubCommandManager() {
 		return cmdmanager;
-	}
-
-	public SQLPlayerManager getSQLPlayerManager() {
-		return sql;
 	}
 
 	public ExecutorService getExecutor() {
@@ -348,10 +353,6 @@ public class UltimateJobs extends JavaPlugin {
 		return gui;
 	}
 
-	public PlayerManager getPlayerManager() {
-		return pm;
-	}
-
 	public JobAPI getAPI() {
 		return api;
 	}
@@ -370,8 +371,8 @@ public class UltimateJobs extends JavaPlugin {
 
 		if (!folder_1.exists()) {
 			folder_1.mkdir();
-			
-			//create default jobs
+
+			// create default jobs
 			getFileManager().createDefaultJobs();
 		}
 

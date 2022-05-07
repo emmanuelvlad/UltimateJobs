@@ -660,6 +660,115 @@ Jobs:
             - "&7Points &8: &6<points>"
             - "&7Action &8: &4Casser"
             - "&7Rareté &8: &bNormal"
+
+  SHEAR_JOB:
+  
+    Display: "&fTondre les Moutons"
+    
+    DisplayID: "moutons"
+    
+    Lore:
+      - "&7Gagnez de l'argent en tondant des moutons"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Acquis le &8: &b<stats_args_1>"
+      - "&7Mouton &8: &b<stats_args_2>" 
+      - "&7Gains du jour&8: &a<earned> Dollars"
+      - "&7" 
+      - "&Niveau &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &6Bûcheron &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7Stats de <name> dans ce job&8:"
+           - "&8&m--------------------------"
+           - "&7Acquis le &8: &b<stats_args_1>"
+           - "&7Mouton &8: &b<stats_args_2>" 
+           - "&7Gains du jour&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Niveau &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Vos Stats dans ce job&8:"
+           - "&8&m--------------------------" 
+           - "&7Acquis le &8: &b<stats_args_1>"
+           - "&7Mouton &8: &b<stats_args_2>" 
+           - "&7Gains du jour&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Niveau &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Niveau I"
+     
+      2:  
+        Display: "&6Niveau II"
+        
+        Lore:
+          - "&7Récompense de niveau&8:"
+          - "&8-> &a250 $"
+      
+      3:  
+        Display: "&6Niveau III"
+        
+        Lore:
+          - "&7Récompense de niveau&8:"
+          - "&8-> &a500 $"
+      
+      4: 
+        Display: "&6Niveau IV"
+        
+        Lore:
+          - "&7Récompense de niveau&8:"
+          - "&8-> &a1000 $"
+      
+    IDS:
+
+      WOOL1:
+      
+        Display: "&fLaine Blanche"
+        
+        Rewards:
+        
+          Display: "&8< &fLaine Blanche &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Matériau &8: &fLaine Blanche"
+            - "&7Gains &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4Casser"
+            - "&7Rareté &8: &bNormal"
+
+      WOOL2:
+      
+        Display: "&cLaine Rouge"
+        
+        Rewards:
+        
+          Display: "&8< &cLaine Rouge &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Matériau &8: &cLaine Rouge"
+            - "&7Gains &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4Casser"
+            - "&7Rareté &8: &bNormal"
   
   MINER:
   

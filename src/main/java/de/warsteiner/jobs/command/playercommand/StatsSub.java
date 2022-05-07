@@ -5,27 +5,27 @@ import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
+import de.warsteiner.datax.SimpleAPI; 
 import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class StatsSub extends SubCommand {
 
-	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 	private static SimpleAPI ap = SimpleAPI.getPlugin();
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Stats.Usage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Stats.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Stats.Description");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Stats.Description");
 	}
 
 	@Override
@@ -39,12 +39,12 @@ public class StatsSub extends SubCommand {
 		if (args.length == 2) {
 			String pl = args[1].toUpperCase();
 
-			if (ap.getPlayerSaveAndLoadManager().getUUIDByName(pl.toUpperCase()) == null) {
-				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_stats_not_found")
+			if (ap.getPlayerDataAPI().getUUIDByName(pl.toUpperCase()) == null) {
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_stats_not_found")
 						.replaceAll("<name>", args[1]));
 				return;
 			} else {
-				String uuid = ap.getPlayerSaveAndLoadManager().getUUIDByName(pl.toUpperCase());
+				String uuid = ap.getPlayerDataAPI().getUUIDByName(pl.toUpperCase());
 
 				if (uuid.equalsIgnoreCase("" + player.getUniqueId())) {
 					plugin.getGUIAddonManager().createSelfStatsGUI(player, UpdateTypes.OPEN);
@@ -55,7 +55,7 @@ public class StatsSub extends SubCommand {
 			return;
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -76,7 +76,8 @@ public class StatsSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Stats.UsageMessage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Stats.UsageMessage");
 	}
 
 }

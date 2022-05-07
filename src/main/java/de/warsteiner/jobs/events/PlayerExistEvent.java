@@ -11,9 +11,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
  
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.player.PlayerDataManager;
-import de.warsteiner.jobs.player.PlayerManager;
+import de.warsteiner.jobs.api.PlayerAPI;
+import de.warsteiner.jobs.api.PlayerDataAPI;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class PlayerExistEvent implements Listener {
 
@@ -23,25 +23,29 @@ public class PlayerExistEvent implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		plugin.getExecutor().execute(() -> { 
 			FileConfiguration config = UltimateJobs.getPlugin().getFileManager().getConfig();
-			PlayerDataManager pl = UltimateJobs.getPlugin().getPlayerDataModeManager();
+			
+			PlayerAPI cache = plugin.getPlayerAPI();
+			PlayerDataAPI data = plugin.getPlayerDataAPI();
+			
 			Player player = event.getPlayer();
-			PlayerManager m = plugin.getPlayerManager();
+		 
 			UUID UUID = player.getUniqueId();
+		 
 			String name = player.getName();
 
-			if (pl.ExistPlayer("" + UUID) == false) {
-				pl.createPlayer("" + UUID, name);
+			if (data.ExistPlayer("" + UUID) == false) {
+				data.createPlayer("" + UUID, name);
  
 			}
 
-			m.loadData(name, UUID);
+			cache.loadData(name, UUID);
 			
-			JobsPlayer jb =plugin.getPlayerManager().getRealJobPlayer(""+UUID);
+			JobsPlayer jb = cache.getRealJobPlayer(""+UUID);
 			
 			if(config.getBoolean("EnabledDefaultJobs")) {
 				for(String job :  config.getStringList("DefaultJobs")) {
-					if(!pl.getOfflinePlayerOwnedJobs(""+UUID).contains(job)) {
-						plugin.getPlayerManager().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
+					if(!jb.getOwnJobs().contains(job)) {
+						jb.addOwnedJob(job);
 					}
 				}
 			}
@@ -54,12 +58,12 @@ public class PlayerExistEvent implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		plugin.getExecutor().execute(() -> {
 			Player player = event.getPlayer();
-			PlayerDataManager pl = UltimateJobs.getPlugin().getPlayerDataModeManager();
-			PlayerManager m = plugin.getPlayerManager();
+			PlayerAPI cache = plugin.getPlayerAPI();
+			PlayerDataAPI data = plugin.getPlayerDataAPI();
 			UUID UUID = player.getUniqueId();
 
-			pl.savePlayer(plugin.getPlayerManager().getRealJobPlayer(""+UUID), "" + UUID);
-			m.removePlayerFromCache("" + UUID);
+			data.savePlayer(cache.getRealJobPlayer(""+UUID), "" + UUID);
+			cache.removePlayerFromCache("" + UUID);
  
 		});
 	}

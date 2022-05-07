@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
  
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class PlaceHolderManager extends PlaceholderExpansion {
@@ -35,7 +35,7 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 
 	@Override
 	public String onRequest(OfflinePlayer player, String pr) {
-		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(""+player.getUniqueId());
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
  
 		if (jb != null) {
 			String UUID = ""+player.getUniqueId();
@@ -52,10 +52,10 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 						return job.getDisplay(UUID);
 
 					} else {
-						return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_job");
+						return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_job");
 					}
 				} else {
-					return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_job");
+					return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_job");
 				}
 			} else if (pr.contains("job_current_level")) {
 				String[] split = pr.split("_");
@@ -64,24 +64,24 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 				if (jobs.size() != 0) {
 
 					if (jobs.size() >= Integer.valueOf(split[3])) {
-						return "" + jb.getLevelOf(jb.getCurrentJobs().get(which));
+						return ""+jb.getStatsOf(jb.getCurrentJobs().get(which)).getLevel();
 					} else {
-						return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_level");
+						return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_level");
 					}
 				} else {
-					return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_level");
+					return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_level");
 				}
 			} else if (pr.contains("job_current_exp")) {
 				String[] split = pr.split("_");
 				Integer which = Integer.valueOf(split[3]) - 1;
 				if (jobs.size() != 0) {
 					if (jobs.size() >= Integer.valueOf(split[3])) {
-						return "" + jb.getExpOf(jb.getCurrentJobs().get(which));
+						return ""+jb.getStatsOf(jb.getCurrentJobs().get(which)).getExp();
 					} else {
-						return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_exp");
+						return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_exp");
 					}
 				} else {
-					return plugin.getPluginManager().getAMessage(jb.getUUID(), "placeholder_no_exp");
+					return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_exp");
 				}
 			}
 

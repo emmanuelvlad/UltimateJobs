@@ -37,7 +37,7 @@ public class JobActionHoney implements Listener {
 			}
 			
 			plugin.getJobWorkManager().executeHoneyAction(event,
-					plugin.getPlayerManager().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+					plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
 		 
 		}
 	}

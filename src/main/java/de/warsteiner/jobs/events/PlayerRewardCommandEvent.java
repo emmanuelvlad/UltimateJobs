@@ -37,7 +37,7 @@ public class PlayerRewardCommandEvent implements Listener  {
 	public void onReward(PlayerLevelJobEvent event) {
 		Player player = event.getPlayer(); 
 		Job job = event.getJob();
-		Integer level = event.getJobsPlayer().getLevelOf(job.getConfigID());
+		Integer level = event.getJobsPlayer().getStatsOf(job.getConfigID()).getLevel();
 		if(job.isCommand(level)) {
 			ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 		 

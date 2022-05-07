@@ -21,9 +21,9 @@ IDS:
     List:
       - "STONE" 
       - "COBBLESTONE"
-      - "COAL_ORE"
+      - "COAL"
 
-    COAL_ORE:
+    COAL:
  
       Chance: 85
       ID: "COAL_ORE"

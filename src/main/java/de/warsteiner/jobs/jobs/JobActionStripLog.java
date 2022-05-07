@@ -13,6 +13,6 @@ public class JobActionStripLog implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBreak(PlayerInteractEvent event) { 
-		plugin.getJobWorkManager().executeStripLogWork(event, plugin.getPlayerManager().getRealJobPlayer(""+event.getPlayer().getUniqueId())); 
+		plugin.getJobWorkManager().executeStripLogWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId())); 
 	}
 }

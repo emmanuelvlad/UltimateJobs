@@ -1,7 +1,6 @@
 package de.warsteiner.jobs.inventorys;
  
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration; 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class MainMenuClickEvent implements Listener {
 	
@@ -40,7 +40,9 @@ public class MainMenuClickEvent implements Listener {
 		FileConfiguration config = plugin.getFileManager().getGUI();
 		Player p = (Player) e.getWhoClicked();
 		String UUID = ""+p.getUniqueId();
-		String name =  plugin.getPluginManager().getFromPath(p.getUniqueId(), config.getString("Main_Name"));
+		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(UUID);
+		
+		String name =  jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("Main_Name"));
 		 
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
  

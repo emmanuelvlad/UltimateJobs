@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class StatsMenuClickEvent implements Listener {
 
@@ -42,8 +43,10 @@ public class StatsMenuClickEvent implements Listener {
 
 		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
 		String title = up.toHex(e.getView().getTitle().replaceAll("&", "§"));
+		
+		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(""+p.getUniqueId());
 
-		if (title.equalsIgnoreCase(up.toHex(plugin.getPluginManager().getFromPath(p.getUniqueId(), config.getString("Self_Name")).replaceAll("&", "§")))) { 
+		if (title.equalsIgnoreCase(up.toHex( jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("Self_Name")).replaceAll("&", "§")))) { 
 			plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Self_Custom", config);
 			e.setCancelled(true);
 		} else if(plugin.getGUIAddonManager().isStatsGUI(title, p.getUniqueId())) {

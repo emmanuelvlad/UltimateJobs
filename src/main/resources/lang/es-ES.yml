@@ -664,6 +664,116 @@ Jobs:
             - "&7Puntos &8: &6<points>"
             - "&7Acción &8: &4Romper"
             - "&7Rareza &8: &bNormal"
+
+  SHEAR_JOB:
+  
+    Display: "&fEsquilar Pvejas"
+    
+    DisplayID: "esquilar"
+    
+    Lore:
+      - "&7Gana dinero esquilando ovejas"
+    
+    Stats:
+      - "&7"
+      - "&aEstadísticas&8:"
+      - "&7Comprado en &8: &b<stats_args_1>"
+      - "&7Ovejas &8: &b<stats_args_2>" 
+      - "&7Ganado hoy&8: &a<earned> Dolares"
+      - "&7" 
+      - "&7Nivel &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &fEsquilar Pvejas &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7Estadísticas de <name> en este trabajo&8:"
+           - "&8&m--------------------------"
+           - "&7Comprado en &8: &b<stats_args_1>"
+           - "&7Ovejas &8: &b<stats_args_2>" 
+           - "&7Ganado hoy&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Nivel &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Tus estadísticas en este trabajo&8:"
+           - "&8&m--------------------------" 
+           - "&7Comprado en &8: &b<stats_args_1>"
+           - "&7Ovejas &8: &b<stats_args_2>" 
+           - "&7Ganado hoy&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Nivel I"
+     
+      2:  
+        Display: "&6Nivel II"
+        
+        Lore:
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a250 Monedas"
+      
+      3:  
+        Display: "&6Nivel III"
+        
+        Lore:
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a500 Monedas"
+      
+      4: 
+        Display: "&6Nivel IV"
+        
+        Lore:
+          - "&7Recompensas de este nivel&8:"
+          - "&8-> &a1000 Monedas"
+      
+    IDS:
+
+      WOOL1:
+      
+        Display: "&fLana Blanca"
+        
+        Rewards:
+        
+          Display: "&8< &fLana Blanca &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Material &8: &fLana Blanca"
+            - "&7Recompensa &8: &c$<money>"
+            - "&7Oportunidad &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Puntos &8: &6<points>"
+            - "&7Acción &8: &4Romper"
+            - "&7Rareza &8: &bNormal"
+
+      WOOL2:
+      
+        Display: "&cLana Roja"
+        
+        Rewards:
+        
+          Display: "&8< &cLana Roja &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Material &8: &cLana Roja"
+            - "&7Recompensa &8: &c$<money>"
+            - "&7Oportunidad &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Puntos &8: &6<points>"
+            - "&7Acción &8: &4Romper"
+            - "&7Rareza &8: &bExtraña"
+
   
   MINER:
   

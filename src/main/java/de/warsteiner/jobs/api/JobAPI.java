@@ -6,6 +6,7 @@ import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager; 
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.JobAction;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 import java.io.File; 
 import java.text.DecimalFormat; 
@@ -84,6 +85,7 @@ public class JobAPI {
 	}
 
 	public boolean checkIfJobIsReal(String arg, Player player) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
 		String id = arg.toUpperCase();
 		if (isJobFromConfigID(id) != null) {
 			return true;
@@ -91,11 +93,12 @@ public class JobAPI {
 		if(isJobFromDisplayID(id, ""+player.getUniqueId()) != null) { 
 			return true;
 		}
-		player.sendMessage(plugin.getPluginManager().getAMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
+		player.sendMessage(jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
 		return false;
 	}
  
 	public Job checkIfJobIsRealAndGet(String arg, Player player) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
 		String id = arg.toUpperCase();
 		if (isJobFromConfigID(id) != null) {
 			return isJobFromConfigID(id);
@@ -103,22 +106,21 @@ public class JobAPI {
 		if(isJobFromDisplayID(id, ""+player.getUniqueId()) != null) { 
 			return isJobFromDisplayID(id, ""+player.getUniqueId());
 		}
-		player.sendMessage(plugin.getPluginManager().getAMessage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
+		player.sendMessage(jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "job_not_found").replaceAll("<job>", arg.toLowerCase()));
 		return null;
 	}
 
 	public String isCurrentlyInCache(String uuid) {
-		if (plugin.getPlayerManager().existInCacheByUUID(uuid))
+		if (plugin.getPlayerAPI().existInCacheByUUID(uuid))
 			return "CACHE";
 		return "SQL";
 	}
 
 	public void sendReward(JobsPlayer pl, Player p, Job job, double exp, double reward, String block, boolean can, JobAction ac) {
 		plugin.getExecutor().execute(() -> {
-			UUID UUID = p.getUniqueId();
-			String ijob = job.getConfigID();
-			double all_exp = pl.getExpOf(ijob);
-			int level = pl.getLevelOf(ijob).intValue();
+			UUID UUID = p.getUniqueId(); 
+			double all_exp = pl.getStatsOf(job.getConfigID()).getExp();
+			int level = pl.getStatsOf(job.getConfigID()).getLevel();
 			String disofid = job.getDisplayOf(block, ""+UUID, ac);
 			double need = plugin.getLevelAPI().getJobNeedExp(job, pl);
 
@@ -129,7 +131,7 @@ public class JobAPI {
 			} else {
 				prefix = "MaxEarningsReached";
 			}
-			String prt = plugin.getPluginManager().getAMessage(UUID, "prefix");
+			String prt = pl.getLanguage().getStringFromLanguage(UUID, "prefix");
 			if (prefix != null) {
 
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_BossBar")) {
@@ -140,7 +142,7 @@ public class JobAPI {
 					double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore(""+UUID, job, level),
 							need);
 					BarColor color = job.getBarColor();
-					String message = up.toHex(plugin.getPluginManager().getAMessage(UUID, prefix + ".BossBar").replaceAll("<prefix>", prt)
+					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".BossBar").replaceAll("<prefix>", prt)
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, ""+UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
@@ -154,7 +156,7 @@ public class JobAPI {
 					}
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_Message")) {
-					String message = up.toHex(plugin.getPluginManager().getAMessage(UUID, prefix + ".Message").replaceAll("<prefix>", prt)
+					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".Message").replaceAll("<prefix>", prt)
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, ""+UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
@@ -162,7 +164,7 @@ public class JobAPI {
 					p.sendMessage(message);
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enabled_Actionbar")) {
-					String message = up.toHex(plugin.getPluginManager().getAMessage(UUID, prefix + ".Actionbar").replaceAll("<prefix>",prt)
+					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".Actionbar").replaceAll("<prefix>",prt)
 							.replaceAll("<job>", job.getDisplay(""+UUID)).replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level,""+ UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
@@ -216,9 +218,10 @@ public class JobAPI {
  
 
 	public boolean checkPermissions(Player player, String text) {
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
 		if (player.hasPermission("ultimatejobs." + text) ||player.hasPermission("ultimatejobs.admin.all"))
 			return true;
-		player.sendMessage(plugin.getPluginManager().getAMessage(player.getUniqueId(), "noperm"));
+		player.sendMessage(jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "noperm"));
 		return false;
 	}
  
@@ -244,12 +247,13 @@ public class JobAPI {
 
 	public boolean checkforDailyMaxEarnings(Player player, Job job) {
 
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
+		
 		if (job.hasMaxEarningsPerDay()) {
 
 			double max = job.getMaxEarningsPerDay();
 
-			double current = plugin.getPlayerDataModeManager().getEarnedAtDate("" + player.getUniqueId(), job.getConfigID(),
-					plugin.getPluginManager().getDate());
+			double current = jb.getStatsOf(job.getConfigID()).getEarnings(plugin.getPluginManager().getDate());
 
 			if (current >= max) {
 				return false;

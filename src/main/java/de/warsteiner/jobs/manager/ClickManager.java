@@ -12,7 +12,7 @@ import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class ClickManager {
 
@@ -29,7 +29,7 @@ public class ClickManager {
 	public void executeCustomItemInSubMenu(Job job, String display, final Player player, String prefix,
 			FileConfiguration config) {
 		String item = isCustomItem(display, prefix, config, ""+player.getUniqueId());
-		JobsPlayer jb = plugin.getPlayerManager().getRealJobPlayer(""+player.getUniqueId());
+		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
 		if (!item.equalsIgnoreCase("NOT_FOUND")) {
 			String action = config.getString(prefix + "." + item + ".Action");
 			if (action.equalsIgnoreCase("CLOSE")) {
@@ -43,11 +43,11 @@ public class ClickManager {
 				plugin.getGUI().createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 			} else if (action.equalsIgnoreCase("LEAVE")) {
 				api.playSound("LEAVE_SINGLE", player);
-				jb.remoCurrentJob(job.getConfigID());
+				jb.remCurrentJob(job.getConfigID());
 			 
 				plugin.getGUI().createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 
-				player.sendMessage(plugin.getPluginManager().getAMessage(jb.getUUID(), "Other.Left_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Other.Left_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
 			} else if (action.equalsIgnoreCase("COMMAND")) {
 				player.closeInventory();
 				String cmd = config.getString(prefix + "." + item + ".Command").replaceAll("<job>", job.getConfigID());
@@ -58,7 +58,7 @@ public class ClickManager {
 
 	public void joinJob(Player player, String job, JobsPlayer jb, String name, String dis, Job j) {
 		FileConfiguration cfg = plugin.getFileManager().getGUI();
-		plugin.getPlayerManager().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
+		plugin.getPlayerAPI().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
 		jb.addCurrentJob(job);
 		api.playSound("JOB_JOINED", player);
 		new BukkitRunnable() {
@@ -69,21 +69,21 @@ public class ClickManager {
 			}
 		}.runTaskLater(plugin, 1);
 
-		player.sendMessage(up.toHex(plugin.getPluginManager().getAMessage(player.getUniqueId(), "Other.Joined").replaceAll("<job>", j.getDisplay(""+player.getUniqueId()))));
+		player.sendMessage(up.toHex(jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "Other.Joined").replaceAll("<job>", j.getDisplay(""+player.getUniqueId()))));
 	}
 
 	public void executeJobClickEvent(String display, Player player) {
 		FileConfiguration cfg = plugin.getFileManager().getGUI();
 		List<String> jobs = plugin.getLoaded();
 		String UUID = ""+player.getUniqueId();
-		JobsPlayer jb = plugin.getPlayerManager().getRealJobPlayer(UUID);
+		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(UUID);
 		for (int i = 0; i <= jobs.size() - 1; i++) {
 			Job j = plugin.getJobCache().get(jobs.get(i));
 			String dis = j.getDisplay(UUID);
 			if (display.equalsIgnoreCase(dis)) {
 				String job = j.getConfigID();
 
-				String name =  plugin.getPluginManager().getFromPath(jb.getUUID(), cfg.getString("Main_Name"));
+				String name =  jb.getLanguage().getStringFromLanguage(jb.getUUID(), cfg.getString("Main_Name"));
 				if (api.canBuyWithoutPermissions(player, j)) {
 
 					List<String> d = api.canGetJobWithSubOptions(player, j);
@@ -102,7 +102,7 @@ public class ClickManager {
 									joinJob(player, job, jb, name, dis, j);
 									return;
 								} else {
-									player.sendMessage(plugin.getPluginManager().getAMessage(jb.getUUID(), "Other.Full").replaceAll("<job>", j.getDisplay(UUID)));
+									player.sendMessage( jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Other.Full").replaceAll("<job>", j.getDisplay(UUID)));
 									return;
 								}
 
@@ -120,7 +120,7 @@ public class ClickManager {
 								}
 
 							} else {
-								player.sendMessage(plugin.getPluginManager().getAMessage(jb.getUUID(), "Other.Not_Enough_Money").replaceAll("<job>", j.getDisplay(UUID)));
+								player.sendMessage( jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Other.Not_Enough_Money").replaceAll("<job>", j.getDisplay(UUID)));
 								return;
 							}
 						}
@@ -140,7 +140,7 @@ public class ClickManager {
 		plugin.getEco().withdrawPlayer(player, money);
 		jb.addOwnedJob(job.getConfigID());
 
-		plugin.getPlayerManager().updateJobs(job.getConfigID().toUpperCase(), jb, "" + player.getUniqueId());
+		plugin.getPlayerAPI().updateJobs(job.getConfigID().toUpperCase(), jb, "" + player.getUniqueId());
 
 		api.playSound("JOB_BOUGHT", player);
 
@@ -152,14 +152,14 @@ public class ClickManager {
 			gui.createMainGUIOfJobs(player, UpdateTypes.REOPEN);
 		}
 
-		player.sendMessage(plugin.getPluginManager().getAMessage(player.getUniqueId(), "Other.Bought_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
+		player.sendMessage( jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "Other.Bought_Job").replaceAll("<job>", job.getDisplay(""+player.getUniqueId())));
 	}
 	
 	public String isCustomItem(String display, String path, FileConfiguration config, String UUID) {
 		List<String> custom_items = config.getStringList(path + ".List");
-		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
+		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(UUID);
 		for (String b : custom_items) {
-			String real = plugin.getPluginManager().getFromPath(sp.getUUID(), config.getString(path + "." + b + ".Display"));
+			String real =  jb.getLanguage().getStringFromLanguage(jb.getUUID(), config.getString(path + "." + b + ".Display"));
 			String dis = up.toHex(real.replaceAll("&", "§"));
 			if (display.equalsIgnoreCase(dis))
 				return b;
@@ -169,7 +169,7 @@ public class ClickManager {
 
 	public void executeCustomItem(String display, final Player player, String name, FileConfiguration config) {
 		String item = isCustomItem(display, name, config, ""+player.getUniqueId());
-		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(""+player.getUniqueId());
+		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
 		if (!item.equalsIgnoreCase("NOT_FOUND")) {
 			String action = config.getString(name + "." + item + ".Action");
 			if (action.equalsIgnoreCase("CLOSE")) {
@@ -179,13 +179,13 @@ public class ClickManager {
 					}
 				}.runTaskLater(plugin, 2);
 			} else if (action.equalsIgnoreCase("LEAVE")) {
-				if (sp.getCurrentJobs().size() >= 1) {
+				if (jb.getCurrentJobs().size() >= 1) {
 					api.playSound("LEAVE_ALL", player);
-					sp.updateCurrentJobs(null);
-					gui.UpdateMainInventoryItems(player, plugin.getPluginManager().getFromPath(sp.getUUID(), plugin.getFileManager().getGUI().getString("Main_Name")));
-					player.sendMessage(plugin.getPluginManager().getAMessage(sp.getUUID(), "Other.Leave_All").replaceAll("<job>", display));
+					jb.updateCurrentJobs(null);
+					gui.UpdateMainInventoryItems(player, jb.getLanguage().getStringFromLanguage(jb.getUUID(), plugin.getFileManager().getGUI().getString("Main_Name")));
+					player.sendMessage(jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Other.Leave_All").replaceAll("<job>", display));
 				} else {
-					player.sendMessage(plugin.getPluginManager().getAMessage(sp.getUUID(), "Other.Already_Left_All").replaceAll("<job>", display));
+					player.sendMessage(jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Other.Already_Left_All").replaceAll("<job>", display));
 				}
 			} else if (action.equalsIgnoreCase("COMMAND")) {
 				player.closeInventory();

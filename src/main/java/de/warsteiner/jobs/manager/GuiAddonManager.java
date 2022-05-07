@@ -25,9 +25,10 @@ import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.player.PlayerDataManager;
+import de.warsteiner.jobs.api.PlayerDataAPI;
 import de.warsteiner.jobs.utils.JobAction;
+import de.warsteiner.jobs.utils.objects.JobStats;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class GuiAddonManager {
 
@@ -44,8 +45,8 @@ public class GuiAddonManager {
 	public void createLevelsGUI(Player player, UpdateTypes t, Job job) {
 		FileConfiguration cfg = plugin.getFileManager().getLevelGUIConfig();
 		String UUID = "" + player.getUniqueId();
-		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
-		String name = plugin.getPluginManager().getFromPath(sp.getUUID(), cfg.getString("Levels_Name"))
+		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(UUID);
+		String name = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Levels_Name"))
 				.replaceAll("<job>", job.getDisplay(UUID));
 		int size = cfg.getInt("Levels_Size");
 
@@ -66,15 +67,13 @@ public class GuiAddonManager {
 	public void setLevelsItems(InventoryView inv, String name, FileConfiguration cf, Player pl, Job job) {
 		plugin.getExecutor().execute(() -> {
 
-			JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer("" + pl.getUniqueId()); 
-			int page = SimpleAPI.getPlugin().getPlayerSaveAndLoadManager().getPageFromID(sp.getUUIDAsString(),
+			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + pl.getUniqueId()); 
+			int page = SimpleAPI.getPlugin().getPlayerDataAPI().getPageFromID(sp.getUUIDAsString(),
 					"LEVELS_" + job.getConfigID());
 
 			List<String> slots = cf.getStringList("Level_Slots");
 			
-			String r = SimpleAPI.getPlugin().getPlayerCacheManager().getPluginPlayer(pl.getUniqueId()).getLanguage().getName();
-			YamlConfiguration lang = plugin.getPluginManager().getLanguages().get(r).getConfig();
-
+		 
 			int li = job.getCountOfLevels();
 
 			ArrayList<String> levelslist = new ArrayList<String>();
@@ -106,9 +105,11 @@ public class GuiAddonManager {
 							if (job.getIconOfLevel(lvl) != null) {
 								
 								ArrayList<String> lore = new ArrayList<String>();
+								
+								JobStats stats = sp.getStatsOf(job.getConfigID());
 					 
 								String ic = null;
-								int SPLEVEL = sp.getLevelOf(job.getConfigID());
+								int SPLEVEL = stats.getLevel();
 							 
 								boolean is = SPLEVEL + 1 == lvl;
 						 
@@ -154,7 +155,7 @@ public class GuiAddonManager {
 									prefix = "Locked";
 								}
 							
-								double exp = sp.getExpOf(job.getConfigID());
+								double exp = stats.getExp();
 								double need = plugin.getLevelAPI().getJobNeedExpWithOutPlayer(job, lvl);
 								
 								double calc = exp - need;
@@ -163,9 +164,11 @@ public class GuiAddonManager {
 									calc = 0;
 								}
 								
-								for(String line : lang.getStringList("Rewards_Item_Lores."+prefix)) {
+								for(String line : sp.getLanguage().getListFromLanguage(pl.getUniqueId(), "Rewards_Item_Lores."+prefix)) {
 									lore.add(up.toHex(line).replaceAll("<exp>", plugin.getAPI().Format(calc)));
 								}
+								
+								it.setAmount(lvl);
 								
 								meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
@@ -199,9 +202,9 @@ public class GuiAddonManager {
 
 					if (show) {
 						String icon = cf.getString("PageItems.Previous.Material");
-						String dis = plugin.getPluginManager().getFromPath(sp.getUUID(),
+						String dis =sp.getLanguage().getStringFromPath(sp.getUUID(),
 								cf.getString("PageItems.Previous.Display"));
-						List<String> lore = plugin.getPluginManager().getListFromPath(sp.getUUID(),
+						List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
 								cf.getString("PageItems.Previous.Lore"));
 						int slot = cf.getInt("PageItems.Previous.Slot");
 
@@ -233,9 +236,9 @@ public class GuiAddonManager {
 
 					if (show) {
 						String icon = cf.getString("PageItems.Next.Material");
-						String dis = plugin.getPluginManager().getFromPath(sp.getUUID(),
+						String dis = sp.getLanguage().getStringFromPath(sp.getUUID(),
 								cf.getString("PageItems.Next.Display"));
-						List<String> lore = plugin.getPluginManager().getListFromPath(sp.getUUID(),
+						List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
 								cf.getString("PageItems.Next.Lore"));
 						int slot = cf.getInt("PageItems.Next.Slot");
 
@@ -268,8 +271,8 @@ public class GuiAddonManager {
 	public void createRewardsGUI(Player player, UpdateTypes t, Job job) {
 		FileConfiguration cfg = plugin.getFileManager().getRewardsConfig();
 		String UUID = "" + player.getUniqueId();
-		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
-		String name = plugin.getPluginManager().getFromPath(sp.getUUID(), cfg.getString("Rewards_Name"))
+		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(UUID);
+		String name = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Rewards_Name"))
 				.replaceAll("<job>", job.getDisplay(UUID));
 		int size = cfg.getInt("Rewards_Size");
 
@@ -290,9 +293,9 @@ public class GuiAddonManager {
 	public void setRewardsItems(InventoryView inv, String name, FileConfiguration cf, Player pl, Job job) {
 		plugin.getExecutor().execute(() -> {
 
-			JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer("" + pl.getUniqueId());
+			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + pl.getUniqueId());
 
-			int page = SimpleAPI.getPlugin().getPlayerSaveAndLoadManager().getPageFromID(sp.getUUIDAsString(),
+			int page = SimpleAPI.getPlugin().getPlayerDataAPI().getPageFromID(sp.getUUIDAsString(),
 					"REWARDS_" + job.getConfigID());
 
 			List<String> slots = cf.getStringList("Rewards_Slots");
@@ -320,9 +323,9 @@ public class GuiAddonManager {
 
 					if (show) {
 						String icon = cf.getString("PageItems.Previous.Material");
-						String dis = plugin.getPluginManager().getFromPath(sp.getUUID(),
+						String dis =sp.getLanguage().getStringFromPath(sp.getUUID(),
 								cf.getString("PageItems.Previous.Display"));
-						List<String> lore = plugin.getPluginManager().getListFromPath(sp.getUUID(),
+						List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
 								cf.getString("PageItems.Previous.Lore"));
 						int slot = cf.getInt("PageItems.Previous.Slot");
 
@@ -354,9 +357,9 @@ public class GuiAddonManager {
 
 					if (show) {
 						String icon = cf.getString("PageItems.Next.Material");
-						String dis = plugin.getPluginManager().getFromPath(sp.getUUID(),
+						String dis =sp.getLanguage().getStringFromPath(sp.getUUID(),
 								cf.getString("PageItems.Next.Display"));
-						List<String> lore = plugin.getPluginManager().getListFromPath(sp.getUUID(),
+						List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
 								cf.getString("PageItems.Next.Lore"));
 						int slot = cf.getInt("PageItems.Next.Slot");
 
@@ -392,7 +395,7 @@ public class GuiAddonManager {
 					JobAction real = job.getActionofID(id);
 					 
 					String icon = job.getConfig().getString("IDS." + real.toString() + "." + id + ".RewardsGUI.Icon");
-					String display = plugin.getPluginManager().get(sp.getUUID(),
+					String display = sp.getLanguage().getConfig().getString(
 							"Jobs."+job.getConfigID()+".IDS."+id+ ".Rewards.Display");
 
 					ItemStack i2 = im.createAndGetItemStack(pl, icon);
@@ -407,7 +410,7 @@ public class GuiAddonManager {
 					double points = job.getPointsOf(id, real);
 					double exp = job.getExpOf(id, real); 
 					
-					for (String line : plugin.getPluginManager().getListFromLang(sp.getUUID(),
+					for (String line : sp.getLanguage().getListFromLanguage(sp.getUUID(),
 							"Jobs."+job.getConfigID()+".IDS."+id+ ".Rewards.Lore")) {
 						l.add(up.toHex(line).replaceAll("<exp>", "" + exp).replaceAll("<points>", "" + points)
 								.replaceAll("<chance>", "" + chance).replaceAll("<money>", "" + reward)
@@ -430,8 +433,8 @@ public class GuiAddonManager {
 	public void createSelfStatsGUI(Player player, UpdateTypes t) {
 		FileConfiguration cfg = plugin.getFileManager().getStatsConfig();
 		String UUID = "" + player.getUniqueId();
-		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer(UUID);
-		String name = plugin.getPluginManager().getFromPath(sp.getUUID(), cfg.getString("Self_Name"));
+		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(UUID);
+		String name = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Self_Name"));
 		int size = cfg.getInt("Self_Size");
 
 		gm.openInventory(player, size, name);
@@ -453,8 +456,8 @@ public class GuiAddonManager {
 		for (Player list : Bukkit.getOnlinePlayers()) {
 
 			String name = list.getName();
-
-			String named = plugin.getPluginManager().getFromPath(id, cfg.getString("Other_Name"));
+			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(""+id);
+			String named = sp.getLanguage().getStringFromPath(id, cfg.getString("Other_Name"));
 			String fin = up.toHex(named.replaceAll("<name>", name).replaceAll("&", "§"));
 
 			if (up.toHex(fin).equalsIgnoreCase(title.replaceAll("<name>", name)))
@@ -466,8 +469,8 @@ public class GuiAddonManager {
 	public void createOtherStatsGUI(Player player, UpdateTypes t, String named, String ud) {
 		FileConfiguration cfg = plugin.getFileManager().getStatsConfig();
 
-		JobsPlayer sp = plugin.getPlayerManager().getRealJobPlayer("" + player.getUniqueId());
-		String name = plugin.getPluginManager().getFromPath(sp.getUUID(), cfg.getString("Other_Name"))
+		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		String name = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Other_Name"))
 				.replaceAll("<name>", named);
 		int size = cfg.getInt("Other_Size");
 
@@ -490,8 +493,8 @@ public class GuiAddonManager {
 		plugin.getExecutor().execute(() -> {
 			String title = pl.getOpenInventory().getTitle();
 			String need = up.toHex(name).replaceAll("&", "§");
-
-			PlayerDataManager plm = plugin.getPlayerDataModeManager();
+ 
+			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(""+pl.getUniqueId());
 
 			if (title.equalsIgnoreCase(need)) {
 
@@ -502,14 +505,11 @@ public class GuiAddonManager {
 				String mode = cf.getString("DisplayMode").toUpperCase();
 
 				List<String> li = null;
-
-				YamlConfiguration lang = plugin.getPluginManager().getLanguages().get(SimpleAPI.getPlugin()
-						.getPlayerCacheManager().getPluginPlayer(pl.getUniqueId()).getLanguage().getName()).getConfig();
-
+ 
 				String how = api.isCurrentlyInCache(WATCHUUID);
 
 				if (how.equalsIgnoreCase("CACHE")) {
-					JobsPlayer jb = plugin.getPlayerManager().getRealJobPlayer(WATCHUUID);
+					JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(WATCHUUID);
 					max = jb.getMaxJobs();
 					points = jb.getPoints();
 
@@ -520,22 +520,23 @@ public class GuiAddonManager {
 					}
 
 				} else {
-					max = plm.getMax(WATCHUUID);
+					PlayerDataAPI plm = plugin.getPlayerDataAPI();
+					max = plm.getMaxJobs(WATCHUUID);
 					points = plm.getPoints(WATCHUUID);
 
 					if (mode.equalsIgnoreCase("CURRENT")) {
-						li = plm.getOfflinePlayerCurrentJobs(WATCHUUID);
+						li = plm.getCurrentJobs(WATCHUUID);
 					} else if (mode.equalsIgnoreCase("OWNED")) {
-						li = plm.getOfflinePlayerOwnedJobs(WATCHUUID);
+						li = plm.getOwnedJobs(WATCHUUID);
 					}
 				}
 
 				if (cf.getString(prefix + "_Skull.Material") != null) {
 					String skull_item = cf.getString(prefix + "_Skull.Material");
-					String skull_display = plugin.getPluginManager().getFromPath(pl.getUniqueId(),
+					String skull_display =sp.getLanguage().getStringFromPath(pl.getUniqueId(),
 							cf.getString(prefix + "_Skull.Display"));
 					int skull_slot = cf.getInt(prefix + "_Skull.Slot");
-					List<String> skull_lore = plugin.getPluginManager().getListFromPath(pl.getUniqueId(),
+					List<String> skull_lore = sp.getLanguage().getListFromPath(pl.getUniqueId(),
 							cf.getString(prefix + "_Skull.Lore"));
 
 					ItemStack skull = im.createAndGetItemStack(NAME, skull_item);
@@ -570,9 +571,9 @@ public class GuiAddonManager {
 					if (i >= li.size()) {
 
 						String error_item = cf.getString(prefix + "_Mot_Found_Item.Icon");
-						String error_display = plugin.getPluginManager().getFromPath(pl.getUniqueId(),
+						String error_display = sp.getLanguage().getStringFromPath(pl.getUniqueId(),
 								cf.getString(prefix + "_Mot_Found_Item.Display"));
-						List<String> errorl_lore = plugin.getPluginManager().getListFromPath(
+						List<String> errorl_lore = sp.getLanguage().getListFromPath(
 								pl.getUniqueId(), cf.getString(prefix + "_Mot_Found_Item.Lore"));
 
 						ItemStack error = im.createAndGetItemStack(pl, error_item);
@@ -601,25 +602,26 @@ public class GuiAddonManager {
 						String id = job.getConfigID();
 
 						// loading stats
-
-						String date = null;
+ 
 						int level = 0;
 						double exp = 0;
 						String bought = null;
 						Integer broken = 0;
 
 						if (how.equalsIgnoreCase("CACHE")) {
-							JobsPlayer jb = plugin.getPlayerManager().getRealJobPlayer(WATCHUUID);
+							JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(WATCHUUID);
 
-							date = jb.getDateOfJob(id);
-							level = jb.getLevelOf(id);
-							exp = jb.getExpOf(id);
-							bought = jb.getDateOfJob(id);
-							broken = jb.getBrokenOf(id);
+							JobStats	stats = jb.getStatsOf(job.getConfigID());
+							 
+							level = stats.getLevel();
+							exp = stats.getExp();
+							bought = stats.getDate();
+							broken = stats.getBrokenTimes();
 
 						} else {
-
-							date = plm.getDateOf(WATCHUUID, job.getConfigID());
+ 
+							PlayerDataAPI plm = plugin.getPlayerDataAPI();
+							
 							level = plm.getLevelOf(WATCHUUID, job.getConfigID());
 							exp = plm.getExpOf(WATCHUUID, job.getConfigID());
 							bought = plm.getDateOf(WATCHUUID, job.getConfigID());
@@ -632,9 +634,9 @@ public class GuiAddonManager {
 						String usedlvl = "";
 
 						String item = job.getIcon();
-						String display = lang
+						String display = sp.getLanguage().getConfig()
 								.getString("Jobs." + job.getConfigID().toUpperCase() + ".StatsGUI.Display");
-						List<String> lore = lang
+						List<String> lore = sp.getLanguage().getConfig()
 								.getStringList("Jobs." + job.getConfigID().toUpperCase() + ".StatsGUI.Lore." + prefix);
 
 						ItemStack it = im.createAndGetItemStack(pl, item);
@@ -657,7 +659,7 @@ public class GuiAddonManager {
 							for (String b : lore) {
 								l.add(up.toHex(b).replaceAll("<stats_args_4>", usedlvl).replaceAll("<name>", NAME)
 										.replace("<earned>",
-												"" + api.Format(plugin.getPlayerDataModeManager().getEarnedAtDate(
+												"" + api.Format(plugin.getPlayerDataAPI().getEarnedAt(
 														WATCHUUID, id, plugin.getPluginManager().getDate())))
 										.replaceAll("<stats_args_3>", "" + level)
 										.replaceAll("<stats_args_2>", "" + broken)

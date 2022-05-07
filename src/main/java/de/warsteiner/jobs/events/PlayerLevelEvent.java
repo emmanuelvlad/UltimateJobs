@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import de.warsteiner.datax.SimpleAPI;
+import de.warsteiner.datax.utils.objects.SimplePlayer;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.utils.cevents.PlayerLevelJobEvent;
@@ -19,9 +20,12 @@ public class PlayerLevelEvent implements Listener {
 	public void onLevelUp(PlayerLevelJobEvent event) {
 		Player player = event.getPlayer();
 		FileConfiguration config = UltimateJobs.getPlugin().getFileManager().getConfig();
-		String me = UltimateJobs.getPlugin().getPluginManager().getAMessage(player.getUniqueId(), "Levels.BoardCastMessage");
-		UltimateJobs.getPlugin().getAPI().playSound("LEVEL_UP", player);
 		
+		SimplePlayer jb = plugin.getPlayerAPI().getPluginPlayer(player.getUniqueId());
+		
+		String me = jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "Levels.BoardCastMessage");
+		UltimateJobs.getPlugin().getAPI().playSound("LEVEL_UP", player);
+		 
 		Job job = event.getJob();
 		String name = player.getName(); 
 		

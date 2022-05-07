@@ -13,6 +13,6 @@ public class JobActionShear implements Listener {
 	 
 	@EventHandler(priority = EventPriority.HIGHEST) 
 	public void onEvent(PlayerShearEntityEvent event) {
-		plugin.getJobWorkManager().executeShearWork(event, plugin.getPlayerManager().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+		plugin.getJobWorkManager().executeShearWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
 	}
 }

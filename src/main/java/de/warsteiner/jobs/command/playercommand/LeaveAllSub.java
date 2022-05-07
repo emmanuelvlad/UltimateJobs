@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class LeaveAllSub extends SubCommand {
@@ -15,12 +15,14 @@ public class LeaveAllSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.LeaveALL.Usage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.LeaveALL.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.LeaveALL.Description");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.LeaveALL.Description");
 	}
 
 	@Override
@@ -30,13 +32,13 @@ public class LeaveAllSub extends SubCommand {
 		if (args.length == 1) {
 			if (jb.getCurrentJobs() != null) {
 				jb.updateCurrentJobs(null);
-				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_leaveall_message"));
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_leaveall_message"));
 			} else {
-				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_leaveall_already"));
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_leaveall_already"));
 			}
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -57,7 +59,8 @@ public class LeaveAllSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.LeaveALL.UsageMessage");
+		 JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.LeaveALL.UsageMessage");
 	}
 
 }

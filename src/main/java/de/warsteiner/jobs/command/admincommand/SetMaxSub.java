@@ -4,10 +4,10 @@ import org.bukkit.command.CommandSender;
 
 import de.warsteiner.datax.SimpleAPI; 
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.command.AdminCommand;
-import de.warsteiner.jobs.player.PlayerDataManager;
+import de.warsteiner.jobs.api.PlayerDataAPI;
+import de.warsteiner.jobs.command.AdminCommand; 
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class SetMaxSub extends AdminSubCommand {
 
@@ -26,18 +26,18 @@ public class SetMaxSub extends AdminSubCommand {
 
 	@Override
 	public void perform(CommandSender sender, String[] args) {
-		 PlayerDataManager pl = UltimateJobs.getPlugin().getPlayerDataModeManager();
+		 PlayerDataAPI pl = UltimateJobs.getPlugin().getPlayerDataAPI();
 		if (args.length == 3) {
 
 			String player = args[1];
 			String value = args[2];
 
-			if (ap.getPlayerSaveAndLoadManager().getUUIDByName(player.toUpperCase()) == null) {
+			if (ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
 				return;
 			}
  
-			String uuid = ap.getPlayerSaveAndLoadManager().getUUIDByName(player.toUpperCase());
+			String uuid = ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase());
 
 			String how = plugin.getAPI().isCurrentlyInCache(uuid);
 
@@ -45,9 +45,9 @@ public class SetMaxSub extends AdminSubCommand {
 
 				if (how.equalsIgnoreCase("CACHE")) {
 
-					JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(uuid);
+					JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(uuid);
 
-					jb.changeMax(Integer.valueOf(value));
+					jb.updateMax(Integer.valueOf(value));
 					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7max Jobs to §a" + value
 							+ "§7. §8(§eCache§8)");
 					return;

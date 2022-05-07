@@ -9,7 +9,7 @@ import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.datax.api.PluginAPI;
 import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class HelpSub extends SubCommand {
@@ -19,12 +19,14 @@ public class HelpSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return  plugin.getPluginManager().getAMessage(UUID, "Commands.Help.Usage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Help.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return  plugin.getPluginManager().getAMessage(UUID, "Commands.Help.Description");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Help.Description");
 	}
 
 	@Override
@@ -37,12 +39,12 @@ public class HelpSub extends SubCommand {
 				plugin.getGUI().createHelpGUI(player, UpdateTypes.OPEN);
 			} else {
 		 
-				for (String m :plugin.getPluginManager().getListFromLang(UUID, "Commands.Help.List")) {
+				for (String m :jb.getLanguage().getListFromLanguage(UUID, "Commands.Help.List")) {
 					player.sendMessage(up.toHex(m).replaceAll("&", "§"));
 				}
 			}
 		} else {
-			player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+			player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -63,7 +65,8 @@ public class HelpSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) { 
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Help.UsageMessage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Help.UsageMessage");
 	}
   
 }

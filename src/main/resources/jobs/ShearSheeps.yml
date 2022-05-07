@@ -1,0 +1,83 @@
+Action:
+  - "SHEAR" 
+
+ID: "SHEAR_JOB"
+
+Material: "SHEARS"
+
+ColorOfBossBar: "GREEN"
+
+Slot: 12
+
+Price: 350
+ 
+Worlds:
+  - "world"
+  - "world_nether"
+
+IDS:
+
+  SHEAR:
+    List:
+      - "WOOL1" 
+      - "WOOL2" 
+ 
+    WOOL1:
+
+      Chance: 85
+      ID: "RED_WOOL"
+      Money: 2
+      Exp: 5
+      Points: 0.05
+    
+      RewardsGUI:
+    
+        See: true
+        Icon: "RED_WOOL"
+
+    WOOL2:
+
+      Chance: 85
+      ID: "WHITE_WOOL"
+      Money: 2
+      Exp: 5
+      Points: 0.05
+
+      RewardsGUI:
+
+        See: true
+        Icon: "WHITE_WOOL"
+
+LEVELS:
+
+  CountOfLevels: 4
+
+  1:
+
+    Money: 0
+    Icon: "COAL"
+    Need: 0
+    
+  2:
+
+    Money: 250
+    Need: 150
+    Icon: "PAPER"
+    EarnMore: 0.15
+    
+  3:
+
+    Money: 500
+    Icon: "PAPER"
+    Need: 500
+    EarnMore: 0.25
+    
+  4:
+
+    Money: 1000
+    Icon: "EMERALD"
+    Need: 550
+    EarnMore: 0.30
+
+  
+  

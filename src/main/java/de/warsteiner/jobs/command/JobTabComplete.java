@@ -9,10 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import de.warsteiner.datax.utils.Language;
+import de.warsteiner.datax.utils.objects.Language;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.api.JobsPlayer; 
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class JobTabComplete implements TabCompleter {
@@ -25,7 +25,7 @@ public class JobTabComplete implements TabCompleter {
 			Player p = (Player) s;
 			String UUID = "" + p.getUniqueId();
 			JobAPI api = plugin.getAPI();
-			JobsPlayer jb =plugin.getPlayerManager().getRealJobPlayer(UUID);
+			JobsPlayer jb =plugin.getPlayerAPI().getRealJobPlayer(UUID);
 
 			if (args.length == 1) {
 
@@ -71,7 +71,7 @@ public class JobTabComplete implements TabCompleter {
 										}
 									}   else if (type.equalsIgnoreCase("LANGUAGES")) {
 										if (jb.getOwnJobs() != null) {
-											for (Language b : plugin.getPluginManager().getLanguagesAsArray()) {
+											for (Language b : plugin.getLanguageAPI().getLoadedLanguagesAsArray()) {
 												l.add(b.getID().toLowerCase());
 											}
 										}

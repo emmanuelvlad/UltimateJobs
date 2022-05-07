@@ -5,9 +5,8 @@ import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobAPI;
-import de.warsteiner.jobs.api.JobsPlayer;
+import de.warsteiner.jobs.UltimateJobs; 
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class LeaveSub extends SubCommand {
@@ -16,12 +15,14 @@ public class LeaveSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Leave.Usage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Leave.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Leave.Description");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Leave.Description");
 	}
 
 	@Override
@@ -38,15 +39,15 @@ public class LeaveSub extends SubCommand {
 			String job = plugin.getAPI().checkIfJobIsRealAndGet(d.toUpperCase(), player).getConfigID();
 
 			if (jb.isInJob(job)) {
-				jb.remoCurrentJob(job);
-				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_leave_message").replaceAll("<job>",  plugin.getAPI().checkIfJobIsRealAndGet(d.toUpperCase(), player).getDisplay(""+UUID)));
+				jb.remCurrentJob(job);
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_leave_message").replaceAll("<job>",  plugin.getAPI().checkIfJobIsRealAndGet(d.toUpperCase(), player).getDisplay(""+UUID)));
 			} else {
-				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_leave_already"));
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_leave_already"));
 			}
 
 		} else {
 			player.sendMessage(
-					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -67,7 +68,8 @@ public class LeaveSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Leave.UsageMessage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Leave.UsageMessage");
 	}
 
 }

@@ -6,9 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.utils.Language;
+import de.warsteiner.datax.utils.objects.Language;
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.api.JobsPlayer; 
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class LangSub extends SubCommand {
@@ -17,12 +17,14 @@ public class LangSub extends SubCommand {
 
 	@Override
 	public String getName(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Language.Usage");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Language.Usage");
 	}
 
 	@Override
 	public String getDescription(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Language.Description");
+		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
+		return  jb.getLanguage().getStringFromLanguage(UUID, "Commands.Language.Description");
 	}
 
 	@Override
@@ -33,32 +35,32 @@ public class LangSub extends SubCommand {
 
 			String lang = args[1];
 
-			if (plugin.getPluginManager().getLanguageFromID(lang) == null) {
-				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_language_NotFound")
+			if (plugin.getLanguageAPI().getLanguageFromID(lang) == null) {
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_language_NotFound")
 						.replaceAll("<lang>", lang));
 				return;
 			} else {
 
-				String result = SimpleAPI.getPlugin().getPlayerSaveAndLoadManager().getSettingData(jb.getUUIDAsString(), "LANG");
+				String result = SimpleAPI.getPlugin().getPlayerDataAPI().getSettingData(jb.getUUIDAsString(), "LANG");
 
-				Language file = plugin.getPluginManager().getLanguageFromID(lang);
+				Language file = plugin.getLanguageAPI().getLanguageFromID(lang);
 
 				if (result.toLowerCase().equalsIgnoreCase(file.getName().toLowerCase())) {
-					player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_language_Already")
+					player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_language_Already")
 							.replaceAll("<lang>", lang));
 					return;
 				}
 
-				SimpleAPI.getPlugin().getPlayerCacheManager().getPluginPlayer(UUID).updateLanguage(file);
+				SimpleAPI.getPlugin().getPlayerAPI().getPluginPlayer(UUID).updateLanguage(file);
 
-				player.sendMessage(plugin.getPluginManager().getAMessage(UUID, "command_language_Changed")
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_language_Changed")
 						.replaceAll("<lang>", lang));
 				return;
 			}
 
 		} else {	
 			player.sendMessage(
-					plugin.getPluginManager().getAMessage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
+					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}
 
@@ -79,6 +81,7 @@ public class LangSub extends SubCommand {
 
 	@Override
 	public String getUsage(UUID UUID) {
-		return plugin.getPluginManager().getAMessage(UUID, "Commands.Language.UsageMessage");
+		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(""+UUID);
+		return jb.getLanguage().getStringFromLanguage(UUID, "Commands.Language.UsageMessage");
 	}
 }

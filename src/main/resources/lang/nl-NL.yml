@@ -660,6 +660,115 @@ Jobs:
             - "&7Punten &8: &6<points>"
             - "&7Actie&8: &4Breken"
             - "&7Zeldzaamheid&8: &bNormaal"
+
+  SHEAR_JOB:
+  
+    Display: "&fSchapen scheren"
+    
+    DisplayID: "schapen"
+    
+    Lore:
+      - "&7Verdien geld met het scheren van schapen"
+    
+    Stats:
+      - "&7"
+      - "&aStatus&8:"
+      - "&7Gekocht op&8: &b<stats_args_1>"
+      - "&7Schapen&8: &b<stats_args_2>" 
+      - "&7Vandaag Verdiend&8: &a<earned> Euro"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &fSchapen scheren &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Gekocht op&8: &b<stats_args_1>"
+           - "&7Schapen&8: &b<stats_args_2>" 
+           - "&7Vandaag Verdiend&8: &a<earned> Euro"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Jou status in deze baan&8:"
+           - "&8&m--------------------------" 
+           - "&7Gekocht op&8: &b<stats_args_1>"
+           - "&7Schapen&8: &b<stats_args_2>" 
+           - "&7Vandaag Verdiend&8: &a<earned> Euro"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Cadeaus van deze baan&8:"
+          - "&8-> &a250 Euro"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Cadeaus van deze baan&8:"
+          - "&8-> &a500 Euro"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Cadeus van deze baan&8:"
+          - "&8-> &a1000 Euro"
+      
+    IDS:
+
+      WOOL1:
+      
+        Display: "&fWitte Wol"
+        
+        Rewards:
+        
+          Display: "&8< &fWitte Wol &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Materiaal&8: &fWitte Wol"
+            - "&7Cadeau&8: &c$<money>"
+            - "&7Kans&8: &9<chance>%"
+            - "&7Exp&8: &a<exp>"
+            - "&7Punten &8: &6<points>"
+            - "&7Actie&8: &4Breken"
+            - "&7Zeldzaamheid&8: &bNormaal"
+
+      WOOL2:
+      
+        Display: "&cRode Wol"
+        
+        Rewards:
+        
+          Display: "&8< &cRode Wol &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Materiaal&8: &cRode Wol"
+            - "&7Cadeau&8: &c$<money>"
+            - "&7Kans&8: &9<chance>%"
+            - "&7Exp&8: &a<exp>"
+            - "&7Punten &8: &6<points>"
+            - "&7Actie&8: &4Breken"
+            - "&7Zeldzaamheid&8: &bNormaal"
   
   MINER:
   

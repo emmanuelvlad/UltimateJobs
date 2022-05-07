@@ -5,10 +5,10 @@ import org.bukkit.command.CommandSender;
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
-import de.warsteiner.jobs.api.JobsPlayer;
-import de.warsteiner.jobs.command.AdminCommand;
-import de.warsteiner.jobs.player.PlayerDataManager;
+import de.warsteiner.jobs.api.PlayerDataAPI;
+import de.warsteiner.jobs.command.AdminCommand; 
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
+import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class SetLevelSub extends AdminSubCommand {
 
@@ -27,7 +27,7 @@ public class SetLevelSub extends AdminSubCommand {
 
 	@Override
 	public void perform(CommandSender sender, String[] args) {
-		 PlayerDataManager pl = UltimateJobs.getPlugin().getPlayerDataModeManager();
+		 PlayerDataAPI pl = UltimateJobs.getPlugin().getPlayerDataAPI();
 		if (args.length == 4) {
 			
 			String player = args[1];
@@ -35,12 +35,12 @@ public class SetLevelSub extends AdminSubCommand {
 
 			String value = args[3];
 	 
-			if (ap.getPlayerSaveAndLoadManager().getUUIDByName(player.toUpperCase()) == null) {
+			if (ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
 				return;
 			}
  
-			String uuid =ap.getPlayerSaveAndLoadManager().getUUIDByName(player.toUpperCase());
+			String uuid =ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase());
 
 			String how = plugin.getAPI().isCurrentlyInCache(uuid);
 
@@ -50,10 +50,10 @@ public class SetLevelSub extends AdminSubCommand {
 					Job j = plugin.getAPI().isJobFromConfigID(job.toUpperCase());
 					if (how.equalsIgnoreCase("CACHE")) {
 
-						JobsPlayer jb =UltimateJobs.getPlugin().getPlayerManager().getRealJobPlayer(uuid);
+						JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(uuid);
 
-						if(jb.ownJob(j.getConfigID())) {
-							jb.updateLevel(j.getConfigID(), Integer.valueOf(value));
+						if(jb.ownJob(j.getConfigID())) { 
+							jb.getStatsOf(j.getConfigID()).updateLevel(Integer.valueOf(value));
 							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
 									+ " §7to §6"+value+". §8(§eCache§8)");
 							return;
@@ -64,7 +64,7 @@ public class SetLevelSub extends AdminSubCommand {
 
 					} else {
 
-						if(pl.getOfflinePlayerOwnedJobs(uuid).contains(job.toUpperCase())) {
+						if(pl.getOwnedJobs(uuid).contains(job.toUpperCase())) {
 							pl.updateLevel(uuid, Integer.valueOf(value), j.getConfigID());
 
 							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
