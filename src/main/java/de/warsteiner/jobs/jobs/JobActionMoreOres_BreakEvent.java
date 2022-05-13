@@ -1,6 +1,6 @@
 package de.warsteiner.jobs.jobs;
-
-import org.bukkit.Bukkit;
+ 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener; 
@@ -22,9 +22,11 @@ public class JobActionMoreOres_BreakEvent implements Listener {
 			return;
 		}
 		
+		Player player = event.getBreakEvent().getPlayer();
+		
 		String fin = event.getOreName().replaceAll(" ", "_").toUpperCase();
 		
-		//plugin.getMoreOresManager().executeBreakEvent(event.get, fin, null);
+		plugin.getMoreOresManager().executeBreakEvent(player, fin, plugin.getPlayerAPI().getRealJobPlayer(""+player.getUniqueId()));
 		
 	}
 }

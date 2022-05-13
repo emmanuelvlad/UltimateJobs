@@ -389,73 +389,67 @@ public class GuiAddonManager {
 
 			int sizeStart = (page - 1) * slots.size();
 			int sizeStop = page * slots.size();
-			
-			Bukkit.broadcastMessage("started: "+sizeStart);
-			Bukkit.broadcastMessage("stopped: "+sizeStop);
 
 			for (int i = sizeStart; i != sizeStop; i++) {
-			
-				if(i <= d.size()) {
+
+				if (i < d.size()) {
+
+					if (d.get(i).isEmpty()) {
+						return;
+					}
+
 					itemslist.add(d.get(i));
-					Bukkit.broadcastMessage("added: #"+i+" -> "+d.get(i));
-				} else {
-					Bukkit.broadcastMessage("error at "+i);
 				}
-				
+
 			}
 
-			Bukkit.broadcastMessage("§aper page: "+itemslist.size());
-			
 			if (inv != null) {
 
 				for (int i3 = 0; i3 < itemslist.size(); i3++) {
-			   
-								String type = itemslist.get(i3);
 
-								JobAction real = job.getActionofID(type);
+					String type = itemslist.get(i3);
 
-								String icon = job.getConfig()
-										.getString("IDS." + real.toString() + "." + type + ".RewardsGUI.Icon");
-								String display = sp.getLanguage().getConfig()
-										.getString("Jobs." + job.getConfigID() + ".IDS." + type + ".Rewards.Display");
+					JobAction real = job.getActionofID(type);
 
-								ItemStack i2 = im.createAndGetItemStack(pl, icon);
-								ItemMeta m = i2.getItemMeta();
+					String icon = job.getConfig().getString("IDS." + real.toString() + "." + type + ".RewardsGUI.Icon");
+					String display = sp.getLanguage().getConfig()
+							.getString("Jobs." + job.getConfigID() + ".IDS." + type + ".Rewards.Display");
 
-								ArrayList<String> l = new ArrayList<String>();
+					ItemStack i2 = im.createAndGetItemStack(pl, icon);
+					ItemMeta m = i2.getItemMeta();
 
-								String used = null;
+					ArrayList<String> l = new ArrayList<String>();
 
-								if (display == null) {
-									Bukkit.getConsoleSender()
-											.sendMessage("§4Missing Display-Name on RewardsGUI from ID " + type);
-									used = "§cNot Found";
-								} else {
-									used = display;
-								}
+					String used = null;
 
-								m.setDisplayName(up.toHex(used).replaceAll("&", "§"));
+					if (display == null) {
+						Bukkit.getConsoleSender().sendMessage("§4Missing Display-Name on RewardsGUI from ID " + type);
+						used = "§cNot Found";
+					} else {
+						used = display;
+					}
 
-								double reward = job.getRewardOf(type, real);
-								int chance = job.getChanceOf(type, real);
-								double points = job.getPointsOf(type, real);
-								double exp = job.getExpOf(type, real);
+					m.setDisplayName(up.toHex(used).replaceAll("&", "§"));
 
-								for (String line : sp.getLanguage().getListFromLanguage(sp.getUUID(),
-										"Jobs." + job.getConfigID() + ".IDS." + type + ".Rewards.Lore")) {
-									l.add(up.toHex(line).replaceAll("<exp>", "" + exp)
-											.replaceAll("<points>", "" + points).replaceAll("<chance>", "" + chance)
-											.replaceAll("<money>", "" + reward).replaceAll("&", "§"));
-								}
+					double reward = job.getRewardOf(type, real);
+					int chance = job.getChanceOf(type, real);
+					double points = job.getPointsOf(type, real);
+					double exp = job.getExpOf(type, real);
 
-								m.setLore(l);
+					for (String line : sp.getLanguage().getListFromLanguage(sp.getUUID(),
+							"Jobs." + job.getConfigID() + ".IDS." + type + ".Rewards.Lore")) {
+						l.add(up.toHex(line).replaceAll("<exp>", "" + exp).replaceAll("<points>", "" + points)
+								.replaceAll("<chance>", "" + chance).replaceAll("<money>", "" + reward)
+								.replaceAll("&", "§"));
+					}
 
-								i2.setItemMeta(m);
+					m.setLore(l);
 
-								inv.setItem(Integer.valueOf(slots.get(i3)), i2);
-							}
- 
-				 
+					i2.setItemMeta(m);
+
+					inv.setItem(Integer.valueOf(slots.get(i3)), i2);
+				}
+
 			}
 
 		});

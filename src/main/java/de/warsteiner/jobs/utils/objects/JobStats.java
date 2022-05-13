@@ -42,18 +42,14 @@ public class JobStats {
 	}
 	
 	public void updateBrokenTimesOf(String id, int value) {
-		
-		getBrokenTimesOfIDList().remove(date);
-		
+	 
 		getBrokenTimesOfIDList().put(date, value);
 	}
 	
 	public void addBrokenTimesOf(String id, int value) {
 		
 		Integer old = getBrokenTimesOf(id);
-		
-		getBrokenTimesOfIDList().remove(id);
-		
+		 
 		getBrokenTimesOfIDList().put(id, old+value);
 	}
  
@@ -66,18 +62,14 @@ public class JobStats {
 	}
 	
 	public void updateEarnings(String date, double value) {
-		
-		getEarningsList().remove(date);
-		
+	 
 		getEarningsList().put(date, value);
 	}
 	
 	public void addEarningsOf(String date, double value) {
 		
 		Double old = getEarnings(date);
-		
-		getEarningsList().remove(date);
-		
+		 
 		getEarningsList().put(date, old+value);
 	}
 	
@@ -92,16 +84,12 @@ public class JobStats {
 	public void addBrokenOf(String id, double value) {
 		
 		Double old = getBrokenOf(id);
-		
-		getBrokenList().remove(id);
-		
+		 
 		getBrokenList().put(id, old+value);
 	}
 	
 	public void updateBrokenOf(String id, double value) {
-		
-		getBrokenList().remove(id);
-		
+	 
 		getBrokenList().put(id, value);
 	}
 	

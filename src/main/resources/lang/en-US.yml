@@ -60,6 +60,9 @@ command_points_other: "<prefix> &7<name> owns &b<points> &7Points."
 #command /job stats
 command_stats_not_found: "<prefix> &cCannot find player <name>."
 
+#command /jobs levels <job>
+command_levels_no_data_found: "<prefix> &cThere were no Stats found for this Job!"
+
 #other messages
 Other:
 

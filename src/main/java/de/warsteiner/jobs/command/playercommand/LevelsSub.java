@@ -41,6 +41,12 @@ public class LevelsSub extends SubCommand {
 				plugin.getAPI().playSound("COMMAND_JOB_NOT_FOUND", player);
 				return;
 			}
+			
+			if(!jb.hasStatsOf(job)) {
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_levels_no_data_found"));
+				plugin.getAPI().playSound("COMMAND_LEVELS_NOT_OWNED", player);
+				return;
+			}
 
 			plugin.getGUIAddonManager().createLevelsGUI(player, UpdateTypes.OPEN,
 					plugin.getAPI().checkIfJobIsRealAndGet(job.toUpperCase(), player));

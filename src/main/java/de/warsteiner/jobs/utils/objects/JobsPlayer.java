@@ -34,6 +34,10 @@ public class JobsPlayer {
 		this.stats = stats;
 	}
 	
+	public boolean hasStatsOf(String job) {
+		return stats.get(job) != null;
+	}
+	
 	public JobStats getStatsOf(String job) {
 		return stats.get(job);
 	}

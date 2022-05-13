@@ -60,6 +60,9 @@ command_points_other: "<prefix> &7<name> heeft &b<points> &7Punten."
 #command /job stats
 command_stats_not_found: "<prefix> &cKan deze speler niet vinden <name>."
 
+#command /jobs levels <job>
+command_levels_no_data_found: "<prefix> &cEr zijn geen statistieken gevonden voor deze vacature!"
+
 #other messages
 Other:
 
