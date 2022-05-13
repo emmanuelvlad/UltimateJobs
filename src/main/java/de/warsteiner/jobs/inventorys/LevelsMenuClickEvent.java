@@ -64,7 +64,7 @@ public class LevelsMenuClickEvent implements Listener {
 				if(display.equalsIgnoreCase(up.toHex(next).replaceAll("&", "§"))) { 
 					int d = cfg.getStringList("Level_Slots").size();
 					int perpage = d + 1; 
-					int cl = page * perpage;
+					int cl = page * perpage + 1;
 					 
 					if (j.getCountOfLevels() >= cl) {
 						SimpleAPI.getPlugin().getPlayerDataAPI().addOnePageFromID(""+p.getUniqueId(),  "LEVELS_"+j.getConfigID());

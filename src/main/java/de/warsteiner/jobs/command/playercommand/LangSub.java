@@ -48,6 +48,7 @@ public class LangSub extends SubCommand {
 				if (result.toLowerCase().equalsIgnoreCase(file.getName().toLowerCase())) {
 					player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_language_Already")
 							.replaceAll("<lang>", lang));
+					plugin.getAPI().playSound("COMMAND_LANG_ALREADY", player);
 					return;
 				}
 
@@ -55,10 +56,12 @@ public class LangSub extends SubCommand {
 
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_language_Changed")
 						.replaceAll("<lang>", lang));
+				plugin.getAPI().playSound("COMMAND_LANG_CHANGED", player);
 				return;
 			}
 
 		} else {	
+			plugin.getAPI().playSound("COMMAND_USAGE", player);
 			player.sendMessage(
 					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}

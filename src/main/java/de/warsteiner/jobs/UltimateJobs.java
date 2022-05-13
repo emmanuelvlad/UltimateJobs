@@ -1,3 +1,4 @@
+
 package de.warsteiner.jobs;
 
 import java.io.File; 
@@ -21,6 +22,7 @@ import de.warsteiner.jobs.api.LevelAPI;
 import de.warsteiner.jobs.api.PlayerAPI;
 import de.warsteiner.jobs.api.PlayerDataAPI;
 import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
+import de.warsteiner.jobs.api.plugins.MoreOresManager;
 import de.warsteiner.jobs.api.plugins.MythicMobsManager;
 import de.warsteiner.jobs.api.plugins.NotQuestManager;
 import de.warsteiner.jobs.api.plugins.PlaceHolderManager;
@@ -57,6 +59,7 @@ import de.warsteiner.jobs.jobs.JobActionAdvancement;
 import de.warsteiner.jobs.jobs.JobActionBreak;
 import de.warsteiner.jobs.jobs.JobActionBreed;
 import de.warsteiner.jobs.jobs.JobActionCraft;
+import de.warsteiner.jobs.jobs.JobActionDrink;
 import de.warsteiner.jobs.jobs.JobActionEat;
 import de.warsteiner.jobs.jobs.JobActionFarm;
 import de.warsteiner.jobs.jobs.JobActionFish;
@@ -64,10 +67,12 @@ import de.warsteiner.jobs.jobs.JobActionHoney;
 import de.warsteiner.jobs.jobs.JobActionKillMob;
 import de.warsteiner.jobs.jobs.JobActionMMKill;
 import de.warsteiner.jobs.jobs.JobActionMilk;
+import de.warsteiner.jobs.jobs.JobActionMoreOres_BreakEvent;
 import de.warsteiner.jobs.jobs.JobActionPlace;
 import de.warsteiner.jobs.jobs.JobActionShear;
 import de.warsteiner.jobs.jobs.JobActionStripLog;
 import de.warsteiner.jobs.jobs.JobActionTame;
+import de.warsteiner.jobs.jobs.JobActionsCollectBerrys;
 import de.warsteiner.jobs.manager.ClickManager;
 import de.warsteiner.jobs.manager.FileManager;
 import de.warsteiner.jobs.manager.GuiAddonManager;
@@ -75,6 +80,7 @@ import de.warsteiner.jobs.manager.GuiManager;
 import de.warsteiner.jobs.manager.JobWorkManager;
 import de.warsteiner.jobs.manager.PluginManager;
 import de.warsteiner.jobs.utils.BossBarHandler;
+import de.warsteiner.jobs.utils.JsonMessage;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry;
 import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry;
 import net.milkbowl.vault.economy.Economy;
@@ -103,7 +109,9 @@ public class UltimateJobs extends JavaPlugin {
 
 	private PlayerAPI papi;
 	private PlayerDataAPI dataapi;
-	private LanguageAPI langapi;
+	private JsonMessage js;
+	private LanguageAPI langapi; 
+	private MoreOresManager moreores;
 
 	public void onLoad() {
 
@@ -117,11 +125,13 @@ public class UltimateJobs extends JavaPlugin {
 		filemanager.generateFiles();
 
 		if (this.filemanager.getConfig().getInt("ExecutorServiceThreads") == 0) {
-			getLogger().warning("§cMissing Option of ExecutorServices in Config.yml");
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of ExecutorServices in Config.yml");
 		}
 
 		executor = Executors.newFixedThreadPool(this.filemanager.getConfig().getInt("ExecutorServiceThreads"));
 
+		loadClasses();
+		
 		if (getPluginManager().isInstalled("WorldGuard")) {
 			WorldGuardManager.setClass();
 			WorldGuardManager.load();
@@ -141,6 +151,12 @@ public class UltimateJobs extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		
+		if (SimpleAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
+			getPlayerDataAPI().createtables();
+		} else {
+			datafile.create();
+		}
 
 		getLanguageAPI().loadLanguages();
 
@@ -163,23 +179,21 @@ public class UltimateJobs extends JavaPlugin {
 
 		setupEconomy();
 
-		getLogger().info("§aLoaded Vault...");
-
-		loadClasses();
-
+		Bukkit.getConsoleSender().sendMessage("§aLoaded Vault...");
+ 
 		api.loadJobs(getLogger());
 
 		if (getPluginManager().isInstalled("PlaceHolderAPI")) {
 			new PlaceHolderManager().register();
-			getLogger().info("§bLoaded PlaceHolderAPI Support...");
+			Bukkit.getConsoleSender().sendMessage("§bLoaded PlaceHolderAPI Support...");
 		}
 
 		if (getPluginManager().isInstalled("NotQuests")) {
 			getNotQuestManager().setClass();
-			getLogger().info("§bLoaded NotQuests Support...");
+			Bukkit.getConsoleSender().sendMessage("§bLoaded NotQuests Support...");
 		}
 		if (getPluginManager().isInstalled("AlonsoLevels")) {
-			getLogger().info("§bLoaded AlonsoLevels Support...");
+			Bukkit.getConsoleSender().sendMessage("§bLoaded AlonsoLevels Support...");
 		}
 
 		getCommand("jobs").setExecutor(new JobsCommand());
@@ -194,25 +208,26 @@ public class UltimateJobs extends JavaPlugin {
 
 		getPlayerAPI().startSave();
 
-		getLogger().info("§7");
-		getLogger().info("§7");
-		getLogger().info(
+		Bukkit.getConsoleSender().sendMessage("§7");
+		Bukkit.getConsoleSender().sendMessage("§7");
+		Bukkit.getConsoleSender().sendMessage(
 				",--. ,--.,--.,--------.,--.,--.   ,--.  ,---. ,--------.,------.     ,--. ,-----. ,-----.   ,---.   ");
-		getLogger().info(
+		Bukkit.getConsoleSender().sendMessage(
 				"|  | |  ||  |'--.  .--'|  ||   `.'   | /  O  \\'--.  .--'|  .---'     |  |'  .-.  '|  |) /_ '   .-'  ");
-		getLogger().info(
+		Bukkit.getConsoleSender().sendMessage(
 				"|  | |  ||  |   |  |   |  ||  |'.'|  ||  .-.  |  |  |   |  `--, ,--. |  ||  | |  ||  .-.  \\`.  `-.  ");
-		getLogger().info(
+		Bukkit.getConsoleSender().sendMessage(
 				"'  '-'  '|  '--.|  |   |  ||  |   |  ||  | |  |  |  |   |  `---.|  '-'  /'  '-'  '|  '--' /.-'    | ");
-		getLogger().info(
+		Bukkit.getConsoleSender().sendMessage(
 				" `-----' `-----'`--'   `--'`--'   `--'`--' `--'  `--'   `------' `-----'  `-----' `------' `-----'  ");
-		getLogger().info("       §bRunning plugin UltimateJobs v" + getDescription().getVersion() + " ("
+		Bukkit.getConsoleSender().sendMessage("       §bRunning plugin UltimateJobs v" + getDescription().getVersion() + " ("
 				+ getDescription().getAPIVersion() + ")");
-		getLogger().info("       §bRunning UltimateJobs with " + getLoaded().size() + " Jobs");
-		getLogger().info("       §bLoaded " + getLanguageAPI().getLanguages().size() + " Languages");
-		getLogger().info("§7");
-		getLogger().info("§7");
-
+		Bukkit.getConsoleSender().sendMessage("       §bRunning UltimateJobs with " + getLoaded().size() + " Jobs");
+		Bukkit.getConsoleSender().sendMessage("       §bLoaded " + getLanguageAPI().getLanguages().size() + " Languages");
+		Bukkit.getConsoleSender().sendMessage("§7");
+		Bukkit.getConsoleSender().sendMessage("§7");
+ 
+		 
 	}
 
 	public void onDisable() {
@@ -230,10 +245,10 @@ public class UltimateJobs extends JavaPlugin {
 			getExecutor().shutdown();
 		}
 
-		getLogger().warning("§7");
-		getLogger().warning("     §cPlugin has been disabled!");
-		getLogger().warning("     §cThank you for using my plugin!");
-		getLogger().warning("§7");
+		Bukkit.getConsoleSender().sendMessage("§7");
+		Bukkit.getConsoleSender().sendMessage("     §cPlugin has been disabled!");
+		Bukkit.getConsoleSender().sendMessage("     §cThank you for using my plugin!");
+		Bukkit.getConsoleSender().sendMessage("§7");
 	}
 
 	public void registerSubCommands() {
@@ -276,17 +291,16 @@ public class UltimateJobs extends JavaPlugin {
 		work = new JobWorkManager(plugin, this.api);
 		alonso = new AlonsoLevelsManager();
 		datafile = new PlayerDataFile("jobs");
-
+		js = new JsonMessage();
 		papi = new PlayerAPI(plugin);
-
-		if (SimpleAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
-			getPlayerDataAPI().createtables();
-		} else {
-			datafile.create();
-		}
-
+  
 		dataapi = new PlayerDataAPI();
 
+		
+	}
+	
+	public JsonMessage getJsonMessage() {
+		return js;
 	}
 
 	public GuiAddonManager getGUIAddonManager() {
@@ -409,15 +423,27 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionTame(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionStripLog(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionBreed(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionDrink(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionsCollectBerrys(), this);
 
 		if (getPluginManager().isInstalled("MythicMobs")) {
 			mm = new MythicMobsManager();
 			Bukkit.getPluginManager().registerEvents(new JobActionMMKill(), this);
-			this.getLogger().info("§aLoaded Support for MythicMobs");
+			Bukkit.getConsoleSender().sendMessage("§bLoaded Support for MythicMobs");
 		}
-
+	 
+		if (getPluginManager().isInstalled("MoreOres")) {
+			moreores = new MoreOresManager();
+			Bukkit.getPluginManager().registerEvents(new JobActionMoreOres_BreakEvent(), this);
+			Bukkit.getConsoleSender().sendMessage("§bLoaded Support for MoreOres by Hello1231");
+		}  
+		
 	}
-
+	
+	public MoreOresManager getMoreOresManager() {
+		return moreores;
+	}
+ 
 	public MythicMobsManager getMythicMobsManager() {
 		return mm;
 	}

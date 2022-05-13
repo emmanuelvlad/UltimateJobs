@@ -1,6 +1,8 @@
 package de.warsteiner.jobs.command.admincommand;
 
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.UltimateJobs;
@@ -34,6 +36,10 @@ public class AddPointsSub extends AdminSubCommand {
 
 			if (ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
+				if(sender instanceof Player) {
+					Player player3 = (Player) sender;
+					player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+				}
 				return;
 			}
  
@@ -42,6 +48,11 @@ public class AddPointsSub extends AdminSubCommand {
 			String how = plugin.getAPI().isCurrentlyInCache(uuid);
 
 			if (plugin.getAPI().isInt(value)) {
+				
+				if(sender instanceof Player) {
+					Player player3 = (Player) sender;
+					player3.playSound(player3.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 3);
+				}
 
 				if (how.equalsIgnoreCase("CACHE")) {
 
@@ -67,11 +78,19 @@ public class AddPointsSub extends AdminSubCommand {
 
 			} else {
 				sender.sendMessage(AdminCommand.prefix + "Error! The value must be a Integer");
+				if(sender instanceof Player) {
+					Player player3 = (Player) sender;
+					player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+				}
 				return;
 			}
 
 		} else {
 			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
+			if(sender instanceof Player) {
+				Player player3 = (Player) sender;
+				player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+			}
 		}
 	}
 

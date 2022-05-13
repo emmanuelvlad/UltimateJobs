@@ -63,8 +63,8 @@ public class RewardsMenuClickEvent  implements Listener {
 				int page = SimpleAPI.getPlugin().getPlayerDataAPI().getPageFromID(""+p.getUniqueId(),"REWARDS_"+j.getConfigID());
 				if(display.equalsIgnoreCase(up.toHex(next).replaceAll("&", "§"))) { 
 					int d = cfg.getStringList("Rewards_Slots").size();
-					int perpage = d + 1; 
-					int cl = page * perpage;
+					int perpage = d; 
+					int cl = page * perpage + 1;
 					 
 					if (j.getAllNotRealIDSFromActionsAsArray().size() >= cl) {
 						SimpleAPI.getPlugin().getPlayerDataAPI().addOnePageFromID(""+p.getUniqueId(),  "REWARDS_"+j.getConfigID());

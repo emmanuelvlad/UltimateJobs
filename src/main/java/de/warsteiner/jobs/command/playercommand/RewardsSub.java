@@ -36,6 +36,7 @@ public class RewardsSub extends SubCommand {
 			String job = args[1].toUpperCase();
 
 			if (!plugin.getAPI().checkIfJobIsReal(job.toUpperCase(), player)) {
+				plugin.getAPI().playSound("COMMAND_JOB_NOT_FOUND", player);
 				return;
 			}
 
@@ -50,6 +51,7 @@ public class RewardsSub extends SubCommand {
 
 			return;
 		} else {
+			plugin.getAPI().playSound("COMMAND_USAGE", player);
 			player.sendMessage(
 					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}

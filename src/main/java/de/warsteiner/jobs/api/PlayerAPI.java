@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.datax.SimpleAPI;
+import de.warsteiner.datax.utils.objects.Language;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.utils.JobAction;
 import de.warsteiner.jobs.utils.objects.JobStats;
@@ -118,10 +119,14 @@ public class PlayerAPI {
 				stats.put(loading, sz);
 			}
 
+			Language api = SimpleAPI.getPlugin().getPlayerAPI().getPluginPlayer(UUID).getLanguage();
+			
+			Language langusged = plugin.getLanguageAPI().getLanguages().get(api.getName());
+			
 			JobsPlayer jp = new JobsPlayer(name, current, owned, plm.getPoints("" + UUID),
 
 					plm.getMaxJobs("" + UUID), "" + UUID, UUID,
-					SimpleAPI.getPlugin().getPlayerAPI().getPluginPlayer(UUID).getLanguage(), stats);
+					langusged, stats);
 
 			pllist.put("" + UUID, jp);
 			players.add("" + UUID);

@@ -1,6 +1,8 @@
 package de.warsteiner.jobs.command.admincommand;
 
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.UltimateJobs;
@@ -37,6 +39,10 @@ public class SetLevelSub extends AdminSubCommand {
 	 
 			if (ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
+				if(sender instanceof Player) {
+					Player player3 = (Player) sender;
+					player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+				}
 				return;
 			}
  
@@ -56,9 +62,17 @@ public class SetLevelSub extends AdminSubCommand {
 							jb.getStatsOf(j.getConfigID()).updateLevel(Integer.valueOf(value));
 							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
 									+ " §7to §6"+value+". §8(§eCache§8)");
+							if(sender instanceof Player) {
+								Player player3 = (Player) sender;
+								player3.playSound(player3.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 3);
+							}
 							return;
 						} else {
 							sender.sendMessage(AdminCommand.prefix + "Error! Player does not own that Job!");
+							if(sender instanceof Player) {
+								Player player3 = (Player) sender;
+								player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+							}
 							return;
 						}
 
@@ -69,25 +83,44 @@ public class SetLevelSub extends AdminSubCommand {
 
 							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
 							+ " §7to §6"+value+". §8(§bSQL§8)");
-							 
+							if(sender instanceof Player) {
+								Player player3 = (Player) sender;
+								player3.playSound(player3.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 3);
+							}
 							return;
 						} else {
 							sender.sendMessage(AdminCommand.prefix + "Error! Player does not own that Job!");
+							if(sender instanceof Player) {
+								Player player3 = (Player) sender;
+								player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+							}
 							return;
 						}
 					}
 				} else {
 					sender.sendMessage(AdminCommand.prefix + "Error! Cannot find that Job!");
+					if(sender instanceof Player) {
+						Player player3 = (Player) sender;
+						player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+					}
 					return;
 				}
 
 			} else {
 				sender.sendMessage(AdminCommand.prefix + "Error! The value must be a Integer");
+				if(sender instanceof Player) {
+					Player player3 = (Player) sender;
+					player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+				}
 				return;
 			}
 
 		} else {
 			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
+			if(sender instanceof Player) {
+				Player player3 = (Player) sender;
+				player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+			}
 		}
 	}
 

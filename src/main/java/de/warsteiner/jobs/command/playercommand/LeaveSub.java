@@ -39,13 +39,16 @@ public class LeaveSub extends SubCommand {
 			String job = plugin.getAPI().checkIfJobIsRealAndGet(d.toUpperCase(), player).getConfigID();
 
 			if (jb.isInJob(job)) {
+				plugin.getAPI().playSound("COMMAND_LEAVE_SUCCESS", player);
 				jb.remCurrentJob(job);
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_leave_message").replaceAll("<job>",  plugin.getAPI().checkIfJobIsRealAndGet(d.toUpperCase(), player).getDisplay(""+UUID)));
 			} else {
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_leave_already"));
+				plugin.getAPI().playSound("COMMAND_LEAVE_ALREADY", player);
 			}
 
 		} else {
+			plugin.getAPI().playSound("COMMAND_USAGE", player);
 			player.sendMessage(
 					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}

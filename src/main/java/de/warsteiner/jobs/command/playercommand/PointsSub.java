@@ -37,13 +37,14 @@ public class PointsSub extends SubCommand {
 			String pl = args[1].toUpperCase();
  
 			if (ap.getPlayerDataAPI().getUUIDByName(pl.toUpperCase()) == null) {
+				plugin.getAPI().playSound("COMMAND_PLAYER_NOT_FOUND", player);
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_points_not_found").replaceAll("<name>", args[1])); 
 				return;
 			} else {
 				String uuid = ap.getPlayerDataAPI().getUUIDByName(pl.toUpperCase());
 				
 				String how = plugin.getAPI().isCurrentlyInCache(uuid);
-		 
+				plugin.getAPI().playSound("COMMAND_POINTS_OTHER_SUCCES", player);
 				if(how.equalsIgnoreCase("CACHE")) {
 					double points = jb.getPoints();
 					player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_points_other").replaceAll("<points>", plugin.getAPI().Format(points)).replaceAll("<name>", args[1])); 
@@ -56,10 +57,12 @@ public class PointsSub extends SubCommand {
 				}
 			} 
 		} else if(args.length == 1) { 
+			plugin.getAPI().playSound("COMMAND_POINTS_SELF_SUCCES", player);
 			player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_points_self").replaceAll("<points>", plugin.getAPI().Format(jb.getPoints())));  
 			return;
 		}
 		else {
+			plugin.getAPI().playSound("COMMAND_USAGE", player);
 			player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}

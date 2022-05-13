@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -31,7 +32,7 @@ public class Job {
 		ArrayList<JobAction> list = new ArrayList<JobAction>();
 		
 		if(cfg.getStringList("Action") == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Action");
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Action");
 		}
 		
 		for(String a : cfg.getStringList("Action")) {
@@ -44,7 +45,7 @@ public class Job {
 		action =  list;
 		
 		if(cf.getString("Material") == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Material");
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Material");
 		}
 		
 		icon = cfg.getString("Material");
@@ -58,7 +59,7 @@ public class Job {
 		try {
 			cf.save(file);
 		} catch (IOException e) { 
-			UltimateJobs.getPlugin().getLogger().warning("§cFailed to save Config of "+this.getConfigID());
+			Bukkit.getConsoleSender().sendMessage("§cFailed to save Config of "+this.getConfigID());
 			e.printStackTrace();
 		}
 	}
@@ -66,7 +67,7 @@ public class Job {
 	public File getFile() {
 		
 		if(file == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cFailed to return Job File of "+this.getConfigID());
+			Bukkit.getConsoleSender().sendMessage("§cFailed to return Job File of "+this.getConfigID());
 		}
 		
 		return file;
@@ -75,7 +76,7 @@ public class Job {
 	public BarColor getBarColor() {
 		
 		if(BarColor.valueOf(cf.getString("ColorOfBossBar")) == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing  or Wrong Option of "+this.getConfigID()+" Job -> BossBarColor");
+			Bukkit.getConsoleSender().sendMessage("§cMissing  or Wrong Option of "+this.getConfigID()+" Job -> BossBarColor");
 			return BarColor.RED;
 		}
 		
@@ -91,7 +92,7 @@ public class Job {
 		String where = jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Jobs."+getConfigID()+".Levels."+i+".Display");
 		 
 		if(where == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Level Display from Level "+i);
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Level Display from Level "+i);
 		}
 		
 		return where;
@@ -124,7 +125,7 @@ public class Job {
 	public List<String> getPermissionsLore(String UUID) { 
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(UUID);
 		if(!cf.contains("PermLore")) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Permissions Lore");
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Permissions Lore");
 		}
 		
 		return jb.getLanguage().getListFromPath(jb.getUUID(), cf.getString("PermLore"));  
@@ -133,7 +134,7 @@ public class Job {
 	public String getPermMessage(String UUID) { 
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(UUID);
 		if(!cf.contains("PermMessage")) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Permissions Message");
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Permissions Message");
 		}
 		return jb.getLanguage().getStringFromPath(jb.getUUID(), cf.getString("PermMessage")); 
 	}
@@ -184,7 +185,7 @@ public class Job {
 		List<String> result =jb.getLanguage().getListFromPath(jb.getUUID(), cf.getString("ReqNotQuestCondLore"));
 		
 		if(result == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> NotQuests Lore");
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> NotQuests Lore");
 		}
  		
 		return  result;  
@@ -204,7 +205,7 @@ public class Job {
 		List<String> result = jb.getLanguage().getListFromLanguage(jb.getUUID(), cf.getString("AlonsoLevelLore"));
 		
 		if(result == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> AlonsoLevels Lore");
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> AlonsoLevels Lore");
 		}
 		
 		return result; 
@@ -276,7 +277,7 @@ public class Job {
 		String result = jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Jobs."+this.getConfigID()+".IDS."+id+".Display"); 
 		
 		if(result == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Display of "+id);
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Display of "+id);
 		}
 		
 		return result;
@@ -286,7 +287,7 @@ public class Job {
 		int result =  cf.getInt("IDS." + ac.toString() + "." + id + ".Chance");
 	
 		if(result == 0) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Chance if "+id);
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Chance if "+id);
 		}
 		return result;
 	}
@@ -333,7 +334,7 @@ public class Job {
 		List<String> result = cf.getStringList("IDS."+ac.toString()+".List");
 		
 		if(result == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Real IDs List from Action"+ac);
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Real IDs List from Action"+ac);
 		}
 		return result;
 	}
@@ -342,7 +343,7 @@ public class Job {
 		String result = cf.getString("IDS." + ac.toString() + "." + id + ".ID");
 	
 		if(result == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Real ID of "+id);
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Real ID of "+id);
 		}
 		
 		return result;
@@ -393,12 +394,30 @@ public class Job {
 		return list;
 	}
 	
+	public String getNotRealIDByRealOne(String id) { 
+		for(JobAction b : getActionList()) {
+			for(String l : getNotRealIDSListByAction(b)) {
+			
+				String real = getRealIDOf(b, l);
+				
+				if(real.equalsIgnoreCase(id))
+				{
+					return l;
+				}
+			}
+			
+			
+		}
+		
+		return null;
+	}
+	
 	public List<String> getLore(String UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(UUID);
 		List<String> result =jb.getLanguage().getListFromLanguage(jb.getUUID(), "Jobs."+this.getConfigID()+".Lore");
 		
 		if(result == null) {
-			UltimateJobs.getPlugin().getLogger().warning("§cMissing Option of "+this.getConfigID()+" Job -> Lore of Job");
+			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> Lore of Job");
 		}
 		
 		return result;

@@ -3,7 +3,7 @@ version: 0.4.0
 name: UltimateJobs
 author: Warsteiner37
 api-version: 1.13
-softdepend: [WorldGuard, AlonsoLevels, WorldEdit, PlaceHolderAPI, MythicMobs]
+softdepend: [WorldGuard, AlonsoLevels, WorldEdit, PlaceHolderAPI, MythicMobs, MoreOres]
 depend: [SimpleAPI]
 description: Let Players work with this high quality Jobs Plugin!
 website: https://www.spigotmc.org/resources/ultimatejobs-player-jobs.99978/

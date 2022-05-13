@@ -83,7 +83,7 @@ public class ClickManager {
 			if (display.equalsIgnoreCase(dis)) {
 				String job = j.getConfigID();
 
-				String name =  jb.getLanguage().getStringFromLanguage(jb.getUUID(), cfg.getString("Main_Name"));
+				String name =  jb.getLanguage().getStringFromPath(jb.getUUID(), cfg.getString("Main_Name"));
 				if (api.canBuyWithoutPermissions(player, j)) {
 
 					List<String> d = api.canGetJobWithSubOptions(player, j);
@@ -159,7 +159,7 @@ public class ClickManager {
 		List<String> custom_items = config.getStringList(path + ".List");
 		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(UUID);
 		for (String b : custom_items) {
-			String real =  jb.getLanguage().getStringFromLanguage(jb.getUUID(), config.getString(path + "." + b + ".Display"));
+			String real =  jb.getLanguage().getStringFromPath(jb.getUUID(), config.getString(path + "." + b + ".Display"));
 			String dis = up.toHex(real.replaceAll("&", "§"));
 			if (display.equalsIgnoreCase(dis))
 				return b;
@@ -182,7 +182,7 @@ public class ClickManager {
 				if (jb.getCurrentJobs().size() >= 1) {
 					api.playSound("LEAVE_ALL", player);
 					jb.updateCurrentJobs(null);
-					gui.UpdateMainInventoryItems(player, jb.getLanguage().getStringFromLanguage(jb.getUUID(), plugin.getFileManager().getGUI().getString("Main_Name")));
+					gui.UpdateMainInventoryItems(player, jb.getLanguage().getStringFromPath(jb.getUUID(), plugin.getFileManager().getGUI().getString("Main_Name")));
 					player.sendMessage(jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Other.Leave_All").replaceAll("<job>", display));
 				} else {
 					player.sendMessage(jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Other.Already_Left_All").replaceAll("<job>", display));

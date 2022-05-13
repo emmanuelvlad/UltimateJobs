@@ -33,10 +33,13 @@ public class LeaveAllSub extends SubCommand {
 			if (jb.getCurrentJobs() != null) {
 				jb.updateCurrentJobs(null);
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_leaveall_message"));
+				plugin.getAPI().playSound("COMMAND_LEAVEALL_SUCCESS", player);
 			} else {
+				plugin.getAPI().playSound("COMMAND_LEAVEALL_NO_JOBS", player);
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_leaveall_already"));
 			}
 		} else {
+			plugin.getAPI().playSound("COMMAND_USAGE", player);
 			player.sendMessage(
 					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}

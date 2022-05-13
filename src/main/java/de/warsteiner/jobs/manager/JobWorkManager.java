@@ -88,6 +88,22 @@ public class JobWorkManager {
 		return;
 
 	}
+	
+	public void executeDrinkEvent(Player player, String id, JobsPlayer pl) {
+		finalWork(
+				id.toUpperCase(),
+				player, pl, JobAction.DRINK, "drink-action", 1);
+		return;
+
+	}
+	
+	public void executeBerrysEvent(Player player, String id, JobsPlayer pl) {
+		finalWork(
+				id.toUpperCase(),
+				player, pl, JobAction.COLLECTBERRYS, "collectberrys-action", 1);
+		return;
+
+	}
 
 	public void executeAchWork(PlayerAdvancementDoneEvent event, JobsPlayer pl) {
 		finalWork(
@@ -317,8 +333,7 @@ public class JobWorkManager {
 									String date = plugin.getPluginManager().getDate();
 									
 									JobStats stats = jobsplayer.getStatsOf(jb.getConfigID());
-
-									String jobid = jb.getConfigID();
+ 
 									int lvl = stats.getLevel();
 									double reward = jb.getRewardOf(iD, ac);
 
@@ -333,9 +348,11 @@ public class JobWorkManager {
 									double next = fixed * jb.getMultiOfLevel(lvl);
 
 									double calc = fixed + next;
+									
+									String usedid = jb.getNotRealIDByRealOne(real.toUpperCase());
 								 
-									int times_old = stats.getBrokenTimesOf(iD);
-									double earned_old = stats.getBrokenOf(iD);
+									int times_old = stats.getBrokenTimesOf(usedid);
+									double earned_old = stats.getBrokenOf(usedid);
 
 									double new_earned = calc + stats.getEarnings(plugin.getPluginManager().getDate());
 
@@ -344,6 +361,8 @@ public class JobWorkManager {
 											UltimateJobs.getPlugin().getEco().depositPlayer(player, calc);
 										}
 									}
+									
+									
 
 									if (can == false) {
 
@@ -358,8 +377,8 @@ public class JobWorkManager {
 											
 											stats.updateEarnings(date, new_earned);
 											
-											stats.updateBrokenOf(iD, earned_old + calc);
-											stats.updateBrokenTimesOf(iD, times_old+1);
+											stats.updateBrokenOf(usedid, earned_old + calc);
+											stats.addBrokenTimesOf(usedid, 1);
  
 										}
 
@@ -368,8 +387,8 @@ public class JobWorkManager {
 										jobsplayer.updatePoints(points + old_points);
 										stats.updateBrokenTimes(broken);
 										stats.updateEarnings(date, new_earned);
-										stats.updateBrokenOf(iD, earned_old + calc);
-										stats.updateBrokenTimesOf(iD, times_old+1);
+										stats.updateBrokenOf(usedid, earned_old + calc);
+										stats.addBrokenTimesOf(usedid, 1);
 									}
 
 									api.playSound("FINISHED_WORK", player);

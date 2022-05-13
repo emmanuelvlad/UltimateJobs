@@ -1,6 +1,8 @@
 package de.warsteiner.jobs.command.admincommand;
 
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.command.AdminCommand;
@@ -24,8 +26,16 @@ public class ReloadSub extends AdminSubCommand {
 			UltimateJobs.getPlugin().getFileManager().reloadFiles();
 			UltimateJobs.getPlugin().getAPI().loadJobs(UltimateJobs.getPlugin().getLogger());
 			sender.sendMessage(AdminCommand.prefix + "§aReloaded Plugin Config's and Job's.");
+			if(sender instanceof Player) {
+				Player player3 = (Player) sender;
+				player3.playSound(player3.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 3);
+			}
 		} else {
 			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
+			if(sender instanceof Player) {
+				Player player3 = (Player) sender;
+				player3.playSound(player3.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+			}
 		}
 	}
 

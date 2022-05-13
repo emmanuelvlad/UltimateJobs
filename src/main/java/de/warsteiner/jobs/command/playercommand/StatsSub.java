@@ -40,6 +40,7 @@ public class StatsSub extends SubCommand {
 			String pl = args[1].toUpperCase();
 
 			if (ap.getPlayerDataAPI().getUUIDByName(pl.toUpperCase()) == null) {
+				plugin.getAPI().playSound("COMMAND_PLAYER_NOT_FOUND", player);
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_stats_not_found")
 						.replaceAll("<name>", args[1]));
 				return;
@@ -54,6 +55,7 @@ public class StatsSub extends SubCommand {
 			}
 			return;
 		} else {
+			plugin.getAPI().playSound("COMMAND_USAGE", player);
 			player.sendMessage(
 					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}

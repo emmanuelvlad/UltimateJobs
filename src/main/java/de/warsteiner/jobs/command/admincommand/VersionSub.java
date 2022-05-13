@@ -1,7 +1,9 @@
 package de.warsteiner.jobs.command.admincommand;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
  
 import de.warsteiner.jobs.UltimateJobs;
@@ -24,6 +26,11 @@ public class VersionSub extends AdminSubCommand {
 	public void perform(CommandSender sender, String[] args) {
 		if (args.length == 1) {
 			PluginDescriptionFile d = UltimateJobs.getPlugin().getDescription();
+			
+			if(sender instanceof Player) {
+				Player player3 = (Player) sender;
+				player3.playSound(player3.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 3);
+			}
 		 
 			sender.sendMessage("§7");
 			sender.sendMessage("§8-> §9UltimateJobs §7Plugin Details§8:");
@@ -34,6 +41,10 @@ public class VersionSub extends AdminSubCommand {
 			sender.sendMessage("§7");
 		} else {
 			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
+			if(sender instanceof Player) {
+				Player player = (Player) sender;
+				player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 2);
+			}
 		}
 	}
 

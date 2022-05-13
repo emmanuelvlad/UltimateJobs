@@ -39,11 +39,14 @@ public class HelpSub extends SubCommand {
 				plugin.getGUI().createHelpGUI(player, UpdateTypes.OPEN);
 			} else {
 		 
+				plugin.getAPI().playSound("SEND_HELP", player);
+				
 				for (String m :jb.getLanguage().getListFromLanguage(UUID, "Commands.Help.List")) {
 					player.sendMessage(up.toHex(m).replaceAll("&", "§"));
 				}
 			}
 		} else {
+			plugin.getAPI().playSound("COMMAND_USAGE", player);
 			player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}
 	}

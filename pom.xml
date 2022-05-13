@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.warsteiner</groupId>
 	<artifactId>ultimatejobs</artifactId>
-	<version>0.4.8</version>
+	<version>0.4.0</version>
 	<name>UltimateJobs</name>
 	<packaging>jar</packaging>
 
@@ -19,7 +19,8 @@
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
-
+		
+  
 		<repository>
 			<id>placeholderapi</id>
 			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
@@ -81,8 +82,7 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/notquests.jar</systemPath>
 		</dependency>
-
-
+ 
 		<dependency>
 			<groupId>com.mythicmobs</groupId>
 			<artifactId>MythicMobs </artifactId>
@@ -97,6 +97,14 @@
 			<version>2.2.4-BETA</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/alonsolevels.jar</systemPath>
+		</dependency>
+		
+			<dependency>
+			<groupId>com.moreores</groupId>
+			<artifactId>moreores</artifactId>
+			<version>1.13.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/moreores.jar</systemPath>
 		</dependency>
 
 		<dependency>

@@ -50,20 +50,25 @@ public class JoinSub extends SubCommand {
 						jb.addCurrentJob(file.getConfigID());
 						player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_join_Joined")
 								.replaceAll("<job>", file.getDisplay(ID)));
+						plugin.getAPI().playSound("COMMAND_JOIN_JOB_JOINED", player);
 					} else {
 						player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_join_already")
 								.replaceAll("<job>", file.getDisplay(ID)));
+						plugin.getAPI().playSound("COMMAND_JOIN_JOB_ALREADY", player);
 					}
 				} else {
 					player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_join_max")
 							.replaceAll("<job>", file.getDisplay(ID)));
+					plugin.getAPI().playSound("COMMAND_JOIN_JOB_MAX", player);
 				}
 			} else {
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_join_not_own")
 						.replaceAll("<job>", file.getDisplay(ID)));
+				plugin.getAPI().playSound("COMMAND_JOB_NOT_FOUND", player);
 
 			}
 		} else {
+			plugin.getAPI().playSound("COMMAND_USAGE", player);
 			player.sendMessage(
 					jb.getLanguage().getStringFromLanguage(UUID, "command_usage").replaceAll("<usage>", getUsage(UUID)));
 		}

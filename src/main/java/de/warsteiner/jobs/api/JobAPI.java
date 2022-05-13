@@ -59,8 +59,7 @@ public class JobAPI {
 		if (config.contains("Sounds." + ty + ".Sound")) {
 
 			if (Sound.valueOf(config.getString("Sounds." + ty + ".Sound")) == null) {
-				plugin.getLogger()
-						.warning("§cFailed to get Sound from : " + config.getString("Sounds." + ty + ".Sound"));
+				Bukkit.getConsoleSender().sendMessage("§cFailed to get Sound from : " + config.getString("Sounds." + ty + ".Sound"));
 				return;
 			}
 		 
@@ -186,37 +185,20 @@ public class JobAPI {
 			for (int i = 0; i < files.length; i++) {
 				String name = files[i].getName();
 				File file = files[i];
-				plugin.getLogger().info("§aChecking File " + name + "...");
+				Bukkit.getConsoleSender().sendMessage("§aChecking File " + name + "...");
 				if (file.isFile()) {
 					YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 					Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
 					plugin.getLoaded().add(job.getConfigID());
 					plugin.getID().put(job.getConfigID(), job);
-					plugin.getLogger().info("§aLoaded Job " + job.getConfigID() + " from File " + name + "!");
+					Bukkit.getConsoleSender().sendMessage("§aLoaded Job " + job.getConfigID() + " from File " + name + "!");
 				} else {
-					plugin.getLogger().warning("§cFound File in Jobs Folder which isnt a real Job!");
+					Bukkit.getConsoleSender().sendMessage("§cFound File in Jobs Folder which isnt a real Job!");
 				}
 			}
 		}
 	}
-
-	public Job loadSingleJob(Logger logger, File file, Job oldjob) {
-		YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-		Job job = new Job(cfg.getString("ID"), YamlConfiguration.loadConfiguration(file), file);
-
-		plugin.getLoaded().remove(oldjob.getConfigID());
-		plugin.getID().remove(oldjob.getConfigID());
-
-		plugin.getLoaded().add(job.getConfigID());
-		plugin.getID().put(job.getConfigID(), job);
-
-		plugin.getLogger().info("§aLoaded Job " + job.getConfigID() + " from File " + file.getName() + "!");
-
-		return job;
-	}
-
- 
-
+  
 	public boolean checkPermissions(Player player, String text) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
 		if (player.hasPermission("ultimatejobs." + text) ||player.hasPermission("ultimatejobs.admin.all"))
