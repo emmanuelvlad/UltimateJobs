@@ -2,6 +2,7 @@ package de.warsteiner.jobs.command;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -71,26 +72,38 @@ public class AdminCommand implements CommandExecutor {
 
 		int pageLength = 6;
 
-		int calc = pageLength * page + 1;
-		
-		 
+		int calc = pageLength * page + 1; 
+		int min = calc - 5;
+		if(commands.size() >= min) {
+			
 			sender.sendMessage("§7");
 			sender.sendMessage(" §8| §9UltimateJobs §8- §4Admin Help #" + page + " §8|");
-
+			
 			for (int i = (page - 1) * pageLength; i < (page * pageLength) && i < commands.size(); i++) {
 				AdminSubCommand which = commands.get(i);
 
-				sender.sendMessage("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription());
+				String us = which.getUsage();
+				
+				if(sender instanceof Player) {
+					Player player = (Player) sender;
+					 new JsonMessage() 
+					 .append("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription()).setHoverAsTooltip("§7"+which.getDescription())
+					 .setClickAsSuggestCmd(us).save().send(player);
+				} else {
+					sender.sendMessage("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription());
+				}
+				
+			 
 
 			}
-			
+	 
 			sender.sendMessage("§7");
 	  
 			if(sender instanceof Player) {
 				Player player = (Player) sender;
 				 int c = page - 1;
 				 int c2 = page + 1;
-				 if(commands.size() >= calc) {
+			 
 				 
 					
 					if(page == 1) {
@@ -98,23 +111,31 @@ public class AdminCommand implements CommandExecutor {
 						 .append(ChatColor.GREEN + "§8-> §aNext Page").setHoverAsTooltip("Click here")
 						 .setClickAsExecuteCmd("/jobsadmin help "+c2).save().send(player);
 					} else {
-						 new JsonMessage().append(ChatColor.RED + "§8-> §cPevious Page §8|").setHoverAsTooltip("Click here")
-						 .setClickAsExecuteCmd("/jobsadmin help "+c).save()
+						
 						 
-						 .append(ChatColor.GREEN + " §aNext Page").setHoverAsTooltip("Click here")
-						 .setClickAsExecuteCmd("/jobsadmin help "+c2).save().send(player);
+						
+						if(commands.size() >= calc) {
+							 new JsonMessage().append(ChatColor.RED + "§8-> §cPevious Page §8|").setHoverAsTooltip("Click here")
+							 .setClickAsExecuteCmd("/jobsadmin help "+c).save()
+							 
+							 .append(ChatColor.GREEN + " §aNext Page").setHoverAsTooltip("Click here")
+							 .setClickAsExecuteCmd("/jobsadmin help "+c2).save().send(player);
+						} else {
+							 new JsonMessage().append(ChatColor.RED + "§8-> §cPevious Page §8|").setHoverAsTooltip("Click here")
+							 .setClickAsExecuteCmd("/jobsadmin help "+c).save().send(player);
+						}
+						
+						 
 					}
  
-				} else {
-					 new JsonMessage().append(ChatColor.RED + "§8-> §cPevious Page ").setHoverAsTooltip("Click here")
-					 .setClickAsExecuteCmd("/jobsadmin help "+c).save().send(player);
-				}
+				 
 
 				sender.sendMessage("§7");
 			}
 		} else {
 			sender.sendMessage(prefix + "§cNo Help Page found.");
 		}
+		}  
 	}
 
 }

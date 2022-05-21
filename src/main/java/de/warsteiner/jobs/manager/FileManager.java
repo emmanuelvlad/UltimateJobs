@@ -41,7 +41,7 @@ public class FileManager {
 	private  File levels_file;
 	
 	private List<String> defaultlanguages = Arrays.asList("en-US","de-DE","de-BAR","es-ES","fr-FR","nl-NL");
-	private List<String> defaultjobs = Arrays.asList("Miner","Lumberjack","ShearSheeps");
+	private List<String> defaultjobs = Arrays.asList("Miner","Lumberjack");
 	
 	public  boolean generateFiles() {
 		createGUIFile();
