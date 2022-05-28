@@ -27,7 +27,7 @@ public class JobActionsCollectBerrys implements Listener {
 		 
 		String id = event.getHarvestedBlock().getType().toString();
 		
-		plugin.getJobWorkManager().executeBerrysEvent(event.getPlayer(), id, plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+		plugin.getJobWorkManager().executeBerrysEvent(event.getPlayer(), id, event.getHarvestedBlock());
 		
 	}
 }

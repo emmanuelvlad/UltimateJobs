@@ -29,7 +29,7 @@ public class JobActionDrink implements Listener {
 		        final PotionData data = meta.getBasePotionData();
 		       
 		        	if(data.getType() != null) {
-		        		plugin.getJobWorkManager().executeDrinkEvent(event.getPlayer(), data.getType().toString(), plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+		        		plugin.getJobWorkManager().executeDrinkEvent(event.getPlayer(), data.getType().toString());
 		        	}
 		         
 		    }

@@ -139,5 +139,10 @@ public class SetLevelSub extends AdminSubCommand {
 		return "/JobsAdmin setlevel <name> <job> <value>";
 	}
 
+	@Override
+	public String getPermission() { 
+		return "ultimatejobs.admin.setlevel";
+	}
+	
 }
 

@@ -15,7 +15,7 @@ public class JobActionBreed implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onTame(EntityBreedEvent event) { 
 		if(event.getBreeder() instanceof Player) { 
-			plugin.getJobWorkManager().executeBreedWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getBreeder().getUniqueId())); 
+			plugin.getJobWorkManager().executeBreedWork(event); 
 		}
 	}
 }

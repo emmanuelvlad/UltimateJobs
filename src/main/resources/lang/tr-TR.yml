@@ -1,0 +1,737 @@
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |  _________   | || |  _______     | || |              | || |  _________   | || |  _______     | |
+#| | |  _   _  |  | || | |_   __ \    | || |              | || | |  _   _  |  | || | |_   __ \    | |
+#| | |_/ | | \_|  | || |   | |__) |   | || |    ______    | || | |_/ | | \_|  | || |   | |__) |   | |
+#| |     | |      | || |   |  __ /    | || |   |______|   | || |     | |      | || |   |  __ /    | |
+#| |    _| |_     | || |  _| |  \ \_  | || |              | || |    _| |_     | || |  _| |  \ \_  | |
+#| |   |_____|    | || | |____| |___| | || |              | || |   |_____|    | || | |____| |___| | |
+#| |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+#used on /jobs language <lang>
+LanguageName: "turkish"
+
+prefix: "&8[#14e0ba#Meslek&8]"
+
+job_not_found: "<prefix> &c<job> &cmesleği mevcut değil!"
+
+noperm: "<prefix> &cİzniniz yok!"
+
+#placeholders
+placeholder_no_job: "&cBilinmiyor"
+placeholder_no_level: "&c0"
+placeholder_no_exp: "&c0"
+
+#commands
+command_notfound: "<prefix> &7Komut &6<cmd>&7 bulunamadı!"
+command_usage: "<prefix> &7Lütfen &6<usage>&7'yi kullanın."
+
+#command /job language
+command_language_NotFound: "<prefix> &cBu dili bulamıyorum!"
+command_language_Already: "<prefix> &cO dile zaten sahipsiniz!"
+command_language_Changed: "<prefix> &aDilinizi <lang> &aolarak değiştirdiniz!"
+
+#command /job join
+command_join_Joined: "<prefix> &7<job>&7 Mesleğine katıldınız!"
+command_join_max: "<prefix> &7Maksimum Meslek Sayısına ulaştınız!"
+command_join_already: "<prefix> &7Zaten o Mesleğin içindesiniz!"
+command_join_not_own: "<prefix> &7O Mesleğe sahip değilsin!"
+
+#command /job leaveall
+command_leaveall_message: "<prefix> &7Tüm &6geçerli &7Mesleklerden ayrıldınız."
+command_leaveall_already: "<prefix> &cHerhangi bir meslekte değilsiniz!"
+
+#command /job leave
+command_leave_message: "<prefix> &7<job>&7 mesleğinden ayrıldınız."
+command_leave_already: "<prefix> &cSen o meslekte değilsin!"
+
+#command /job limit
+command_limit_other: "<prefix> &7<name> &a<max> &7Mesleğe sahip olabilir."
+command_limit_not_found: "<prefix> &c<name> &coyuncusu bulunamıyor."
+command_limit_self: "<prefix> &7&b<max> &7Mesleğe sahip olabilirsiniz."
+
+#command /job points
+command_points_not_found: "<prefix> &c<name> &coyuncusu bulunamıyor."
+command_points_self: "<prefix> &7&b<points> &7Puanınız var."
+command_points_other: "<prefix> &7<name>, &b<points> &7Puana sahiptir."
+
+#command /job stats
+command_stats_not_found: "<prefix> &c<isim> &coyuncusu bulunamıyor."
+
+#other messages
+Other:
+
+  Bought_Job: "<prefix> &7<job>&7 mesleğini öğrendiniz." 
+  
+  Not_Enough_Money: "<prefix> &7Yeterli paran yok."
+  
+  Full: "<prefix> &cMaksimum &7meslek sayısına zaten ulaştınız."
+  
+  Joined: "<prefix> &7<job> &7Mesleğine katıldınız."
+
+  Left_Job: "<prefix> &7<job> &7Mesleğinden ayrıldınız."
+  
+  Leave_All: "<prefix> &6Mevcut &7tüm Mesleklerden ayrıldınız."
+  
+  Already_Left_All: "<prefix> &7Herhangi bir mesleğin içinde &6değilsiniz&7."
+
+#config of levels
+Levels:
+
+  BoardCastMessage: "&6Sunucu &8| &7Oyuncu &c<name>, <job> &7Mesleğinde &b<level> &7seviyesine ulaştı!"
+
+  Ttitle_1: "&8| &b&lSeviye Atladın &8|"
+
+  Ttitle_2: "&7Yeni Seviye <level_int> &8/ <level_name>"
+  
+  Message: "<prefix> &7Yeni bir seviyeye ulaştınız! &8(&7<level_int> &8/ <level_name>&8)"
+  
+  Actionbar: "<prefix> &7Yeni bir seviyeye ulaştınız! &8(&7<level_int> &8/ <level_name>&8)"
+  
+#config of reward messages & max earings
+Reward:
+
+  BossBar: "&a+ &7<money> Dollars from <id> &8(&4<action>&8)"
+  
+  Message: "<prefix> &7<id> &7tarafından Ödül olarak <money> &7Dolar eklendi! &8(&4<action>&8)"
+  
+  Actionbar: "<prefix> &7<id> &7tarafından Ödül olarak <money> &7Dolar eklendi! &8(&4<action>&8)"
+  
+MaxEarningsReached:
+
+  BossBar: "&c<job> &cİşinde bugün için maksimum Kazanca ulaştınız"
+  
+  Message: "<prefix> &c<job> &cİşinde bugün için maksimum Kazanca ulaştınız"
+  
+  Actionbar: "<prefix> &c<job> &cİşinde bugün için maksimum Kazanca ulaştınız"
+  
+#confog of commands
+Commands:
+
+  Rewards:
+  
+    Usage: "rewards"
+    
+    UsageMessage: "/Jobs rewards <job>"
+    
+    Description: "Meslek Kazançlarını Görüntüle"
+
+  Stats:
+  
+    Usage: "stats"
+    
+    UsageMessage: "/Jobs stats <name>"
+    
+    Description: "Oyuncu İstatistiklerini Görüntüle"
+
+  Language:
+  
+    Usage: "language"
+    
+    UsageMessage: "/Jobs language <name>"
+    
+    Description: "Dilinizi değiştirin"
+
+  Help:
+  
+    Usage: "help"
+    
+    UsageMessage: "/Jobs help"
+    
+    List:
+      - "&8"
+      - " &8| &9UltimateJobs &8- &7Yardım &8| "
+      - "&8-> &6/Jobs leave <job> &8| &7Meslekten Ayrıl"
+      - "&8-> &6/Jobs join <job> &8| &7Bir Mesleğe Katıl"
+      - "&8-> &6/Jobs leaveall &8| &7Mevcut tüm Mesleklerden ayrıl"
+      - "&8-> &6/Jobs help &8| &7Bu sayfa" 
+      - "&8-> &6/Jobs limit <name> &8| &7Bir Meslek Sınırını Görüntüle"
+      - "&8"
+ 
+    Description: "Daha fazla yardıma bakın"
+
+  Points:
+  
+    Usage: "points"
+    
+    UsageMessage: "/Jobs points <name>"
+    
+    Description: "Puanlarınızı görün"
+
+  Limit:
+  
+    Usage: "limit"
+    
+    UsageMessage: "/Jobs limit <name>"
+    
+    Description: "Meslek Limitinizi görün"
+
+  Leave:
+  
+    Usage: "leave"
+    
+    UsageMessage: "/Jobs leave <job>"
+    
+    Description: "Meslekten Ayrıl"
+
+  LeaveALL:
+  
+    Usage: "leaveall"
+    
+    UsageMessage: "/Jobs leaveall"
+    
+    Description: "Tüm Mesleklerden Ayrıl"
+
+  Join:
+  
+    Usage: "join"
+    
+    UsageMessage: "/Jobs join <job>"
+    
+    Description: "Bir Mesleğe Katılın"
+
+  Levels:
+  
+    Usage: "levels"
+    
+    UsageMessage: "/Jobs levels <job>"
+    
+    Description: "View Job Levels"
+     
+# .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. |
+#| |    ______    | || | _____  _____ | || |     _____    | || |    _______   | |
+#| |  .' ___  |   | || ||_   _||_   _|| || |    |_   _|   | || |   /  ___  |  | |
+#| | / .'   \_|   | || |  | |    | |  | || |      | |     | || |  |  (__ \_|  | |
+#| | | |    ____  | || |  | '    ' |  | || |      | |     | || |   '.___`-.   | |
+#| | \ `.___]  _| | || |   \ `--' /   | || |     _| |_    | || |  |`\____) |  | |
+#| |  `._____.'   | || |    `.__.'    | || |    |_____|   | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------' 
+
+#config of main gui
+Main_Name: "#15f249#Meslek"
+
+Main_Job_Items:
+
+  Lore:
+
+    Bought:
+      - "&7"
+      - "&aBu Mesleğe sahipsin."
+
+    In:
+      - "&7"
+      - "&bSiz bu Mesleğin içindesiniz."
+
+    Price:
+      - "&7"
+      - "&cBu Mesleği <price> &cDolara öğrenmek için tıklayın.."
+      
+Main_Custom:
+
+  Close:
+    
+    Display: "&8< &cMenüyü Kapat &8>"
+    
+  Leave:
+    
+    Display: "&8< #9b0411#Tüm Mesleklerden Ayrıl &8>"
+    
+    Lore:
+      - "&7Tüm mesleklerden ayrılmak için buraya tıklayın"
+    
+  Info:
+    
+    Display: "&8<| #44ead4#Bilgi &8|>"
+    
+    Lore:
+      - "&8&m-------------------"
+      - "&cNeden bir meslek bulmalıyım?"
+      - "&7"
+      - "&7Para kazanmak, Çocuklarınızı büyütmek için "
+      - "&bir mesleğe ihtiyacınız var! :)"
+      - "&8"
+      - "&8-> &c<max> &7Mesleğe sahip olabilirsiniz."
+      - "&8-> &a<puan> &7Puanınız var.."
+      
+# .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. |
+#| |  ____  ____  | || |  _________   | || |   _____      | || |   ______     | |
+#| | |_   ||   _| | || | |_   ___  |  | || |  |_   _|     | || |  |_   __ \   | |
+#| |   | |__| |   | || |   | |_  \_|  | || |    | |       | || |    | |__) |  | |
+#| |   |  __  |   | || |   |  _|  _   | || |    | |   _   | || |    |  ___/   | |
+#| |  _| |  | |_  | || |  _| |___/ |  | || |   _| |__/ |  | || |   _| |_      | |
+#| | |____||____| | || | |_________|  | || |  |________|  | || |  |_____|     | |
+#| |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'
+      
+#config of help gui
+Help_Name: "#285416#Yardım Menüsü"
+ 
+Help_Custom:
+
+  Close:
+    
+    Display: "&8< &cMenüyü Kapat &8>"
+
+  Info1:
+    
+    Display: "&8< &6/Jobs limit &8>"
+    
+    Lore:
+      - "&7Bu Komutla mevcut meslek sınırınızı görün"
+    
+  Info2:
+    
+    Display: "&8< &6/Jobs points &8>"
+    
+    Lore:
+      - "&7Bu Komutla mevcut Puanlarınızı görün"
+      
+# .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |     ______   | || |     ____     | || | ____  _____  | || |  _________   | || |     _____    | || |  _______     | || | ____    ____ | |
+#| |   .' ___  |  | || |   .'    `.   | || ||_   \|_   _| | || | |_   ___  |  | || |    |_   _|   | || | |_   __ \    | || ||_   \  /   _|| |
+#| |  / .'   \_|  | || |  /  .--.  \  | || |  |   \ | |   | || |   | |_  \_|  | || |      | |     | || |   | |__) |   | || |  |   \/   |  | |
+#| |  | |         | || |  | |    | |  | || |  | |\ \| |   | || |   |  _|      | || |      | |     | || |   |  __ /    | || |  | |\  /| |  | |
+#| |  \ `.___.'\  | || |  \  `--'  /  | || | _| |_\   |_  | || |  _| |_       | || |     _| |_    | || |  _| |  \ \_  | || | _| |_\/_| |_ | |
+#| |   `._____.'  | || |   `.____.'   | || ||_____|\____| | || | |_____|      | || |    |_____|   | || | |____| |___| | || ||_____||_____|| |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+#config of help gui
+AreYouSureGUI_Name:  "&6<job> &6mesleğini öğrenmek mi istiyorsunuz?"
+
+AreYouSureItems:
+
+  Button_NO:
+
+    Display: "&8<| &cHayır &8|>"
+
+    Lore:
+      - "&7Bu ilerlemeyi iptal edin.."
+
+  Button_YES:
+
+    Display: "&8<| &aEvet eminim &8|>"
+
+    Lore:
+      - "&7Bu Mesleği öğrenmek istiyor musun?"
+
+AreYouSureGUI_Custom:
+
+  Back:
+    
+    Display: "&8< &4Geri Dön &8>"
+    
+    Lore:
+      - "&7Ana menüye dönmek için buraya tıklayın"
+
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |    _______   | || |  _________   | || |  _________   | || |  _________   | || |     _____    | || | ____  _____  | || |    ______    | || |    _______   | |
+#| |   /  ___  |  | || | |_   ___  |  | || | |  _   _  |  | || | |  _   _  |  | || |    |_   _|   | || ||_   \|_   _| | || |  .' ___  |   | || |   /  ___  |  | |
+#| |  |  (__ \_|  | || |   | |_  \_|  | || | |_/ | | \_|  | || | |_/ | | \_|  | || |      | |     | || |  |   \ | |   | || | / .'   \_|   | || |  |  (__ \_|  | |
+#| |   '.___`-.   | || |   |  _|  _   | || |     | |      | || |     | |      | || |      | |     | || |  | |\ \| |   | || | | |    ____  | || |   '.___`-.   | |
+#| |  |`\____) |  | || |  _| |___/ |  | || |    _| |_     | || |    _| |_     | || |     _| |_    | || | _| |_\   |_  | || | \ `.___]  _| | || |  |`\____) |  | |
+#| |  |_______.'  | || | |_________|  | || |   |_____|    | || |   |_____|    | || |    |_____|   | || ||_____|\____| | || |  `._____.'   | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+Settings_Name: "#285416#Meslek Ayarları &8- <job>"
+
+Settings_Custom:
+
+  Back:
+  
+    Display: "&8< &4Geri Dön &8>"
+    
+    Lore:
+      - "&8< &7Ana menüye dönmek için buraya tıklayın &8>"
+
+  MoneyList:
+  
+    Display: "&8< &7Farklı Bloklar İçin #92f4ab#Kazançları &7Gör&8>"
+    
+    Lore:
+      - "&7Bu, yalnızca addon etkinleştirildiğinde çalışır."
+
+  Earnings:
+  
+    Display: "&8< &7Bu Aydaki #edb51c#Kazançlarım &8>"
+    
+    Lore:
+      - "&7Bu, yalnızca addon etkinleştirildiğinde çalışır."
+
+  Leave:
+  
+    Display: "&8< &c&lBu Meslekten Ayrıl &8>"
+
+  Close:
+  
+    Display: "&8< &cMenüyü Kapat &8>"
+
+  Skull:
+    
+    Display: "&8<| #44ead4#Bilgi &8|>"
+    
+    Lore:
+      - "&7Öğrenildi &8: &b<stats_args_1>"
+      - "&7Bloklar &8: &b<stats_args_2>" 
+      - "&7Bugün Kazanılan&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Seviye &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Tecrübe &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |  _______     | || |  _________   | || | _____  _____ | || |      __      | || |  _______     | || |  ________    | || |    _______   | || |    ______    | || | _____  _____ | || |     _____    | |
+#| | |_   __ \    | || | |_   ___  |  | || ||_   _||_   _|| || |     /  \     | || | |_   __ \    | || | |_   ___ `.  | || |   /  ___  |  | || |  .' ___  |   | || ||_   _||_   _|| || |    |_   _|   | |
+#| |   | |__) |   | || |   | |_  \_|  | || |  | | /\ | |  | || |    / /\ \    | || |   | |__) |   | || |   | |   `. \ | || |  |  (__ \_|  | || | / .'   \_|   | || |  | |    | |  | || |      | |     | |
+#| |   |  __ /    | || |   |  _|  _   | || |  | |/  \| |  | || |   / ____ \   | || |   |  __ /    | || |   | |    | | | || |   '.___`-.   | || | | |    ____  | || |  | '    ' |  | || |      | |     | |
+#| |  _| |  \ \_  | || |  _| |___/ |  | || |  |   /\   |  | || | _/ /    \ \_ | || |  _| |  \ \_  | || |  _| |___.' / | || |  |`\____) |  | || | \ `.___]  _| | || |   \ `--' /   | || |     _| |_    | |
+#| | |____| |___| | || | |_________|  | || |  |__/  \__|  | || ||____|  |____|| || | |____| |___| | || | |________.'  | || |  |_______.'  | || |  `._____.'   | || |    `.__.'    | || |    |_____|   | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+Rewards_Name: "#eabb10#Ödüller &8: <job>"
+ 
+Rewards_Custom:
+
+  Previous:
+  
+    Display: "&8<| &7Önceki sayfa &8|>"
+    
+    Message_NotFound: "&8[&6Ödül Menü&8] &cBir önceki sayfa bulunamadı!"
+    
+    Lore:
+      - "&8Önceki Sayfaya git!"
+
+  Next:
+  
+    Display: "&8<| &7Sonraki Sayfa &8|>"
+    
+    Message_NotFound: "&8[&6Ödül Menü&8] &cBir sonraki sayfa bulamıyor!"
+    
+    Lore:
+      - "&8Sonraki Sayfaya git!"
+
+  Close:
+    
+    Display: "&8< &cMenüyü Kapat &8>"
+
+# .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |    _______   | || |  _________   | || |      __      | || |  _________   | || |    _______   | |
+#| |   /  ___  |  | || | |  _   _  |  | || |     /  \     | || | |  _   _  |  | || |   /  ___  |  | |
+#| |  |  (__ \_|  | || | |_/ | | \_|  | || |    / /\ \    | || | |_/ | | \_|  | || |  |  (__ \_|  | |
+#| |   '.___`-.   | || |     | |      | || |   / ____ \   | || |     | |      | || |   '.___`-.   | |
+#| |  |`\____) |  | || |    _| |_     | || | _/ /    \ \_ | || |    _| |_     | || |  |`\____) |  | |
+#| |  |_______.'  | || |   |_____|    | || ||____|  |____|| || |   |_____|    | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
+
+#config of stats gui - self
+Self_Name: "#285416#İstatistikleriniz"
+ 
+Self_Custom:
+
+  NotFound:
+  
+    Display: "&8/ Bulunamadı &8/"
+    
+    Lore: "&8Oyuncunun mevcut bir mesleği yok"
+
+  Close:
+    
+    Display: "&8< &cMenüyü Kapat &8>"
+
+  Skull:
+    
+    Display: "&8< &bİstatistikleriniz &8>"
+    
+    Lore:
+      - "&7Sınır&8: &c<max>"
+      - "&7Puan&8: &b<points>"
+      
+#config of stats gui - other
+Other_Name: "#285416#<name> #285416#İstatistikleri"
+ 
+Other_Custom:
+
+  NotFound:
+  
+    Display: "&8/ Bulunamadı &8/"
+    
+    Lore: "&8Oyuncunun mevcut bir mesleği yok"
+
+  Close:
+    
+    Display: "&8< &cMenüyü Kapat &8>"
+
+  Skull:
+    
+    Display: "&8< &b<name> &bİstatistikleri &8>"
+    
+    Lore:
+      - "&7Sınır&8: &c<max>"
+      - "&7Puan&8: &b<points>"
+      
+# .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. |
+#| |     _____    | || |     ____     | || |   ______     | || |    _______   | |
+#| |    |_   _|   | || |   .'    `.   | || |  |_   _ \    | || |   /  ___  |  | |
+#| |      | |     | || |  /  .--.  \  | || |    | |_) |   | || |  |  (__ \_|  | |
+#| |   _  | |     | || |  | |    | |  | || |    |  __'.   | || |   '.___`-.   | |
+#| |  | |_' |     | || |  \  `--'  /  | || |   _| |__) |  | || |  |`\____) |  | |
+#| |  `.___.'     | || |   `.____.'   | || |  |_______/   | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'
+ 
+Jobs:
+
+  LUMBER:
+  
+    Display: "&6Oduncu"
+    
+    DisplayID: "lumberjack"
+    
+    Lore:
+      - "&7Blokları kırarken Para kazanın!"
+    
+    Stats:
+      - "&7"
+      - "&aİstatistikler&8:"
+      - "&7Öğrenildi &8: &b<stats_args_1>"
+      - "&7Bloklar &8: &b<stats_args_2>" 
+      - "&7Bugün Kazanılan&8: &a<earned> $"
+      - "&7" 
+      - "&7Seviye &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Tecrübe &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &6Oduncu &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'nin &7Bu Meslekteki İstatistikleri&8:"
+           - "&8&m--------------------------"
+           - "&7Öğrenildi &8: &b<stats_args_1>"
+           - "&7Bloklar &8: &b<stats_args_2>" 
+           - "&7Bugün Kazanılan&8: &a<earned> $"
+           - "&7" 
+           - "&7Seviye &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Tecrübe &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Bu Meslekteki İstatistikleriniz&8:"
+           - "&8&m--------------------------" 
+           - "&7Öğrenildi &8: &b<stats_args_1>"
+           - "&7Bloklar &8: &b<stats_args_2>" 
+           - "&7Bugün Kazanılan&8: &a<earned> $"
+           - "&7" 
+           - "&7Seviye &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Bu Seviyenin Ödülleri&8:"
+          - "&8-> &a250 $"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Bu Seviyenin Ödülleri&8:"
+          - "&8-> &a500 $"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Bu Seviyenin Ödülleri&8:"
+          - "&8-> &a1000 $"
+      
+    IDS:
+
+      OAK_LOG_STRIPPED:
+      
+        Display: "&6Soyulmuş Kütük"
+        
+        Rewards:
+        
+          Display: "&8< &6Soyulmuş Kütük &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Materyal &8: &bTaş"
+            - "&7Ödül &8: &c$<money>"
+            - "&7Şans &8: &9<chance>%"
+            - "&7Tecrübe &8: &a<exp>"
+            - "&7Puan &8: &6<points>"
+            - "&7Aksiyon &8: &6&lStripp"
+            - "&7Nadirlik &8: &bNormal"
+
+      OAK_LOG:
+      
+        Display: "&6Kütük"
+        
+        Rewards:
+        
+          Display: "&8< &6Kütük &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Materyal &8: &bTaş"
+            - "&7Ödül &8: &c$<money>"
+            - "&7Şans &8: &9<chance>%"
+            - "&7Tecrübe &8: &a<exp>"
+            - "&7Puan &8: &6<points>"
+            - "&7Aksiyon &8: &4Kırmak"
+            - "&7Nadirlik &8: &bNormal"
+  
+  MINER:
+  
+    Display: "#50cbed#Madenci"
+    
+    DisplayID: "miner"
+    
+    Lore:
+      - "&7Blokları kırarken Para kazanın!"
+    
+    Stats:
+      - "&7"
+      - "&aistatistikler&8:"
+      - "&7Öğrenildi &8: &b<stats_args_1>"
+      - "&7Bloklar &8: &b<stats_args_2>" 
+      - "&7Bugün Kazanılan&8: &a<earned> $"
+      - "&7" 
+      - "&7Seviye &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Tecrübe &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    StatsGUI:
+    
+       Display: "&8< | #50cbed#Madenci &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'nin &7Bu Meslekteki İstatistikleri&8:"
+           - "&8&m--------------------------"
+           - "&7Öğrenildi &8: &b<stats_args_1>"
+           - "&7Bloklar &8: &b<stats_args_2>" 
+           - "&7Bugün Kazanılan&8: &a<earned> $"
+           - "&7" 
+           - "&7Seviye &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Tecrübe &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Bu Meslekteki İstatistikleriniz&8:"
+           - "&8&m--------------------------" 
+           - "&7Öğrenildi &8: &b<stats_args_1>"
+           - "&7Bloklar &8: &b<stats_args_2>" 
+           - "&7Bugün Kazanılan&8: &a<earned> $"
+           - "&7" 
+           - "&7Seviye &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Tecrübe &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Bu Seviyenin Ödülleri&8:"
+          - "&8-> &a250 $"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Bu Seviyenin Ödülleri&8:"
+          - "&8-> &a500 $"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Bu Seviyenin Ödülleri&8:"
+          - "&8-> &a1000 $"
+      
+    IDS:
+
+      STONE:
+      
+        Display: "&7&lStone"
+        
+        Rewards:
+        
+          Display: "&8< &7&lStone &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Materyal &8: &bTaş"
+            - "&7Ödül &8: &c$<money>"
+            - "&7Şans &8: &9<chance>%"
+            - "&7Tecrübe &8: &a<exp>"
+            - "&7Puan &8: &6<points>"
+            - "&7Aksiyon &8: &4Kırmak"
+            - "&7Nadirlik &8: &bNormal"
+
+      COBBLESTONE:
+      
+        Display: "&7&lCobblestone"
+        
+        Rewards:
+        
+          Display: "&8< &7&lCobblestone &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Materyal &8: &bTaş"
+            - "&7Ödül &8: &c$<money>"
+            - "&7Şans &8: &9<chance>%"
+            - "&7Tecrübe &8: &a<exp>"
+            - "&7Puan &8: &6<points>"
+            - "&7Aksiyon &8: &4Kırmak"
+            - "&7Nadirlik &8: &bNormal"
+    
+      COAL_ORE:
+      
+        Display: "&0Coal Ore"
+        
+        Rewards:
+        
+          Display: "&8< &0Coal Ore &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Materyal &8: &bTaş"
+            - "&7Ödül &8: &c$<money>"
+            - "&7Şans &8: &9<chance>%"
+            - "&7Tecrübe &8: &a<exp>"
+            - "&7Puan &8: &6<points>"
+            - "&7Aksiyon &8: &4Kırmak"
+            - "&7Nadirlik &8: &bNadir"  

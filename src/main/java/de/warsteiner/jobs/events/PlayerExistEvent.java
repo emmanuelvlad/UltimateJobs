@@ -9,7 +9,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
- 
+
+import de.warsteiner.datax.SimpleAPI;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.PlayerAPI;
 import de.warsteiner.jobs.api.PlayerDataAPI;
@@ -49,6 +50,8 @@ public class PlayerExistEvent implements Listener {
 					}
 				}
 			}
+			
+			SimpleAPI.getInstance().getLocationAPI().setLocation(player.getLocation(), "LastLoc."+UUID);
   
 		});
 
@@ -61,6 +64,8 @@ public class PlayerExistEvent implements Listener {
 			PlayerAPI cache = plugin.getPlayerAPI();
 			PlayerDataAPI data = plugin.getPlayerDataAPI();
 			UUID UUID = player.getUniqueId();
+			
+			SimpleAPI.getInstance().getLocationAPI().setLocation(player.getLocation(), "LastLoc."+UUID);
 
 			data.savePlayer(cache.getRealJobPlayer(""+UUID), "" + UUID);
 			cache.removePlayerFromCache("" + UUID);

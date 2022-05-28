@@ -54,4 +54,9 @@ public class ReloadSub extends AdminSubCommand {
 		return "/JobsAdmin reload";
 	}
 
+	@Override
+	public String getPermission() { 
+		return "ultimatejobs.admin.reload";
+	}
+	
 }

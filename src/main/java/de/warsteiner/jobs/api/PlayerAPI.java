@@ -66,6 +66,176 @@ public class PlayerAPI {
 	public boolean existInCacheByUUID(String uuid) {
 		return this.players.contains(uuid);
 	}
+	
+	public ArrayList<String> getOwnedJobs(String uuid) {
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getOwnJobs();
+		} else {
+			return plugin.getPlayerDataAPI().getOwnedJobs(uuid);
+		}
+	}
+	
+	public ArrayList<String> getCurrentJobs(String uuid) {
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getCurrentJobs();
+		} else {
+			return plugin.getPlayerDataAPI().getCurrentJobs(uuid);
+		}
+	}
+	
+	public double getExpOf(String uuid, Job job) { 
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getExp();
+		} else {
+			return plugin.getPlayerDataAPI().getExpOf(uuid, job.getConfigID());
+		}
+	}
+	
+	public int getBrokenTimesOfID(String uuid, Job job, String id, String ac) { 
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenTimesOf(id);
+		} else {
+			return plugin.getPlayerDataAPI().getBrokenTimesOfBlock(uuid, job.getConfigID(), id, ac);
+		}
+	}
+	
+	public double getEarnedFrom(String uuid, Job job, String id, String ac) { 
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenOf(id);
+		} else {
+			return plugin.getPlayerDataAPI().getEarnedOfBlock(uuid, job.getConfigID(), id, ac);
+		}
+	}
+	
+	public void updateBrokenTimes(String uuid, Job job, int times) {
+		if(existInCacheByUUID(uuid)) {
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateBrokenTimes(times);
+		} else {
+			plugin.getPlayerDataAPI().updateBrokenTimes(uuid, job.getConfigID(), times);
+		}
+	}
+	
+	public void updateBrokenTimesOf(String uuid, Job job, String id, int d, String ac) {
+		if(existInCacheByUUID(uuid)) {
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateBrokenTimesOf(id, d);
+		} else {
+			plugin.getPlayerDataAPI().updateEarningsTimesOf(uuid, job.getConfigID(), id, d, ac);
+		}
+	}
+	
+	public void updateBrokenMoneyOf(String uuid, Job job, String id, double d, String ac) {
+		if(existInCacheByUUID(uuid)) {
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenList().put(id, d);
+		} else {
+			plugin.getPlayerDataAPI().updateEarningsAmountOf(uuid, job.getConfigID(), id, d, ac);
+		}
+	}
+	
+	public void updateEarningsAtDate(String uuid, Job job, double v, String date) {
+		if(existInCacheByUUID(uuid)) {
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateEarnings(date, v);
+		} else {
+			plugin.getPlayerDataAPI().updateEarnings(uuid, job.getConfigID(), date, v);
+		}
+	}
+	
+	public void updateExp(String uuid, Job job, double val) { 
+		if(existInCacheByUUID(uuid)) {
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateExp(val);
+		} else {
+			plugin.getPlayerDataAPI().getExpOf(uuid, job.getConfigID());
+		}
+	}
+	
+	public void updatePoints(String uuid, double val) { 
+		if(existInCacheByUUID(uuid)) {
+			getCacheJobPlayers().get(uuid).updatePoints(val);
+		} else {
+			plugin.getPlayerDataAPI().updatePoints(uuid, val);
+		}
+	}
+	
+	public double getEarnedAt(String uuid, Job job, String date) { 
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getEarnings(date);
+		} else {
+			return plugin.getPlayerDataAPI().getEarnedAt(uuid, job.getConfigID(), date);
+		}
+	}
+	
+	public int getBrokenTimes(String uuid, Job job) { 
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenTimes();
+		} else {
+			return plugin.getPlayerDataAPI().getBrokenOf(uuid, job.getConfigID());
+		}
+	}
+	
+	public int getLevelOF(String uuid, Job job) { 
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getLevel();
+		} else {
+			return plugin.getPlayerDataAPI().getLevelOf(uuid, job.getConfigID());
+		}
+	}
+	
+	public double getPoints(String uuid) { 
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getPoints();
+		} else {
+			return plugin.getPlayerDataAPI().getPoints(uuid);
+		}
+	}
+	
+	public double getEarningsOf(String uuid, Job job) {
+		 String date = plugin.getPluginManager().getDate();
+		if(existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getEarnings(date);
+		} else {
+			return plugin.getPlayerDataAPI().getEarnedAt(uuid, job.getConfigID(), date);
+		}
+	}
+	
+	public JobStats loadSingleJobData(UUID UUID, String job) {
+		
+		PlayerDataAPI plm = UltimateJobs.getPlugin().getPlayerDataAPI();
+		
+		Job j = plugin.getJobCache().get(job);
+
+		int level = plm.getLevelOf("" + UUID, job);
+		double exp = plm.getExpOf("" + UUID, job);
+		String date = plm.getDateOf("" + UUID, job);
+		int broken = plm.getBrokenOf("" + UUID, job);
+
+		double earned = plm.getEarnedAt("" + UUID, job, plugin.getPluginManager().getDate());
+
+		HashMap<String, Double> listedofearned = new HashMap<String, Double>();
+
+		listedofearned.put(plugin.getPluginManager().getDate(), earned);
+
+		HashMap<String, Double> money = new HashMap<String, Double>();
+		HashMap<String, Integer> broken2 = new HashMap<String, Integer>();
+
+		for (JobAction action : j.getActionList()) {
+			for (String id : j.getNotRealIDSListByAction(action)) {
+
+				double moneyearned = plm.getEarnedOfBlock("" + UUID, job, id, "" + action);
+				int brokentimes = plm.getBrokenTimesOfBlock("" + UUID, job, id, "" + action);
+
+				money.put(id, moneyearned);
+				broken2.put(id, brokentimes);
+
+			}
+
+		}
+
+		JobStats sz = new JobStats(j, j.getConfigID(), exp, level, broken, date, money, broken2,
+				listedofearned);
+
+		plugin.getPlayerAPI().getRealJobPlayer(""+UUID).getStatsList().put(date, sz);
+		
+		return sz;
+	}
 
 	public void loadData(String name, UUID UUID) {
 
@@ -119,9 +289,15 @@ public class PlayerAPI {
 				stats.put(loading, sz);
 			}
 
-			Language api = SimpleAPI.getPlugin().getPlayerAPI().getPluginPlayer(UUID).getLanguage();
+			String lused = null;
 			
-			Language langusged = plugin.getLanguageAPI().getLanguages().get(api.getName());
+			if(SimpleAPI.getPlugin().getPlayerAPI().getPluginPlayer(UUID).getLanguage() != null) {
+				lused = SimpleAPI.getPlugin().getPlayerAPI().getPluginPlayer(UUID).getLanguage().getName();
+			} else {
+				lused = SimpleAPI.getPlugin().getFileManager().getSystemConfig().getString("PlayerDefaultLanguage");
+			}
+			
+			Language langusged = plugin.getLanguageAPI().getLanguages().get(lused);
 			
 			JobsPlayer jp = new JobsPlayer(name, current, owned, plm.getPoints("" + UUID),
 

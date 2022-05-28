@@ -104,5 +104,10 @@ public class SetPointsSub extends AdminSubCommand {
 	public String getUsage() { 
 		return "/JobsAdmin setpoints <name> <value>";
 	}
+	
+	@Override
+	public String getPermission() { 
+		return "ultimatejobs.admin.setpoints";
+	}
 
 }

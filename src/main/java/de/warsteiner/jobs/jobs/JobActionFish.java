@@ -13,7 +13,7 @@ public class JobActionFish implements Listener {
 	 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEvent(PlayerFishEvent event) {
-		plugin.getJobWorkManager().executeFishWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+		plugin.getJobWorkManager().executeFishWork(event);
 	}
 
 }

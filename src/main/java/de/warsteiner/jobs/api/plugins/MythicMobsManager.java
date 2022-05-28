@@ -11,10 +11,10 @@ public class MythicMobsManager {
 	
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 	
-	public void executeWork(MythicMobDeathEvent event, JobsPlayer pl) {
+	public void executeWork(MythicMobDeathEvent event) {
 		
 		  
-		plugin.getJobWorkManager().finalWork("" + event.getMobType().getInternalName(), (Player) event.getKiller(), pl, JobAction.MMKill, "mmkill-action", 1);
+		plugin.getJobWorkManager().finalWork("" + event.getMobType().getInternalName(), ((Player) event.getKiller()).getUniqueId(), JobAction.MMKill, "mmkill-action", 1, null, event.getEntity(),true,false,true);
 		return;
 
 	}

@@ -104,5 +104,10 @@ public class SetMaxSub extends AdminSubCommand {
 	public String getUsage() { 
 		return "/JobsAdmin setmax <name> <job> <value>";
 	}
+	
+	@Override
+	public String getPermission() { 
+		return "ultimatejobs.admin.setmax";
+	}
 
 }

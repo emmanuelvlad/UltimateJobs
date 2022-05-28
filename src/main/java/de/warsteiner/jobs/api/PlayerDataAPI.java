@@ -449,6 +449,23 @@ public class PlayerDataAPI {
 		}
 
 	}
+	
+	public void  updateBrokenTimes(String UUID, String job, int val) {
+		
+		String mode = SimpleAPI.getPlugin().getPluginMode();
+		if(mode.equalsIgnoreCase("SQL")) {
+			
+			final String insertQuery = "UPDATE `job_stats` SET `BROKEN`='" + val + "' WHERE UUID='" + UUID + "' AND JOB='"+job+"'";
+			mg.executeUpdate(insertQuery); 
+		} else if(mode.equalsIgnoreCase("YML")) {
+			
+			FileConfiguration cfg = plugin.getPlayerDataFile().get();
+			File file = plugin.getPlayerDataFile().getfile();
+			
+			cfg.set("Jobs."+UUID+"."+job+".Broken", val);
+			save(cfg, file);
+		}
+	}
 
 	public void createJobData(String UUID, String job) {
 		

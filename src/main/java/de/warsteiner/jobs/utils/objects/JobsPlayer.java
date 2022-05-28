@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import de.warsteiner.datax.utils.objects.Language;
+import de.warsteiner.jobs.UltimateJobs;
  
 
 public class JobsPlayer {
@@ -34,12 +35,27 @@ public class JobsPlayer {
 		this.stats = stats;
 	}
 	
+	public void updateLanguage(Language n) {
+		this.lang = n;
+	}
+	
 	public boolean hasStatsOf(String job) {
 		return stats.get(job) != null;
 	}
 	
 	public JobStats getStatsOf(String job) {
-		return stats.get(job);
+		
+		JobStats used = null;
+		
+		if(!stats.containsKey(job)) {
+			if(owned.contains(job)) {
+				used = UltimateJobs.getPlugin().getPlayerAPI().loadSingleJobData(rUUID, job);
+			}
+		} else {
+			used = stats.get(job);
+		}
+		
+		return used;
 	}
 	
 	public HashMap<String, JobStats> getStatsList() {

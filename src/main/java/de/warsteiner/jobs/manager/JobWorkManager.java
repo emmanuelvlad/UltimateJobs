@@ -1,6 +1,7 @@
 package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -8,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
@@ -48,7 +50,7 @@ public class JobWorkManager {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void executeHoneyAction(PlayerInteractEvent event, JobsPlayer pl) {
+	public void executeHoneyAction(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		if (event.isCancelled()) {
 			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
@@ -65,13 +67,13 @@ public class JobWorkManager {
 		if (item != Material.GLASS_BOTTLE) {
 			return;
 		}
-
-		finalWork("" + item, player, pl, JobAction.HONEY, "honey-action", 1);
+		 
+		finalWork("" + item, player.getUniqueId(), JobAction.HONEY, "honey-action", 1, event.getClickedBlock(), null, false, true,false);
 		return;
 
 	}
 
-	public void executeEatAction(FoodLevelChangeEvent event, JobsPlayer pl) {
+	public void executeEatAction(FoodLevelChangeEvent event) {
 		if (event.isCancelled()) {
 			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
 				event.setCancelled(true);
@@ -84,36 +86,52 @@ public class JobWorkManager {
 
 		Material item = event.getItem().getType();
 
-		finalWork("" + item, (Player) event.getEntity(), pl, JobAction.EAT, "eat-action", 1);
+		finalWork("" + item, ((Player) event.getEntity()).getUniqueId(), JobAction.EAT, "eat-action", 1, null, null, true, false,false);
 		return;
 
 	}
 	
-	public void executeDrinkEvent(Player player, String id, JobsPlayer pl) {
-		finalWork(
-				id.toUpperCase(),
-				player, pl, JobAction.DRINK, "drink-action", 1);
+	public void executeSaplingGrowAction(String type, UUID UUID, Block block) {
+	 
+		finalWork(type, UUID, JobAction.GROWSAPLINGS, "grow-saplings-action", 1, block, null, false, true,false);
 		return;
 
 	}
 	
-	public void executeBerrysEvent(Player player, String id, JobsPlayer pl) {
+	
+	public void executeDrinkEvent(Player player, String id) {
 		finalWork(
 				id.toUpperCase(),
-				player, pl, JobAction.COLLECTBERRYS, "collectberrys-action", 1);
+				player.getUniqueId(), JobAction.DRINK, "drink-action", 1, null, null, true,false,false);
+		return;
+
+	}
+	
+	public void executeBerrysEvent(Player player, String id, Block block) {
+		finalWork(
+				id.toUpperCase(),
+				player.getUniqueId(), JobAction.COLLECTBERRYS, "collectberrys-action", 1, block, null, false, true,false);
+		return;
+
+	}
+	
+	public void executeKillByBowEvent(Player player, String id, Entity et) {
+		finalWork(
+				id.toUpperCase(),
+				player.getUniqueId(), JobAction.KILL_BY_BOW, "killbybow-action", 1, null, et, true,false,true);
 		return;
 
 	}
 
-	public void executeAchWork(PlayerAdvancementDoneEvent event, JobsPlayer pl) {
+	public void executeAchWork(PlayerAdvancementDoneEvent event) {
 		finalWork(
 				event.getAdvancement().getKey().getKey().replaceAll("story/", "   ").replaceAll(" ", "").toUpperCase(),
-				event.getPlayer(), pl, JobAction.ADVANCEMENT, "advancement-action", 1);
+				event.getPlayer().getUniqueId(),  JobAction.ADVANCEMENT, "advancement-action", 1, null, null, true,false,false);
 		return;
 
 	}
 
-	public void executeShearWork(PlayerShearEntityEvent event, JobsPlayer pl) {
+	public void executeShearWork(PlayerShearEntityEvent event) {
 		if (event.getEntity() instanceof Sheep) {
 
 			Sheep sheep = (Sheep) event.getEntity();
@@ -127,13 +145,13 @@ public class JobWorkManager {
 				return;
 			}
 
-			finalWork("" + color, (Player) event.getPlayer(), pl, JobAction.SHEAR, "shear-action", 1);
+			finalWork("" + color,  event.getPlayer().getUniqueId(), JobAction.SHEAR, "shear-action", 1, null, event.getEntity(), true, false,true);
 
 			return;
 		}
 	}
 
-	public void executeCraftWork(CraftItemEvent event, JobsPlayer pl) {
+	public void executeCraftWork(CraftItemEvent event) {
 		final Material block = event.getInventory().getResult().getType();
 		final int amount = event.getInventory().getResult().getAmount();
 
@@ -144,12 +162,12 @@ public class JobWorkManager {
 			return;
 		}
 
-		finalWork("" + block, (Player) event.getWhoClicked(), pl, JobAction.CRAFT, "craft-action", amount);
+		finalWork("" + block, ((Player) event.getWhoClicked()).getUniqueId(), JobAction.CRAFT, "craft-action", amount, null, null, true,false,false);
 
 		return;
 	}
 
-	public void executeStripLogWork(PlayerInteractEvent event, JobsPlayer pl) { 
+	public void executeStripLogWork(PlayerInteractEvent event) { 
 		if (event.isCancelled()) {
 			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
 				event.setCancelled(true);
@@ -163,15 +181,15 @@ public class JobWorkManager {
 			if (event.getClickedBlock() != null) 
 				if (event.getClickedBlock().toString().contains("LOG")) { 
 					if (!event.getClickedBlock().toString().contains("STRIPPED")) { 
-					finalWork("" + event.getClickedBlock().getType(), event.getPlayer(), pl, JobAction.STRIPLOG,
-							"strip-action", 1);
+					finalWork("" + event.getClickedBlock().getType(), event.getPlayer().getUniqueId(),  JobAction.STRIPLOG,
+							"strip-action", 1, event.getClickedBlock(), null, true, true,false);
 					}
 				}
 
 		return;
 	}
 
-	public void executeBlockBreakWork(BlockBreakEvent event, JobsPlayer pl) {
+	public void executeBlockBreakWork(BlockBreakEvent event) {
 		final Block block = event.getBlock();
 		final Material type = event.getBlock().getType();
 
@@ -185,12 +203,12 @@ public class JobWorkManager {
 			return;
 		}
 
-		finalWork("" + type, event.getPlayer(), pl, JobAction.BREAK, "break-action", 1);
+		finalWork("" + type, event.getPlayer().getUniqueId(), JobAction.BREAK, "break-action", 1, event.getBlock(), null, true,true,false);
 
 		return;
 	}
 
-	public void executeBlockPlaceWork(BlockPlaceEvent event, JobsPlayer pl) {
+	public void executeBlockPlaceWork(BlockPlaceEvent event) {
 		final Material type = event.getBlock().getType();
 
 		if (event.isCancelled()) {
@@ -200,11 +218,11 @@ public class JobWorkManager {
 			return;
 		}
 
-		finalWork("" + type, event.getPlayer(), pl, JobAction.PLACE, "place-action", 1);
+		finalWork("" + type, event.getPlayer().getUniqueId(), JobAction.PLACE, "place-action", 1, event.getBlock(), null, true, true,false);
 		return;
 	}
 
-	public void executeFishWork(PlayerFishEvent event, JobsPlayer pl) {
+	public void executeFishWork(PlayerFishEvent event) {
 		if (event.isCancelled()) {
 			if(plugin.getFileManager().getConfig().getBoolean("CancelEvents")) {
 				event.setCancelled(true);
@@ -218,11 +236,11 @@ public class JobWorkManager {
 
 		String id = event.getCaught().getName().toUpperCase().replaceAll(" ", "_");
 
-		finalWork(id, event.getPlayer(), pl, JobAction.FISH, "fish-action", 1);
+		finalWork(id, event.getPlayer().getUniqueId(),JobAction.FISH, "fish-action", 1, null, null,true,false,false);
 		return;
 	}
 	
-	public void executeBreedWork(EntityBreedEvent event, JobsPlayer pl) {
+	public void executeBreedWork(EntityBreedEvent event) {
 		final EntityType type = event.getEntity().getType();
 
 		if (event.isCancelled()) {
@@ -236,11 +254,11 @@ public class JobWorkManager {
 			return;
 		}
 
-		finalWork("" + type,(Player) event.getBreeder(), pl, JobAction.BREED, "breed-action", 1);
+		finalWork("" + type,((Player) event.getBreeder()).getUniqueId(), JobAction.BREED, "breed-action", 1, null, event.getEntity(), true, false, true);
 		return;
 	}
 	
-	public void executeTameWork(EntityTameEvent event, JobsPlayer pl) {
+	public void executeTameWork(EntityTameEvent event) {
 		final EntityType type = event.getEntity().getType();
 
 		if (event.isCancelled()) {
@@ -254,27 +272,27 @@ public class JobWorkManager {
 			return;
 		}
 
-		finalWork("" + type,(Player) event.getOwner(), pl, JobAction.TAME, "tame-action", 1);
+		finalWork("" + type,((Player) event.getOwner()).getUniqueId(), JobAction.TAME, "tame-action", 1, null, event.getEntity(), true,false,true);
 		return;
 	}
 
-	public void executeKillWork(EntityDeathEvent event, JobsPlayer pl) {
+	public void executeKillWork(EntityDeathEvent event) {
 
 		Player player = event.getEntity().getKiller();
 
-		finalWork("" + event.getEntity().getType(), player, pl, JobAction.KILL_MOB, "kill-action", 1);
+		finalWork("" + event.getEntity().getType(), player.getUniqueId(), JobAction.KILL_MOB, "kill-action", 1, null, event.getEntity(), true, false,true);
 		return;
 	}
 
 	@SuppressWarnings("deprecation")
-	public void executeMilkWork(PlayerInteractAtEntityEvent event, JobsPlayer pl) {
+	public void executeMilkWork(PlayerInteractAtEntityEvent event) {
 
-		finalWork("" + event.getPlayer().getItemInHand().getType(), event.getPlayer(), pl, JobAction.MILK,
-				"milk-action", 1);
+		finalWork("" + event.getPlayer().getItemInHand().getType(), event.getPlayer().getUniqueId(), JobAction.MILK,
+				"milk-action", 1, null, event.getRightClicked(), true,false,true);
 		return;
 	}
 
-	public void executeFarmWork(BlockBreakEvent event, JobsPlayer pl) {
+	public void executeFarmWork(BlockBreakEvent event) {
 		final Block block = event.getBlock();
 		final Material type = event.getBlock().getType();
 
@@ -289,124 +307,158 @@ public class JobWorkManager {
 			return;
 		}
 
-		finalWork("" + type, event.getPlayer(), pl, JobAction.FARM, "farm-action", 1);
+		finalWork("" + type, event.getPlayer().getUniqueId(), JobAction.FARM, "farm-action", 1, event.getBlock(), null, true,true,false);
 
 		return;
 	}
 
-	public void finalWork(String real, Player player, JobsPlayer pl, JobAction ac, String flag, int amount) {
+	public void finalWork(String real,  UUID ID,  JobAction ac, String flag,  int amount, Block block, Entity ent, boolean checkplayer, boolean checkblock, boolean checkentity) {
 
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 
 			@Override
 			public void run() {
 
-				String UUID = "" + player.getUniqueId();
-				JobsPlayer jobsplayer = plugin.getPlayerAPI().getRealJobPlayer(UUID);
+				String IDASSTRING = ""+ID;
+				 
 				FileConfiguration cfg = plugin.getFileManager().getConfig();
 
-				if (api.getJobsWithAction(UUID, pl, ac) == null) {
+				if (api.getJobsWithAction(IDASSTRING, ac) == null) {
 					return;
 				}
-				ArrayList<String> jobs = api.getJobsWithAction(UUID, pl, ac);
+				ArrayList<String> jobs = api.getJobsWithAction(IDASSTRING,  ac);
 
 				for (String job : jobs) {
  
-					Job jb = plugin.getJobCache().get(job);
+					Job jub = plugin.getJobCache().get(job);
 					
-					if(jb.getConfigIDOfRealID(ac, real, jb) == null) {
+					if(jub.getConfigIDOfRealID(ac, real, jub) == null) {
 						return;
 					}
 					
-					String iD = jb.getConfigIDOfRealID(ac, real, jb);
+					String iD = jub.getConfigIDOfRealID(ac, real, jub);
 					 
-					if (jb.getListOfRealIDS(ac).contains(real.toUpperCase())) {
+					if (jub.getListOfRealIDS(ac).contains(real.toUpperCase())) {
 			 
-						if (pl.isInJob(job.toUpperCase())) {
+						if (plugin.getPlayerAPI().getCurrentJobs(IDASSTRING).contains(job.toUpperCase())) {
 						 
-							if (api.canWorkThere(player, jb, flag)) {
+							if(checkplayer) {
+								if (!api.canWorkThereByPlayer(IDASSTRING, jub, flag)) {
+									return;
+								}
+							}
 						 
-								if (api.canReward(player, jb, iD, ac)) {
-								 
-									boolean can = api.checkforDailyMaxEarnings(player, jb);
+							 if(checkblock) {
+								if(block != null) {
+									if (!api.canWorkThereByBlock(block.getLocation(), jub, flag)) {
+										return;
+									}
+								}
+							 }
+							 if(checkentity) {
+								if(ent != null) {
+									if(ent.getLocation() != null) {
+										if (!api.canWorkThereByEntity(ent.getLocation(), jub, flag)) {
+											return;
+										}
+									}
+								}
+							 }
+							 
+								if (api.canReward(jub, iD, ac)) {
+							 
+									boolean can = api.checkforDailyMaxEarnings(IDASSTRING, jub);
 
 									String date = plugin.getPluginManager().getDate();
-									
-									JobStats stats = jobsplayer.getStatsOf(jb.getConfigID());
- 
-									int lvl = stats.getLevel();
-									double reward = jb.getRewardOf(iD, ac);
+									 
+									int lvl = plugin.getPlayerAPI().getLevelOF(IDASSTRING, jub);
+									double reward = jub.getRewardOf(iD, ac);
 
-									double exp_old = stats.getExp();
-									double exp = jb.getExpOf(iD, ac) * amount;
-									Integer broken = stats.getBrokenTimes() + amount;
-									double points = jb.getPointsOf(iD, ac) * amount;
-									double old_points = pl.getPoints();
+									double exp_old = plugin.getPlayerAPI().getExpOf(IDASSTRING, jub);
+									double exp = jub.getExpOf(iD, ac) * amount;
+									Integer broken = plugin.getPlayerAPI().getBrokenTimes(IDASSTRING, jub) + amount;
+									double points = jub.getPointsOf(iD, ac) * amount;
+									double old_points = plugin.getPlayerAPI().getPoints(IDASSTRING);
 
 									double fixed = reward * amount;
 
-									double next = fixed * jb.getMultiOfLevel(lvl);
+									double next = fixed * jub.getMultiOfLevel(lvl);
 
 									double calc = fixed + next;
 									
-									String usedid = jb.getNotRealIDByRealOne(real.toUpperCase());
-								 
-									int times_old = stats.getBrokenTimesOf(usedid);
-									double earned_old = stats.getBrokenOf(usedid);
+									String usedid = jub.getNotRealIDByRealOne(real.toUpperCase());
+								  
+									double earned_old = plugin.getPlayerAPI().getEarnedFrom(IDASSTRING, jub, usedid, ""+ac);
 
-									double new_earned = calc + stats.getEarnings(plugin.getPluginManager().getDate());
+									double new_earned = calc + plugin.getPlayerAPI().getEarnedAt(IDASSTRING, jub, date);
 
-									if (jb.hasVaultReward(iD, ac)) {
+									if (jub.hasVaultReward(iD, ac)) {
 										if (can) {
-											UltimateJobs.getPlugin().getEco().depositPlayer(player, calc);
+											
+											if(Bukkit.getPlayer(ID).isOnline()) {
+												UltimateJobs.getPlugin().getEco().depositPlayer(Bukkit.getPlayer(ID), calc);
+											} else {
+												UltimateJobs.getPlugin().getEco().depositPlayer(Bukkit.getOfflinePlayer(ID), calc);
+											}
+											
+											 
 										}
 									}
-									
-									
-
+									 
 									if (can == false) {
 
-										if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Exp")) {
-											stats.updateExp(exp_old + exp);
+										if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Exp")) { 
+											plugin.getPlayerAPI().updateExp(IDASSTRING, jub, exp_old + exp);
 										}
 										if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Points")) {
-											jobsplayer.updatePoints(points + old_points);
+											plugin.getPlayerAPI().updatePoints(IDASSTRING, points + old_points);
 										}
 										if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Stats")) {
-											stats.updateBrokenTimes(broken);
-											
-											stats.updateEarnings(date, new_earned);
-											
-											stats.updateBrokenOf(usedid, earned_old + calc);
-											stats.addBrokenTimesOf(usedid, 1);
+											plugin.getPlayerAPI().updateBrokenTimes(IDASSTRING, jub, broken); 
+											plugin.getPlayerAPI().updateEarningsAtDate(IDASSTRING, jub, new_earned, date);
+										 
+											plugin.getPlayerAPI().updateBrokenMoneyOf(IDASSTRING, jub, usedid, earned_old + calc, ""+ac);
+											int ol = plugin.getPlayerAPI().getBrokenTimesOfID(IDASSTRING, jub, usedid, ""+ac);
+											plugin.getPlayerAPI().updateBrokenTimesOf(IDASSTRING, jub, usedid, ol + 1, ""+ac);
+										 
  
 										}
 
 									} else {
-										stats.updateExp(exp_old + exp);
-										jobsplayer.updatePoints(points + old_points);
-										stats.updateBrokenTimes(broken);
-										stats.updateEarnings(date, new_earned);
-										stats.updateBrokenOf(usedid, earned_old + calc);
-										stats.addBrokenTimesOf(usedid, 1);
+										plugin.getPlayerAPI().updateExp(IDASSTRING, jub, exp_old + exp);
+										plugin.getPlayerAPI().updatePoints(IDASSTRING, points + old_points);
+										plugin.getPlayerAPI().updateBrokenTimes(IDASSTRING, jub, broken); 
+										plugin.getPlayerAPI().updateEarningsAtDate(IDASSTRING, jub,  new_earned, date);
+									 
+										plugin.getPlayerAPI().updateBrokenMoneyOf(IDASSTRING, jub, usedid, earned_old + calc, ""+ac);
+										int ol = plugin.getPlayerAPI().getBrokenTimesOfID(IDASSTRING, jub, usedid, ""+ac);
+										plugin.getPlayerAPI().updateBrokenTimesOf(IDASSTRING, jub, usedid, ol + 1, ""+ac);
 									}
-
-									api.playSound("FINISHED_WORK", player);
-
-									new BukkitRunnable() {
-										public void run() {
-											new PlayerFinishedWorkEvent(player, pl, jb, iD, ac);
+									
+									if(Bukkit.getPlayer(ID).isOnline()) {
+										
+										Player player = Bukkit.getPlayer(ID);
+										
+										JobsPlayer d = plugin.getPlayerAPI().getRealJobPlayer(IDASSTRING);
+										
+										api.playSound("FINISHED_WORK", player);
+										
+										new BukkitRunnable() {
+											public void run() {
+												new PlayerFinishedWorkEvent(player, d, jub, iD, ac);
+											}
+										}.runTaskLater(plugin, 1);
+										
+										if (cfg.getBoolean("Enable_Levels")) {
+											UltimateJobs.getPlugin().getLevelAPI().check(player, jub, d, iD);
 										}
-									}.runTaskLater(plugin, 1);
-
-									if (cfg.getBoolean("Enable_Levels")) {
-										UltimateJobs.getPlugin().getLevelAPI().check(player, jb, pl, iD);
+										UltimateJobs.getPlugin().getAPI().sendReward(d, player, jub, exp, calc, iD, can, ac);
 									}
-									UltimateJobs.getPlugin().getAPI().sendReward(pl, player, jb, exp, calc, iD, can, ac);
+ 
 									return;
 
 								}
-							}
+							 
 							 
 						}
 					}

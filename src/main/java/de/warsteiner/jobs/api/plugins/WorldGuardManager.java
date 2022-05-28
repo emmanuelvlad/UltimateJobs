@@ -39,6 +39,8 @@ public class WorldGuardManager {
 	public static StateFlag DRINK_ACTION;
 	public static StateFlag BERRY_ACTION;
 	public static StateFlag MMORES_BREAK;
+	public static StateFlag KILLBYBOW;
+	public static StateFlag GROWSAP;
 
 	public WorldGuardManager getManager() {
 		return this;
@@ -74,6 +76,8 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (DRINK_ACTION = new StateFlag("drink-action", false))); 
 		flagRegistry.register((Flag) (BERRY_ACTION = new StateFlag("collectberrys-action", false))); 
 		flagRegistry.register((Flag) (MMORES_BREAK = new StateFlag("moreores-break-action", false))); 
+		flagRegistry.register((Flag) (KILLBYBOW = new StateFlag("killbybow-action", false))); 
+		flagRegistry.register((Flag) (GROWSAP = new StateFlag("grow-saplings-action", false))); 
 	}
 	
 	public static StateFlag getFlagFromName(String b) {
@@ -95,15 +99,17 @@ public class WorldGuardManager {
 		if(b.equalsIgnoreCase("drink-action")) { return DRINK_ACTION; } 
 		if(b.equalsIgnoreCase("collectberrys-action")) { return BERRY_ACTION; } 
 		if(b.equalsIgnoreCase("moreores-break-action")) { return MMORES_BREAK; } 
+		if(b.equalsIgnoreCase("killbybow-action")) { return KILLBYBOW; } 
+		if(b.equalsIgnoreCase("grow-saplings-action")) { return GROWSAP; } 
 		return null;
 	}
 
-	public static String checkFlag(org.bukkit.Location location, String flag, Player p, String f) {
+	public static String checkFlag(org.bukkit.Location location, String f) {
 
 		int priority = -1;
 		WorldGuard instance = WorldGuard.getInstance();
 		RegionContainer container = instance.getPlatform().getRegionContainer();
-		BukkitWorld bukkitWorld = new BukkitWorld(p.getWorld());
+		BukkitWorld bukkitWorld = new BukkitWorld(location.getWorld());
 		RegionQuery query = container.createQuery();
 		Location wLoc = new Location((Extent) bukkitWorld, location.getX(), location.getY(), location.getZ());
 		ProtectedRegion selected = null;

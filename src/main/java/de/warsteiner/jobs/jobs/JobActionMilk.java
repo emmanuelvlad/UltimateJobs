@@ -19,7 +19,7 @@ public class JobActionMilk implements Listener {
 		Entity clicked = event.getRightClicked();
 		
 		if (clicked instanceof Cow) {  
-			plugin.getJobWorkManager().executeMilkWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+			plugin.getJobWorkManager().executeMilkWork(event);
 		}
 		
 	}

@@ -22,6 +22,6 @@ public class JobActionMMKill implements Listener {
 			return;
 		}
 		
-		plugin.getMythicMobsManager().executeWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getKiller().getUniqueId())); 
+		plugin.getMythicMobsManager().executeWork(event); 
 	}
 }

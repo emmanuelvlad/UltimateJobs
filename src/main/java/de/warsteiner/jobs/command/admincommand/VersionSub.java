@@ -34,8 +34,7 @@ public class VersionSub extends AdminSubCommand {
 		 
 			sender.sendMessage("§7");
 			sender.sendMessage("§8-> §9UltimateJobs §7Plugin Details§8:");
-			sender.sendMessage(" §8| §7Plugin Version§8: §bv"+d.getVersion()+" §8(§7API §c"+d.getAPIVersion()+"§8)");
-			sender.sendMessage(" §8| §7Plugin Type§8: §6Premium");
+			sender.sendMessage(" §8| §7Plugin Version§8: §bv"+d.getVersion()+" §8(§7API §c"+d.getAPIVersion()+"§8)"); 
 			sender.sendMessage(" §8| §7Server Version§8: §a"+Bukkit.getVersion()); 
 			sender.sendMessage(" §8| §7Java Version§8: §6"+(System.getProperty("java.version") != null ? System.getProperty("java.version") : "null"));
 			sender.sendMessage("§7");
@@ -61,6 +60,11 @@ public class VersionSub extends AdminSubCommand {
 	@Override
 	public String getUsage() { 
 		return "/JobsAdmin version";
+	}
+	
+	@Override
+	public String getPermission() { 
+		return "ultimatejobs.admin.version";
 	}
 	
 }

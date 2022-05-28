@@ -36,7 +36,7 @@ public class JobStats {
 	public HashMap<String, Integer> getBrokenTimesOfIDList() {
 		return brokenof_times;
 	}
-	
+ 
 	public Integer getBrokenTimesOf(String ID) {
 		return brokenof_times.get(ID);
 	}
@@ -61,17 +61,10 @@ public class JobStats {
 		return earnings.get(ID);
 	}
 	
-	public void updateEarnings(String date, double value) {
-	 
-		getEarningsList().put(date, value);
+	public void updateEarnings(String date, double value) { 
+		earnings.put(date, value);
 	}
-	
-	public void addEarningsOf(String date, double value) {
-		
-		Double old = getEarnings(date);
-		 
-		getEarningsList().put(date, old+value);
-	}
+ 
 	
 	public HashMap<String, Double> getBrokenList() {
 		return brokenof_money;

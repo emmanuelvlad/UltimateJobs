@@ -13,7 +13,7 @@ public class JobActionPlace implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlace(BlockPlaceEvent event) { 
-		plugin.getJobWorkManager().executeBlockPlaceWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+		plugin.getJobWorkManager().executeBlockPlaceWork(event);
 	}
 	
 }

@@ -70,4 +70,9 @@ public class HelpSub extends AdminSubCommand {
 		return "/JobsAdmin help";
 	}
 
+	@Override
+	public String getPermission() { 
+		return "ultimatejobs.admin.help";
+	}
+	
 }

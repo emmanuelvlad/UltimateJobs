@@ -63,7 +63,9 @@ import de.warsteiner.jobs.jobs.JobActionDrink;
 import de.warsteiner.jobs.jobs.JobActionEat;
 import de.warsteiner.jobs.jobs.JobActionFarm;
 import de.warsteiner.jobs.jobs.JobActionFish;
+import de.warsteiner.jobs.jobs.JobActionGrowSapling;
 import de.warsteiner.jobs.jobs.JobActionHoney;
+import de.warsteiner.jobs.jobs.JobActionKillByBow;
 import de.warsteiner.jobs.jobs.JobActionKillMob;
 import de.warsteiner.jobs.jobs.JobActionMMKill;
 import de.warsteiner.jobs.jobs.JobActionMilk;
@@ -161,25 +163,12 @@ public class UltimateJobs extends JavaPlugin {
 		getLanguageAPI().loadLanguages();
 
 		// basic events
-		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new MainMenuClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new SettingsMenuClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new BlockFireWorkDamage(), this);
-		Bukkit.getPluginManager().registerEvents(new AreYouSureMenuClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerLevelEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerRewardCommandEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new HelpMenuClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
-		Bukkit.getPluginManager().registerEvents(new StatsMenuClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new RewardsMenuClickEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new LevelsMenuClickEvent(), this);
+		loadBasicEvents();
 
 		// job events
 		loadEvents();
 
 		setupEconomy();
-
-		Bukkit.getConsoleSender().sendMessage("§aLoaded Vault...");
  
 		api.loadJobs(getLogger());
 
@@ -407,6 +396,21 @@ public class UltimateJobs extends JavaPlugin {
 			folder_5.mkdir();
 		}
 	}
+	
+	public void loadBasicEvents() {
+		Bukkit.getPluginManager().registerEvents(new PlayerExistEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new MainMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new SettingsMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new BlockFireWorkDamage(), this);
+		Bukkit.getPluginManager().registerEvents(new AreYouSureMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerLevelEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerRewardCommandEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new HelpMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new IntegrationEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new StatsMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new RewardsMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new LevelsMenuClickEvent(), this);
+	}
 
 	public void loadEvents() {
 		Bukkit.getPluginManager().registerEvents(new JobActionBreak(), this);
@@ -425,7 +429,9 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionBreed(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionDrink(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionsCollectBerrys(), this);
-
+		Bukkit.getPluginManager().registerEvents(new JobActionKillByBow(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionGrowSapling(), this);
+		
 		if (getPluginManager().isInstalled("MythicMobs")) {
 			mm = new MythicMobsManager();
 			Bukkit.getPluginManager().registerEvents(new JobActionMMKill(), this);
@@ -453,6 +459,9 @@ public class UltimateJobs extends JavaPlugin {
 				.getRegistration(Economy.class);
 		if (economyProvider != null) {
 			econ = (Economy) economyProvider.getProvider();
+			Bukkit.getConsoleSender().sendMessage("§aVault was loaded for UltimateJobs!");
+		} else {
+			Bukkit.getConsoleSender().sendMessage("§cFailed to load Vault for UltimateJobs!");
 		}
 		return (econ != null);
 	}

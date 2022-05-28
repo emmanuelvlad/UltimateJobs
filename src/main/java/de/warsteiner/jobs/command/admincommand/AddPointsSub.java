@@ -109,5 +109,10 @@ public class AddPointsSub extends AdminSubCommand {
 		return "/JobsAdmin addpoints <name> <value>";
 	}
 
+	@Override
+	public String getPermission() { 
+		return "ultimatejobs.admin.addpoints";
+	}
+
 }
 

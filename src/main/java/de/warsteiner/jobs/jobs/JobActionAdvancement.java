@@ -14,6 +14,6 @@ public class JobActionAdvancement implements Listener  {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEvent(PlayerAdvancementDoneEvent   event) { 
-		plugin.getJobWorkManager().executeAchWork(event, plugin.getPlayerAPI().getRealJobPlayer(""+event.getPlayer().getUniqueId()));
+		plugin.getJobWorkManager().executeAchWork(event);
 	}
 }

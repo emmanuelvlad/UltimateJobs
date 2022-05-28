@@ -16,4 +16,6 @@ public abstract class AdminSubCommand {
     public abstract String FormatTab();
 
     public abstract int getTabLength();
+    
+    public abstract String getPermission();
 }

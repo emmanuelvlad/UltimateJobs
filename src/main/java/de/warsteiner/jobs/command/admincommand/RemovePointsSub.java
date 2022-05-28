@@ -110,5 +110,10 @@ public class RemovePointsSub extends AdminSubCommand {
 		return "/JobsAdmin rempoints <name> <value>";
 	}
 
+	@Override
+	public String getPermission() { 
+		return "ultimatejobs.admin.rempoints";
+	}
+	
 }
 

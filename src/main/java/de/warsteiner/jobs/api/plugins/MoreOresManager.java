@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.api.plugins;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import de.warsteiner.jobs.UltimateJobs;
@@ -10,10 +11,10 @@ public class MoreOresManager {
 	
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
 
-	public void executeBreakEvent(Player player, String id, JobsPlayer pl) {
+	public void executeBreakEvent(Player player, String id, Block block) {
 		plugin.getJobWorkManager().finalWork(
 				id.toUpperCase(),
-				player, pl, JobAction.MMORES_BREAK, "moreores-break-action", 1);
+				player.getUniqueId(), JobAction.MMORES_BREAK, "moreores-break-action", 1, block, null, true,true,false);
 		return;
 
 	}

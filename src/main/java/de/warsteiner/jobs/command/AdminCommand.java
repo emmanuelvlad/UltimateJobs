@@ -42,8 +42,14 @@ public class AdminCommand implements CommandExecutor {
 
 					AdminSubCommand cmd = find(ar);
 
-					cmd.perform(sender, args);
+					if (sender.hasPermission(cmd.getPermission())) {
+					
+						cmd.perform(sender, args);
 
+					} else {
+						sender.sendMessage(prefix + "§cYou dont have Permissions!");
+						return true;
+					}
 				}
 
 			}

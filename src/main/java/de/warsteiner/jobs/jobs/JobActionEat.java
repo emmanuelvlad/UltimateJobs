@@ -15,8 +15,7 @@ public class JobActionEat implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEvent(FoodLevelChangeEvent event) {
 		if (event.getEntity() instanceof Player) {
-			plugin.getJobWorkManager().executeEatAction(event,
-					plugin.getPlayerAPI().getRealJobPlayer(""+event.getEntity().getUniqueId()));
+			plugin.getJobWorkManager().executeEatAction(event);
 		}
 	}
 }

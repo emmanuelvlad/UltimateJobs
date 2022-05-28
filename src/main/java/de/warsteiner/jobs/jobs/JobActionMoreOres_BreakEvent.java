@@ -26,7 +26,7 @@ public class JobActionMoreOres_BreakEvent implements Listener {
 		
 		String fin = event.getOreName().replaceAll(" ", "_").toUpperCase();
 		
-		plugin.getMoreOresManager().executeBreakEvent(player, fin, plugin.getPlayerAPI().getRealJobPlayer(""+player.getUniqueId()));
+		plugin.getMoreOresManager().executeBreakEvent(player, fin, event.getLocation().getBlock());
 		
 	}
 }
