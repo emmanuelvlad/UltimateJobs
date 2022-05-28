@@ -60,20 +60,24 @@ public class LanguageAPI {
 			for (int i = 0; i < files.length; i++) {
 				String name = files[i].getName();
 				File file = files[i]; 
-				Bukkit.getConsoleSender().sendMessage("§cChecking Language : "+name+"...");
-				 
-				YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-				if(cfg.contains("prefix")) {
-					String newname = name.replaceAll(".yml", " ").replaceAll(" ", "");
-					Language lg = new Language(newname, cfg, file, cfg.getString("LanguageName"), cfg.getString("LanguageIcon"), cfg.getString("LanguageDisplay"));
-					
-					if(cfg.getBoolean("LanguageEnabled")) {
-						arraylangs.add(lg);
+				
+				if(name.contains(".yml")) {
+					Bukkit.getConsoleSender().sendMessage("§cChecking Language : "+name+"...");
+					 
+					YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+					if(cfg.contains("prefix")) {
+						String newname = name.replaceAll(".yml", " ").replaceAll(" ", "");
+						Language lg = new Language(newname, cfg, file, cfg.getString("LanguageName"), cfg.getString("LanguageIcon"), cfg.getString("LanguageDisplay"));
+						
+						if(cfg.getBoolean("LanguageEnabled")) {
+							arraylangs.add(lg);
+						}
+						
+						langs.put(newname, lg);
+						Bukkit.getConsoleSender().sendMessage("§aLoaded Language : "+newname+"...");
 					}
-					
-					langs.put(newname, lg);
-					Bukkit.getConsoleSender().sendMessage("§aLoaded Language : "+newname+"...");
 				}
+				
 			}
 		}
 	}
