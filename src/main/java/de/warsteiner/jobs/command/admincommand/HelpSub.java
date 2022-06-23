@@ -75,4 +75,9 @@ public class HelpSub extends AdminSubCommand {
 		return "ultimatejobs.admin.help";
 	}
 	
+	@Override
+	public boolean showOnHelp() { 
+		return true;
+	}
+	
 }

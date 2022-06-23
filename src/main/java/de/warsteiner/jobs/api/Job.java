@@ -9,8 +9,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import de.warsteiner.datax.SimpleAPI; 
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.utils.JobAction;
 import de.warsteiner.jobs.utils.objects.JobsPlayer; 
@@ -463,7 +462,7 @@ public class Job {
 			return "Error";
 		}
 		
-		return SimpleAPI.getInstance().getAPI().toHex(display).replaceAll("&", "§");
+		return UltimateJobs.getPlugin().getPluginManager().toHex(display).replaceAll("&", "§");
 	}
 
 	public String getConfigID() {

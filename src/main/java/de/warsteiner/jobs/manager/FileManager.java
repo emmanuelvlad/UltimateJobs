@@ -40,6 +40,22 @@ public class FileManager {
 	private  FileConfiguration levels;
 	private  File levels_file;
 	
+	private  FileConfiguration earnings_all;
+	private  File earnings_all_file;
+	
+	private  FileConfiguration earnings_job;
+
+	private  File earnings_job_file;
+	
+	private  FileConfiguration data;
+	private  File data_file;
+	
+	private  FileConfiguration lang;
+	private  File lang_file;
+	
+	private  FileConfiguration langg;
+	private  File langg_file;
+	
 	private List<String> defaultlanguages = Arrays.asList("en-US","de-DE","de-BAR","es-ES","fr-FR","nl-NL","tr-TR");
 	private List<String> defaultjobs = Arrays.asList("Miner","Lumberjack");
 	
@@ -52,14 +68,19 @@ public class FileManager {
 		createConfirmGUIFIle();
 		createCFGFile();
 		createLevelsFile();
+		createEarningsJobFile();
+		createDataFile();
+		createLangFile();
+		createLangGUIFile();
 	 
 		//addons
 		createAddonStatsFiles();
 		createAddonRewardsFiles(); 
+		createEarningsAllFile();
 		return true;
 	}
 	
-	public  boolean reloadFiles() {
+	public  void reloadAllFiles() {
 		try {
 			gui = YamlConfiguration.loadConfiguration(gui_file);
 			cfg = YamlConfiguration.loadConfiguration(cfg_file);
@@ -70,10 +91,14 @@ public class FileManager {
 			stats = YamlConfiguration.loadConfiguration(stats_file);
 			rewards = YamlConfiguration.loadConfiguration(rewards_file); 
 			levels = YamlConfiguration.loadConfiguration(levels_file); 
-			return true;
+			earnings_all = YamlConfiguration.loadConfiguration(earnings_all_file); 
+			earnings_job = YamlConfiguration.loadConfiguration(earnings_job_file); 
+			lang = YamlConfiguration.loadConfiguration(lang_file); 
+			data = YamlConfiguration.loadConfiguration(data_file); 
+			langg = YamlConfiguration.loadConfiguration(langg_file); 
+		 
 		} catch(Exception ex) {
-			ex.printStackTrace();
-			return false;
+			ex.printStackTrace(); 
 		}
 	}
 	
@@ -173,11 +198,138 @@ public class FileManager {
 		return levels_file;
 	}
 	
+	public  FileConfiguration getEarningsAllConfig() {
+		return earnings_all;
+	}
+	
+	public  File getEarningAllFIle() {
+		return earnings_all_file;
+	}
+	
+	public  FileConfiguration getEarningsJobConfig() {
+		return earnings_job;
+	}
+	
+	public  File getEarningJobFIle() {
+		return earnings_job_file;
+	}
+	
+
+	public  FileConfiguration getDataConfig() {
+		return data;
+	}
+	
+	public  File getDataFile() {
+		return data_file;
+	}
+	
+	public  FileConfiguration getLanguageConfig() {
+		return lang;
+	}
+	
+	public  File getLanguageFile() {
+		return lang_file;
+	}
+	
+	public  FileConfiguration getLanguageGUIConfig() {
+		return langg;
+	}
+	
+	public  File getLanguageGUIFile() {
+		return langg_file;
+	}
+	
+	public boolean createLangGUIFile() {
+		langg_file = new File(UltimateJobs.getPlugin().getDataFolder(), "settings" + File.separatorChar + "lang_gui.yml");
+        if (!langg_file.exists()) {
+        	langg_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "lang_gui.yml", true);
+        }
+        
+        langg = new YamlConfiguration();
+        try {
+        	langg.load(langg_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean createLangFile() {
+		lang_file = new File(UltimateJobs.getPlugin().getDataFolder(), "settings" + File.separatorChar + "languages.yml");
+        if (!lang_file.exists()) {
+        	lang_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "languages.yml", true);
+        }
+        
+        lang = new YamlConfiguration();
+        try {
+        	lang.load(lang_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	
+	
+	public boolean createDataFile() {
+		data_file = new File(UltimateJobs.getPlugin().getDataFolder(), "settings" + File.separatorChar + "data.yml");
+        if (!data_file.exists()) {
+        	data_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "data.yml", true);
+        }
+        
+        data = new YamlConfiguration();
+        try {
+        	data.load(data_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean createEarningsJobFile() {
+		earnings_job_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "earnings_job.yml");
+        if (!earnings_job_file.exists()) {
+        	earnings_job_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "earnings_job.yml", true);
+        }
+        
+        earnings_job = new YamlConfiguration();
+        try {
+        	earnings_job.load(earnings_job_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean createEarningsAllFile() {
+		earnings_all_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "earnings_all.yml");
+        if (!earnings_all_file.exists()) {
+        	earnings_all_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "earnings_all.yml", true);
+        }
+        
+        earnings_all = new YamlConfiguration();
+        try {
+        	earnings_all.load(earnings_all_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	
 	public boolean createLevelsFile() {
 		levels_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "levelsgui.yml");
         if (!levels_file.exists()) {
         	levels_file.getParentFile().mkdirs();
-        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "levelsgui.yml", false);
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "levelsgui.yml", true);
         }
         
         levels = new YamlConfiguration();
@@ -194,7 +346,7 @@ public class FileManager {
 		rewards_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "rewards.yml");
         if (!rewards_file.exists()) {
         	rewards_file.getParentFile().mkdirs();
-        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "rewards.yml", false);
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "rewards.yml", true);
         }
         
         rewards = new YamlConfiguration();
@@ -211,7 +363,7 @@ public class FileManager {
 		stats_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "stats.yml");
         if (!stats_file.exists()) {
         	stats_file.getParentFile().mkdirs();
-        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "stats.yml", false);
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "stats.yml", true);
         }
         
         stats = new YamlConfiguration();
@@ -245,7 +397,7 @@ public class FileManager {
 		confirm_file = new File(UltimateJobs.getPlugin().getDataFolder(), "settings" + File.separatorChar + "confirm_gui.yml");
         if (!confirm_file.exists()) {
         	confirm_file.getParentFile().mkdirs();
-        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "confirm_gui.yml", false);
+        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "confirm_gui.yml", true);
          }
 
         confirm = new YamlConfiguration();
@@ -262,7 +414,7 @@ public class FileManager {
 		settings_file = new File(UltimateJobs.getPlugin().getDataFolder(), "settings" + File.separatorChar + "settings_gui.yml");
         if (!settings_file.exists()) {
         	settings_file.getParentFile().mkdirs();
-        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "settings_gui.yml", false);
+        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "settings_gui.yml", true);
          }
 
         settings = new YamlConfiguration();
@@ -279,7 +431,7 @@ public class FileManager {
 		help_file = new File(UltimateJobs.getPlugin().getDataFolder(), "settings" + File.separatorChar + "help_gui.yml");
         if (!help_file.exists()) {
         	help_file.getParentFile().mkdirs();
-        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "help_gui.yml", false);
+        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "help_gui.yml", true);
          }
 
         help = new YamlConfiguration();
@@ -296,7 +448,7 @@ public class FileManager {
 		cmd_file = new File(UltimateJobs.getPlugin().getDataFolder(), "settings" + File.separatorChar + "command.yml");
         if (!cmd_file.exists()) {
         	cmd_file.getParentFile().mkdirs();
-        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "command.yml", false);
+        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "command.yml", true);
          }
 
         cmd = new YamlConfiguration();
@@ -313,7 +465,7 @@ public class FileManager {
 		gui_file = new File(UltimateJobs.getPlugin().getDataFolder(), "settings" + File.separatorChar + "main_gui.yml");
         if (!gui_file.exists()) {
         	gui_file.getParentFile().mkdirs();
-        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "main_gui.yml", false);
+        	UltimateJobs.getPlugin().saveResource("settings" + File.separatorChar + "main_gui.yml", true);
          }
 
         gui = new YamlConfiguration();

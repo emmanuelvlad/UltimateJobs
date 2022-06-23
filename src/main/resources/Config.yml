@@ -16,6 +16,9 @@ LoadJobsFrom: "plugins/UltimateJobs/jobs/"
 
 KickOnReload: true
 
+#loads the data of the last 90 days
+LoadEarningsDataOfDays: 90
+
 CancelEvents: false
 
 #default 180 seconds
@@ -218,3 +221,4 @@ Levels:
   
   #actionbar on levelup?
   Enabled_Actionbar: false
+ 

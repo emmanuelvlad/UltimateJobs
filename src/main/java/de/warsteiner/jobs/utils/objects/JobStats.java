@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.utils.objects;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import de.warsteiner.jobs.api.Job;
@@ -43,7 +44,7 @@ public class JobStats {
 	
 	public void updateBrokenTimesOf(String id, int value) {
 	 
-		getBrokenTimesOfIDList().put(date, value);
+		getBrokenTimesOfIDList().put(id, value);
 	}
 	
 	public void addBrokenTimesOf(String id, int value) {
@@ -57,12 +58,17 @@ public class JobStats {
 		return earnings;
 	}
 	
-	public Double getEarnings(String ID) {
-		return earnings.get(ID);
+	public Double getEarningsofDate(String date2) {
+		
+		if(!getEarningsList().containsKey(date2)) {
+			return 0.0;
+		}
+		 
+		return getEarningsList().get(date2);
 	}
 	
-	public void updateEarnings(String date, double value) { 
-		earnings.put(date, value);
+	public void updateEarnings(String date, double value) {  
+		getEarningsList().put(date, value);
 	}
  
 	

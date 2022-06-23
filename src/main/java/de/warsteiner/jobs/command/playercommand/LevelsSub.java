@@ -5,10 +5,11 @@ import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import de.warsteiner.datax.utils.UpdateTypes;
+ 
 import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.UpdateTypes;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class LevelsSub extends SubCommand {
@@ -35,27 +36,40 @@ public class LevelsSub extends SubCommand {
 		ArrayList<String> size = jb.getCurrentJobs();
 
 		if (args.length == 2) {
-			String job = args[1].toUpperCase();
+			String notreal = args[1].toUpperCase();
 
-			if (!plugin.getAPI().checkIfJobIsReal(job.toUpperCase(), player)) {
+			 
+			
+			if (!plugin.getAPI().checkIfJobIsReal(notreal.toUpperCase(), player)) {
 				plugin.getAPI().playSound("COMMAND_JOB_NOT_FOUND", player);
 				return;
 			}
 			
-			if(!jb.hasStatsOf(job)) {
+			Job real = plugin.getAPI().checkIfJobIsRealWithResult(notreal.toUpperCase(), player);
+			
+			if(!jb.hasStatsOf(real.getConfigID())) {
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_levels_no_data_found"));
 				plugin.getAPI().playSound("COMMAND_LEVELS_NOT_OWNED", player);
 				return;
 			}
 
 			plugin.getGUIAddonManager().createLevelsGUI(player, UpdateTypes.OPEN,
-					plugin.getAPI().checkIfJobIsRealAndGet(job.toUpperCase(), player));
+					plugin.getAPI().checkIfJobIsRealAndGet(real.getConfigID(), player));
 
 			return;
 		} else if (args.length == 1 && size.size() == 1) {
+			
+			if(size.size() != 0) {
+			 
+				plugin.getGUIAddonManager().createLevelsGUI(player, UpdateTypes.OPEN,
+						plugin.getJobCache().get(size.get(0)));
+			} else {
+				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_levels_no_data_found"));
+				plugin.getAPI().playSound("COMMAND_LEVELS_NOT_OWNED", player);
+				return;
+			}
 
-			plugin.getGUIAddonManager().createLevelsGUI(player, UpdateTypes.OPEN,
-					plugin.getJobCache().get(size.get(0)));
+			 
 
 			return;
 

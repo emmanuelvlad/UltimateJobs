@@ -10,8 +10,21 @@
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
-#used on /jobs language <lang>
+#used on /jobs language 
 LanguageName: "turkish"
+LanguageIcon: "url;https://textures.minecraft.net/texture/6bbeaf52e1c4bfcd8a1f4c6913234b840241aa48829c15abc6ff8fdf92cd89e"
+LanguageDisplay: "&8< &6Türkçe &8>"
+LanguageEnabled: true
+
+LanguageChoosenLore:
+  - "&aBu Dili seçtiniz!"
+  
+LanguageChoosenMessage: "<prefix> &cBu dili zaten seçtiniz!"
+  
+LanguageCanChoose:
+  - "&7Bu Dili seçmek için tıklayın!!"
+  
+LanguageChangedMessage: "<prefix> &7<lang> &7dilini seçtiniz!"
 
 prefix: "&8[#14e0ba#Meslek&8]"
 
@@ -109,6 +122,14 @@ MaxEarningsReached:
   
 #confog of commands
 Commands:
+
+  Earnings:
+  
+    Usage: "earnings"
+    
+    UsageMessage: "/Jobs earnings <jobs>"
+    
+    Description: "Son 30 Günün Kazançlarını Görüntüle"
 
   Rewards:
   
@@ -257,6 +278,115 @@ Main_Custom:
       - "&8"
       - "&8-> &c<max> &7Mesleğe sahip olabilirsiniz."
       - "&8-> &a<puan> &7Puanınız var.."
+
+# .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |   _____      | || |      __      | || | ____  _____  | || |    ______    | || | _____  _____ | || |      __      | || |    ______    | || |  _________   | |
+#| |  |_   _|     | || |     /  \     | || ||_   \|_   _| | || |  .' ___  |   | || ||_   _||_   _|| || |     /  \     | || |  .' ___  |   | || | |_   ___  |  | |
+#| |    | |       | || |    / /\ \    | || |  |   \ | |   | || | / .'   \_|   | || |  | |    | |  | || |    / /\ \    | || | / .'   \_|   | || |   | |_  \_|  | |
+#| |    | |   _   | || |   / ____ \   | || |  | |\ \| |   | || | | |    ____  | || |  | '    ' |  | || |   / ____ \   | || | | |    ____  | || |   |  _|  _   | |
+#| |   _| |__/ |  | || | _/ /    \ \_ | || | _| |_\   |_  | || | \ `.___]  _| | || |   \ `--' /   | || | _/ /    \ \_ | || | \ `.___]  _| | || |  _| |___/ |  | |
+#| |  |________|  | || ||____|  |____|| || ||_____|\____| | || |  `._____.'   | || |    `.__.'    | || ||____|  |____|| || |  `._____.'   | || | |_________|  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+Name: "#0bef1b#Dil Menüsü"
+
+Custom:
+ 
+  Info:
+  
+    Display: "&bBilgi"
+    
+    Lore: 
+      - "&7Bu Menüde bir dil seçebilirsiniz!" 
+
+# .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .-----------------. .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |  _________   | || |      __      | || |  _______     | || | ____  _____  | || |     _____    | || | ____  _____  | || |    ______    | || |    _______   | |
+#| | |_   ___  |  | || |     /  \     | || | |_   __ \    | || ||_   \|_   _| | || |    |_   _|   | || ||_   \|_   _| | || |  .' ___  |   | || |   /  ___  |  | |
+#| |   | |_  \_|  | || |    / /\ \    | || |   | |__) |   | || |  |   \ | |   | || |      | |     | || |  |   \ | |   | || | / .'   \_|   | || |  |  (__ \_|  | |
+#| |   |  _|  _   | || |   / ____ \   | || |   |  __ /    | || |  | |\ \| |   | || |      | |     | || |  | |\ \| |   | || | | |    ____  | || |   '.___`-.   | |
+#| |  _| |___/ |  | || | _/ /    \ \_ | || |  _| |  \ \_  | || | _| |_\   |_  | || |     _| |_    | || | _| |_\   |_  | || | \ `.___]  _| | || |  |`\____) |  | |
+#| | |_________|  | || ||____|  |____|| || | |____| |___| | || ||_____|\____| | || |    |_____|   | || ||_____|\____| | || |  `._____.'   | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+#
+# <------ Earnings - one Job ------->
+#
+
+Job_Earnings_Name: "&aKazanç &8- <job>"
+
+Job_Earnings_Items:
+
+  Display: "&8< &a<date> &8>"
+ 
+  Lore: 
+    - "&7&oKazanılan <money> Dolar"
+ 
+Job_Earnings_Custom:
+
+  Previous:
+  
+    Display: "&8<| &7Önceki sayfa &8|>"
+    
+    Message_NotFound: "&8[&6Menü&8] &cBir önceki sayfa bulunamadı!"
+    
+    Lore:
+      - "&8Önceki Sayfaya git!"
+
+  Next:
+  
+    Display: "&8<| &7Sonraki Sayfa &8|>"
+    
+    Message_NotFound: "&8[&6Menü&8] &cBir sonraki sayfa bulamıyor!"
+    
+    Lore:
+      - "&8Sonraki Sayfaya git!"
+
+  Close:
+    
+    Display: "&8< &cMenüyü Kapat &8>"
+
+#
+# <------ Earnings - ALL ------->
+#
+
+All_Earnings_Name: "&aTüm Kazançlar"
+
+All_Earnings_Items:
+
+  Display: "&8< &a<date> &8>"
+ 
+  Lore: 
+    - "&7&oKazanılan <money> Dolar"
+ 
+All_Earnings_Custom:
+
+  Previous:
+  
+    Display: "&8<| &7Önceki sayfa &8|>"
+    
+    Message_NotFound: "&8[&6Menü&8] &cBir önceki sayfa bulunamadı!"
+    
+    Lore:
+      - "&8Önceki Sayfaya git!"
+
+  Next:
+  
+    Display: "&8<| &7Sonraki Sayfa &8|>"
+    
+    Message_NotFound: "&8[&6Menü&8] &cBir sonraki sayfa bulamıyor!"
+    
+    Lore:
+      - "&8Sonraki Sayfaya git!"
+
+  Close:
+    
+    Display: "&8< &cMenüyü Kapat &8>"
       
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -583,13 +713,14 @@ Jobs:
           
           Lore:
             - "&8-----------"
-            - "&7Materyal &8: &bTaş"
             - "&7Ödül &8: &c$<money>"
             - "&7Şans &8: &9<chance>%"
             - "&7Tecrübe &8: &a<exp>"
             - "&7Puan &8: &6<points>"
-            - "&7Aksiyon &8: &6&lStripp"
-            - "&7Nadirlik &8: &bNormal"
+            - "&7Aksiyon &8: &4<action>"
+            - "&7"
+            - "&7Kırık Kez &8: &6<times> Blocks"
+            - "&7Kazanılan para &8: &a<earned> Dollars"
 
       OAK_LOG:
       
@@ -601,13 +732,14 @@ Jobs:
           
           Lore:
             - "&8-----------"
-            - "&7Materyal &8: &bTaş"
             - "&7Ödül &8: &c$<money>"
             - "&7Şans &8: &9<chance>%"
             - "&7Tecrübe &8: &a<exp>"
             - "&7Puan &8: &6<points>"
-            - "&7Aksiyon &8: &4Kırmak"
-            - "&7Nadirlik &8: &bNormal"
+            - "&7Aksiyon &8: &4<action>"
+            - "&7"
+            - "&7Kırık Kez &8: &6<times> Blocks"
+            - "&7Kazanılan para &8: &a<earned> Dollars"
   
   MINER:
   
@@ -692,13 +824,14 @@ Jobs:
           
           Lore:
             - "&8-----------"
-            - "&7Materyal &8: &bTaş"
             - "&7Ödül &8: &c$<money>"
             - "&7Şans &8: &9<chance>%"
             - "&7Tecrübe &8: &a<exp>"
             - "&7Puan &8: &6<points>"
-            - "&7Aksiyon &8: &4Kırmak"
-            - "&7Nadirlik &8: &bNormal"
+            - "&7Aksiyon &8: &4<action>"
+            - "&7"
+            - "&7Kırık Kez &8: &6<times> Blocks"
+            - "&7Kazanılan para &8: &a<earned> Dollars"
 
       COBBLESTONE:
       
@@ -710,13 +843,14 @@ Jobs:
           
           Lore:
             - "&8-----------"
-            - "&7Materyal &8: &bTaş"
             - "&7Ödül &8: &c$<money>"
             - "&7Şans &8: &9<chance>%"
             - "&7Tecrübe &8: &a<exp>"
             - "&7Puan &8: &6<points>"
-            - "&7Aksiyon &8: &4Kırmak"
-            - "&7Nadirlik &8: &bNormal"
+            - "&7Aksiyon &8: &4<action>"
+            - "&7"
+            - "&7Kırık Kez &8: &6<times> Blocks"
+            - "&7Kazanılan para &8: &a<earned> Dollars"
     
       COAL_ORE:
       
@@ -728,10 +862,11 @@ Jobs:
           
           Lore:
             - "&8-----------"
-            - "&7Materyal &8: &bTaş"
             - "&7Ödül &8: &c$<money>"
             - "&7Şans &8: &9<chance>%"
             - "&7Tecrübe &8: &a<exp>"
             - "&7Puan &8: &6<points>"
-            - "&7Aksiyon &8: &4Kırmak"
-            - "&7Nadirlik &8: &bNadir"  
+            - "&7Aksiyon &8: &4<action>"
+            - "&7"
+            - "&7Kırık Kez &8: &6<times> Blocks"
+            - "&7Kazanılan para &8: &a<earned> Dollars"

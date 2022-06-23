@@ -7,9 +7,8 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import de.warsteiner.datax.utils.objects.Language;
+import de.warsteiner.jobs.utils.objects.Language;
  
-
 public class LanguageAPI {
 
 

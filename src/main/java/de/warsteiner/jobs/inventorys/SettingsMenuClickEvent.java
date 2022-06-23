@@ -7,16 +7,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-
-import de.warsteiner.datax.SimpleAPI; 
-import de.warsteiner.datax.api.PluginAPI;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 
 public class SettingsMenuClickEvent implements Listener {
 
-	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e) {
@@ -45,7 +42,7 @@ public class SettingsMenuClickEvent implements Listener {
 
 		String UUID = ""+p.getUniqueId();
 		 
-		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
+		String display =  plugin.getPluginManager().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
 		 
 		if(plugin.getGUI().isSettingsGUITitle(e.getView().getTitle(), UUID)) { 
 			if (plugin.getGUI().isSettingsGUI(e.getView().getTitle(), UUID) != null) {

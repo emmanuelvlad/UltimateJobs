@@ -5,8 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
-import de.warsteiner.datax.SimpleAPI; 
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.utils.cevents.PlayerLevelJobEvent;
@@ -33,7 +32,7 @@ public class PlayerLevelEvent implements Listener {
 			UltimateJobs.getPlugin().getAPI().spawnFireworks(player.getLocation());
 		} 
 		if(config.getBoolean("Levels.BroadCastLevelUps")) { 
-			Bukkit.broadcastMessage(SimpleAPI.getPlugin().getAPI().toHex(me).replaceAll("<level>", ""+event.getNewLevel()).replaceAll("<job>", job.getDisplay(""+player.getUniqueId())).replaceAll("<name>", name).replaceAll("&", "§"));
+			Bukkit.broadcastMessage(plugin.getPluginManager().toHex(me).replaceAll("<level>", ""+event.getNewLevel()).replaceAll("<job>", job.getDisplay(""+player.getUniqueId())).replaceAll("<name>", name).replaceAll("&", "§"));
 		}
 	}
 

@@ -5,18 +5,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.datax.utils.UpdateTypes;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.UpdateTypes;
 
 public class AreYouSureMenuClickEvent implements Listener {
 	
-	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e) {
@@ -46,13 +43,13 @@ public class AreYouSureMenuClickEvent implements Listener {
 		
 		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(UUID);
 		
-		String display = up.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
+		String display =  plugin.getPluginManager().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
 		String name =  jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("AreYouSureGUI_Name"));
  
 		for (String list : plugin.getLoaded()) {
 			Job job = plugin.getJobCache().get(list);
 			String mm = job.getDisplay(UUID);
-			String newname = up.toHex(name).replaceAll("<job>", mm).replaceAll("&", "§");
+			String newname =  plugin.getPluginManager().toHex(name).replaceAll("<job>", mm).replaceAll("&", "§");
 		 
 			if(e.getView().getTitle().equalsIgnoreCase(newname)) {
 				plugin.getClickManager().executeCustomItem(display, p, "AreYouSureGUI_Custom", config);
@@ -60,8 +57,8 @@ public class AreYouSureMenuClickEvent implements Listener {
 				String name_yes =   jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("AreYouSureItems.Button_YES.Display"));
 				String name_no =  jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("AreYouSureItems.Button_NO.Display"));
 				 
-				String yes =  up.toHex(name_yes).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
-				String no =  up.toHex(name_no).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
+				String yes =   plugin.getPluginManager().toHex(name_yes).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
+				String no =   plugin.getPluginManager().toHex(name_no).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
 				
 				if(display.equalsIgnoreCase(yes)) {
 				 

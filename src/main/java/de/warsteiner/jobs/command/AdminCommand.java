@@ -88,15 +88,17 @@ public class AdminCommand implements CommandExecutor {
 			for (int i = (page - 1) * pageLength; i < (page * pageLength) && i < commands.size(); i++) {
 				AdminSubCommand which = commands.get(i);
 
-				String us = which.getUsage();
-				
-				if(sender instanceof Player) {
-					Player player = (Player) sender;
-					 new JsonMessage() 
-					 .append("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription()).setHoverAsTooltip("§7"+which.getDescription())
-					 .setClickAsSuggestCmd(us).save().send(player);
-				} else {
-					sender.sendMessage("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription());
+				if(which.showOnHelp()) {
+					String us = which.getUsage();
+					
+					if(sender instanceof Player) {
+						Player player = (Player) sender;
+						 new JsonMessage() 
+						 .append("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription()).setHoverAsTooltip("§7"+which.getDescription())
+						 .setClickAsSuggestCmd(us).save().send(player);
+					} else {
+						sender.sendMessage("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription());
+					}
 				}
 				
 			 

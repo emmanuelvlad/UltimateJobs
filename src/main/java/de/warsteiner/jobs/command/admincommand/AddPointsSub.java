@@ -3,8 +3,7 @@ package de.warsteiner.jobs.command.admincommand;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import de.warsteiner.datax.SimpleAPI;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.PlayerDataAPI;
 import de.warsteiner.jobs.command.AdminCommand; 
@@ -13,8 +12,7 @@ import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class AddPointsSub extends AdminSubCommand {
 
-	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private static SimpleAPI ap = SimpleAPI.getPlugin(); 
+	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 
 	@Override
 	public String getName() {
@@ -34,7 +32,7 @@ public class AddPointsSub extends AdminSubCommand {
 			String player = args[1];
 			String value = args[2];
 
-			if (ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase()) == null) {
+			if (plugin.getPlayerDataAPI().getUUIDByName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
 				if(sender instanceof Player) {
 					Player player3 = (Player) sender;
@@ -43,7 +41,7 @@ public class AddPointsSub extends AdminSubCommand {
 				return;
 			}
  
-			String uuid =  ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase());
+			String uuid =  plugin.getPlayerDataAPI().getUUIDByName(player.toUpperCase());
 
 			String how = plugin.getAPI().isCurrentlyInCache(uuid);
 
@@ -112,6 +110,11 @@ public class AddPointsSub extends AdminSubCommand {
 	@Override
 	public String getPermission() { 
 		return "ultimatejobs.admin.addpoints";
+	}
+	 
+	@Override
+	public boolean showOnHelp() { 
+		return true;
 	}
 
 }

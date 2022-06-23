@@ -3,8 +3,7 @@ package de.warsteiner.jobs.command.admincommand;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import de.warsteiner.datax.SimpleAPI;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.PlayerDataAPI;
@@ -14,8 +13,7 @@ import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class SetLevelSub extends AdminSubCommand {
 
-	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private static SimpleAPI ap = SimpleAPI.getPlugin(); 
+	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 	
 	@Override
 	public String getName() {
@@ -37,7 +35,7 @@ public class SetLevelSub extends AdminSubCommand {
 
 			String value = args[3];
 	 
-			if (ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase()) == null) {
+			if (plugin.getPlayerDataAPI().getUUIDByName(player.toUpperCase()) == null) {
 				sender.sendMessage(AdminCommand.prefix + "Error! Player §c" + player + " §7does not exist!");
 				if(sender instanceof Player) {
 					Player player3 = (Player) sender;
@@ -46,7 +44,7 @@ public class SetLevelSub extends AdminSubCommand {
 				return;
 			}
  
-			String uuid =ap.getPlayerDataAPI().getUUIDByName(player.toUpperCase());
+			String uuid =plugin.getPlayerDataAPI().getUUIDByName(player.toUpperCase());
 
 			String how = plugin.getAPI().isCurrentlyInCache(uuid);
 
@@ -142,6 +140,11 @@ public class SetLevelSub extends AdminSubCommand {
 	@Override
 	public String getPermission() { 
 		return "ultimatejobs.admin.setlevel";
+	}
+	
+	@Override
+	public boolean showOnHelp() { 
+		return true;
 	}
 	
 }

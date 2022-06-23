@@ -13,7 +13,7 @@
 Rewards_Name: "{language:Rewards_Name}"
 
 Rewards_Size: 6
-
+ 
 #where are the items displayed?
 Rewards_Slots:
   - "10"
@@ -46,6 +46,18 @@ Rewards_Slots:
   - "43"
   
 PageItems:
+
+  #
+  # When youre at page 1 and you click again, what should happen?
+  # "MESSAGE" -> message from the language file
+  # "MAINGUI" -> open the main gui 
+  # "COMMAND" -> Command below the current Option
+  #
+
+  WhatHappensWhenFirstPageAlreardyReached: "MESSAGE"
+
+  # a command which the players executes
+  WhatHappensWhenFirstPage_Command: "test command"
 
   Previous:
   

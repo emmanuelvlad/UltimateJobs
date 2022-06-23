@@ -19,7 +19,7 @@ IDS:
 
   BREAK:
     List:
-      - "STONE" 
+      - "STONEBLOCK" 
       - "COBBLESTONE"
       - "COAL"
 
@@ -49,7 +49,7 @@ IDS:
         See: true
         Icon: "url;http://textures.minecraft.net/texture/e742885db6803ab3680ca50ac2b97b08bddc24e1ad3095da914677f524a6b1a6"
 
-    STONE:
+    STONEBLOCK:
 
       Chance: 85
       ID: "STONE"

@@ -9,18 +9,21 @@ import java.util.concurrent.Executors;
 
 import de.warsteiner.jobs.events.*;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.utils.files.PlayerDataFile;
+import de.warsteiner.jobs.api.DataBaseAPI;
+import de.warsteiner.jobs.api.ItemAPI;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
 import de.warsteiner.jobs.api.LanguageAPI;
 import de.warsteiner.jobs.api.LevelAPI;
+import de.warsteiner.jobs.api.LocationAPI;
 import de.warsteiner.jobs.api.PlayerAPI;
 import de.warsteiner.jobs.api.PlayerDataAPI;
+import de.warsteiner.jobs.api.SkullCreatorAPI;
 import de.warsteiner.jobs.api.plugins.AlonsoLevelsManager;
 import de.warsteiner.jobs.api.plugins.MoreOresManager;
 import de.warsteiner.jobs.api.plugins.MythicMobsManager;
@@ -32,6 +35,7 @@ import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
 import de.warsteiner.jobs.command.JobsCommand;
 import de.warsteiner.jobs.command.admincommand.AddPointsSub;
+import de.warsteiner.jobs.command.admincommand.FirstSub;
 import de.warsteiner.jobs.command.admincommand.HelpSub;
 import de.warsteiner.jobs.command.admincommand.ReloadSub;
 import de.warsteiner.jobs.command.admincommand.RemovePointsSub;
@@ -39,6 +43,7 @@ import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
 import de.warsteiner.jobs.command.admincommand.SetPointsSub;
 import de.warsteiner.jobs.command.admincommand.VersionSub;
+import de.warsteiner.jobs.command.playercommand.EarningsSub;
 import de.warsteiner.jobs.command.playercommand.JoinSub;
 import de.warsteiner.jobs.command.playercommand.LangSub;
 import de.warsteiner.jobs.command.playercommand.LeaveAllSub;
@@ -49,6 +54,8 @@ import de.warsteiner.jobs.command.playercommand.PointsSub;
 import de.warsteiner.jobs.command.playercommand.RewardsSub;
 import de.warsteiner.jobs.command.playercommand.StatsSub;
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
+import de.warsteiner.jobs.inventorys.ClickAtLanguageGUI;
+import de.warsteiner.jobs.inventorys.EarningsMenuClickEvent; 
 import de.warsteiner.jobs.inventorys.HelpMenuClickEvent;
 import de.warsteiner.jobs.inventorys.LevelsMenuClickEvent;
 import de.warsteiner.jobs.inventorys.MainMenuClickEvent;
@@ -83,7 +90,12 @@ import de.warsteiner.jobs.manager.JobWorkManager;
 import de.warsteiner.jobs.manager.PluginManager;
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.JsonMessage;
+import de.warsteiner.jobs.utils.Metrics;
+import de.warsteiner.jobs.utils.PlayerDataFile;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommandRegistry;
+import de.warsteiner.jobs.utils.database.DatabaseInit;
+import de.warsteiner.jobs.utils.database.hikari.HikariAuthentication;
+import de.warsteiner.jobs.utils.database.statements.SQLStatementAPI;
 import de.warsteiner.jobs.utils.playercommand.SubCommandRegistry;
 import net.milkbowl.vault.economy.Economy;
 
@@ -115,6 +127,13 @@ public class UltimateJobs extends JavaPlugin {
 	private LanguageAPI langapi; 
 	private MoreOresManager moreores;
 
+	private PlayerDataFile loc;
+	private SkullCreatorAPI skull; 
+	private LocationAPI locapi;
+	public String mode = null; 
+	private ItemAPI i;
+	private DatabaseInit init;
+	
 	public void onLoad() {
 
 		plugin = this;
@@ -125,6 +144,8 @@ public class UltimateJobs extends JavaPlugin {
 		createFolders();
 
 		filemanager.generateFiles();
+		
+		mode = getFileManager().getDataConfig().getString("Mode").toUpperCase();
 
 		if (this.filemanager.getConfig().getInt("ExecutorServiceThreads") == 0) {
 			Bukkit.getConsoleSender().sendMessage("§cMissing Option of ExecutorServices in Config.yml");
@@ -142,9 +163,9 @@ public class UltimateJobs extends JavaPlugin {
 		if (getPluginManager().isInstalled("SimpleAPI")) {
 			getExecutor().execute(() -> {
 				if (filemanager.getConfig().getBoolean("CheckForUpdates")) {
-					SimpleAPI.getPlugin().getWebManager().loadVersionAndCheckUpdate(
-							"https://api.war-projects.com/v1/ultimatejobs/version.txt", "UltimateJobs",
-							getDescription().getVersion());
+					//SimpleAPI.getPlugin().getWebManager().loadVersionAndCheckUpdate(
+					//		"https://api.war-projects.com/v1/ultimatejobs/version.txt", "UltimateJobs",
+					//		getDescription().getVersion());
 				}
 			});
 		}
@@ -154,24 +175,35 @@ public class UltimateJobs extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		
-		if (SimpleAPI.getPlugin().getPluginMode().equalsIgnoreCase("SQL")) {
+		if (mode.equalsIgnoreCase("SQL")) {
+			
+			loadSQL();
+			
+			connect();
+			
+			getPluginManager().startCheck();
+			
 			getPlayerDataAPI().createtables();
 		} else {
 			datafile.create();
 		}
+		
+		loc = new PlayerDataFile("locations");
+		loc.create();
 
 		getLanguageAPI().loadLanguages();
 
 		// basic events
 		loadBasicEvents();
 
+		//loading jobs
+		api.loadJobs(getLogger());
+		
 		// job events
 		loadEvents();
 
 		setupEconomy();
- 
-		api.loadJobs(getLogger());
-
+  
 		if (getPluginManager().isInstalled("PlaceHolderAPI")) {
 			new PlaceHolderManager().register();
 			Bukkit.getConsoleSender().sendMessage("§bLoaded PlaceHolderAPI Support...");
@@ -196,7 +228,9 @@ public class UltimateJobs extends JavaPlugin {
 		BossBarHandler.startSystemCheck();
 
 		getPlayerAPI().startSave();
-
+		
+		new Metrics(this, 15424);
+ 
 		Bukkit.getConsoleSender().sendMessage("§7");
 		Bukkit.getConsoleSender().sendMessage("§7");
 		Bukkit.getConsoleSender().sendMessage(
@@ -218,8 +252,69 @@ public class UltimateJobs extends JavaPlugin {
  
 		 
 	}
+	
+	public void connect() {
+
+		FileConfiguration cfg = getFileManager().getDataConfig();
+
+		String host = cfg.getString("Config.host");
+		int port = cfg.getInt("Config.port");
+		String database = cfg.getString("Config.database");
+		String username = cfg.getString("Config.user");
+		String password = cfg.getString("Config.password");
+
+		String type = cfg.getString("Database.type");
+		int size = cfg.getInt("Database.timeout");
+		int pool = cfg.getInt("Database.poolsize");
+
+		init = getInit();
+		if (getInit().getDataSource() == null || getInit().isClosed()) {
+			getInit().initDatabase(new HikariAuthentication(host, port, database, username, password), type, size,
+					pool);
+			Bukkit.getConsoleSender().sendMessage("§bLoaded SQL of SimpleAPI with type: " + type); 
+		}
+
+	}
+	
+	public SQLStatementAPI getSQLStatementAPI() {
+		return DataBaseAPI.getSQLStatementAPI();
+	}
+	
+	public ItemAPI getItemAPI() {
+		return i;
+	}
+	
+	public DatabaseInit getInit() {
+		return init;
+	}
+
+	public LocationAPI getLocationAPI() {
+		return locapi;
+	}
+	
+	public void loadSQL() { 
+		init = new DatabaseInit(); 
+	}
+	 
+	public PlayerDataFile getLocationDataFile() {
+		return loc;
+	}
+	
+	public String getPluginMode() {
+		return mode;
+	}
+	
+	public SkullCreatorAPI getSkullCreatorAPI() {
+		return skull;
+	}
 
 	public void onDisable() {
+		
+		if(mode.equalsIgnoreCase("SQL")) {
+			if (!this.init.isClosed()) {
+				this.init.close();
+			}
+		}
 
 		if (filemanager.getConfig().getBoolean("KickOnReload")) {
 			for (Player p : Bukkit.getOnlinePlayers()) {
@@ -248,11 +343,12 @@ public class UltimateJobs extends JavaPlugin {
 		getSubCommandManager().getSubCommandList().add(new PointsSub());
 		getSubCommandManager().getSubCommandList().add(new LimitSub());
 		getSubCommandManager().getSubCommandList().add(new JoinSub());
-		if (SimpleAPI.getPlugin().getFileManager().getSystemConfig().getBoolean("EnabledLanguages")) {
+		if (getFileManager().getLanguageConfig().getBoolean("EnabledLanguages")) {
 			getSubCommandManager().getSubCommandList().add(new LangSub());
 		}
 		getSubCommandManager().getSubCommandList().add(new StatsSub());
 		getSubCommandManager().getSubCommandList().add(new LevelsSub());
+		getSubCommandManager().getSubCommandList().add(new EarningsSub());
 		getSubCommandManager().getSubCommandList().add(new RewardsSub());
 
 		getAdminSubCommandManager().getSubCommandList().add(new HelpSub());
@@ -263,6 +359,7 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new RemovePointsSub());
 		getAdminSubCommandManager().getSubCommandList().add(new ReloadSub());
 		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
+		getAdminSubCommandManager().getSubCommandList().add(new FirstSub());
 	}
 
 	public void loadClasses() {
@@ -285,7 +382,9 @@ public class UltimateJobs extends JavaPlugin {
   
 		dataapi = new PlayerDataAPI();
 
-		
+		i = new ItemAPI();
+		skull = new SkullCreatorAPI(); 
+		locapi = new LocationAPI();
 	}
 	
 	public JsonMessage getJsonMessage() {
@@ -410,9 +509,14 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new StatsMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new RewardsMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new LevelsMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new EarningsMenuClickEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new ClickAtLanguageGUI(), this); 
 	}
 
 	public void loadEvents() {
+		
+		
+		
 		Bukkit.getPluginManager().registerEvents(new JobActionBreak(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionFarm(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionPlace(), this);
@@ -464,6 +568,10 @@ public class UltimateJobs extends JavaPlugin {
 			Bukkit.getConsoleSender().sendMessage("§cFailed to load Vault for UltimateJobs!");
 		}
 		return (econ != null);
+	}
+	
+	public String getDate() {
+		return plapi.getDateTodayFromCal();
 	}
 
 	public Economy getEco() {

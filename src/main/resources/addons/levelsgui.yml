@@ -45,6 +45,18 @@ Options:
   
 PageItems:
 
+  #
+  # When youre at page 1 and you click again, what should happen?
+  # "MESSAGE" -> message from the language file
+  # "MAINGUI" -> open the main gui 
+  # "COMMAND" -> Command below the current Option
+  #
+
+  WhatHappensWhenFirstPageAlreardyReached: "MESSAGE"
+
+  # a command which the players executes
+  WhatHappensWhenFirstPage_Command: "test command"
+
   Previous:
   
     Display: "{language:Levels_Custom.Previous.Display}"

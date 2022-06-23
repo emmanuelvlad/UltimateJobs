@@ -1,9 +1,8 @@
 package de.warsteiner.jobs.api;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.plugins.WorldGuardManager;
+import de.warsteiner.jobs.manager.PluginManager;
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.JobAction;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
@@ -24,8 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Material; 
 import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,14 +36,13 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
-
-import com.alonsoaliaga.alonsolevels.others.Sounds;
+ 
 
 public class JobAPI {
 
 	private UltimateJobs plugin;
 
-	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+	private PluginManager up = UltimateJobs.getPlugin().getPluginManager();
 
 	public HashMap<String, Date> lastworked_list;
 
@@ -96,6 +93,20 @@ public class JobAPI {
 		player.sendMessage(jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "job_not_found")
 				.replaceAll("<job>", arg.toLowerCase()));
 		return false;
+	}
+	
+	public Job checkIfJobIsRealWithResult(String arg, Player player) {
+		JobsPlayer jb = UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		String id = arg.toUpperCase();
+		if (isJobFromConfigID(id) != null) {
+			return isJobFromConfigID(id);
+		}
+		if (isJobFromDisplayID(id, "" + player.getUniqueId()) != null) {
+			return isJobFromDisplayID(id, "" + player.getUniqueId());
+		}
+		player.sendMessage(jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "job_not_found")
+				.replaceAll("<job>", arg.toLowerCase()));
+		return null;
 	}
 
 	public Job checkIfJobIsRealAndGet(String arg, Player player) {
@@ -245,7 +256,7 @@ public class JobAPI {
 
 			double max = job.getMaxEarningsPerDay();
  
-			double current = plugin.getPlayerAPI().getEarningsOf(UUID, job);
+			double current = plugin.getPlayerAPI().getEarningsOfToday(UUID, job);
 
 			if (current >= max) {
 				return false;
@@ -274,7 +285,7 @@ public class JobAPI {
 		Location loc = null;
 
 		if (Bukkit.getPlayer(UUID) == null) {
-			loc = SimpleAPI.getPlugin().getLocationAPI().getLocation("LastLoc." + UUID);
+			loc = UltimateJobs.getPlugin().getLocationAPI().getLocation("LastLoc." + UUID);
 		} else {
 			loc = Bukkit.getPlayer(UUID).getLocation();
 		}

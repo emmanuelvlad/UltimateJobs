@@ -32,15 +32,13 @@ public class JobActionGrowSapling implements Listener {
 		}
 		
 		TreeType type = event.getSpecies();
-	 
-		Bukkit.broadcastMessage("-> "+type);
-	 
+	  
 		Block block = event.getLocation().getBlock();
 		
 		if(block == null) {
 			return;
 		}
-		
+		 
 		if(block.hasMetadata("saplingby")) {
 			
 			String player = compareData(block);

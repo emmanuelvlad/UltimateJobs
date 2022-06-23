@@ -5,10 +5,10 @@ import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import de.warsteiner.datax.utils.UpdateTypes;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.UpdateTypes;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class RewardsSub extends SubCommand {

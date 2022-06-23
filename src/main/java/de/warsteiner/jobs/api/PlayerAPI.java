@@ -1,19 +1,22 @@
 package de.warsteiner.jobs.api;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.utils.objects.Language;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.utils.JobAction;
 import de.warsteiner.jobs.utils.objects.JobStats;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.Language;
 
 public class PlayerAPI {
 
@@ -32,6 +35,10 @@ public class PlayerAPI {
 
 	public JobsPlayer getRealJobPlayer(String ID) {
 		return getCacheJobPlayers().get(ID);
+	}
+	
+	public JobsPlayer getRealJobPlayer(UUID ID) {
+		return getCacheJobPlayers().get(""+ID);
 	}
 
 	public void startSave() {
@@ -63,143 +70,181 @@ public class PlayerAPI {
 		});
 	}
 
+	public double getEarnedAtDateFromAllJobs(String uuid, String date) {
+
+		double f = 0;
+
+		for (String job : getOwnedJobs(uuid)) {
+
+			Job j = plugin.getJobCache().get(job);
+
+			double earned = getEarnedAt(uuid, j, date);
+
+			f = f + earned;
+		}
+
+		return f;
+
+	}
+
 	public boolean existInCacheByUUID(String uuid) {
 		return this.players.contains(uuid);
 	}
-	
+
 	public ArrayList<String> getOwnedJobs(String uuid) {
-		if(existInCacheByUUID(uuid)) {
+		if (existInCacheByUUID(uuid)) {
 			return getCacheJobPlayers().get(uuid).getOwnJobs();
 		} else {
 			return plugin.getPlayerDataAPI().getOwnedJobs(uuid);
 		}
 	}
-	
+
 	public ArrayList<String> getCurrentJobs(String uuid) {
-		if(existInCacheByUUID(uuid)) {
+		if (existInCacheByUUID(uuid)) {
 			return getCacheJobPlayers().get(uuid).getCurrentJobs();
 		} else {
 			return plugin.getPlayerDataAPI().getCurrentJobs(uuid);
 		}
 	}
-	
-	public double getExpOf(String uuid, Job job) { 
-		if(existInCacheByUUID(uuid)) {
+
+	public double getExpOf(String uuid, Job job) {
+		if (existInCacheByUUID(uuid)) {
 			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getExp();
 		} else {
 			return plugin.getPlayerDataAPI().getExpOf(uuid, job.getConfigID());
 		}
 	}
-	
-	public int getBrokenTimesOfID(String uuid, Job job, String id, String ac) { 
-		if(existInCacheByUUID(uuid)) {
+
+	public int getBrokenTimesOfID(String uuid, Job job, String id, String ac) {
+		if (existInCacheByUUID(uuid)) {
+
+			if (getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()) == null) {
+				return 0;
+			}
+
 			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenTimesOf(id);
 		} else {
 			return plugin.getPlayerDataAPI().getBrokenTimesOfBlock(uuid, job.getConfigID(), id, ac);
 		}
 	}
-	
-	public double getEarnedFrom(String uuid, Job job, String id, String ac) { 
-		if(existInCacheByUUID(uuid)) {
+
+	public double getEarnedFrom(String uuid, Job job, String id, String ac) {
+		if (existInCacheByUUID(uuid)) {
+
+			if (getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()) == null) {
+				return 0.0;
+			}
+
 			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenOf(id);
 		} else {
 			return plugin.getPlayerDataAPI().getEarnedOfBlock(uuid, job.getConfigID(), id, ac);
 		}
 	}
-	
+
 	public void updateBrokenTimes(String uuid, Job job, int times) {
-		if(existInCacheByUUID(uuid)) {
+		if (existInCacheByUUID(uuid)) {
 			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateBrokenTimes(times);
 		} else {
 			plugin.getPlayerDataAPI().updateBrokenTimes(uuid, job.getConfigID(), times);
 		}
 	}
-	
+
 	public void updateBrokenTimesOf(String uuid, Job job, String id, int d, String ac) {
-		if(existInCacheByUUID(uuid)) {
+		if (existInCacheByUUID(uuid)) {
 			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateBrokenTimesOf(id, d);
 		} else {
 			plugin.getPlayerDataAPI().updateEarningsTimesOf(uuid, job.getConfigID(), id, d, ac);
 		}
 	}
-	
+
 	public void updateBrokenMoneyOf(String uuid, Job job, String id, double d, String ac) {
-		if(existInCacheByUUID(uuid)) {
+		if (existInCacheByUUID(uuid)) {
 			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenList().put(id, d);
 		} else {
 			plugin.getPlayerDataAPI().updateEarningsAmountOf(uuid, job.getConfigID(), id, d, ac);
 		}
 	}
-	
+
 	public void updateEarningsAtDate(String uuid, Job job, double v, String date) {
-		if(existInCacheByUUID(uuid)) {
+		if (existInCacheByUUID(uuid)) {
 			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateEarnings(date, v);
 		} else {
 			plugin.getPlayerDataAPI().updateEarnings(uuid, job.getConfigID(), date, v);
 		}
 	}
+
+	public void updateEarningsOfToday(String uuid, Job job, double v) {
+		String date = plugin.getDate();
+		if (existInCacheByUUID(uuid)) { 
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateEarnings(date, v);
+		} else { 
+			plugin.getPlayerDataAPI().updateEarnings(uuid, job.getConfigID(), date, v);
+		}
+	}
 	
-	public void updateExp(String uuid, Job job, double val) { 
-		if(existInCacheByUUID(uuid)) {
+	public void updateExp(String uuid, Job job, double val) {
+		if (existInCacheByUUID(uuid)) {
 			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateExp(val);
 		} else {
 			plugin.getPlayerDataAPI().getExpOf(uuid, job.getConfigID());
 		}
 	}
-	
-	public void updatePoints(String uuid, double val) { 
-		if(existInCacheByUUID(uuid)) {
+
+	public void updatePoints(String uuid, double val) {
+		if (existInCacheByUUID(uuid)) {
 			getCacheJobPlayers().get(uuid).updatePoints(val);
 		} else {
 			plugin.getPlayerDataAPI().updatePoints(uuid, val);
 		}
 	}
-	
-	public double getEarnedAt(String uuid, Job job, String date) { 
-		if(existInCacheByUUID(uuid)) {
-			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getEarnings(date);
+
+	public double getEarnedAt(String uuid, Job job, String date) {
+		if (existInCacheByUUID(uuid)) {
+ 
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getEarningsofDate(date);
+
 		} else {
 			return plugin.getPlayerDataAPI().getEarnedAt(uuid, job.getConfigID(), date);
 		}
 	}
-	
-	public int getBrokenTimes(String uuid, Job job) { 
-		if(existInCacheByUUID(uuid)) {
+
+	public int getBrokenTimes(String uuid, Job job) {
+		if (existInCacheByUUID(uuid)) {
 			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenTimes();
 		} else {
 			return plugin.getPlayerDataAPI().getBrokenOf(uuid, job.getConfigID());
 		}
 	}
-	
-	public int getLevelOF(String uuid, Job job) { 
-		if(existInCacheByUUID(uuid)) {
+
+	public int getLevelOF(String uuid, Job job) {
+		if (existInCacheByUUID(uuid)) {
 			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getLevel();
 		} else {
 			return plugin.getPlayerDataAPI().getLevelOf(uuid, job.getConfigID());
 		}
 	}
-	
-	public double getPoints(String uuid) { 
-		if(existInCacheByUUID(uuid)) {
+
+	public double getPoints(String uuid) {
+		if (existInCacheByUUID(uuid)) {
 			return getCacheJobPlayers().get(uuid).getPoints();
 		} else {
 			return plugin.getPlayerDataAPI().getPoints(uuid);
 		}
 	}
-	
-	public double getEarningsOf(String uuid, Job job) {
-		 String date = plugin.getPluginManager().getDate();
-		if(existInCacheByUUID(uuid)) {
-			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getEarnings(date);
+
+	public double getEarningsOfToday(String uuid, Job job) {
+		String date = plugin.getDate();
+		if (existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getEarningsofDate(date);
 		} else {
 			return plugin.getPlayerDataAPI().getEarnedAt(uuid, job.getConfigID(), date);
 		}
 	}
-	
+
 	public JobStats loadSingleJobData(UUID UUID, String job) {
-		
+
 		PlayerDataAPI plm = UltimateJobs.getPlugin().getPlayerDataAPI();
-		
+
 		Job j = plugin.getJobCache().get(job);
 
 		int level = plm.getLevelOf("" + UUID, job);
@@ -207,12 +252,26 @@ public class PlayerAPI {
 		String date = plm.getDateOf("" + UUID, job);
 		int broken = plm.getBrokenOf("" + UUID, job);
 
-		double earned = plm.getEarnedAt("" + UUID, job, plugin.getPluginManager().getDate());
-
 		HashMap<String, Double> listedofearned = new HashMap<String, Double>();
+		for (int i = 0; i != plugin.getFileManager().getConfig().getInt("LoadEarningsDataOfDays"); i++) {
+			DateFormat format = new SimpleDateFormat(plugin.getFileManager().getConfig().getString("Date"));
+			Date data = new Date();
 
-		listedofearned.put(plugin.getPluginManager().getDate(), earned);
+			Calendar c1 = Calendar.getInstance();
+			c1.setTime(data);
 
+			c1.add(Calendar.DATE, -i);
+
+			Date newdate = c1.getTime();
+
+			String d = "" + format.format(newdate);
+			
+			double earned = plm.getEarnedAt("" + UUID, job, d);
+			
+			listedofearned.put(d, earned);
+
+		} 
+	 
 		HashMap<String, Double> money = new HashMap<String, Double>();
 		HashMap<String, Integer> broken2 = new HashMap<String, Integer>();
 
@@ -229,11 +288,10 @@ public class PlayerAPI {
 
 		}
 
-		JobStats sz = new JobStats(j, j.getConfigID(), exp, level, broken, date, money, broken2,
-				listedofearned);
+		JobStats sz = new JobStats(j, j.getConfigID(), exp, level, broken, date, money, broken2, listedofearned);
 
-		plugin.getPlayerAPI().getRealJobPlayer(""+UUID).getStatsList().put(date, sz);
-		
+		plugin.getPlayerAPI().getRealJobPlayer("" + UUID).getStatsList().put(date, sz);
+
 		return sz;
 	}
 
@@ -261,11 +319,26 @@ public class PlayerAPI {
 				String date = plm.getDateOf("" + UUID, loading);
 				int broken = plm.getBrokenOf("" + UUID, loading);
 
-				double earned = plm.getEarnedAt("" + UUID, loading, plugin.getPluginManager().getDate());
-
 				HashMap<String, Double> listedofearned = new HashMap<String, Double>();
+				
+				for (int i = 0; i != plugin.getFileManager().getConfig().getInt("LoadEarningsDataOfDays"); i++) {
+					DateFormat format = new SimpleDateFormat(plugin.getFileManager().getConfig().getString("Date"));
+					Date data = new Date();
+ 
+					Calendar c1 = Calendar.getInstance();
+					c1.setTime(data);
 
-				listedofearned.put(plugin.getPluginManager().getDate(), earned);
+					c1.add(Calendar.DATE, -i);
+
+					Date newdate = c1.getTime();
+
+					String d = "" + format.format(newdate);
+					
+					double earned = plm.getEarnedAt("" + UUID, j.getConfigID(), d);
+				 
+					listedofearned.put(d, earned);
+
+				} 
 
 				HashMap<String, Double> money = new HashMap<String, Double>();
 				HashMap<String, Integer> broken2 = new HashMap<String, Integer>();
@@ -290,19 +363,18 @@ public class PlayerAPI {
 			}
 
 			String lused = null;
-			
-			if(SimpleAPI.getPlugin().getPlayerAPI().getPluginPlayer(UUID).getLanguage() != null) {
-				lused = SimpleAPI.getPlugin().getPlayerAPI().getPluginPlayer(UUID).getLanguage().getName();
+
+			if (UltimateJobs.getPlugin().getPlayerDataAPI().getSettingData(""+UUID, "LANG") != null) {
+				lused = UltimateJobs.getPlugin().getPlayerDataAPI().getSettingData(""+UUID, "LANG");
 			} else {
-				lused = SimpleAPI.getPlugin().getFileManager().getSystemConfig().getString("PlayerDefaultLanguage");
+				lused = UltimateJobs.getPlugin().getFileManager().getLanguageConfig().getString("PlayerDefaultLanguage");
 			}
-			
+
 			Language langusged = plugin.getLanguageAPI().getLanguages().get(lused);
-			
+
 			JobsPlayer jp = new JobsPlayer(name, current, owned, plm.getPoints("" + UUID),
 
-					plm.getMaxJobs("" + UUID), "" + UUID, UUID,
-					langusged, stats);
+					plm.getMaxJobs("" + UUID), "" + UUID, UUID, langusged, stats);
 
 			pllist.put("" + UUID, jp);
 			players.add("" + UUID);
@@ -324,11 +396,25 @@ public class PlayerAPI {
 				String date = plm.getDateOf("" + UUID, j);
 				int broken = plm.getBrokenOf("" + UUID, j);
 
-				double earned = plm.getEarnedAt("" + UUID, j, plugin.getPluginManager().getDate());
-
 				HashMap<String, Double> listedofearned = new HashMap<String, Double>();
+				for (int i = 0; i != plugin.getFileManager().getConfig().getInt("LoadEarningsDataOfDays"); i++) {
+					DateFormat format = new SimpleDateFormat(plugin.getFileManager().getConfig().getString("Date"));
+					Date data = new Date();
 
-				listedofearned.put(plugin.getPluginManager().getDate(), earned);
+					Calendar c1 = Calendar.getInstance();
+					c1.setTime(data);
+
+					c1.add(Calendar.DATE, -i);
+
+					Date newdate = c1.getTime();
+
+					String d = "" + format.format(newdate);
+					
+					double earned = plm.getEarnedAt("" + UUID, real.getConfigID(), d);
+					
+					listedofearned.put(d, earned);
+
+				} 
 
 				HashMap<String, Double> money = new HashMap<String, Double>();
 				HashMap<String, Integer> broken2 = new HashMap<String, Integer>();

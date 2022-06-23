@@ -67,4 +67,9 @@ public class VersionSub extends AdminSubCommand {
 		return "ultimatejobs.admin.version";
 	}
 	
+	@Override
+	public boolean showOnHelp() { 
+		return true;
+	}
+	
 }

@@ -1,12 +1,19 @@
 package de.warsteiner.jobs.manager;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -18,11 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.json.simple.ItemList;
 
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.ItemAPI;
-import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.datax.managers.GUIManager;
-import de.warsteiner.datax.utils.UpdateTypes;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
@@ -30,17 +32,598 @@ import de.warsteiner.jobs.api.PlayerDataAPI;
 import de.warsteiner.jobs.utils.JobAction;
 import de.warsteiner.jobs.utils.objects.JobStats;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.UpdateTypes;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import xyz.upperlevel.spigot.book.BookUtil;
 
 public class GuiAddonManager {
 
 	private UltimateJobs plugin;
 	private JobAPI api = UltimateJobs.getPlugin().getAPI();
-	private PluginAPI up = SimpleAPI.getInstance().getAPI();
-	private ItemAPI im = SimpleAPI.getInstance().getItemAPI();
-	private GUIManager gm = SimpleAPI.getInstance().getGUIManager();
 
 	public GuiAddonManager(UltimateJobs plugin) {
 		this.plugin = plugin;
+	}
+	
+	public void createFirstStartMenu(Player player) { 
+		 
+		player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_AMBIENT, 1, 2);
+	 
+	  ItemStack item =  BookUtil.writtenBook()
+		      .author("Warsteiner37")
+		      .title("§fWelcome")
+		      .pages(
+		    	 
+		    		  new BaseComponent[]{
+		    		            new TextComponent("§aWelcome to the first launch of the Plugin UltimateJobs! \n§7\n§7\n§8First of all, §6thanks §8for deciding and buying my Plugin!\n§7\n§7\n§7\n"
+		    		            		+ "§b<< §8Visit the other pages for more information §b>>" 
+		    		            		)
+		    		        },
+		    		  
+		    		  
+		          new BookUtil.PageBuilder()
+
+		          .add("§aPlugin Help\n§7\n§8You can get help at our Discord Server§8: §bhttps://discord.war-projects.com §8or you can visit the Plugin's Official Docs Site§8: §9https://war-projects.com"
+		   )  
+		          
+	                .newLine().newLine()
+		          
+		          .add(
+		                  BookUtil.TextBuilder.of("Discord Invite")
+		                      .onHover(BookUtil.HoverAction.showText("Get the Discord Invite"))
+		                      .onClick(BookUtil.ClickAction.openUrl("https://discord.gg/qSpvMkRq"))
+		                      .color(ChatColor.GREEN)
+		                      .build()
+		              )
+		              .newLine()
+		               
+		              .add(
+			                  BookUtil.TextBuilder.of("Docs Website")
+			                      .onHover(BookUtil.HoverAction.showText("Visit the Docs Website"))
+			                      .onClick(BookUtil.ClickAction.openUrl("https://war-projects.com"))
+			                      .color(ChatColor.BLUE)
+			                      .build()
+			              )
+		             
+		              
+		              .build(),
+		              
+		              new BookUtil.PageBuilder()
+		              .add("§bFinish Setup\n§7\n§8Click the Button below, to finish the UltimateJobs Setup!\n§7\n")
+		              
+		              .add("§c> Thank you for your Support! If you want, leave a Review on the Plugin's Post! :) <")
+		              .newLine()
+		              .newLine()
+		              .newLine()
+		              .add(
+			                  BookUtil.TextBuilder.of("Finish")
+			                      .onHover(BookUtil.HoverAction.showText("Finish UltimateJobs Setup"))
+			                      .onClick(BookUtil.ClickAction.runCommand("/jobsadmin first finish"))
+			                      .color(ChatColor.LIGHT_PURPLE)
+			                      .build()
+			              )
+		              .build()
+		              
+		              
+		      )
+		      
+		      
+		      
+		      .build();
+	  
+	    BookUtil.openPlayer(player, item); 
+}
+
+	public void createEarningsGUI_Single_Job(Player player, UpdateTypes t, Job job) {
+		FileConfiguration cfg = plugin.getFileManager().getEarningsJobConfig();
+		String UUID = "" + player.getUniqueId();
+		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(UUID);
+		String name = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Job_Earnings_Name"))
+				.replaceAll("<job>", job.getDisplay("" + player.getUniqueId()));
+		int size = cfg.getInt("Job_Earnings_Size");
+
+		plugin.getGUI().openInventory(player, size, name);
+
+		if (t.equals(UpdateTypes.OPEN)) {
+			api.playSound("OPEN_JOB_EARNINGS_GUI", player);
+		}
+
+		InventoryView inv_view = player.getOpenInventory();
+
+		plugin.getGUI().setPlaceHolders(player, inv_view, cfg.getStringList("Job_Earnings_Place"), name);
+		plugin.getGUI().setCustomitems(player, player.getName(), inv_view, "Job_Earnings_Custom.",
+				cfg.getStringList("Job_Earnings_Custom.List"), name, cfg, job);
+		setEarningsItems_Single(inv_view, cfg, player, job);
+	}
+
+	public void setEarningsItems_Single(InventoryView inv, FileConfiguration cf, Player pl, Job job) {
+		plugin.getExecutor().execute(() -> {
+
+			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + pl.getUniqueId());
+			int page = plugin.getPlayerDataAPI().getPageFromID(sp.getUUIDAsString(), "EARNINGS_" + job.getConfigID());
+
+			int days = cf.getInt("HowManyDays");
+
+			ArrayList<String> dates = new ArrayList<String>();
+
+			for (int i = 0; i != days; i++) {
+
+				DateFormat format = new SimpleDateFormat(plugin.getFileManager().getConfig().getString("Date"));
+				Date data = new Date();
+
+				Calendar c1 = Calendar.getInstance();
+				c1.setTime(data);
+
+				c1.add(Calendar.DATE, -i);
+
+				Date newdate = c1.getTime();
+
+				String d = "" + format.format(newdate);
+
+				dates.add(d);
+			}
+
+			Collections.reverse(dates);
+
+			List<String> slots = cf.getStringList("Job_Earnings_Slots");
+
+			int li = dates.size();
+
+			int sizeStop = page * slots.size();
+
+			ArrayList<String> l2 = getAmountToDisplay_SingleJob(cf, pl, page, job);
+
+			if (inv != null) {
+
+				if (l2.size() != 0) {
+					for (int i3 = 0; i3 < l2.size(); i3++) {
+
+						String date = l2.get(i3);
+
+						String dis = sp.getLanguage().getStringFromLanguage(pl.getUniqueId(),
+								"Job_Earnings_Items.Display");
+						List<String> lore = sp.getLanguage().getListFromLanguage(pl.getUniqueId(),
+								"Job_Earnings_Items.Lore");
+
+						String ic = cf.getString("Job_Earnings_Items.Icon");
+
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), ic);
+						ItemMeta meta = it.getItemMeta();
+
+						meta.setDisplayName(dis.replaceAll("<date>", date).replaceAll("<job>",
+								job.getDisplay("" + pl.getUniqueId())));
+
+						ArrayList<String> l = new ArrayList<String>();
+
+						double er = plugin.getPlayerAPI().getEarnedAt("" + pl.getUniqueId(), job, date);
+
+						for (String b : lore) {
+							l.add(plugin.getPluginManager().toHex(b).replaceAll("<date>", date)
+									.replaceAll("<job>", job.getDisplay("" + pl.getUniqueId()))
+									.replaceAll("<money>", plugin.getAPI().Format(er)));
+						}
+
+						meta.setLore(l);
+
+						it.setItemMeta(meta);
+
+						inv.setItem(Integer.valueOf(slots.get(i3)), it);
+
+					}
+				} else {
+
+					String icon = cf.getString("Job_Earnings_Items.NotAnyEarnings.Icon");
+					String dis = cf.getString("Job_Earnings_Items.NotAnyEarnings.Display");
+					int slot = cf.getInt("Job_Earnings_Items.NotAnyEarnings.Slot");
+
+					ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
+					ItemMeta meta = it.getItemMeta();
+
+					meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
+
+					it.setItemMeta(meta);
+
+					inv.setItem(slot, it);
+
+				}
+			}
+
+			if (inv != null) {
+				boolean next = true;
+				boolean pre = true;
+
+				if (cf.getBoolean("PageItems.Next.ShowOnlyIfNextPageExist")) {
+					next = sizeStop + 1 < li;
+				}
+				if (!cf.getBoolean("PageItems.Previous.ShowOnPageOne")) {
+					if (page == 1) {
+						pre = false;
+					}
+				}
+
+				if (pre) {
+
+					boolean show = cf.getBoolean("PageItems.Previous.Show");
+
+					if (show) {
+						String icon = cf.getString("PageItems.Previous.Material");
+						String dis = sp.getLanguage().getStringFromPath(sp.getUUID(),
+								cf.getString("PageItems.Previous.Display"));
+						List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
+								cf.getString("PageItems.Previous.Lore"));
+						int slot = cf.getInt("PageItems.Previous.Slot");
+
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
+						ItemMeta meta = it.getItemMeta();
+
+						meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
+
+						ArrayList<String> l = new ArrayList<String>();
+
+						if (lore != null) {
+							for (String b : lore) {
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
+							}
+						}
+
+						meta.setLore(l);
+
+						it.setItemMeta(meta);
+
+						inv.setItem(slot, it);
+					}
+
+				}
+
+				if (next) {
+
+					boolean show = cf.getBoolean("PageItems.Next.Show");
+
+					if (show) {
+						String icon = cf.getString("PageItems.Next.Material");
+						String dis = sp.getLanguage().getStringFromPath(sp.getUUID(),
+								cf.getString("PageItems.Next.Display"));
+						List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
+								cf.getString("PageItems.Next.Lore"));
+						int slot = cf.getInt("PageItems.Next.Slot");
+
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
+						ItemMeta meta = it.getItemMeta();
+
+						meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
+
+						ArrayList<String> l = new ArrayList<String>();
+
+						if (lore != null) {
+							for (String b : lore) {
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
+							}
+						}
+
+						meta.setLore(l);
+
+						it.setItemMeta(meta);
+
+						inv.setItem(slot, it);
+					}
+
+				}
+			}
+
+		});
+	}
+
+	public void createEarningsGUI_ALL_Jobs(Player player, UpdateTypes t) {
+		FileConfiguration cfg = plugin.getFileManager().getEarningsAllConfig();
+		String UUID = "" + player.getUniqueId();
+		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(UUID);
+		String name = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("All_Earnings_Name"));
+		int size = cfg.getInt("All_Earnings_Size");
+
+		plugin.getGUI().openInventory(player, size, name);
+
+		if (t.equals(UpdateTypes.OPEN)) {
+			api.playSound("OPEN_ALL_EARNINGS_GUI", player);
+		}
+
+		InventoryView inv_view = player.getOpenInventory();
+
+		plugin.getGUI().setPlaceHolders(player, inv_view, cfg.getStringList("All_Earnings_Place"), name);
+		plugin.getGUI().setCustomitems(player, player.getName(), inv_view, "All_Earnings_Custom.",
+				cfg.getStringList("All_Earnings_Custom.List"), name, cfg, null);
+		setEarningsItems_ALL(inv_view, cfg, player);
+	}
+
+	public void setEarningsItems_ALL(InventoryView inv, FileConfiguration cf, Player pl) {
+		plugin.getExecutor().execute(() -> {
+
+			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + pl.getUniqueId());
+			int page = plugin.getPlayerDataAPI().getPageFromID(sp.getUUIDAsString(), "EARNINGS_ALL");
+
+			int days = cf.getInt("HowManyDays");
+
+			ArrayList<String> dates = new ArrayList<String>();
+
+			for (int i = 0; i != days; i++) {
+
+				DateFormat format = new SimpleDateFormat(plugin.getFileManager().getConfig().getString("Date"));
+				Date data = new Date();
+
+				Calendar c1 = Calendar.getInstance();
+				c1.setTime(data);
+
+				c1.add(Calendar.DATE, -i);
+
+				Date newdate = c1.getTime();
+
+				String d = "" + format.format(newdate);
+
+				dates.add(d);
+			}
+
+			Collections.reverse(dates);
+
+			List<String> slots = cf.getStringList("All_Earnings_Slots");
+
+			int li = dates.size();
+
+			int sizeStop = page * slots.size();
+
+			ArrayList<String> l2 = getAmountToDisplay(cf, pl, page);
+
+			if (inv != null) {
+
+				if (l2.size() != 0) {
+
+					for (int i3 = 0; i3 < l2.size(); i3++) {
+
+						String date = l2.get(i3);
+
+						String dis = sp.getLanguage().getStringFromLanguage(pl.getUniqueId(),
+								"All_Earnings_Items.Display");
+						List<String> lore = sp.getLanguage().getListFromLanguage(pl.getUniqueId(),
+								"All_Earnings_Items.Lore");
+
+						String ic = cf.getString("All_Earnings_Items.Icon");
+
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), ic);
+						ItemMeta meta = it.getItemMeta();
+
+						meta.setDisplayName(dis.replaceAll("<date>", date));
+
+						ArrayList<String> l = new ArrayList<String>();
+
+						double er = plugin.getPlayerAPI().getEarnedAtDateFromAllJobs("" + pl.getUniqueId(), date);
+
+						for (String b : lore) {
+							l.add(plugin.getPluginManager().toHex(b).replaceAll("<date>", date).replaceAll("<money>",
+									plugin.getAPI().Format(er)));
+						}
+
+						meta.setLore(l);
+
+						it.setItemMeta(meta);
+
+						inv.setItem(Integer.valueOf(slots.get(i3)), it);
+
+					}
+
+				} else {
+
+					String icon = cf.getString("All_Earnings_Items.NotAnyEarnings.Icon");
+					String dis = cf.getString("All_Earnings_Items.NotAnyEarnings.Display");
+					int slot = cf.getInt("All_Earnings_Items.NotAnyEarnings.Slot");
+
+					ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
+					ItemMeta meta = it.getItemMeta();
+
+					meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
+
+					it.setItemMeta(meta);
+
+					inv.setItem(slot, it);
+
+				}
+			}
+
+			if (inv != null) {
+				boolean next = true;
+				boolean pre = true;
+
+				if (cf.getBoolean("PageItems.Next.ShowOnlyIfNextPageExist")) {
+					next = sizeStop + 1 < li;
+				}
+				if (!cf.getBoolean("PageItems.Previous.ShowOnPageOne")) {
+					if (page == 1) {
+						pre = false;
+					}
+				}
+
+				if (pre) {
+
+					boolean show = cf.getBoolean("PageItems.Previous.Show");
+
+					if (show) {
+						String icon = cf.getString("PageItems.Previous.Material");
+						String dis = sp.getLanguage().getStringFromPath(sp.getUUID(),
+								cf.getString("PageItems.Previous.Display"));
+						List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
+								cf.getString("PageItems.Previous.Lore"));
+						int slot = cf.getInt("PageItems.Previous.Slot");
+
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
+						ItemMeta meta = it.getItemMeta();
+
+						meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
+
+						ArrayList<String> l = new ArrayList<String>();
+
+						if (lore != null) {
+							for (String b : lore) {
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
+							}
+						}
+
+						meta.setLore(l);
+
+						it.setItemMeta(meta);
+
+						inv.setItem(slot, it);
+					}
+
+				}
+
+				if (next) {
+
+					boolean show = cf.getBoolean("PageItems.Next.Show");
+
+					if (show) {
+						String icon = cf.getString("PageItems.Next.Material");
+						String dis = sp.getLanguage().getStringFromPath(sp.getUUID(),
+								cf.getString("PageItems.Next.Display"));
+						List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
+								cf.getString("PageItems.Next.Lore"));
+						int slot = cf.getInt("PageItems.Next.Slot");
+
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
+						ItemMeta meta = it.getItemMeta();
+
+						meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
+
+						ArrayList<String> l = new ArrayList<String>();
+
+						if (lore != null) {
+							for (String b : lore) {
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
+							}
+						}
+
+						meta.setLore(l);
+
+						it.setItemMeta(meta);
+
+						inv.setItem(slot, it);
+					}
+
+				}
+			}
+
+		});
+	}
+
+	public ArrayList<String> getAmountToDisplay_SingleJob(FileConfiguration cf, Player pl, int page, Job job) {
+		int days = cf.getInt("HowManyDays");
+
+		ArrayList<String> dates = new ArrayList<String>();
+
+		for (int i = 0; i != days; i++) {
+
+			DateFormat format = new SimpleDateFormat(plugin.getFileManager().getConfig().getString("Date"));
+			Date data = new Date();
+
+			Calendar c1 = Calendar.getInstance();
+			c1.setTime(data);
+
+			c1.add(Calendar.DATE, -i);
+
+			Date newdate = c1.getTime();
+
+			String d = "" + format.format(newdate);
+
+			dates.add(d);
+		}
+
+		Collections.reverse(dates);
+
+		List<String> slots = cf.getStringList("Job_Earnings_Slots");
+
+		ArrayList<String> itemslist = new ArrayList<String>();
+
+		int sizeStart = (page - 1) * slots.size();
+		int sizeStop = page * slots.size();
+
+		for (int i = sizeStart; i != sizeStop; i++) {
+
+			if (i < dates.size()) {
+
+				if (!dates.get(i).isEmpty()) {
+
+					boolean show = true;
+
+					double er = plugin.getPlayerAPI().getEarnedAt("" + pl.getUniqueId(), job, dates.get(i));
+
+					if (er <= 0) {
+						if (cf.getBoolean("HideWhenEarningsIsZero")) {
+							show = false;
+						}
+					}
+
+					if (show) {
+						itemslist.add(dates.get(i));
+					}
+				}
+			}
+
+		}
+		return itemslist;
+	}
+
+	public ArrayList<String> getAmountToDisplay(FileConfiguration cf, Player pl, int page) {
+		int days = cf.getInt("HowManyDays");
+
+		ArrayList<String> dates = new ArrayList<String>();
+
+		for (int i = 0; i != days; i++) {
+
+			DateFormat format = new SimpleDateFormat(plugin.getFileManager().getConfig().getString("Date"));
+			Date data = new Date();
+
+			Calendar c1 = Calendar.getInstance();
+			c1.setTime(data);
+
+			c1.add(Calendar.DATE, -i);
+
+			Date newdate = c1.getTime();
+
+			String d = "" + format.format(newdate);
+
+			dates.add(d);
+		}
+
+		Collections.reverse(dates);
+
+		List<String> slots = cf.getStringList("All_Earnings_Slots");
+
+		ArrayList<String> itemslist = new ArrayList<String>();
+
+		int sizeStart = (page - 1) * slots.size();
+		int sizeStop = page * slots.size();
+
+		for (int i = sizeStart; i != sizeStop; i++) {
+
+			if (i < dates.size()) {
+
+				if (!dates.get(i).isEmpty()) {
+
+					boolean show = true;
+
+					double er = plugin.getPlayerAPI().getEarnedAtDateFromAllJobs("" + pl.getUniqueId(), dates.get(i));
+
+					if (er <= 0) {
+						if (cf.getBoolean("HideWhenEarningsIsZero")) {
+							show = false;
+						}
+					}
+
+					if (show) {
+						itemslist.add(dates.get(i));
+					}
+				}
+			}
+
+		}
+		return itemslist;
 	}
 
 	public void createLevelsGUI(Player player, UpdateTypes t, Job job) {
@@ -51,7 +634,7 @@ public class GuiAddonManager {
 				job.getDisplay(UUID));
 		int size = cfg.getInt("Levels_Size");
 
-		gm.openInventory(player, size, name);
+		plugin.getGUI().openInventory(player, size, name);
 
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_LEVELS_GUI", player);
@@ -69,8 +652,7 @@ public class GuiAddonManager {
 		plugin.getExecutor().execute(() -> {
 
 			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + pl.getUniqueId());
-			int page = SimpleAPI.getPlugin().getPlayerDataAPI().getPageFromID(sp.getUUIDAsString(),
-					"LEVELS_" + job.getConfigID());
+			int page = plugin.getPlayerDataAPI().getPageFromID(sp.getUUIDAsString(), "LEVELS_" + job.getConfigID());
 
 			List<String> slots = cf.getStringList("Level_Slots");
 
@@ -125,11 +707,11 @@ public class GuiAddonManager {
 									ic = job.getIconOfLevel(lvl);
 								}
 
-								ItemStack it = im.createAndGetItemStack(pl.getName(), ic);
+								ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), ic);
 								ItemMeta meta = it.getItemMeta();
 
-								meta.setDisplayName(
-										up.toHex(job.getLevelDisplay(lvl, "" + pl.getUniqueId())).replaceAll("&", "§"));
+								meta.setDisplayName(plugin.getPluginManager()
+										.toHex(job.getLevelDisplay(lvl, "" + pl.getUniqueId())).replaceAll("&", "§"));
 
 								if (SPLEVEL >= lvl) {
 									if (cf.getBoolean("Options.EnchantedWhenReached")) {
@@ -139,7 +721,7 @@ public class GuiAddonManager {
 
 								if (job.getLevelLore(lvl, "" + pl.getUniqueId()) != null) {
 									for (String line : job.getLevelLore(lvl, "" + pl.getUniqueId())) {
-										lore.add(up.toHex(line));
+										lore.add(plugin.getPluginManager().toHex(line));
 									}
 								}
 
@@ -153,18 +735,15 @@ public class GuiAddonManager {
 									prefix = "Locked";
 								}
 
-								double exp = stats.getExp();
+								double exp2 = sp.getStatsOf(job.getConfigID()).getExp();
 								double need = plugin.getLevelAPI().getJobNeedExpWithOutPlayer(job, lvl);
 
-								double calc = exp - need;
-
-								if (calc <= 0) {
-									calc = 0;
-								}
+								double calc = need - exp2;
 
 								for (String line : sp.getLanguage().getListFromLanguage(pl.getUniqueId(),
 										"Rewards_Item_Lores." + prefix)) {
-									lore.add(up.toHex(line).replaceAll("<exp>", plugin.getAPI().Format(calc)));
+									lore.add(plugin.getPluginManager().toHex(line).replaceAll("<exp>",
+											plugin.getAPI().Format(calc)));
 								}
 
 								it.setAmount(lvl);
@@ -207,16 +786,16 @@ public class GuiAddonManager {
 								cf.getString("PageItems.Previous.Lore"));
 						int slot = cf.getInt("PageItems.Previous.Slot");
 
-						ItemStack it = im.createAndGetItemStack(pl.getName(), icon);
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
 						ItemMeta meta = it.getItemMeta();
 
-						meta.setDisplayName(up.toHex(dis).replaceAll("&", "§"));
+						meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
 
 						ArrayList<String> l = new ArrayList<String>();
 
 						if (lore != null) {
 							for (String b : lore) {
-								l.add(up.toHex(b).replaceAll("&", "§"));
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
 							}
 						}
 
@@ -241,16 +820,16 @@ public class GuiAddonManager {
 								cf.getString("PageItems.Next.Lore"));
 						int slot = cf.getInt("PageItems.Next.Slot");
 
-						ItemStack it = im.createAndGetItemStack(pl.getName(), icon);
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
 						ItemMeta meta = it.getItemMeta();
 
-						meta.setDisplayName(up.toHex(dis).replaceAll("&", "§"));
+						meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
 
 						ArrayList<String> l = new ArrayList<String>();
 
 						if (lore != null) {
 							for (String b : lore) {
-								l.add(up.toHex(b).replaceAll("&", "§"));
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
 							}
 						}
 
@@ -275,7 +854,7 @@ public class GuiAddonManager {
 				.replaceAll("<job>", job.getDisplay(UUID));
 		int size = cfg.getInt("Rewards_Size");
 
-		gm.openInventory(player, size, name);
+		plugin.getGUI().openInventory(player, size, name);
 
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_REWARDS_GUI", player);
@@ -294,8 +873,7 @@ public class GuiAddonManager {
 
 			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + pl.getUniqueId());
 
-			int page = SimpleAPI.getPlugin().getPlayerDataAPI().getPageFromID(sp.getUUIDAsString(),
-					"REWARDS_" + job.getConfigID());
+			int page = plugin.getPlayerDataAPI().getPageFromID(sp.getUUIDAsString(), "REWARDS_" + job.getConfigID());
 
 			List<String> slots = cf.getStringList("Rewards_Slots");
 			int pageLength = slots.size();
@@ -328,16 +906,16 @@ public class GuiAddonManager {
 								cf.getString("PageItems.Previous.Lore"));
 						int slot = cf.getInt("PageItems.Previous.Slot");
 
-						ItemStack it = im.createAndGetItemStack(pl.getName(), icon);
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
 						ItemMeta meta = it.getItemMeta();
 
-						meta.setDisplayName(up.toHex(dis).replaceAll("&", "§"));
+						meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
 
 						ArrayList<String> l = new ArrayList<String>();
 
 						if (lore != null) {
 							for (String b : lore) {
-								l.add(up.toHex(b).replaceAll("&", "§"));
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
 							}
 						}
 
@@ -362,16 +940,16 @@ public class GuiAddonManager {
 								cf.getString("PageItems.Next.Lore"));
 						int slot = cf.getInt("PageItems.Next.Slot");
 
-						ItemStack it = im.createAndGetItemStack(pl.getName(), icon);
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl.getName(), icon);
 						ItemMeta meta = it.getItemMeta();
 
-						meta.setDisplayName(up.toHex(dis).replaceAll("&", "§"));
+						meta.setDisplayName(plugin.getPluginManager().toHex(dis).replaceAll("&", "§"));
 
 						ArrayList<String> l = new ArrayList<String>();
 
 						if (lore != null) {
 							for (String b : lore) {
-								l.add(up.toHex(b).replaceAll("&", "§"));
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
 							}
 						}
 
@@ -415,7 +993,7 @@ public class GuiAddonManager {
 					String display = sp.getLanguage().getConfig()
 							.getString("Jobs." + job.getConfigID() + ".IDS." + type + ".Rewards.Display");
 
-					ItemStack i2 = im.createAndGetItemStack(pl, icon);
+					ItemStack i2 = plugin.getItemAPI().createAndGetItemStack(pl, icon);
 					ItemMeta m = i2.getItemMeta();
 
 					ArrayList<String> l = new ArrayList<String>();
@@ -429,18 +1007,24 @@ public class GuiAddonManager {
 						used = display;
 					}
 
-					m.setDisplayName(up.toHex(used).replaceAll("&", "§"));
+					m.setDisplayName(plugin.getPluginManager().toHex(used).replaceAll("&", "§"));
 
 					double reward = job.getRewardOf(type, real);
 					int chance = job.getChanceOf(type, real);
 					double points = job.getPointsOf(type, real);
 					double exp = job.getExpOf(type, real);
 
+					int brokentimes = plugin.getPlayerAPI().getBrokenTimesOfID("" + pl.getUniqueId(), job, type,
+							real.toString());
+					double ear = plugin.getPlayerAPI().getEarnedFrom("" + pl.getUniqueId(), job, type, real.toString());
+
 					for (String line : sp.getLanguage().getListFromLanguage(sp.getUUID(),
 							"Jobs." + job.getConfigID() + ".IDS." + type + ".Rewards.Lore")) {
-						l.add(up.toHex(line).replaceAll("<exp>", "" + exp).replaceAll("<points>", "" + points)
-								.replaceAll("<chance>", "" + chance).replaceAll("<money>", "" + reward)
-								.replaceAll("&", "§"));
+						l.add(plugin.getPluginManager().toHex(line).replaceAll("<exp>", "" + exp)
+								.replaceAll("<points>", "" + points).replaceAll("<earned>", plugin.getAPI().Format(ear))
+								.replaceAll("<action>", real.toString().toLowerCase())
+								.replaceAll("<chance>", "" + chance).replaceAll("<times>", "" + brokentimes)
+								.replaceAll("<money>", "" + reward).replaceAll("&", "§"));
 					}
 
 					m.setLore(l);
@@ -462,7 +1046,7 @@ public class GuiAddonManager {
 		String name = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Self_Name"));
 		int size = cfg.getInt("Self_Size");
 
-		gm.openInventory(player, size, name);
+		plugin.getGUI().openInventory(player, size, name);
 
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_SELF_STATS_GUI", player);
@@ -483,9 +1067,9 @@ public class GuiAddonManager {
 			String name = list.getName();
 			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + id);
 			String named = sp.getLanguage().getStringFromPath(id, cfg.getString("Other_Name"));
-			String fin = up.toHex(named.replaceAll("<name>", name).replaceAll("&", "§"));
+			String fin = plugin.getPluginManager().toHex(named.replaceAll("<name>", name).replaceAll("&", "§"));
 
-			if (up.toHex(fin).equalsIgnoreCase(title.replaceAll("<name>", name)))
+			if (plugin.getPluginManager().toHex(fin).equalsIgnoreCase(title.replaceAll("<name>", name)))
 				return true;
 		}
 		return false;
@@ -499,7 +1083,7 @@ public class GuiAddonManager {
 				named);
 		int size = cfg.getInt("Other_Size");
 
-		gm.openInventory(player, size, name);
+		plugin.getGUI().openInventory(player, size, name);
 
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_OTHER_STATS_GUI", player);
@@ -517,7 +1101,7 @@ public class GuiAddonManager {
 			Player pl, String prefix) {
 		plugin.getExecutor().execute(() -> {
 			String title = pl.getOpenInventory().getTitle();
-			String need = up.toHex(name).replaceAll("&", "§");
+			String need = plugin.getPluginManager().toHex(name).replaceAll("&", "§");
 
 			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + pl.getUniqueId());
 
@@ -564,7 +1148,7 @@ public class GuiAddonManager {
 					List<String> skull_lore = sp.getLanguage().getListFromPath(pl.getUniqueId(),
 							cf.getString(prefix + "_Skull.Lore"));
 
-					ItemStack skull = im.createAndGetItemStack(NAME, skull_item);
+					ItemStack skull = plugin.getItemAPI().createAndGetItemStack(NAME, skull_item);
 					ItemMeta m = skull.getItemMeta();
 
 					ArrayList<String> l = new ArrayList<String>();
@@ -572,7 +1156,7 @@ public class GuiAddonManager {
 					int finalmaxjobs = max + 1;
 
 					for (String b : skull_lore) {
-						l.add(up.toHex(b).replaceAll("<points>", api.Format(points))
+						l.add(plugin.getPluginManager().toHex(b).replaceAll("<points>", api.Format(points))
 								.replaceAll("<max>", "" + finalmaxjobs).replaceAll("<name>", NAME)
 								.replaceAll("&", "§"));
 					}
@@ -582,7 +1166,8 @@ public class GuiAddonManager {
 
 					m.setLore(l);
 
-					m.setDisplayName(up.toHex(skull_display).replaceAll("<name>", NAME).replaceAll("&", "§"));
+					m.setDisplayName(plugin.getPluginManager().toHex(skull_display).replaceAll("<name>", NAME)
+							.replaceAll("&", "§"));
 
 					skull.setItemMeta(m);
 
@@ -601,13 +1186,13 @@ public class GuiAddonManager {
 						List<String> errorl_lore = sp.getLanguage().getListFromPath(pl.getUniqueId(),
 								cf.getString(prefix + "_Mot_Found_Item.Lore"));
 
-						ItemStack error = im.createAndGetItemStack(pl, error_item);
+						ItemStack error = plugin.getItemAPI().createAndGetItemStack(pl, error_item);
 						ItemMeta m = error.getItemMeta();
 
 						ArrayList<String> l = new ArrayList<String>();
 
 						for (String b : errorl_lore) {
-							l.add(up.toHex(b).replaceAll("&", "§"));
+							l.add(plugin.getPluginManager().toHex(b).replaceAll("&", "§"));
 						}
 
 						m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -615,7 +1200,8 @@ public class GuiAddonManager {
 
 						m.setLore(l);
 
-						m.setDisplayName(up.toHex(error_display).replaceAll("<name>", NAME).replaceAll("&", "§"));
+						m.setDisplayName(plugin.getPluginManager().toHex(error_display).replaceAll("<name>", NAME)
+								.replaceAll("&", "§"));
 
 						error.setItemMeta(m);
 
@@ -664,7 +1250,7 @@ public class GuiAddonManager {
 						List<String> lore = sp.getLanguage().getConfig()
 								.getStringList("Jobs." + job.getConfigID().toUpperCase() + ".StatsGUI.Lore." + prefix);
 
-						ItemStack it = im.createAndGetItemStack(pl, item);
+						ItemStack it = plugin.getItemAPI().createAndGetItemStack(pl, item);
 						ItemMeta m = it.getItemMeta();
 
 						if (lore != null) {
@@ -682,10 +1268,11 @@ public class GuiAddonManager {
 							}
 
 							for (String b : lore) {
-								l.add(up.toHex(b).replaceAll("<stats_args_4>", usedlvl).replaceAll("<name>", NAME)
+								l.add(plugin.getPluginManager().toHex(b).replaceAll("<stats_args_4>", usedlvl)
+										.replaceAll("<name>", NAME)
 										.replace("<earned>",
 												"" + api.Format(plugin.getPlayerDataAPI().getEarnedAt(WATCHUUID, id,
-														plugin.getPluginManager().getDate())))
+														plugin.getDate())))
 										.replaceAll("<stats_args_3>", "" + level)
 										.replaceAll("<stats_args_2>", "" + broken)
 										.replaceAll("<stats_args_6>",
@@ -701,7 +1288,8 @@ public class GuiAddonManager {
 						m.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 						m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
-						m.setDisplayName(up.toHex(display).replaceAll("<name>", NAME).replaceAll("&", "§"));
+						m.setDisplayName(plugin.getPluginManager().toHex(display).replaceAll("<name>", NAME)
+								.replaceAll("&", "§"));
 
 						it.setItemMeta(m);
 

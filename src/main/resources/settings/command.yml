@@ -12,6 +12,10 @@
 
 Commands:
 
+  Earnings:
+  
+    Enabled: true
+
   Help:
   
     Enabled: true

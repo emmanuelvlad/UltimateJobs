@@ -4,18 +4,15 @@ import java.util.UUID;
 
 import org.bukkit.command.CommandSender; 
 import org.bukkit.entity.Player;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.datax.utils.UpdateTypes;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.UpdateTypes;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
 
 public class HelpSub extends SubCommand {
 
-	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	private PluginAPI up = SimpleAPI.getInstance().getAPI();
+	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 
 	@Override
 	public String getName(UUID UUID) {
@@ -42,7 +39,7 @@ public class HelpSub extends SubCommand {
 				plugin.getAPI().playSound("SEND_HELP", player);
 				
 				for (String m :jb.getLanguage().getListFromLanguage(UUID, "Commands.Help.List")) {
-					player.sendMessage(up.toHex(m).replaceAll("&", "§"));
+					player.sendMessage(plugin.getPluginManager().toHex(m).replaceAll("&", "§"));
 				}
 			}
 		} else {

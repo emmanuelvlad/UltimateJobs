@@ -10,8 +10,21 @@
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
   
-#used on /jobs language <lang>
+#used on /jobs language 
 LanguageName: "bayerisch"
+LanguageIcon: "url;http://textures.minecraft.net/texture/bf79448a48f8fbac041a1b7d43c95de4e8b27aff7ed58f31309afd299e17f4b"
+LanguageDisplay: "&8< &6Bayerisch &8>"
+LanguageEnabled: true
+
+LanguageChoosenLore:
+  - "&aDu hosd de Sprach ausgwählt!"
+ 
+LanguageChoosenMessage: "<prefix> &cDu hosd de Sprach bereits ausgwählt!"
+ 
+LanguageChangedMessage: "<prefix> &7Du hosd de Sprach <lang> &7ausgwählt!"
+ 
+LanguageCanChoose:
+  - "&7Klicke, um de Sprach auszuwähln!"
 
 prefix: "&8[#14e0ba#Jobs&8]"
 
@@ -62,7 +75,7 @@ command_stats_not_found:  "<prefix> &cSpieler <name> existiad nedt."
 
 #command /jobs levels <job>
 command_levels_no_data_found: "<prefix> &cs konndn koa Dadn üba desn Job gfundn wern!"
-
+ 
 #other messages
 Other:
 
@@ -112,6 +125,15 @@ MaxEarningsReached:
   
 #confog of commands
 Commands:
+
+  Earnings:
+  
+    Usage: "earnings"
+    
+    UsageMessage: "/Jobs earnings <jobs>"
+    
+    Description: "Sehe deine Einnahmen der letzten 30 Tage"
+
 
   Rewards:
   
@@ -260,6 +282,115 @@ Main_Custom:
       - "&8"
       - "&8-> &7Du kannst &c<max> &7Jobs hom."
       - "&8-> &7Du hosd &a<points> &7Points."
+
+# .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |   _____      | || |      __      | || | ____  _____  | || |    ______    | || | _____  _____ | || |      __      | || |    ______    | || |  _________   | |
+#| |  |_   _|     | || |     /  \     | || ||_   \|_   _| | || |  .' ___  |   | || ||_   _||_   _|| || |     /  \     | || |  .' ___  |   | || | |_   ___  |  | |
+#| |    | |       | || |    / /\ \    | || |  |   \ | |   | || | / .'   \_|   | || |  | |    | |  | || |    / /\ \    | || | / .'   \_|   | || |   | |_  \_|  | |
+#| |    | |   _   | || |   / ____ \   | || |  | |\ \| |   | || | | |    ____  | || |  | '    ' |  | || |   / ____ \   | || | | |    ____  | || |   |  _|  _   | |
+#| |   _| |__/ |  | || | _/ /    \ \_ | || | _| |_\   |_  | || | \ `.___]  _| | || |   \ `--' /   | || | _/ /    \ \_ | || | \ `.___]  _| | || |  _| |___/ |  | |
+#| |  |________|  | || ||____|  |____|| || ||_____|\____| | || |  `._____.'   | || |    `.__.'    | || ||____|  |____|| || |  `._____.'   | || | |_________|  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+Name: "#0bef1b#Sprach"
+
+Custom:
+ 
+  Info:
+  
+    Display: "&bInformadiona"
+    
+    Lore: 
+      - "&7In dem Menü kannst du dei Sprach wähln!" 
+
+# .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .-----------------. .----------------.  .----------------. 
+#| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+#| |  _________   | || |      __      | || |  _______     | || | ____  _____  | || |     _____    | || | ____  _____  | || |    ______    | || |    _______   | |
+#| | |_   ___  |  | || |     /  \     | || | |_   __ \    | || ||_   \|_   _| | || |    |_   _|   | || ||_   \|_   _| | || |  .' ___  |   | || |   /  ___  |  | |
+#| |   | |_  \_|  | || |    / /\ \    | || |   | |__) |   | || |  |   \ | |   | || |      | |     | || |  |   \ | |   | || | / .'   \_|   | || |  |  (__ \_|  | |
+#| |   |  _|  _   | || |   / ____ \   | || |   |  __ /    | || |  | |\ \| |   | || |      | |     | || |  | |\ \| |   | || | | |    ____  | || |   '.___`-.   | |
+#| |  _| |___/ |  | || | _/ /    \ \_ | || |  _| |  \ \_  | || | _| |_\   |_  | || |     _| |_    | || | _| |_\   |_  | || | \ `.___]  _| | || |  |`\____) |  | |
+#| | |_________|  | || ||____|  |____|| || | |____| |___| | || ||_____|\____| | || |    |_____|   | || ||_____|\____| | || |  `._____.'   | || |  |_______.'  | |
+#| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+#| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+# '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+
+#
+# <------ Earnings - one Job ------->
+#
+
+Job_Earnings_Name: "&aVerdienst &8- <job>"
+
+Job_Earnings_Items:
+
+  Display: "&8< &a<date> &8>"
+ 
+  Lore: 
+    - "&7&o<money> Dollars"
+ 
+Job_Earnings_Custom:
+
+  Previous:
+  
+    Display: "&8<| &7Vorherige Seite &8|>"
+    
+    Message_NotFound: "&8[&aEarnings&8] &cKeine vorherige Seite gefunden!"
+    
+    Lore:
+      - "&8Gehe zur letzen Seite!"
+
+  Next:
+  
+    Display: "&8<| &7Nächste Seite &8|>"
+    
+    Message_NotFound: "&8[&aEarnings&8] &cKeine weitere Seite gefunden!"
+    
+    Lore:
+      - "&8Gehe zur nächsten Seite!"
+
+  Close:
+    
+    Display: "&8< &cMenü schließen &8>"
+
+#
+# <------ Earnings - ALL ------->
+#
+
+All_Earnings_Name: "&aAAlle Verdienste"
+
+Job_Earnings_Items:
+
+  Display: "&8< &a<date> &8>"
+ 
+  Lore: 
+    - "&7&o<money> Dollars"
+ 
+Job_Earnings_Custom:
+
+  Previous:
+  
+    Display: "&8<| &7Vorherige Seite &8|>"
+    
+    Message_NotFound: "&8[&aEarnings&8] &cKeine vorherige Seite gefunden!"
+    
+    Lore:
+      - "&8Gehe zur letzen Seite!"
+
+  Next:
+  
+    Display: "&8<| &7Nächste Seite &8|>"
+    
+    Message_NotFound: "&8[&aEarnings&8] &cKeine weitere Seite gefunden!"
+    
+    Lore:
+      - "&8Gehe zur nächsten Seite!"
+
+  Close:
+    
+    Display: "&8< &cMenü schließen &8>"
       
 # .----------------.  .----------------.  .----------------.  .----------------. 
 #| .--------------. || .--------------. || .--------------. || .--------------. |
@@ -663,116 +794,7 @@ Jobs:
             - "&7Points &8: &6<points>"
             - "&7Action &8: &6&lStripp"
             - "&7Seltenheut &8: &bNormal"
-
-  SHEAR_JOB:
-  
-    Display: "&fSchäfa"
-    
-    DisplayID: "schäfa"
-    
-    Lore:
-      - "&7Eahoide des Gejd vo schern vo Schofn"
-    
-    Stats:
-      - "&7"
-      - "&aStats&8:"
-      - "&7Gekauft am &8: &b<stats_args_1>"
-      - "&7Schofe &8: &b<stats_args_2>" 
-      - "&7Verdient Heute&8: &a<earned> Dollars"
-      - "&7" 
-      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
-      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
-
-    StatsGUI:
-    
-       Display: "&8< | &6Hoizfälla &8| >"
-       
-       Lore:
-
-         Other: 
-           - "&7<name>'s Stats in diesem Job&8:"
-           - "&8&m--------------------------"
-           - "&7Gekauft am &8: &b<stats_args_1>"
-           - "&7Schofe &8: &b<stats_args_2>" 
-           - "&7Verdient Heute&8: &a<earned> Dollars"
-           - "&7" 
-           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
-           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
-       
-         Self: 
-           - "&7Deine Stats in diesem Job&8:"
-           - "&8&m--------------------------" 
-           - "&7Gekauft am &8: &b<stats_args_1>"
-           - "&7Schofe &8: &b<stats_args_2>" 
-           - "&7Verdient Heute&8: &a<earned> Dollars"
-           - "&7" 
-           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
-           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
-      
-    Levels:
-    
-      1:  
-        Display: "&6Level I"
-     
-      2:  
-        Display: "&6Level II"
-        
-        Lore:
-          - "&7Rewards vo dem Levl&8:"
-          - "&8-> &a250 Geld"
-      
-      3:  
-        Display: "&6Level III"
-        
-        Lore:
-          - "&7Rewards vo dem Levl&8:"
-          - "&8-> &a500 Geld"
-      
-      4: 
-        Display: "&6Level IV"
-        
-        Lore:
-          - "&7Rewards vo dem Levl&8:"
-          - "&8-> &a1000 Geld"
-      
-    IDS:
-
-      WOOL1:
-      
-        Display: "&fWoasse Woie"
-        
-        Rewards:
-        
-          Display: "&8< &fWoasse Woie&8>"
-          
-          Lore:
-            - "&8-----------"
-            - "&7Material &8: &fWoasse Woie"
-            - "&7Belohnung &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
-            - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &6&lStripp"
-            - "&7Seltenheut &8: &bNormal"
-
-      WOOL2:
-      
-        Display: "&cRoude Woie"
-        
-        Rewards:
-        
-          Display: "&8< &cRoude Woie &8>"
-          
-          Lore:
-            - "&8-----------"
-            - "&7Material &8: &cRoude Woie"
-            - "&7Belohnung &8: &c$<money>"
-            - "&7Chance &8: &9<chance>%"
-            - "&7Exp &8: &a<exp>"
-            - "&7Points &8: &6<points>"
-            - "&7Action &8: &6&lStripp"
-            - "&7Seltenheut &8: &bSelten"
-  
+ 
   MINER:
   
     Display: "#50cbed#Miner"
@@ -856,13 +878,14 @@ Jobs:
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStoa"
-            - "&7belohnung &8: &c$<money>"
+            - "&7Belohnung &8: &c$<money>"
             - "&7Chance &8: &9<chance>%"
             - "&7Exp &8: &a<exp>"
             - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Seltenheit &8: &bNormal"
+            - "&7Action &8: &4<action>"
+            - "&7"
+            - "&7Anzahl Zersört &8: &6<times> Blocks"
+            - "&7Geld eingenommen &8: &a<earned> Dollars"
 
       COBBLESTONE:
       
@@ -874,13 +897,14 @@ Jobs:
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &bStone"
-            - "&7belohnung &8: &c$<money>"
+            - "&7Belohnung &8: &c$<money>"
             - "&7Chance &8: &9<chance>%"
             - "&7Exp &8: &a<exp>"
             - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Seltenheit &8: &bNormal"
+            - "&7Action &8: &4<action>"
+            - "&7"
+            - "&7Anzahl Zersört &8: &6<times> Blocks"
+            - "&7Geld eingenommen &8: &a<earned> Dollars"
     
       COAL_ORE:
       
@@ -892,10 +916,11 @@ Jobs:
           
           Lore:
             - "&8-----------"
-            - "&7Material &8: &0Kohle Eaz"
-            - "&7belohnung &8: &c$<money>"
+            - "&7Belohnung &8: &c$<money>"
             - "&7Chance &8: &9<chance>%"
             - "&7Exp &8: &a<exp>"
             - "&7Points &8: &6<points>"
-            - "&7Action &8: &4Break"
-            - "&7Seltenheit &8: &bNormal"
+            - "&7Action &8: &4<action>"
+            - "&7"
+            - "&7Anzahl Zersört &8: &6<times> Blocks"
+            - "&7Geld eingenommen &8: &a<earned> Dollars"

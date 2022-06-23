@@ -4,8 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import de.warsteiner.datax.SimpleAPI; 
+ 
 import de.warsteiner.jobs.UltimateJobs; 
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.playercommand.SubCommand;
@@ -13,9 +12,7 @@ import de.warsteiner.jobs.utils.playercommand.SubCommand;
 public class LimitSub  extends SubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin();
-	
-	private static SimpleAPI ap = SimpleAPI.getPlugin(); 
-	
+ 
 	@Override
 	public String getName(UUID UUID) {
 		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(""+UUID);
@@ -35,12 +32,12 @@ public class LimitSub  extends SubCommand {
 		if (args.length == 2) {
 			String pl = args[1].toUpperCase();
  
-			if (ap.getPlayerDataAPI().getUUIDByName(pl.toUpperCase()) == null) {
+			if (plugin.getPlayerDataAPI().getUUIDByName(pl.toUpperCase()) == null) {
 				plugin.getAPI().playSound("COMMAND_PLAYER_NOT_FOUND", player);
 				player.sendMessage(jb.getLanguage().getStringFromLanguage(UUID, "command_limit_not_found").replaceAll("<name>", args[1])); 
 				return;
 			} else {
-				String uuid = ap.getPlayerDataAPI().getUUIDByName(pl.toUpperCase());
+				String uuid = plugin.getPlayerDataAPI().getUUIDByName(pl.toUpperCase());
 				
 				String how = plugin.getAPI().isCurrentlyInCache(uuid);
 				plugin.getAPI().playSound("COMMAND_LIMIT_OTHER_SUCCES", player);

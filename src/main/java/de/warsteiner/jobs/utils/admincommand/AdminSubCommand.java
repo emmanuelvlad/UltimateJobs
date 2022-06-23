@@ -18,4 +18,6 @@ public abstract class AdminSubCommand {
     public abstract int getTabLength();
     
     public abstract String getPermission();
+    
+    public abstract boolean showOnHelp();
 }

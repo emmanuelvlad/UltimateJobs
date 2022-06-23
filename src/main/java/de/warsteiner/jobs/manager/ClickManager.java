@@ -1,30 +1,46 @@
 package de.warsteiner.jobs.manager;
 
+import java.util.ArrayList;
 import java.util.List; 
 
 import org.bukkit.configuration.file.FileConfiguration; 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.datax.utils.UpdateTypes;
+ 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
+import de.warsteiner.jobs.utils.cevents.PlayerJoinJobEvent;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
+import de.warsteiner.jobs.utils.objects.Language;
+import de.warsteiner.jobs.utils.objects.UpdateTypes;
 
 public class ClickManager {
 
 	private UltimateJobs plugin;
-	private JobAPI api = UltimateJobs.getPlugin().getAPI();
-	private PluginAPI up = SimpleAPI.getInstance().getAPI(); 
+	private JobAPI api = UltimateJobs.getPlugin().getAPI(); 
 	private GuiManager gui;
 
 	public ClickManager(UltimateJobs plugin, FileConfiguration fileConfiguration, GuiManager gui) {
 		this.plugin = plugin;
 		this.gui = gui; 
 	}
+	
+
+	public Language isLanguageItem(String display) {
+		
+		ArrayList<Language> langs = plugin.getLanguageAPI().getLoadedLanguagesAsArray();
+		
+		for(Language lang : langs) {
+			String di = plugin.getPluginManager().toHex( lang.getDisplay());
+			if(di.equalsIgnoreCase(plugin.getPluginManager().toHex(display))) {
+				return lang;
+			}
+		}
+		return null;
+		
+	}
+	
 
 	public void executeCustomItemInSubMenu(Job job, String display, final Player player, String prefix,
 			FileConfiguration config) {
@@ -58,18 +74,27 @@ public class ClickManager {
 
 	public void joinJob(Player player, String job, JobsPlayer jb, String name, String dis, Job j) {
 		FileConfiguration cfg = plugin.getFileManager().getGUI();
-		plugin.getPlayerAPI().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
-		jb.addCurrentJob(job);
-		api.playSound("JOB_JOINED", player);
-		new BukkitRunnable() {
-			public void run() {
-				gui.setCustomitems(player, player.getName(), player.getOpenInventory(), "Main_Custom.",
-						cfg.getStringList("Main_Custom.List"), name, cfg, plugin.getJobCache().get(job));
-				gui.setMainInventoryJobItems(player.getOpenInventory(), player, name);
-			}
-		}.runTaskLater(plugin, 1);
+ 
+		
+		PlayerJoinJobEvent event = new PlayerJoinJobEvent(player, jb, j);
+		
+		if(event.isCancelled()) {
+			plugin.getPlayerAPI().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
+			jb.addCurrentJob(job);
+			api.playSound("JOB_JOINED", player);
+			
+			new BukkitRunnable() {
+				public void run() {
+					gui.setCustomitems(player, player.getName(), player.getOpenInventory(), "Main_Custom.",
+							cfg.getStringList("Main_Custom.List"), name, cfg, plugin.getJobCache().get(job));
+					gui.setMainInventoryJobItems(player.getOpenInventory(), player, name);
+				}
+			}.runTaskLater(plugin, 1);
 
-		player.sendMessage(up.toHex(jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "Other.Joined").replaceAll("<job>", j.getDisplay(""+player.getUniqueId()))));
+			player.sendMessage(plugin.getPluginManager().toHex(jb.getLanguage().getStringFromLanguage(player.getUniqueId(), "Other.Joined").replaceAll("<job>", j.getDisplay(""+player.getUniqueId()))));
+		}
+		
+		 
 	}
 
 	public void executeJobClickEvent(String display, Player player) {
@@ -146,7 +171,7 @@ public class ClickManager {
 
 		String title = player.getOpenInventory().getTitle();
 
-		if (title.equalsIgnoreCase(up.toHex(cfg.getString("Main_Name")).replaceAll("&", "§"))) {
+		if (title.equalsIgnoreCase(plugin.getPluginManager().toHex(cfg.getString("Main_Name")).replaceAll("&", "§"))) {
 			gui.UpdateMainInventoryItems(player, title);
 		} else {
 			gui.createMainGUIOfJobs(player, UpdateTypes.REOPEN);
@@ -160,7 +185,7 @@ public class ClickManager {
 		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(UUID);
 		for (String b : custom_items) {
 			String real =  jb.getLanguage().getStringFromPath(jb.getUUID(), config.getString(path + "." + b + ".Display"));
-			String dis = up.toHex(real.replaceAll("&", "§"));
+			String dis = plugin.getPluginManager().toHex(real.replaceAll("&", "§"));
 			if (display.equalsIgnoreCase(dis))
 				return b;
 		}

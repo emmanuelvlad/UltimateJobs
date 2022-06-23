@@ -6,10 +6,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import de.warsteiner.datax.SimpleAPI;
-import de.warsteiner.datax.api.PluginAPI;
-import de.warsteiner.jobs.UltimateJobs; 
+ 
+import de.warsteiner.jobs.UltimateJobs;
+import de.warsteiner.jobs.manager.PluginManager;
 import de.warsteiner.jobs.utils.cevents.PlayerLevelJobEvent;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
@@ -30,7 +29,7 @@ public class LevelAPI {
 
 	public double getJobNeedExpWithOutPlayer(Job job, int level) {
 
-		int next = level + 1;
+		int next = level;
 
 		return job.getExpOfLevel(next);
 	}
@@ -58,7 +57,7 @@ public class LevelAPI {
 		plugin.getExecutor().execute(() -> {
 			UUID UUID =  player.getUniqueId();
 
-			PluginAPI api = SimpleAPI.getInstance().getAPI();
+			PluginManager api = UltimateJobs.getPlugin().getPluginManager();
 			FileConfiguration cfg = plugin.getFileManager().getConfig();
 			String prefix = pl.getLanguage().getPrefix(UUID);
 			
