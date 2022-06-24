@@ -9,7 +9,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.1-SNAPSHOT</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -20,7 +20,7 @@
               <relocations>
                 <relocation>
                   <pattern>com.zaxxer.hikari</pattern>
-                  <shadedPattern>de.warsteiner.jobs.libs</shadedPattern>
+                  <shadedPattern>de.warsteiner.jobs.lib</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
