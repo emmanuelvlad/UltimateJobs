@@ -168,7 +168,7 @@
 							<relocations>
 								<relocation>
 									<pattern>com.zaxxer.hikari</pattern>
-									<shadedPattern>de.warsteiner.jobs.libs</shadedPattern>
+									<shadedPattern>de.warsteiner.jobs.lib</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>
