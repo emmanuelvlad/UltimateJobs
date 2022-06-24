@@ -10,34 +10,34 @@ import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 
-public class VersionSub extends AdminSubCommand {
+public class UpdateSub extends AdminSubCommand {
 
 	@Override
 	public String getName() {
-		return "version";
+		return "update";
 	}
 
 	@Override
 	public String getDescription() {
-		return "See the Plugin's Version";
+		return "Update the Plugin";
 	}
 
 	@Override
 	public void perform(CommandSender sender, String[] args) {
-		if (args.length == 1) {
-			PluginDescriptionFile d = UltimateJobs.getPlugin().getDescription();
-			
+		if (args.length == 1) { 
 			if(sender instanceof Player) {
 				Player player3 = (Player) sender;
-				player3.playSound(player3.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 3);
+				
+			  
+					player3.playSound(player3.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 3);
+					
+					UltimateJobs.getPlugin().getGUIAddonManager().createUpdateMenu(player3);
+				 
+			} else {
+				sender.sendMessage(AdminCommand.prefix + "§cThis Command is only for Players!");
 			}
 		 
-			sender.sendMessage("§7");
-			sender.sendMessage("§8-> §9UltimateJobs §7Plugin Details§8:");
-			sender.sendMessage(" §8| §7Plugin Version§8: §b"+d.getVersion()+" §8(§7API §c"+d.getAPIVersion()+"§8)"); 
-			sender.sendMessage(" §8| §7Server Version§8: §a"+Bukkit.getVersion()); 
-			sender.sendMessage(" §8| §7Java Version§8: §6"+(System.getProperty("java.version") != null ? System.getProperty("java.version") : "null"));
-			sender.sendMessage("§7");
+			 
 		} else {
 			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());
 			if(sender instanceof Player) {
@@ -54,17 +54,17 @@ public class VersionSub extends AdminSubCommand {
 
 	@Override
 	public String FormatTab() {
-		return "command help";
+		return "command update";
 	}
 
 	@Override
 	public String getUsage() { 
-		return "/JobsAdmin version";
+		return "/JobsAdmin update";
 	}
 	
 	@Override
 	public String getPermission() { 
-		return "ultimatejobs.admin.version";
+		return "ultimatejobs.admin.update";
 	}
 	
 	@Override

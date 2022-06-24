@@ -74,6 +74,16 @@ public class PlayerExistEvent implements Listener {
 										+ "§7.\n §7Please Click here, to view the §afirst §7Steps of the Plugin!\n§7")
 								.setClickAsExecuteCmd("/jobsadmin first").save().send(player);
 					}
+					
+					if(plugin.getWebManager().canUpdate) {
+						if(player.hasPermission("ultimatejobs.admin.update")) { 
+							new JsonMessage()
+									.append("§7\n§8[§9UltimateJobs§8] §7Click to View a new §aUpdate§7! §7Current Version§8: §b"+plugin.getDescription().getVersion()
+											+" §7new Version§8: §c"+plugin.getWebManager().newVersion+"\n§7")
+									.setClickAsExecuteCmd("/jobsadmin update").save().send(player);
+						}
+					}
+					
 				}
 			}.runTaskLater(plugin, 60);
 

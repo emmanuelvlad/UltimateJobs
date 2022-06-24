@@ -62,10 +62,27 @@ public class JobsPlayer {
 	}
 	
 	public YamlConfiguration getLanguageConfig() {
-		return lang.getConfig();
+		
+		Language used2 = null;
+		
+		if(!UltimateJobs.getPlugin().getFileManager().getLanguageConfig().getBoolean("EnabledLanguages")) {
+			String used =UltimateJobs.getPlugin().getFileManager().getLanguageConfig().getString("UseLanguageWhenDisabled");
+			used2 = UltimateJobs.getPlugin().getLanguageAPI().getLanguages().get(used);
+		} else {
+			used2 = lang;
+		}
+		
+		return used2.getConfig();
 	}
 	
 	public Language getLanguage() {
+		
+		if(!UltimateJobs.getPlugin().getFileManager().getLanguageConfig().getBoolean("EnabledLanguages")) {
+			String used =UltimateJobs.getPlugin().getFileManager().getLanguageConfig().getString("UseLanguageWhenDisabled");
+			return UltimateJobs.getPlugin().getLanguageAPI().getLanguages().get(used);
+		}
+		
+		
 		return lang;
 	}
 	

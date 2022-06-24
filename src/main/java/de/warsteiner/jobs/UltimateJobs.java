@@ -42,6 +42,7 @@ import de.warsteiner.jobs.command.admincommand.RemovePointsSub;
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
 import de.warsteiner.jobs.command.admincommand.SetPointsSub;
+import de.warsteiner.jobs.command.admincommand.UpdateSub;
 import de.warsteiner.jobs.command.admincommand.VersionSub;
 import de.warsteiner.jobs.command.playercommand.EarningsSub;
 import de.warsteiner.jobs.command.playercommand.JoinSub;
@@ -55,6 +56,7 @@ import de.warsteiner.jobs.command.playercommand.RewardsSub;
 import de.warsteiner.jobs.command.playercommand.StatsSub;
 import de.warsteiner.jobs.inventorys.AreYouSureMenuClickEvent;
 import de.warsteiner.jobs.inventorys.ClickAtLanguageGUI;
+import de.warsteiner.jobs.inventorys.ClickAtUpdateMenuEvent;
 import de.warsteiner.jobs.inventorys.EarningsMenuClickEvent; 
 import de.warsteiner.jobs.inventorys.HelpMenuClickEvent;
 import de.warsteiner.jobs.inventorys.LevelsMenuClickEvent;
@@ -88,6 +90,7 @@ import de.warsteiner.jobs.manager.GuiAddonManager;
 import de.warsteiner.jobs.manager.GuiManager;
 import de.warsteiner.jobs.manager.JobWorkManager;
 import de.warsteiner.jobs.manager.PluginManager;
+import de.warsteiner.jobs.manager.WebManager;
 import de.warsteiner.jobs.utils.BossBarHandler;
 import de.warsteiner.jobs.utils.JsonMessage;
 import de.warsteiner.jobs.utils.Metrics;
@@ -133,6 +136,7 @@ public class UltimateJobs extends JavaPlugin {
 	public String mode = null; 
 	private ItemAPI i;
 	private DatabaseInit init;
+	private WebManager web;
 	
 	public void onLoad() {
 
@@ -140,10 +144,12 @@ public class UltimateJobs extends JavaPlugin {
 		plapi = new PluginManager();
 		langapi = new LanguageAPI();
 		filemanager = new FileManager();
+		web = new WebManager();
 
 		createFolders();
 
 		filemanager.generateFiles();
+		
 		
 		mode = getFileManager().getDataConfig().getString("Mode").toUpperCase();
 
@@ -154,26 +160,22 @@ public class UltimateJobs extends JavaPlugin {
 		executor = Executors.newFixedThreadPool(this.filemanager.getConfig().getInt("ExecutorServiceThreads"));
 
 		loadClasses();
-		
+		 
 		if (getPluginManager().isInstalled("WorldGuard")) {
 			WorldGuardManager.setClass();
 			WorldGuardManager.load();
 		}
-
-		if (getPluginManager().isInstalled("SimpleAPI")) {
-			getExecutor().execute(() -> {
-				if (filemanager.getConfig().getBoolean("CheckForUpdates")) {
-					//SimpleAPI.getPlugin().getWebManager().loadVersionAndCheckUpdate(
-					//		"https://api.war-projects.com/v1/ultimatejobs/version.txt", "UltimateJobs",
-					//		getDescription().getVersion());
-				}
-			});
-		}
-
+  
 	}
 
 	@Override
 	public void onEnable() {
+		
+		getExecutor().execute(() -> {
+			if (filemanager.getConfig().getBoolean("CheckForUpdates")) {
+				web.checkVersion();
+			}
+		});
 		
 		if (mode.equalsIgnoreCase("SQL")) {
 			
@@ -243,7 +245,7 @@ public class UltimateJobs extends JavaPlugin {
 				"'  '-'  '|  '--.|  |   |  ||  |   |  ||  | |  |  |  |   |  `---.|  '-'  /'  '-'  '|  '--' /.-'    | ");
 		Bukkit.getConsoleSender().sendMessage(
 				" `-----' `-----'`--'   `--'`--'   `--'`--' `--'  `--'   `------' `-----'  `-----' `------' `-----'  ");
-		Bukkit.getConsoleSender().sendMessage("       §bRunning plugin UltimateJobs v" + getDescription().getVersion() + " ("
+		Bukkit.getConsoleSender().sendMessage("       §bRunning plugin UltimateJobs " + getDescription().getVersion() + " ("
 				+ getDescription().getAPIVersion() + ")");
 		Bukkit.getConsoleSender().sendMessage("       §bRunning UltimateJobs with " + getLoaded().size() + " Jobs");
 		Bukkit.getConsoleSender().sendMessage("       §bLoaded " + getLanguageAPI().getLanguages().size() + " Languages");
@@ -274,6 +276,10 @@ public class UltimateJobs extends JavaPlugin {
 			Bukkit.getConsoleSender().sendMessage("§bLoaded SQL of SimpleAPI with type: " + type); 
 		}
 
+	}
+
+	public WebManager getWebManager() {
+		return web;
 	}
 	
 	public SQLStatementAPI getSQLStatementAPI() {
@@ -360,6 +366,7 @@ public class UltimateJobs extends JavaPlugin {
 		getAdminSubCommandManager().getSubCommandList().add(new ReloadSub());
 		getAdminSubCommandManager().getSubCommandList().add(new VersionSub());
 		getAdminSubCommandManager().getSubCommandList().add(new FirstSub());
+		getAdminSubCommandManager().getSubCommandList().add(new UpdateSub());
 	}
 
 	public void loadClasses() {
@@ -511,6 +518,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new LevelsMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new EarningsMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new ClickAtLanguageGUI(), this); 
+		Bukkit.getPluginManager().registerEvents(new ClickAtUpdateMenuEvent(), this); 
 	}
 
 	public void loadEvents() {

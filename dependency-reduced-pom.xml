@@ -4,7 +4,7 @@
   <groupId>de.warsteiner</groupId>
   <artifactId>ultimatejobs</artifactId>
   <name>UltimateJobs</name>
-  <version>0.4.5</version>
+  <version>0.4.6</version>
   <build>
     <plugins>
       <plugin>

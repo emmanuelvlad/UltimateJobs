@@ -78,7 +78,7 @@ public class ClickManager {
 		
 		PlayerJoinJobEvent event = new PlayerJoinJobEvent(player, jb, j);
 		
-		if(event.isCancelled()) {
+		if(!event.isCancelled()) {
 			plugin.getPlayerAPI().updateJobs(job.toUpperCase(), jb, "" + player.getUniqueId());
 			jb.addCurrentJob(job);
 			api.playSound("JOB_JOINED", player);

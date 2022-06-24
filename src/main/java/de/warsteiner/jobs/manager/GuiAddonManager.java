@@ -114,6 +114,205 @@ public class GuiAddonManager {
 	  
 	    BookUtil.openPlayer(player, item); 
 }
+	
+	public void createUpdateMenu(Player player) {
+		
+		if(plugin.getWebManager().canUpdate) {
+			plugin.getGUI().openInventory(player, 5, "§aUpdate Found");
+			
+			InventoryView inv = player.getOpenInventory();
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createAndGetItemStack(player.getName(), "BLACK_STAINED_GLASS_PANE");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§8-/-");
+
+				it.setItemMeta(meta);
+
+
+				inv.setItem(36, it);
+				inv.setItem(37, it);
+				inv.setItem(38, it);
+				inv.setItem(39, it);
+				inv.setItem(40, it);
+				inv.setItem(41, it);
+				inv.setItem(42, it);
+				inv.setItem(43, it); 
+				inv.setItem(44, it); 
+			 
+				inv.setItem(0, it);
+				inv.setItem(1, it);
+				inv.setItem(2, it);
+				inv.setItem(3, it);
+				inv.setItem(4, it);
+				inv.setItem(5, it);
+				inv.setItem(6, it);
+				inv.setItem(7, it);
+				inv.setItem(8, it);  
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createAndGetItemStack(player.getName(), "url;http://textures.minecraft.net/texture/ce1f3cc63c73a6a1dde72fe09c6ac5569376d7b61231bb740764368788cbf1fa");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§e☆ §7Download Update §e☆");
+
+				ArrayList<String> lore = new ArrayList<String>();
+				
+				lore.add("§7§oOn click, the new Version gets downloaded...");
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta);
+
+
+				inv.setItem(20, it); 
+			}
+			 
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createAndGetItemStack(player.getName(), "GREEN_DYE");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§a✚ §7Added Features §a✚");
+
+				ArrayList<String> lore = new ArrayList<String>();
+				
+				if(plugin.getWebManager().added.size() != 0) {
+					for (int i3 = 0; i3 < plugin.getWebManager().added.size(); i3++) {
+						int i4  = i3 + 1;
+						lore.add("§b#"+i4+plugin.getPluginManager().toHex(plugin.getWebManager().added.get(i3)));
+					}
+				} else {
+					lore.add("§7§oNothing");
+				}
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta);
+
+
+				inv.setItem(22, it); 
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createAndGetItemStack(player.getName(), "LIGHT_BLUE_DYE");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§b○ §7Updated Features §b○");
+
+				ArrayList<String> lore = new ArrayList<String>();
+				
+				if(plugin.getWebManager().updated.size() != 0) {
+					for (int i3 = 0; i3 < plugin.getWebManager().updated.size(); i3++) {
+						int i4  = i3 + 1;
+						lore.add("§b#"+i4+plugin.getPluginManager().toHex(plugin.getWebManager().updated.get(i3)));
+					}
+				} else {
+					lore.add("§7§oNothing");
+				}
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta);
+
+
+				inv.setItem(23, it); 
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createAndGetItemStack(player.getName(), "RED_DYE");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§c✖ §7Removed Features §c✖");
+
+				ArrayList<String> lore = new ArrayList<String>();
+				
+				if(plugin.getWebManager().removed.size() != 0) {
+					for (int i3 = 0; i3 < plugin.getWebManager().removed.size(); i3++) {
+						int i4  = i3 + 1;
+						lore.add("§b#"+i4+plugin.getPluginManager().toHex(plugin.getWebManager().removed.get(i3)));
+					}
+				} else {
+					lore.add("§7§oNothing");
+				}
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta);
+
+
+				inv.setItem(24, it); 
+			}
+			
+		} else {
+			plugin.getGUI().openInventory(player, 5, "§cNo Update Found");
+			
+			InventoryView inv = player.getOpenInventory();
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createAndGetItemStack(player.getName(), "BLACK_STAINED_GLASS_PANE");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§8-/-");
+
+				it.setItemMeta(meta);
+
+
+				inv.setItem(36, it);
+				inv.setItem(37, it);
+				inv.setItem(38, it);
+				inv.setItem(39, it);
+				inv.setItem(40, it);
+				inv.setItem(41, it);
+				inv.setItem(42, it);
+				inv.setItem(43, it); 
+				inv.setItem(44, it); 
+			 
+				inv.setItem(0, it);
+				inv.setItem(1, it);
+				inv.setItem(2, it);
+				inv.setItem(3, it);
+				inv.setItem(4, it);
+				inv.setItem(5, it);
+				inv.setItem(6, it);
+				inv.setItem(7, it);
+				inv.setItem(8, it);  
+			}	
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createAndGetItemStack(player.getName(), "url;http://textures.minecraft.net/texture/ce1f3cc63c73a6a1dde72fe09c6ac5569376d7b61231bb740764368788cbf1fa");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§e☆ §7Check for Updates §e☆");
+
+				ArrayList<String> lore = new ArrayList<String>();
+				
+				lore.add("§7§oClick to check for new Updates...");
+				
+				meta.setLore(lore);
+				
+				it.setItemMeta(meta);
+
+
+				inv.setItem(21, it); 
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createAndGetItemStack(player.getName(), "BARRIER");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§cNo Update Found...");
+ 
+				it.setItemMeta(meta);
+
+
+				inv.setItem(23, it); 
+			}
+			
+		}
+		
+	}
 
 	public void createEarningsGUI_Single_Job(Player player, UpdateTypes t, Job job) {
 		FileConfiguration cfg = plugin.getFileManager().getEarningsJobConfig();
