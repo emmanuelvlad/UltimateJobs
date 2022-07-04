@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
+ 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -56,10 +56,22 @@ public class FileManager {
 	private  FileConfiguration langg;
 	private  File langg_file;
 	
-	private List<String> defaultlanguages = Arrays.asList("en-US","de-DE","de-BAR","es-ES","fr-FR","nl-NL","tr-TR");
-	private List<String> defaultjobs = Arrays.asList("Miner","Lumberjack");
+	private  FileConfiguration with;
+	private  File with_file;
 	
-	public  boolean generateFiles() {
+	private  FileConfiguration withc;
+	private  File withc_file;
+	
+	private  FileConfiguration cleave;
+	private  File cleave_file;
+	
+	//"es-ES","fr-FR","nl-NL","tr-TR", "de-DE","de-BAR"
+	private List<String> defaultlanguages = Arrays.asList("en-US");
+	private List<String> defaultjobs = Arrays.asList("Miner","Lumberjack","FarmGrow","Digger", "Killer","Fishman","Milkman"
+			, "Crafter", "Shear","Advancements","Eat","Honey","Tame","MythicMobs","Breed"
+			, "Berrys","Saplings","KillBow","TNT");
+	
+	public  boolean generateFiles(boolean d) {
 		createGUIFile();
 		createDefaultLanguages();
 		createCMDFile();
@@ -72,11 +84,19 @@ public class FileManager {
 		createDataFile();
 		createLangFile();
 		createLangGUIFile();
-	 
+		createWithFile();
+		createWithConfirmFile();
+		createLeaveConfirmFile();
+ 
 		//addons
 		createAddonStatsFiles();
 		createAddonRewardsFiles(); 
 		createEarningsAllFile();
+		
+		if(d) {
+			UltimateJobs.getPlugin().getLanguageAPI().loadLanguages();
+		}
+		
 		return true;
 	}
 	
@@ -96,7 +116,8 @@ public class FileManager {
 			lang = YamlConfiguration.loadConfiguration(lang_file); 
 			data = YamlConfiguration.loadConfiguration(data_file); 
 			langg = YamlConfiguration.loadConfiguration(langg_file); 
-		 
+			with = YamlConfiguration.loadConfiguration(with_file); 
+			withc = YamlConfiguration.loadConfiguration(withc_file); 
 		} catch(Exception ex) {
 			ex.printStackTrace(); 
 		}
@@ -237,6 +258,83 @@ public class FileManager {
 	
 	public  File getLanguageGUIFile() {
 		return langg_file;
+	}
+	
+	
+	public  FileConfiguration getWithdrawConfig() {
+		return with;
+	}
+	
+	public  File getWithdrawFile() {
+		return with_file;
+	}
+	
+	
+	public  FileConfiguration getWithdrawConfirmConfig() {
+		return withc;
+	}
+	
+	public  File getWithdrawConfirmFile() {
+		return withc_file;
+	}
+	
+	public  FileConfiguration getLeaveConfirmConfig() {
+		return cleave;
+	}
+	
+	public  File getLeaveConfirmFile() {
+		return cleave_file;
+	}
+	
+	public boolean createLeaveConfirmFile() {
+		cleave_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "leave_job_confirm_gui.yml");
+        if (!cleave_file.exists()) {
+        	cleave_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "leave_job_confirm_gui.yml", true);
+        }
+        
+        cleave = new YamlConfiguration();
+        try {
+        	cleave.load(cleave_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean createWithConfirmFile() {
+		withc_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "withdraw_confirm_gui.yml");
+        if (!withc_file.exists()) {
+        	withc_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "withdraw_confirm_gui.yml", true);
+        }
+        
+        withc = new YamlConfiguration();
+        try {
+        	withc.load(withc_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+	}
+	
+	public boolean createWithFile() {
+		with_file = new File(UltimateJobs.getPlugin().getDataFolder(), "addons" + File.separatorChar + "withdraw_gui.yml");
+        if (!with_file.exists()) {
+        	with_file.getParentFile().mkdirs();
+        	UltimateJobs.getPlugin().saveResource("addons" + File.separatorChar + "withdraw_gui.yml", true);
+        }
+        
+        with = new YamlConfiguration();
+        try {
+        	with.load(with_file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
 	}
 	
 	public boolean createLangGUIFile() {

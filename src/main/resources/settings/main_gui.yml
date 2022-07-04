@@ -10,11 +10,13 @@
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
 
+#Name of the GUI
 Main_Name: "{language:Main_Name}"
+ 
+#GUI Size
+Main_Size: 6
 
-# -> 3 * 9
-Main_Size: 5
-
+#Custom Items Section
 Main_Custom:
 
   List:
@@ -26,29 +28,32 @@ Main_Custom:
 
     Display: "{language:Main_Custom.Close.Display}"
 
-    Action: "CLOSE"
+    ActionList:
+      - "CLOSE"
 
     Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
 
-    Slot: 41
+    Slot: 50
 
   Leave:
 
     Display: "{language:Main_Custom.Leave.Display}"
 
-    Action: "LEAVE"
+    ActionList:
+      - "LEAVEALL"
 
     Lore: "{language:Main_Custom.Leave.Lore}"
 
     Material: "BARRIER"
 
-    Slot: 39
+    Slot: 48
 
   Info:
 
     Display: "{language:Main_Custom.Info.Display}"
 
-    Action: "NOTHING"
+    ActionList:
+      - "NONE"
 
     Lore: "{language:Main_Custom.Info.Lore}"
 
@@ -56,6 +61,7 @@ Main_Custom:
 
     Slot: 4
 
+#GUI PlaceHolders
 Main_Place:
   - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:1:&8-/-"
@@ -73,11 +79,13 @@ Main_Place:
   - "BLACK_STAINED_GLASS_PANE:27:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:35:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:36:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:37:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:38:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:39:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:40:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:41:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:42:&8-/-"
-  - "BLACK_STAINED_GLASS_PANE:43:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:44:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:45:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:46:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:47:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:48:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:49:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:50:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:51:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:52:&8-/-"
+  - "BLACK_STAINED_GLASS_PANE:53:&8-/-"

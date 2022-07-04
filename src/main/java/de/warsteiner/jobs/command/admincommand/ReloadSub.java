@@ -23,7 +23,7 @@ public class ReloadSub extends AdminSubCommand {
 	@Override
 	public void perform(CommandSender sender, String[] args) {
 		if (args.length == 1) {
-			UltimateJobs.getPlugin().getFileManager().generateFiles();
+			UltimateJobs.getPlugin().getFileManager().generateFiles(true);
 			UltimateJobs.getPlugin().getAPI().loadJobs(UltimateJobs.getPlugin().getLogger());
 			sender.sendMessage(AdminCommand.prefix + "§aReloaded Plugin Config's and Job's.");
 			if(sender instanceof Player) {

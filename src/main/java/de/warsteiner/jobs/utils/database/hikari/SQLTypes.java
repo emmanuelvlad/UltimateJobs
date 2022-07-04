@@ -2,7 +2,7 @@ package de.warsteiner.jobs.utils.database.hikari;
 
 public enum SQLTypes {
 
-		MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql://{host}:{port}/{database}"),
+		MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql://{host}:{port}/{database}"), 
 	    SQLITE("org.sqlite.JDBC", "jdbc:sqlite:{database}"),
 	    POSTGRES("org.postgresql.ds.PGSimpleDataSource", "jdbc:postgresql://{host}:{port}/{database}");
 

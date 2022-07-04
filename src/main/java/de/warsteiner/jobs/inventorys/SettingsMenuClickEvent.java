@@ -39,17 +39,15 @@ public class SettingsMenuClickEvent implements Listener {
 		FileConfiguration config = plugin.getFileManager().getSettings();
 
 		Player p = (Player) e.getWhoClicked();
-
-		String UUID = ""+p.getUniqueId();
-		 
+ 
 		String display =  plugin.getPluginManager().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
 		 
-		if(plugin.getGUI().isSettingsGUITitle(e.getView().getTitle(), UUID)) { 
-			if (plugin.getGUI().isSettingsGUI(e.getView().getTitle(), UUID) != null) {
-				Job job = plugin.getGUI().isSettingsGUI(e.getView().getTitle(), UUID);
-				plugin.getClickManager().executeCustomItemInSubMenu(job, display, p, "Settings_Custom", config);
+		if(plugin.getGUIOpenManager().isSettingsMenu(p, e.getView().getTitle()) != null) { 
+			 
+				Job job =plugin.getGUIOpenManager().isSettingsMenu(p, e.getView().getTitle());
+				plugin.getClickManager().executeCustomItem(job, display, p, "Settings_Custom", config, null);
 				e.setCancelled(true);
-			}
+			 
 		}
 	}
 }

@@ -9,9 +9,11 @@
 #| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
- 
-Rewards_Name: "{language:Rewards_Name}"
 
+#Name of the GUI 
+Rewards_Name: "{language:Rewards_Name}"
+ 
+#Size of the GUI
 Rewards_Size: 6
  
 #where are the items displayed?
@@ -90,7 +92,8 @@ PageItems:
     Lore: "{language:Rewards_Custom.Next.Lore}"
       
     Slot: 50
- 
+
+#Custom Items Section 
 Rewards_Custom:
 
   List:
@@ -100,12 +103,14 @@ Rewards_Custom:
 
     Display: "{language:Rewards_Custom.Close.Display}"
 
-    Action: "CLOSE"
+    ActionList:
+      - "CLOSE"
 
     Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
 
     Slot: 49
- 
+
+#PlaceHolders of the GUI 
 Rewards_Place:
   - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:1:&8-/-"

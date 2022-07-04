@@ -1,7 +1,6 @@
 package de.warsteiner.jobs.api.plugins;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit; 
 import org.bukkit.plugin.Plugin;
 
 import com.sk89q.worldedit.bukkit.BukkitWorld;
@@ -25,6 +24,7 @@ public class WorldGuardManager {
 	public static StateFlag PLACE_ACTION;
 	public static StateFlag KILL_ACTION;
 	public static StateFlag FARM_ACTION;
+	public static StateFlag FARM_GROW_ACTION;
 	public static StateFlag FISH_ACTION;
 	public static StateFlag MILK_ACTION; 
 	public static StateFlag CRAFT_ACTION; 
@@ -41,6 +41,7 @@ public class WorldGuardManager {
 	public static StateFlag MMORES_BREAK;
 	public static StateFlag KILLBYBOW;
 	public static StateFlag GROWSAP;
+	public static StateFlag TNT;
 
 	public WorldGuardManager getManager() {
 		return this;
@@ -61,7 +62,7 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (BREAK_ACTION = new StateFlag("break-action", false)));
 		flagRegistry.register((Flag) (PLACE_ACTION = new StateFlag("place-action", false)));
 		flagRegistry.register((Flag) (KILL_ACTION = new StateFlag("kill-action", false)));
-		flagRegistry.register((Flag) (FARM_ACTION = new StateFlag("farm-action", false)));
+		flagRegistry.register((Flag) (FARM_ACTION = new StateFlag("farm-break-action", false)));
 		flagRegistry.register((Flag) (FISH_ACTION = new StateFlag("fish-action", false)));
 		flagRegistry.register((Flag) (MILK_ACTION = new StateFlag("milk-action", false))); 
 		flagRegistry.register((Flag) (CRAFT_ACTION = new StateFlag("craft-action", false))); 
@@ -78,9 +79,12 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (MMORES_BREAK = new StateFlag("moreores-break-action", false))); 
 		flagRegistry.register((Flag) (KILLBYBOW = new StateFlag("killbybow-action", false))); 
 		flagRegistry.register((Flag) (GROWSAP = new StateFlag("grow-saplings-action", false))); 
+		flagRegistry.register((Flag) (FARM_GROW_ACTION = new StateFlag("farm-grow-action", false)));
+		flagRegistry.register((Flag) (TNT = new StateFlag("tnt-action", false)));
 	}
 	
 	public static StateFlag getFlagFromName(String b) {
+		if(b.equalsIgnoreCase("farm-grow-action")) { return FARM_GROW_ACTION; }
 		if(b.equalsIgnoreCase("strip-action")) { return STRIP_ACTION; }
 		if(b.equalsIgnoreCase("honey-action")) { return HONEY_ACTION; }
 		if(b.equalsIgnoreCase("eat-action")) { return EAT_ACTION; }
@@ -88,7 +92,7 @@ public class WorldGuardManager {
 		if(b.equalsIgnoreCase("break-action")) { return BREAK_ACTION; }
 		if(b.equalsIgnoreCase("place-action")) { return PLACE_ACTION; }
 		if(b.equalsIgnoreCase("kill-action")) { return KILL_ACTION; }
-		if(b.equalsIgnoreCase("farm-action")) { return FARM_ACTION; }
+		if(b.equalsIgnoreCase("farm-break-action")) { return FARM_ACTION; }
 		if(b.equalsIgnoreCase("fish-action")) { return FISH_ACTION; }
 		if(b.equalsIgnoreCase("milk-action")) { return MILK_ACTION; } 
 		if(b.equalsIgnoreCase("craft-action")) { return CRAFT_ACTION; } 
@@ -101,6 +105,7 @@ public class WorldGuardManager {
 		if(b.equalsIgnoreCase("moreores-break-action")) { return MMORES_BREAK; } 
 		if(b.equalsIgnoreCase("killbybow-action")) { return KILLBYBOW; } 
 		if(b.equalsIgnoreCase("grow-saplings-action")) { return GROWSAP; } 
+		if(b.equalsIgnoreCase("tnt-action")) { return TNT; } 
 		return null;
 	}
 

@@ -1,6 +1,6 @@
 package de.warsteiner.jobs.jobs;
  
-import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.AnimalTamer; 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,7 +16,7 @@ public class JobActionTame implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onTame(EntityTameEvent event) { 
 		AnimalTamer player = event.getOwner();
-		
+	 
 		if(player instanceof Player) {
 		 
 			plugin.getJobWorkManager().executeTameWork(event); 

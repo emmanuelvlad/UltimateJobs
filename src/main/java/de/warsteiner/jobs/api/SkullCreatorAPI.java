@@ -29,6 +29,7 @@ import java.util.UUID;
  * by https://github.com/deanveloper/SkullCreator
  */
 
+@SuppressWarnings("deprecation")
 public class SkullCreatorAPI {
 
 	public SkullCreatorAPI() {}
@@ -43,7 +44,6 @@ public class SkullCreatorAPI {
 	/**
 	 * Creates a player skull, should work in both legacy and new Bukkit APIs.
 	 */
-	@SuppressWarnings("deprecation")
 	public  ItemStack createSkull() {
 		checkLegacy();
 
@@ -306,10 +306,7 @@ public class SkullCreatorAPI {
 			}
 		}
 	}
-
-	// suppress warning since PLAYER_HEAD doesn't exist in 1.12.2,
-	// but we expect this and catch the error at runtime.
-	@SuppressWarnings("JavaReflectionMemberAccess")
+ 
 	private  void checkLegacy() {
 		try {
 			// if both of these succeed, then we are running

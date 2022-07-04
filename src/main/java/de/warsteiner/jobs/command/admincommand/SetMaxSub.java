@@ -100,7 +100,7 @@ public class SetMaxSub extends AdminSubCommand {
 	
 	@Override
 	public String getUsage() { 
-		return "/JobsAdmin setmax <name> <job> <value>";
+		return "/JobsAdmin setmax <name> <value>";
 	}
 	
 	@Override

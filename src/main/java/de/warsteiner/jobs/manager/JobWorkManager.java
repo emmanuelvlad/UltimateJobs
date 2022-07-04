@@ -8,7 +8,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -31,9 +30,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
+import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.utils.JobAction;
 import de.warsteiner.jobs.utils.cevents.PlayerFinishedWorkEvent;
-import de.warsteiner.jobs.utils.objects.JobStats;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
 public class JobWorkManager {
@@ -65,8 +64,8 @@ public class JobWorkManager {
 			return;
 		}
 
-		finalWork("" + item, player.getUniqueId(), JobAction.HONEY, "honey-action", 1, event.getClickedBlock(), null,
-				false, true, false);
+		finalWork("" + event.getClickedBlock().getType(), player.getUniqueId(), JobAction.HONEY, "honey-action", 1,
+				event.getClickedBlock(), null, false, true, false);
 		return;
 
 	}
@@ -233,9 +232,9 @@ public class JobWorkManager {
 			return;
 		}
 
-		String id = event.getCaught().getName().toUpperCase().replaceAll(" ", "_");
+		EntityType id = event.getCaught().getType();
 
-		finalWork(id, event.getPlayer().getUniqueId(), JobAction.FISH, "fish-action", 1, null, null, true, false,
+		finalWork("" + id, event.getPlayer().getUniqueId(), JobAction.FISH, "fish-action", 1, null, null, true, false,
 				false);
 		return;
 	}
@@ -287,10 +286,9 @@ public class JobWorkManager {
 		return;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void executeMilkWork(PlayerInteractAtEntityEvent event) {
 
-		finalWork("" + event.getPlayer().getItemInHand().getType(), event.getPlayer().getUniqueId(), JobAction.MILK,
+		finalWork("" + event.getRightClicked().getType(), event.getPlayer().getUniqueId(), JobAction.MILK,
 				"milk-action", 1, null, event.getRightClicked(), true, false, true);
 		return;
 	}
@@ -310,8 +308,22 @@ public class JobWorkManager {
 			return;
 		}
 
-		finalWork("" + type, event.getPlayer().getUniqueId(), JobAction.FARM, "farm-action", 1, event.getBlock(), null,
-				true, true, false);
+		finalWork("" + type, event.getPlayer().getUniqueId(), JobAction.FARM_BREAK, "farm-break-action", 1,
+				event.getBlock(), null, true, true, false);
+
+		return;
+	}
+
+	public void executeFarmGrowWork(Block block, UUID UUID) {
+		final Material type = block.getType();
+
+		finalWork("" + type, UUID, JobAction.FARM_GROW, "farm-grow-action", 1, block, null, true, true, false);
+
+		return;
+	}
+
+	public void executeTNTEvent(String type, Entity ent, UUID UUID) {
+		finalWork("" + type, UUID, JobAction.TNT, "tnt-action", 1, null, ent, true, false, true);
 
 		return;
 	}
@@ -370,7 +382,17 @@ public class JobWorkManager {
 								}
 							}
 
+							if (block != null) {
+								if (jub.getConfig().getBoolean("GetMoneyOnlyWhenFullyGrown")) {
+									if (!plugin.getPluginManager().isFullyGrownOld(block)) {
+										return;
+									}
+								}
+							}
+
 							if (api.canReward(jub, iD, ac)) {
+								
+								
 
 								boolean can = api.checkforDailyMaxEarnings(IDASSTRING, jub);
 
@@ -396,19 +418,52 @@ public class JobWorkManager {
 								double earned_old = plugin.getPlayerAPI().getEarnedFrom(IDASSTRING, jub, usedid,
 										"" + ac);
 
-								double earnedcalc = plugin.getPlayerAPI().getEarnedAt(IDASSTRING, jub, date) +  calc;
+								double earnedcalc = plugin.getPlayerAPI().getEarnedAt(IDASSTRING, jub, date) + calc;
 
 								if (jub.hasVaultReward(iD, ac)) {
 									if (can) {
 
-										if (Bukkit.getPlayer(ID).isOnline()) {
-											UltimateJobs.getPlugin().getEco().depositPlayer(Bukkit.getPlayer(ID), calc);
-										} else {
-											UltimateJobs.getPlugin().getEco().depositPlayer(Bukkit.getOfflinePlayer(ID),
-													calc);
-										}
+										if (plugin.getFileManager().getConfig().getString("PayMentMode").toUpperCase()
+												.equalsIgnoreCase("INSTANT")) {
 
+											if (Bukkit.getPlayer(ID).isOnline()) {
+												UltimateJobs.getPlugin().getEco().depositPlayer(Bukkit.getPlayer(ID),
+														calc);
+											} else {
+												UltimateJobs.getPlugin().getEco()
+														.depositPlayer(Bukkit.getOfflinePlayer(ID), calc);
+											}
+										} else {
+
+											if (Bukkit.getPlayer(ID).isOnline()) {
+												Player p = Bukkit.getPlayer(ID);
+
+												if (UltimateJobs.getPlugin().getFileManager().getConfig()
+														.getInt("MaxDefaultJobs") != 0) {
+													p.sendMessage(AdminCommand.prefix
+															+ "Withdraw System is not possible to be used with multiplie Jobs per Player");
+													return;
+												}
+
+												double old = plugin.getPlayerAPI().getSalary("" + ID);
+
+												plugin.getPlayerAPI().updateSalary("" + ID, old + calc);
+
+											} else {
+
+												if (UltimateJobs.getPlugin().getFileManager().getConfig()
+														.getInt("MaxDefaultJobs") != 0) {
+													return;
+												}
+
+												double old = plugin.getPlayerAPI().getSalary("" + ID);
+
+												plugin.getPlayerAPI().updateSalary("" + ID, old + calc);
+
+											}
+										}
 									}
+
 								}
 
 								plugin.getPlayerAPI().updateBrokenTimes(IDASSTRING, jub, broken);
@@ -435,7 +490,7 @@ public class JobWorkManager {
 								} else {
 									plugin.getPlayerAPI().updateExp(IDASSTRING, jub, exp_old + exp);
 									plugin.getPlayerAPI().updatePoints(IDASSTRING, points + old_points);
- 
+
 									plugin.getPlayerAPI().updateEarningsOfToday(IDASSTRING, jub, earnedcalc);
 
 									plugin.getPlayerAPI().updateBrokenMoneyOf(IDASSTRING, jub, usedid,

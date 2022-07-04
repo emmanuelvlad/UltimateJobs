@@ -6,8 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
  
-import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.utils.objects.JobsPlayer;
+import de.warsteiner.jobs.UltimateJobs; 
 
 public class MainMenuClickEvent implements Listener {
 	
@@ -35,19 +34,15 @@ public class MainMenuClickEvent implements Listener {
 		}
 
 		FileConfiguration config = plugin.getFileManager().getGUI();
-		Player p = (Player) e.getWhoClicked();
-		String UUID = ""+p.getUniqueId();
-		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(UUID);
-		
-		String name =  jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("Main_Name"));
-		 
+		Player p = (Player) e.getWhoClicked(); 
+	 
 		String display =  plugin.getPluginManager().toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));
  
-		if (e.getView().getTitle().equalsIgnoreCase( plugin.getPluginManager().toHex(name).replaceAll("&", "§"))) {
+		if (plugin.getGUIOpenManager().isMainOpend(p, e.getView().getTitle()) != null) {
 		 
 			plugin.getClickManager().executeJobClickEvent(display, p);
 			 
-			plugin.getClickManager().executeCustomItem(display, p, "Main_Custom", config);
+			plugin.getClickManager().executeCustomItem(null, display, p, "Main_Custom", config, null);
 			e.setCancelled(true);
 		}
 		

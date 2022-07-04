@@ -9,9 +9,11 @@
 #| |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
- 
-Name: "{language:Name}"
 
+#Name of the GUI 
+Name: "{language:Name}"
+ 
+#Size of the GUI
 Size: 6
 
 LangItems:
@@ -27,7 +29,8 @@ LangItems:
     - "31"
     - "32"
     - "33"
- 
+
+#Custom Items Section 
 Custom:
 
   List: 
@@ -37,7 +40,8 @@ Custom:
 
     Display: "{language:Custom.Info.Display}"
 
-    Action: "NOTHING"
+    ActionList:
+      - "NONE"
 
     Material: "BEACON"
     
@@ -45,6 +49,7 @@ Custom:
 
     Slot: 4
 
+#Placeholders of the GUI
 Place:
   - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:1:&8-/-"

@@ -1,8 +1,7 @@
 package de.warsteiner.jobs.command;
 
 import java.util.List;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;

@@ -1,10 +1,8 @@
 package de.warsteiner.jobs.command.admincommand;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.entity.Player; 
  
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.command.AdminCommand;
@@ -36,6 +34,10 @@ public class FirstSub extends AdminSubCommand {
 			}
 			
 			UltimateJobs.getPlugin().getPlayerDataAPI().createFirstPluginStart(UltimateJobs.getPlugin().getPluginManager().getDateTodayFromCal());
+			
+			sender.sendMessage("§a");
+			sender.sendMessage("§8[§9UltimateJobs§8] §7You've §acompleted §7the §9UltimateJobs §7Setup! Info: these messages are sent only one time§8...");
+			sender.sendMessage("§a");
 			 
 		} else {
 			sender.sendMessage(AdminCommand.prefix + "Correct Usage§8: §6"+getUsage());

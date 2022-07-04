@@ -44,7 +44,7 @@ Config:
   
   password: "pw"
 
-Database:
+Database: 
   type: "MYSQL"
   timeout: 5000
   poolsize: 10

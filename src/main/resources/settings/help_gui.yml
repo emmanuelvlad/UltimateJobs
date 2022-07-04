@@ -15,11 +15,14 @@
 #
 
 Help_Mode: "MESSAGE"
-
+ 
+#Name of the GUI
 Help_Name: "{language:Help_Name}"
 
+#Size of the GUI
 Help_Size: 5
 
+#Custom Items Section
 Help_Custom:
 
   List:
@@ -31,7 +34,8 @@ Help_Custom:
 
     Display: "{language:Help_Custom.Info2.Display}"
 
-    Action: "NOTHING"
+    ActionList:
+      - "NONE"
 
     Material: "PAPER"
     
@@ -43,9 +47,10 @@ Help_Custom:
 
     Display: "{language:Help_Custom.Info1.Display}"
 
-    Action: "NOTHING"
+    Material: "BOOK"
 
-    Material: "PAPER"
+    ActionList:
+      - "NONE"
     
     Lore: "{language:Help_Custom.Info1.Lore}"
 
@@ -55,13 +60,14 @@ Help_Custom:
 
     Display: "{language:Help_Custom.Close.Display}"
 
-    Action: "CLOSE"
+    ActionList:
+      - "CLOSE"
 
     Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
 
     Slot: 40
 
-
+#Placeholders of the GUI
 Help_Place:
   - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:1:&8-/-"

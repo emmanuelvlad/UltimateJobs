@@ -17,14 +17,20 @@ public class Language {
 	private String id;
 	private String icon;
 	private String display;
+	private int data;
 	
-	public Language(String name, YamlConfiguration cfg, File file, String id, String icon, String display)  {
+	public Language(String name, YamlConfiguration cfg, File file, String id, String icon, String display, int data)  {
 		this.name = name;
 		this.cfg = cfg;
 		this.id = id;
 		this.file = file;
 		this.icon = icon;
 		this.display = display;
+		this.data = data;
+	}
+	
+	public int getModelData() {
+		return data;
 	}
 	
 	public String getDisplay() {

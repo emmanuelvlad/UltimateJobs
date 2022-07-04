@@ -1,8 +1,5 @@
 package de.warsteiner.jobs.inventorys;
-
-import java.io.IOException;
-
-import org.bukkit.configuration.file.FileConfiguration;
+ 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

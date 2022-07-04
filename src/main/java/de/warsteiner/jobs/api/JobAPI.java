@@ -25,9 +25,12 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material; 
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -49,6 +52,82 @@ public class JobAPI {
 	public JobAPI(UltimateJobs plugin) {
 		this.lastworked_list = new HashMap<>();
 		this.plugin = plugin;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public boolean canWithdrawMoney(Player player, JobsPlayer jb) {
+		
+		if(plugin.getFileManager().getConfig().getBoolean("WithdrawCooldown")) {
+			
+			if(jb.getSalaryDate() == null) {
+				return true;
+			}
+		  
+			String lasttime = jb.getSalaryDate();
+			
+			 
+			Date date_last = new Date(lasttime);
+
+			Date date2 = new Date(plugin.getPluginManager().getDateTodayFromCal());
+			 
+			if( date2.after(date_last)) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		}  
+		return true; 
+	}
+	
+	public String compareData(Entity block) {
+		
+		List<MetadataValue> values = block.getMetadata("saplingby");
+		if (!values.isEmpty()) {
+
+			for(MetadataValue value : values) { 
+				String val = value.value().toString();
+				
+				if(val.contains("uuid;")) {
+					
+					String[] split = val.split(";");
+					
+					String player = split[1];
+					
+					
+					return player;
+					
+				}
+			}
+			
+		}
+		return null;
+		
+	}
+	
+	public String compareData(Block block) {
+		
+		List<MetadataValue> values = block.getMetadata("saplingby");
+		if (!values.isEmpty()) {
+
+			for(MetadataValue value : values) { 
+				String val = value.value().toString();
+				
+				if(val.contains("uuid;")) {
+					
+					String[] split = val.split(";");
+					
+					String player = split[1];
+					
+					
+					return player;
+					
+				}
+			}
+			
+		}
+		return null;
+		
 	}
 
 	public void playSound(String ty, Player player) {
@@ -123,7 +202,7 @@ public class JobAPI {
 				.replaceAll("<job>", arg.toLowerCase()));
 		return null;
 	}
-
+ 
 	public String isCurrentlyInCache(String uuid) {
 		if (plugin.getPlayerAPI().existInCacheByUUID(uuid))
 			return "CACHE";
@@ -232,14 +311,11 @@ public class JobAPI {
 
 	public List<String> canGetJobWithSubOptions(Player player, Job job) {
 		String UUID = "" + player.getUniqueId();
-		if (job.hasNotQuestCon() == true && plugin.getPluginManager().isInstalled("NotQuests")
-				&& !plugin.getNotQuestManager().canHaveJob(player, job)) {
-			return job.getNotQuestConLore(UUID);
-		}
-		if (job.hasAlonsoLevelsReq() == true && plugin.getPluginManager().isInstalled("AlonsoLevels")
-				&& !plugin.getAlonsoManager().canHaveJob(player, job)) {
-			return job.getAlonsoLevelsLore(UUID);
-		}
+		//	if (job.hasNotQuestCon() == true && plugin.getPluginManager().isInstalled("NotQuests")
+		//		&& !plugin.getNotQuestManager().canHaveJob(player, job)) {
+		//	return job.getNotQuestConLore(UUID);
+		//	}
+		 
 		return null;
 	}
 
@@ -271,12 +347,9 @@ public class JobAPI {
 		if (job.hasBypassPermission()) {
 			return player.hasPermission(job.getByPassPermission());
 		}
-		if (job.hasByPassNotQuestCon() == true && plugin.getPluginManager().isInstalled("NotQuests")) {
-			return plugin.getNotQuestManager().canBypassJob(player, job);
-		}
-		if (job.hasBypassAlonsoLevelsReq() == true && plugin.getPluginManager().isInstalled("AlonsoLevels")) {
-			return plugin.getAlonsoManager().canBypassJob(player, job);
-		}
+ 	//	if (job.hasByPassNotQuestCon() == true && plugin.getPluginManager().isInstalled("NotQuests")) {
+		//return plugin.getNotQuestManager().canBypassJob(player, job);
+			//} 
 		return false;
 	}
 

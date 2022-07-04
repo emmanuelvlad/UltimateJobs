@@ -9,9 +9,11 @@
 #| |              | || |              | || |              | || |              | || |              | || |              | || |              | |
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
- 
-AreYouSureGUI_Name: "{language:AreYouSureGUI_Name}"
 
+#Name of the GUI 
+AreYouSureGUI_Name: "{language:AreYouSureGUI_Name}"
+ 
+#Size of the GUI
 AreYouSureGUI_Size: 3
 
 AreYouSureItems:
@@ -19,6 +21,8 @@ AreYouSureItems:
   Button_NO:
   
     Icon: "RED_DYE"
+    
+    Show: true
     
     Display: "{language:AreYouSureItems.Button_NO.Display}"
     
@@ -30,12 +34,15 @@ AreYouSureItems:
   
     Icon: "GREEN_DYE"
     
+    Show: true
+    
     Display: "{language:AreYouSureItems.Button_YES.Display}"
     
     Slot: 11
     
     Lore: "{language:AreYouSureItems.Button_YES.Lore}"
 
+#Custom Items Section
 AreYouSureGUI_Custom:
 
   List:
@@ -45,7 +52,8 @@ AreYouSureGUI_Custom:
 
     Display: "{language:AreYouSureGUI_Custom.Back.Display}"
 
-    Action: "BACK"
+    ActionList:
+      - "GUI:MAIN"
 
     Lore: "{language:AreYouSureGUI_Custom.Back.Lore}"
 
@@ -53,6 +61,7 @@ AreYouSureGUI_Custom:
 
     Slot: 26
 
+#Placeholders of the GUI
 AreYouSureGUI_Place:
   - "BLACK_STAINED_GLASS_PANE:13:&8-/-"
   

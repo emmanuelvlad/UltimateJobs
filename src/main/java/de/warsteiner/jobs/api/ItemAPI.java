@@ -11,7 +11,7 @@ public class ItemAPI {
 	private UltimateJobs plugin = UltimateJobs.getPlugin();
  
 	@SuppressWarnings("deprecation")
-	public ItemStack createAndGetItemStack(Player p, String item) {
+	public ItemStack createItem(Player p, String item) {
 		ItemStack i = null;
 		if (Material.getMaterial(item.toUpperCase()) == null) {
 			if(item.contains(";")) { 
@@ -34,7 +34,7 @@ public class ItemAPI {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public ItemStack createAndGetItemStack(String p, String item) {
+	public ItemStack createItem(String p, String item) {
 		ItemStack i = null;
 		if (Material.getMaterial(item.toUpperCase()) == null) {
 			if(item.contains(";")) { 

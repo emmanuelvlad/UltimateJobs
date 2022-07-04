@@ -42,13 +42,13 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 			Collection<String> jobs = jb.getCurrentJobs();
 			if (pr.contains("job_current_name")) {
 				String[] split = pr.split("_");
-				Integer which = Integer.valueOf(split[3]) - 1;
+				String internal = split[3];
 
 				if (jobs.size() != 0) {
 
-					if (jobs.size() >= Integer.valueOf(split[3])) {
+					if (jobs.contains(internal.toUpperCase())) {
 
-						Job job = plugin.getJobCache().get(jb.getCurrentJobs().get(which));
+						Job job = plugin.getJobCache().get(internal.toUpperCase());
 						return job.getDisplay(UUID);
 
 					} else {
@@ -59,12 +59,13 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 				}
 			} else if (pr.contains("job_current_level")) {
 				String[] split = pr.split("_");
-				Integer which = Integer.valueOf(split[3]) - 1;
+				String internal = split[3];
 
 				if (jobs.size() != 0) {
 
-					if (jobs.size() >= Integer.valueOf(split[3])) {
-						return ""+jb.getStatsOf(jb.getCurrentJobs().get(which)).getLevel();
+					if (jobs.contains(internal.toUpperCase())) {
+ 
+						return ""+jb.getStatsOf(internal.toUpperCase()).getLevel();
 					} else {
 						return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_level");
 					}
@@ -73,15 +74,32 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 				}
 			} else if (pr.contains("job_current_exp")) {
 				String[] split = pr.split("_");
-				Integer which = Integer.valueOf(split[3]) - 1;
+				String internal = split[3];
 				if (jobs.size() != 0) {
-					if (jobs.size() >= Integer.valueOf(split[3])) {
-						return ""+jb.getStatsOf(jb.getCurrentJobs().get(which)).getExp();
+					if (jobs.contains(internal.toUpperCase())) {
+ 
+						return ""+jb.getStatsOf(internal.toUpperCase()).getExp();
 					} else {
 						return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_exp");
 					}
 				} else {
 					return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_exp");
+				}
+			}  else if (pr.contains("job_current_levelname")) {
+				String[] split = pr.split("_");
+				String internal = split[3];
+
+				if (jobs.size() != 0) {
+
+					if (jobs.contains(internal.toUpperCase())) {
+						Job job = plugin.getJobCache().get(internal.toUpperCase());
+						int lvl = jb.getStatsOf(internal.toUpperCase()).getLevel();
+						return job.getLevelDisplay(lvl, UUID);
+					} else {
+						return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_levelname");
+					}
+				} else {
+					return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_levelname");
 				}
 			}
 

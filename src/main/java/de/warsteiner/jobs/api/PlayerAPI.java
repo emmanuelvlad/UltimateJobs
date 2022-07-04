@@ -90,7 +90,32 @@ public class PlayerAPI {
 	public boolean existInCacheByUUID(String uuid) {
 		return this.players.contains(uuid);
 	}
+	
+	public void updateSalary(String UUID, double d) {
+		if (existInCacheByUUID(UUID)) {
+			getCacheJobPlayers().get(UUID).updateSalary(d);
+		} else {
+			plugin.getPlayerDataAPI().updateSalary(UUID, d);
+		}
+	}
+	
 
+	public double getSalary(String uuid) {
+		if (existInCacheByUUID(uuid)) {
+			return getCacheJobPlayers().get(uuid).getSalary();
+		} else {
+			return plugin.getPlayerDataAPI().getSalary(uuid);
+		}
+	}
+
+	public void updateDateJoinedOfJob(String UUID, String job, String date) {
+		if (existInCacheByUUID(UUID)) {
+			getCacheJobPlayers().get(UUID).getStatsOf(job).updateJoinedDate(date);
+		} else {
+			plugin.getPlayerDataAPI().updateDateJoinedOfJob(UUID, job, date);
+		}
+	}
+	
 	public ArrayList<String> getOwnedJobs(String uuid) {
 		if (existInCacheByUUID(uuid)) {
 			return getCacheJobPlayers().get(uuid).getOwnJobs();
@@ -251,6 +276,7 @@ public class PlayerAPI {
 		double exp = plm.getExpOf("" + UUID, job);
 		String date = plm.getDateOf("" + UUID, job);
 		int broken = plm.getBrokenOf("" + UUID, job);
+		String joined = plm.getJobDateJoined(""+UUID, job); 
 
 		HashMap<String, Double> listedofearned = new HashMap<String, Double>();
 		for (int i = 0; i != plugin.getFileManager().getConfig().getInt("LoadEarningsDataOfDays"); i++) {
@@ -288,7 +314,7 @@ public class PlayerAPI {
 
 		}
 
-		JobStats sz = new JobStats(j, j.getConfigID(), exp, level, broken, date, money, broken2, listedofearned);
+		JobStats sz = new JobStats(j, j.getConfigID(), exp, level, broken, date, money, broken2, listedofearned, joined);
 
 		plugin.getPlayerAPI().getRealJobPlayer("" + UUID).getStatsList().put(date, sz);
 
@@ -307,6 +333,9 @@ public class PlayerAPI {
 
 			ArrayList<String> owned = plm.getOwnedJobs("" + UUID);
 			ArrayList<String> current = plm.getCurrentJobs("" + UUID);
+			
+			double sal = plm.getSalary(""+UUID);
+			String sat = plm.getSalaryDate(""+UUID);
 
 			HashMap<String, JobStats> stats = new HashMap<String, JobStats>();
 
@@ -318,7 +347,8 @@ public class PlayerAPI {
 				double exp = plm.getExpOf("" + UUID, loading);
 				String date = plm.getDateOf("" + UUID, loading);
 				int broken = plm.getBrokenOf("" + UUID, loading);
-
+				String joined = plm.getJobDateJoined(""+UUID, loading); 
+				
 				HashMap<String, Double> listedofearned = new HashMap<String, Double>();
 				
 				for (int i = 0; i != plugin.getFileManager().getConfig().getInt("LoadEarningsDataOfDays"); i++) {
@@ -357,7 +387,7 @@ public class PlayerAPI {
 				}
 
 				JobStats sz = new JobStats(j, j.getConfigID(), exp, level, broken, date, money, broken2,
-						listedofearned);
+						listedofearned, joined);
 
 				stats.put(loading, sz);
 			}
@@ -374,7 +404,7 @@ public class PlayerAPI {
 
 			JobsPlayer jp = new JobsPlayer(name, current, owned, plm.getPoints("" + UUID),
 
-					plm.getMaxJobs("" + UUID), "" + UUID, UUID, langusged, stats);
+					plm.getMaxJobs("" + UUID), "" + UUID, UUID, langusged, stats, sal, sat);
 
 			pllist.put("" + UUID, jp);
 			players.add("" + UUID);
@@ -395,6 +425,7 @@ public class PlayerAPI {
 				double exp = plm.getExpOf("" + UUID, j);
 				String date = plm.getDateOf("" + UUID, j);
 				int broken = plm.getBrokenOf("" + UUID, j);
+				String joined = plm.getJobDateJoined(""+UUID, j); 
 
 				HashMap<String, Double> listedofearned = new HashMap<String, Double>();
 				for (int i = 0; i != plugin.getFileManager().getConfig().getInt("LoadEarningsDataOfDays"); i++) {
@@ -433,7 +464,7 @@ public class PlayerAPI {
 				}
 
 				JobStats sz = new JobStats(real, real.getConfigID(), exp, level, broken, date, money, broken2,
-						listedofearned);
+						listedofearned, joined);
 
 				pl.getStatsList().put(real.getConfigID(), sz);
 

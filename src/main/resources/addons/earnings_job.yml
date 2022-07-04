@@ -20,7 +20,7 @@
 #
 
 Enabled: true
-
+ 
 #
 # Do you want to show earning-dates when its 0?
 # "false" = it is shown
@@ -34,8 +34,10 @@ HideWhenEarningsIsZero: true
 #
 HowManyDays: 30
 
+#Name of the GUI
 Job_Earnings_Name: "{language:Job_Earnings_Name}"
 
+#Size of the GUI
 Job_Earnings_Size: 6
 
 #where are the items displayed?
@@ -140,7 +142,8 @@ PageItems:
     Lore: "{language:Job_Earnings_Custom.Next.Lore}"
       
     Slot: 50
- 
+
+#Custom Items Section 
 Job_Earnings_Custom:
 
   List:
@@ -150,12 +153,14 @@ Job_Earnings_Custom:
 
     Display: "{language:Job_Earnings_Custom.Close.Display}"
 
-    Action: "CLOSE"
+    ActionList:
+      - "CLOSE"
 
     Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
 
     Slot: 49
- 
+
+#Placeholders of the GUI 
 Job_Earnings_Place:
   - "BLACK_STAINED_GLASS_PANE:45:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:46:&8-/-"

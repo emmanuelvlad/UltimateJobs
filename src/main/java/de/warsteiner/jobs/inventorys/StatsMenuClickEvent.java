@@ -43,11 +43,12 @@ public class StatsMenuClickEvent implements Listener {
 		
 		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(""+p.getUniqueId());
 
-		if (title.equalsIgnoreCase( plugin.getPluginManager().toHex( jb.getLanguage().getStringFromPath(p.getUniqueId(), config.getString("Self_Name")).replaceAll("&", "§")))) { 
-			plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Self_Custom", config);
+		if (plugin.getGUIOpenManager().isStatsMenuOpendSelf(p, title) != null) { 
+			plugin.getClickManager().executeCustomItem(null, display, p, "Self_Custom", config, null);
 			e.setCancelled(true);
-		} else if(plugin.getGUIAddonManager().isStatsGUI(title, p.getUniqueId())) {
-			plugin.getClickManager().executeCustomItemInSubMenu(null, display, p, "Other_Custom", config);
+		} else if(plugin.getGUIOpenManager().isStatsMenuOpendAboutPlayer(p, title) != null) {
+			 
+			plugin.getClickManager().executeCustomItem(null, display, p, "Other_Custom", config, plugin.getGUI().getGUIsDetails().get(jb.getUUIDAsString()));
 			e.setCancelled(true);
 		}
 

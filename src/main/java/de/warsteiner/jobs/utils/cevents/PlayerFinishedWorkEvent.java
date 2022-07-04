@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -11,7 +12,7 @@ import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.utils.JobAction;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
-public class PlayerFinishedWorkEvent  extends Event {
+public class PlayerFinishedWorkEvent  extends Event  {
 
 	private static HandlerList list = new HandlerList();
 
@@ -20,7 +21,7 @@ public class PlayerFinishedWorkEvent  extends Event {
 	public Job job;
 	public String ID;
 	public Player player; 
-	public JobAction ac;
+	public JobAction ac; 
 	
 	public PlayerFinishedWorkEvent(Player player, JobsPlayer plt, Job job, String id, JobAction ac) { 
 		this.pl = plt; 
@@ -58,4 +59,5 @@ public class PlayerFinishedWorkEvent  extends Event {
 	public static HandlerList getHandlerList() {
 		return list;
 	}
+ 
 }

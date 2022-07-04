@@ -104,12 +104,14 @@ public class BossBarHandler {
 			double one = max * p;
 
 			if (one >= 1.0) {
-				use = 1;
-			} else {
+				use = 1.0;
+			} else if(one <= 0.0) { 
+				use = 0.1;
+			}else {
 				use = one;
 			}
 		} else {
-			use = 1.0;
+			use = 0.9;
 		}
 		return use;
 	}

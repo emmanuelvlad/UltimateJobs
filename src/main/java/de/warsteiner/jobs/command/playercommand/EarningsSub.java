@@ -1,6 +1,5 @@
 package de.warsteiner.jobs.command.playercommand;
-
-import java.util.ArrayList;
+ 
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;

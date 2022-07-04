@@ -53,6 +53,14 @@ public class Job {
 		worlds = cfg.getStringList("Worlds");  
 		file = f;
 	}
+	
+	public int getModelData() {
+		return cf.getInt("CustomModelData");
+	}
+	
+	public boolean hasModelData() {
+		return cf.contains("CustomModelData");
+	}
  
 	public void save() {
 		try {
@@ -161,59 +169,7 @@ public class Job {
 	public List<String> getCommands(int level) {
 		return cf.getStringList("LEVELS." + level + ".Commands");
 	} 
-	
-	public boolean hasByPassNotQuestCon() {
-		return cf.contains("BypassNotQuestCond");
-	}
-	
-	public List<String> getByPassNotQuestCon() {
-		return cf.getStringList("BypassNotQuestCond");
-	}
-	
-	public boolean hasNotQuestCon() {
-		return cf.contains("ReqNotQuestCond");
-	}
  
-	public List<String> getNotQuestCon() {
-		return cf.getStringList("ReqNotQuestCond");
-	}
-	
-	public List<String> getNotQuestConLore(String UUID) {
-		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(UUID);
-		
-		List<String> result =jb.getLanguage().getListFromPath(jb.getUUID(), cf.getString("ReqNotQuestCondLore"));
-		
-		if(result == null) {
-			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> NotQuests Lore");
-		}
- 		
-		return  result;  
-	}
-	
-	public boolean hasAlonsoLevelsReq() {
-		return cf.contains("AlonsoLevelReq");
-	}
-	
-	public int getAlonsoLevelsReq() {
-		return cf.getInt("AlonsoLevelReq");
-	}
-	
-	public List<String> getAlonsoLevelsLore(String UUID) {
-		JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(UUID);
-		
-		List<String> result = jb.getLanguage().getListFromLanguage(jb.getUUID(), cf.getString("AlonsoLevelLore"));
-		
-		if(result == null) {
-			Bukkit.getConsoleSender().sendMessage("§cMissing Option of "+this.getConfigID()+" Job -> AlonsoLevels Lore");
-		}
-		
-		return result; 
-	}
-	
-	public boolean hasBypassAlonsoLevelsReq() {
-		return cf.contains("AlonsoLevelReqBypass");
-	}
-	
 	public boolean hasMaxEarningsPerDay() {
 		return cf.contains("MaxEarnings");
 	}
@@ -221,11 +177,7 @@ public class Job {
 	public double getMaxEarningsPerDay() {
 		return cf.getDouble("MaxEarnings");
 	}
-	
-	public int getBypassAlonsoLevelsReq() {
-		return cf.getInt("AlonsoLevelReqBypass");
-	}
-
+ 
 	public boolean isCommand(int level) {
 		return cf.getStringList("LEVELS." + level + ".Commands") != null;
 	}
@@ -241,6 +193,10 @@ public class Job {
 	
 	public String getIconOfLevel(int level) {
 		return cf.getString("LEVELS." + level + ".Icon");
+	}
+	
+	public String getModelDataOfLevel(int level) {
+		return cf.getString("LEVELS." + level + ".CustomModelData");
 	}
 	
 	public int getCountOfLevels() {

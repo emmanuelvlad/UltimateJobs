@@ -66,7 +66,7 @@ public class LanguageAPI {
 					YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 					if(cfg.contains("prefix")) {
 						String newname = name.replaceAll(".yml", " ").replaceAll(" ", "");
-						Language lg = new Language(newname, cfg, file, cfg.getString("LanguageName"), cfg.getString("LanguageIcon"), cfg.getString("LanguageDisplay"));
+						Language lg = new Language(newname, cfg, file, cfg.getString("LanguageName"), cfg.getString("LanguageIcon"), cfg.getString("LanguageDisplay"),cfg.getInt("CustomModelData") );
 						
 						if(cfg.getBoolean("LanguageEnabled")) {
 							arraylangs.add(lg);

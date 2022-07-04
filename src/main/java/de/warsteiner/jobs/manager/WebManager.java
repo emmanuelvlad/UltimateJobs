@@ -1,24 +1,17 @@
 package de.warsteiner.jobs.manager;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+ 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.File; 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.InputStreamReader; 
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
+import java.net.URLConnection; 
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.ArrayList; 
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

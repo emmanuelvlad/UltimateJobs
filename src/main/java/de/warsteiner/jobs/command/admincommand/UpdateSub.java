@@ -1,10 +1,8 @@
 package de.warsteiner.jobs.command.admincommand;
-
-import org.bukkit.Bukkit;
+ 
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.entity.Player; 
  
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.command.AdminCommand;

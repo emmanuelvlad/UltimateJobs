@@ -10,10 +10,13 @@
 #| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
 # '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 
+#Name of the GUI
 Settings_Name: "{language:Settings_Name}"
-
+ 
+#Size of the GUI
 Settings_Size: 5
 
+#Custom Items Section
 Settings_Custom:
 
   List:
@@ -28,7 +31,8 @@ Settings_Custom:
 
     Display: "{language:Settings_Custom.Skull.Display}"
 
-    Action: "NOTHING"
+    ActionList:
+      - "NONE"
 
     Material: "name;<name>"
     
@@ -40,7 +44,8 @@ Settings_Custom:
 
     Display: "{language:Settings_Custom.Close.Display}"
 
-    Action: "CLOSE"
+    ActionList:
+      - "CLOSE"
 
     Material: "url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654"
 
@@ -50,7 +55,8 @@ Settings_Custom:
 
     Display: "{language:Settings_Custom.Leave.Display}"
 
-    Action: "LEAVE"
+    ActionList:
+      - "LEAVE"
 
     Material: "REDSTONE"
 
@@ -60,10 +66,9 @@ Settings_Custom:
 
     Display: "{language:Settings_Custom.Earnings.Display}"
 
-    Action: "COMMAND"
-
-    Command: "jobs earnings <job>"
-
+    ActionList:
+      - "GUI:EARNINGS_ALL"
+ 
     Lore: "{language:Settings_Custom.Earnings.Lore}"
 
     Material: "EMERALD"
@@ -74,9 +79,8 @@ Settings_Custom:
 
     Display: "{language:Settings_Custom.MoneyList.Display}"
 
-    Action: "COMMAND"
-
-    Command: "jobs rewards <job>"
+    ActionList:
+      - "GUI:REWARDS"
 
     Lore: "{language:Settings_Custom.MoneyList.Lore}"
 
@@ -88,7 +92,8 @@ Settings_Custom:
 
     Display: "{language:Settings_Custom.Back.Display}"
 
-    Action: "BACK"
+    ActionList:
+      - "GUI:MAIN"
 
     Lore: "{language:Settings_Custom.Back.Lore}"
 
@@ -96,6 +101,7 @@ Settings_Custom:
 
     Slot: 39
 
+#Placeholders of the GUI
 Settings_Place:
   - "BLACK_STAINED_GLASS_PANE:0:&8-/-"
   - "BLACK_STAINED_GLASS_PANE:1:&8-/-"

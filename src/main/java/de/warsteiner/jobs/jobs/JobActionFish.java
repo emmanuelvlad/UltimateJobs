@@ -15,5 +15,5 @@ public class JobActionFish implements Listener {
 	public void onEvent(PlayerFishEvent event) {
 		plugin.getJobWorkManager().executeFishWork(event);
 	}
-
+	 
 }

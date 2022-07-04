@@ -1,10 +1,10 @@
 package de.warsteiner.jobs.manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -14,10 +14,11 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
- 
+
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
 import de.warsteiner.jobs.api.JobAPI;
+import de.warsteiner.jobs.utils.objects.GUIType;
 import de.warsteiner.jobs.utils.objects.JobStats;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.objects.Language;
@@ -26,21 +27,65 @@ import de.warsteiner.jobs.utils.objects.UpdateTypes;
 public class GuiManager {
 
 	private UltimateJobs plugin;
-	private JobAPI api = UltimateJobs.getPlugin().getAPI(); 
+	private JobAPI api = UltimateJobs.getPlugin().getAPI();
 
 	public GuiManager(UltimateJobs plugin) {
 		this.plugin = plugin;
 	}
-	
-	public void openInventory(Player player, int size, String name) {
-		final Inventory inv = Bukkit.createInventory(null, size * 9, plugin.getPluginManager().toHex(name).replaceAll("&", "§"));
+
+	private HashMap<String, GUIType> guis = new HashMap<String, GUIType>();
+	private HashMap<String, String> details_about = new HashMap<String, String>();
+	private HashMap<String, Job> details_job = new HashMap<String, Job>();
+
+	public HashMap<String, GUIType> getGUIS() {
+		return guis;
+	}
+
+	public HashMap<String, String> getGUIsDetails() {
+		return details_about;
+	}
+
+	public HashMap<String, Job> getGUIsJobs() {
+		return details_job;
+	}
+
+	public void openInventory(Player player, int size, String name, GUIType id, String about, Job job) {
+		final Inventory inv = Bukkit.createInventory(null, size * 9,
+				plugin.getPluginManager().toHex(name).replaceAll("&", "§"));
+
+		String UUID = "" + player.getUniqueId();
+
+		if (guis.containsKey(UUID)) {
+			guis.remove(UUID);
+		}
+
+		if (details_about.containsKey(UUID)) {
+			details_about.remove(UUID);
+		}
+
+		if (about != null) {
+			details_about.put(UUID, about);
+		}
+
+		if (details_job.containsKey(UUID)) {
+			details_job.remove(UUID);
+		}
+
+		if (job != null) {
+			details_job.put(UUID, job);
+		}
+
+		if (id != null) {
+			guis.put(UUID, id);
+		}
+
 		player.openInventory(inv);
 	}
-	 
+
 	public void openLanguageMenu(Player player, UpdateTypes type) {
 
-		JobsPlayer pp = plugin.getPlayerAPI().getRealJobPlayer(""+player.getUniqueId());
-		
+		JobsPlayer pp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+
 		FileConfiguration cfg = plugin.getFileManager().getLanguageGUIConfig();
 
 		if (type.equals(UpdateTypes.OPEN)) {
@@ -50,17 +95,16 @@ public class GuiManager {
 		int size = cfg.getInt("Size");
 		String name = pp.getLanguage().getStringFromPath(player.getUniqueId(), cfg.getString("Name"));
 
-		openInventory(player, size, plugin.getPluginManager().toHex(name));
+		openInventory(player, size, plugin.getPluginManager().toHex(name), GUIType.LANGUAGE, null, null);
 
 		InventoryView inv = player.getOpenInventory();
 
 		plugin.getExecutor().execute(() -> {
 
 			setPlaceHolders(player, inv, cfg.getStringList("Place"), name);
- 
-			setCustomitems(player, player.getName(), inv, "Custom.", cfg.getStringList("Custom.List"), name,
-					cfg, null);
-			
+
+			setCustomitems(player, player.getName(), inv, "Custom.", cfg.getStringList("Custom.List"), name, cfg, null);
+
 			setLanguageItems(player, inv, cfg);
 		});
 
@@ -68,7 +112,7 @@ public class GuiManager {
 
 	public void setLanguageItems(Player player, InventoryView inv, FileConfiguration cfg) {
 		plugin.getExecutor().execute(() -> {
-		 
+
 			ArrayList<Language> langs = plugin.getLanguageAPI().getLoadedLanguagesAsArray();
 
 			List<String> li = cfg.getStringList("LangItems.Slots");
@@ -79,7 +123,7 @@ public class GuiManager {
 				String mat = lang.getIcon();
 				String dis = lang.getDisplay();
 
-				ItemStack item = plugin.getItemAPI().createAndGetItemStack(player, mat);
+				ItemStack item = plugin.getItemAPI().createItem(player, mat);
 
 				if (item != null) {
 
@@ -90,7 +134,7 @@ public class GuiManager {
 					List<String> lore = null;
 
 					if (lang.getName().equalsIgnoreCase(plugin.getPlayerAPI()
-							.getRealJobPlayer(""+player.getUniqueId()).getLanguage().getName())) {
+							.getRealJobPlayer("" + player.getUniqueId()).getLanguage().getName())) {
 						lore = lang.getConfig().getStringList("LanguageChoosenLore");
 					} else {
 						lore = lang.getConfig().getStringList("LanguageCanChoose");
@@ -101,6 +145,8 @@ public class GuiManager {
 					for (String line : lore) {
 						newlore.add(plugin.getPluginManager().toHex(line));
 					}
+
+					meta.setCustomModelData(lang.getModelData());
 
 					meta.setLore(newlore);
 
@@ -114,38 +160,6 @@ public class GuiManager {
 		});
 	}
 
-	public Job isSettingsGUI(String menu, String UUID) {
-		FileConfiguration cfg = plugin.getFileManager().getSettings();
-		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(UUID);
-
-		for (String list : plugin.getLoaded()) {
-			Job j = plugin.getJobCache().get(list);
-			String dis = j.getDisplay(UUID);
-			String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
-			String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
-
-			if (plugin.getPluginManager().toHex(menu.replaceAll("<job>", dis)).equalsIgnoreCase(plugin.getPluginManager().toHex(fin.replaceAll("<job>", dis))))
-				return j;
-		}
-		return null;
-	}
-
-	public boolean isSettingsGUITitle(String menu, String UUID) {
-		FileConfiguration cfg = plugin.getFileManager().getSettings();
-		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(UUID);
-
-		for (String list : plugin.getLoaded()) {
-			Job j = plugin.getJobCache().get(list);
-			String dis = j.getDisplay(UUID);
-			String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
-			String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
-
-			if (plugin.getPluginManager().toHex(menu.replaceAll("<job>", dis)).equalsIgnoreCase(plugin.getPluginManager().toHex(fin.replaceAll("<job>", dis))))
-				return true;
-		}
-		return false;
-	}
-
 	public void createHelpGUI(Player player, UpdateTypes t) {
 		FileConfiguration cfg = plugin.getFileManager().getHelpSettings();
 		String UUID = "" + player.getUniqueId();
@@ -153,7 +167,7 @@ public class GuiManager {
 		String name = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Help_Name"));
 		int size = cfg.getInt("Help_Size");
 
-		openInventory(player, size, name);
+		openInventory(player, size, name, GUIType.HELP, null, null);
 
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_HELP_GUI", player);
@@ -175,7 +189,7 @@ public class GuiManager {
 				.replaceAll("<job>", job.getDisplay("" + player.getUniqueId()));
 		int size = cfg.getInt("AreYouSureGUI_Size");
 
-		openInventory(player, size, name);
+		openInventory(player, size, name, GUIType.CONFIRM, null, job);
 
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_SURE_GUI", player);
@@ -195,60 +209,74 @@ public class GuiManager {
 			JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer(UUID);
 			if (player != null) {
 
-				ItemStack item = plugin.getItemAPI().createAndGetItemStack(player, cfg.getString("AreYouSureItems.Button_YES.Icon"));
+				if (cfg.getBoolean("AreYouSureItems.Button_YES.Show")) {
 
-				String dis = plugin.getPluginManager()
-						.toHex(sp.getLanguage().getStringFromPath(sp.getUUID(),
-								cfg.getString("AreYouSureItems.Button_YES.Display")))
-						.replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
-				int slot = cfg.getInt("AreYouSureItems.Button_YES.Slot");
-				List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
-						cfg.getString("AreYouSureItems.Button_YES.Lore"));
-				ArrayList<String> l = new ArrayList<String>();
+					ItemStack item = plugin.getItemAPI().createItem(player,
+							cfg.getString("AreYouSureItems.Button_YES.Icon"));
 
-				ItemMeta meta = item.getItemMeta();
+					String dis = plugin.getPluginManager()
+							.toHex(sp.getLanguage().getStringFromPath(sp.getUUID(),
+									cfg.getString("AreYouSureItems.Button_YES.Display")))
+							.replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
+					int slot = cfg.getInt("AreYouSureItems.Button_YES.Slot");
+					List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
+							cfg.getString("AreYouSureItems.Button_YES.Lore"));
+					ArrayList<String> l = new ArrayList<String>();
 
-				for (String line : lore) {
-					l.add(plugin.getPluginManager().toHex(line).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§"));
+					ItemMeta meta = item.getItemMeta();
+
+					for (String line : lore) {
+						l.add(plugin.getPluginManager().toHex(line).replaceAll("<job>", job.getDisplay(UUID))
+								.replaceAll("&", "§"));
+					}
+
+					if (cfg.contains("AreYouSureItems.Button_YES.CustomModelData")) {
+						meta.setCustomModelData(cfg.getInt("AreYouSureItems.Button_YES.CustomModelData"));
+					}
+
+					meta.setDisplayName(dis);
+
+					meta.setLore(l);
+
+					item.setItemMeta(meta);
+
+					inv.setItem(slot, item);
 				}
-
-				meta.setDisplayName(dis);
-
-				meta.setLore(l);
-
-				item.setItemMeta(meta);
-
-				inv.setItem(slot, item);
-
 			}
 
 			if (player != null) {
+				if (cfg.getBoolean("AreYouSureItems.Button_NO.Show")) {
+					ItemStack item = plugin.getItemAPI().createItem(player,
+							cfg.getString("AreYouSureItems.Button_NO.Icon"));
 
-				ItemStack item = plugin.getItemAPI().createAndGetItemStack(player, cfg.getString("AreYouSureItems.Button_NO.Icon"));
+					String dis = plugin.getPluginManager()
+							.toHex(sp.getLanguage().getStringFromPath(sp.getUUID(),
+									cfg.getString("AreYouSureItems.Button_NO.Display")))
+							.replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
+					int slot = cfg.getInt("AreYouSureItems.Button_NO.Slot");
+					List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
+							cfg.getString("AreYouSureItems.Button_NO.Lore"));
+					ArrayList<String> l = new ArrayList<String>();
 
-				String dis = plugin.getPluginManager()
-						.toHex(sp.getLanguage().getStringFromPath(sp.getUUID(),
-								cfg.getString("AreYouSureItems.Button_NO.Display")))
-						.replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§");
-				int slot = cfg.getInt("AreYouSureItems.Button_NO.Slot");
-				List<String> lore = sp.getLanguage().getListFromPath(sp.getUUID(),
-						cfg.getString("AreYouSureItems.Button_NO.Lore"));
-				ArrayList<String> l = new ArrayList<String>();
+					ItemMeta meta = item.getItemMeta();
 
-				ItemMeta meta = item.getItemMeta();
+					for (String line : lore) {
+						l.add(plugin.getPluginManager().toHex(line).replaceAll("<job>", job.getDisplay(UUID))
+								.replaceAll("&", "§"));
+					}
 
-				for (String line : lore) {
-					l.add(plugin.getPluginManager().toHex(line).replaceAll("<job>", job.getDisplay(UUID)).replaceAll("&", "§"));
+					if (cfg.contains("AreYouSureItems.Button_NO.CustomModelData")) {
+						meta.setCustomModelData(cfg.getInt("AreYouSureItems.Button_NO.CustomModelData"));
+					}
+
+					meta.setDisplayName(dis);
+
+					meta.setLore(l);
+
+					item.setItemMeta(meta);
+
+					inv.setItem(slot, item);
 				}
-
-				meta.setDisplayName(dis);
-
-				meta.setLore(l);
-
-				item.setItemMeta(meta);
-
-				inv.setItem(slot, item);
-
 			}
 
 		});
@@ -260,7 +288,7 @@ public class GuiManager {
 		String name = sp.getLanguage().getStringFromPath(player.getUniqueId(), cfg.getString("Main_Name"));
 		int size = cfg.getInt("Main_Size");
 
-		openInventory(player, size, name);
+		openInventory(player, size, name, GUIType.MAIN, null, null);
 
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_MAIN", player);
@@ -291,7 +319,7 @@ public class GuiManager {
 		String name = named.replaceAll("<job>", dis);
 		int size = cfg.getInt("Settings_Size");
 
-		openInventory(player, size, name);
+		openInventory(player, size, name, GUIType.SETTINGS, null, job);
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_SETTINGS", player);
 		}
@@ -328,7 +356,7 @@ public class GuiManager {
 
 					inv.setItem(slot, null);
 
-					ItemStack item = plugin.getItemAPI().createAndGetItemStack(player, mat);
+					ItemStack item = plugin.getItemAPI().createItem(player, mat);
 					ItemMeta meta = item.getItemMeta();
 					meta.setDisplayName(display.replaceAll("&", "§"));
 
@@ -383,6 +411,7 @@ public class GuiManager {
 						String lvl = j.getLevelDisplay(level, UUID);
 						String usedlvl = "";
 						Integer broken = statsjob.getBrokenTimes();
+						String joined = statsjob.getJoinedDate();
 
 						if (j.getStatsMessage(UUID) != null) {
 
@@ -399,15 +428,17 @@ public class GuiManager {
 
 							for (String l : j.getStatsMessage(UUID)) {
 
-								filore.add(plugin.getPluginManager().toHex(l).replaceAll("<stats_args_4>", usedlvl).replace("<earned>",
-										"" + api.Format(plugin.getPlayerAPI().getEarnedAt("" + player.getUniqueId(),
-												j, plugin.getDate())))
+								filore.add(plugin.getPluginManager().toHex(l).replaceAll("<stats_args_4>", usedlvl)
+										.replace("<earned>",
+												"" + api.Format(plugin.getPlayerAPI()
+														.getEarnedAt("" + player.getUniqueId(), j, plugin.getDate())))
 										.replaceAll("<stats_args_3>", "" + level)
 										.replaceAll("<stats_args_2>", "" + broken)
 										.replaceAll("<stats_args_6>",
 												"" + api.Format(plugin.getLevelAPI().getJobNeedExp(j, sp)))
 										.replaceAll("<stats_args_5>", "" + api.Format(exp))
-										.replaceAll("<stats_args_1>", "" + usedbuy).replaceAll("&", "§"));
+										.replaceAll("<stats_args_1>", "" + usedbuy).replaceAll("<joined>", joined)
+										.replaceAll("&", "§"));
 							}
 						}
 
@@ -416,10 +447,16 @@ public class GuiManager {
 					if (see != null) {
 						for (String l : see) {
 
-							filore.add(plugin.getPluginManager().toHex(l).replaceAll("<price>", "" + price).replaceAll("&", "§"));
+							filore.add(plugin.getPluginManager().toHex(l).replaceAll("<price>", "" + price)
+									.replaceAll("&", "§"));
 
 						}
 					}
+
+					if (j.hasModelData()) {
+						meta.setCustomModelData(j.getModelData());
+					}
+
 					meta.setLore(filore);
 
 					item.setItemMeta(meta);
@@ -448,7 +485,7 @@ public class GuiManager {
 						String mat = cfg.getString(prefix + pl + ".Material");
 						int slot = cfg.getInt(prefix + pl + ".Slot");
 
-						ItemStack item = plugin.getItemAPI().createAndGetItemStack(player, mat);
+						ItemStack item = plugin.getItemAPI().createItem(player, mat);
 						ItemMeta meta = item.getItemMeta();
 
 						meta.setDisplayName(sp.getLanguage().getStringFromPath(sp.getUUID(), display));
@@ -491,7 +528,9 @@ public class GuiManager {
 
 										for (String l : lore) {
 
-											filore.add(plugin.getPluginManager().toHex(l).replaceAll("<stats_args_4>", usedlvl)
+											filore.add(plugin.getPluginManager().toHex(l)
+													.replaceAll("<salary>", plugin.getAPI().Format(sp.getSalary()))
+													.replaceAll("<stats_args_4>", usedlvl)
 													.replace("<earned>",
 															"" + api.Format(plugin.getPlayerDataAPI().getEarnedAt(
 																	"" + player.getUniqueId(), job.getConfigID(),
@@ -510,13 +549,20 @@ public class GuiManager {
 								}
 							} else {
 								for (String l : lore) {
-									filore.add(plugin.getPluginManager().toHex(l).replaceAll("<points>", "" + api.Format(sp.getPoints()))
+									filore.add(plugin.getPluginManager().toHex(l)
+											.replaceAll("<salary>", plugin.getAPI().Format(sp.getSalary()))
+											.replaceAll("<points>", "" + api.Format(sp.getPoints()))
 											.replaceAll("<max>", "" + max).replaceAll("&", "§"));
 								}
 							}
 
 							meta.setLore(filore);
 						}
+
+						if (cfg.contains(prefix + pl + ".CustomModelData")) {
+							meta.setCustomModelData(cfg.getInt(prefix + pl + ".CustomModelData"));
+						}
+
 						item.setItemMeta(meta);
 
 						inv.setItem(slot, item);
@@ -542,9 +588,16 @@ public class GuiManager {
 					int slot = Integer.valueOf(t[1]).intValue();
 					String display = t[2];
 
-					ItemStack item = plugin.getItemAPI().createAndGetItemStack(player, mat);
+					ItemStack item = plugin.getItemAPI().createItem(player, mat);
 					ItemMeta meta = item.getItemMeta();
 					meta.setDisplayName(plugin.getPluginManager().toHex(display.replaceAll("&", "§")));
+
+					if (t.length == 4) {
+
+						meta.setCustomModelData(Integer.valueOf(t[3]));
+
+					}
+
 					item.setItemMeta(meta);
 
 					inv_view.setItem(slot, item);

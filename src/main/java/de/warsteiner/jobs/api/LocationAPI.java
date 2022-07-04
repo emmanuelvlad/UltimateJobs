@@ -18,7 +18,7 @@ public class LocationAPI {
 		cfg.set(name + ".y", loc.getY());
 		cfg.set(name + ".z", loc.getZ());
         cfg.set(name + ".yaw", loc.getYaw());
-        cfg.set(name + ".pitch", loc.getPitch());
+        cfg.set(name + ".pitch", loc.getPitch()); 
 		
 		file.save();
 	}
