@@ -111,7 +111,7 @@ Levels:
 #config of reward messages & max earings
 Reward:
 
-  BossBar: "&a+ &7<money> Dollars from <id> &8(&4<action>&8)"
+  BossBar: "&a+ &7<money> Dollars from <id> &8(&4<action>&8, &b<amount>x&8)"
   
   Message: "<prefix> &7Added <money>  Dollars as Reward from <id>&7! &8(&4<action>&8)"
   
@@ -825,21 +825,21 @@ Other_Custom:
  
 Jobs:
 
-  TNTJOB:
+  DRINK:
   
-    Display: "&4TNT Job"
+    Display: "&aDrink Potion Job"
     
-    DisplayID: "tnt"
+    DisplayID: "drink-potion"
     
     Lore:
-      - "&7Earn Money by letting some blocks explode!"
+      - "&7Earn Money by drinking some Potions!"
     
     Stats:
       - "&7"
       - "&aStats&8:"
       - "&7Bought on &8: &b<stats_args_1>"
-      - "&7Joined Date&8: &a&l<joined>"
-      - "&7TNTs &8: &b<stats_args_2>" 
+      - "&7Joined &8: &a&l<joined>"
+      - "&7Times &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
@@ -847,7 +847,7 @@ Jobs:
 
     StatsGUI:
     
-       Display: "&8< | &4TNT Job &8| >"
+       Display: "&8< | &aDrink Potion Job &8| >"
        
        Lore:
 
@@ -855,7 +855,7 @@ Jobs:
            - "&7<name>'s Stats in this Job&8:"
            - "&8&m--------------------------"
            - "&7Bought on &8: &b<stats_args_1>"
-           - "&7TNTs &8: &b<stats_args_2>" 
+           - "&7Times &8: &b<stats_args_2>" 
            - "&7Earned Today&8: &a<earned> Dollars"
            - "&7" 
            - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
@@ -865,7 +865,7 @@ Jobs:
            - "&7Your Stats in this Job&8:"
            - "&8&m--------------------------" 
            - "&7Bought on &8: &b<stats_args_1>"
-           - "&7TNTs &8: &b<stats_args_2>" 
+           - "&7Times &8: &b<stats_args_2>" 
            - "&7Earned Today&8: &a<earned> Dollars"
            - "&7" 
            - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
@@ -899,13 +899,13 @@ Jobs:
       
     IDS:
 
-      I1:
+      SPEED3:
       
-        Display: "&4TNT Explosion"
+        Display: "&f&lSpeed III"
         
         Rewards:
         
-          Display: "&8< &4TNT Explosion &8>"
+          Display: "&8< &f&lSpeed III &8>"
           
           Lore:
             - "&8-----------"
@@ -915,9 +915,457 @@ Jobs:
             - "&7Points &8: &6<points>"
             - "&7Action &8: &4<action>"
             - "&7" 
-            - "&7TNTs &8: &6<times>"
+            - "&7Times &8: &6<times>"
             - "&7Earned Money &8: &a<earned> Dollars"
 
+      SPEED2:
+      
+        Display: "&f&lSpeed II"
+        
+        Rewards:
+        
+          Display: "&8< &f&lSpeed II &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Times &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+      SPEED1:
+      
+        Display: "&f&lSpeed I"
+        
+        Rewards:
+        
+          Display: "&8< &f&lSpeed I &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Times &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+  ENCHANTER:
+  
+    Display: "&cEnchanter Job"
+    
+    DisplayID: "enchanter"
+    
+    Lore:
+      - "&7Earn Money by enchanting some Items!"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Joined &8: &a&l<joined>"
+      - "&7Enchanted &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &cEnchanter Job &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Enchanted &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Your Stats in this Job&8:"
+           - "&8&m--------------------------" 
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Enchanted &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a250 Money"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a500 Money"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a1000 Money"
+      
+    IDS:
+
+      SHARPNESS3:
+      
+        Display: "&f&lSharpness III"
+        
+        Rewards:
+        
+          Display: "&8< &f&lSharpness III &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Enchanted &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+      SHARPNESS2:
+      
+        Display: "&f&lSharpness II"
+        
+        Rewards:
+        
+          Display: "&8< &f&lSharpness II &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Enchanted &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+      SHARPNESS1:
+      
+        Display: "&f&lSharpness I"
+        
+        Rewards:
+        
+          Display: "&8< &f&lSharpness I &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Enchanted &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+  EXPLORE:
+  
+    Display: "&aExplore Job"
+    
+    DisplayID: "explore"
+    
+    Lore:
+      - "&7Earn Money by going to some Chunks!"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Joined &8: &a&l<joined>"
+      - "&7Chunks &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &aExplore Job &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Chunks &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Your Stats in this Job&8:"
+           - "&8&m--------------------------" 
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Chunks &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a250 Money"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a500 Money"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a1000 Money"
+      
+    IDS:
+
+      CHUNK:
+      
+        Display: "&fChunk"
+        
+        Rewards:
+        
+          Display: "&8< &fChunk &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Chunks &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+  SMELT:
+  
+    Display: "&fSmelt Job"
+    
+    DisplayID: "smelt"
+    
+    Lore:
+      - "&7Earn Money by smelting some Items!"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Joined &8: &a&l<joined>"
+      - "&7Items &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &fSmelt Job &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Items &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Your Stats in this Job&8:"
+           - "&8&m--------------------------" 
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Items &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a250 Money"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a500 Money"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a1000 Money"
+      
+    IDS:
+
+      IRON_INGOT:
+      
+        Display: "&fIron"
+        
+        Rewards:
+        
+          Display: "&8< &fIron &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Times &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+  TREASURE:
+  
+    Display: "&6Find Treasures Job"
+    
+    DisplayID: "treasures"
+    
+    Lore:
+      - "&7Earn Money by finding some old Chests!"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Joined Date&8: &a&l<joined>"
+      - "&7Chests Found &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &6Find Treasures Job &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Chests Found &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Your Stats in this Job&8:"
+           - "&8&m--------------------------" 
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Chests Found &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a250 Money"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a500 Money"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a1000 Money"
+      
+    IDS:
+
+      C:
+      
+        Display: "&6&lBuried Treasure Chest"
+        
+        Rewards:
+        
+          Display: "&8< &6&lBuried Treasure Chest &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Chests found &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+            
   KILLBOW:
   
     Display: "&4Kill By Bow"
@@ -2633,6 +3081,139 @@ Jobs:
             - "&7"
             - "&7Times Broken &8: &6<times> Blocks"
             - "&7Earned Money &8: &a<earned> Dollars"
+
+
+  FARMBREAK:
+  
+    Display: "&aFarmer (Break)"
+    
+    DisplayID: "farmer_break"
+    
+    Lore:
+      - "&7Earn Money when breaking grown Food!"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Joined Date&8: &a&l<joined>"
+      - "&7Broken Seeds &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &aFarmer (break) &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Broken Seeds &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Your Stats in this Job&8:"
+           - "&8&m--------------------------" 
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Broken Seeds &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a250 Money"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a500 Money"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a1000 Money"
+      
+    IDS:
+
+      CARROT:
+      
+        Display: "&cCarrot"
+        
+        Rewards:
+        
+          Display: "&8< &cCarrot &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7"
+            - "&7Times broken &8: &6<times> Blocks"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+      SUGAR_CANE:
+      
+        Display: "&aSugar Cane"
+        
+        Rewards:
+        
+          Display: "&8< &aSugar Cane &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7"
+            - "&7Times broken &8: &6<times> Blocks"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+      WHEAT:
+      
+        Display: "&6Wheat"
+        
+        Rewards:
+        
+          Display: "&8< &6Wheat &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7"
+            - "&7Times broken &8: &6<times> Blocks"
+            - "&7Earned Money &8: &a<earned> Dollars"
+ 
 
   FARMGROW:
   

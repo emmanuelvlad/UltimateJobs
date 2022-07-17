@@ -1069,6 +1069,8 @@ public class PlayerDataAPI {
 
 					updateEarnings(UUID, job, key, value);
 				});
+				
+				plugin.getPlayerChunkAPI().savePlayerChunks(UUID, j);
 
 				int level = stats.getLevel();
 				double exp = stats.getExp();
@@ -1161,6 +1163,8 @@ public class PlayerDataAPI {
 				cfg.set("Jobs." + UUID + "." + job + ".Exp", exp);
 
 				newowned.add(job);
+				
+				plugin.getPlayerChunkAPI().savePlayerChunks(UUID, j);
 
 				for (JobAction action : j.getActionList()) {
 

@@ -1,13 +1,13 @@
 Action:
-  - "TNT" 
+  - "SMELT" 
  
-ID: "TNTJOB"
-
-Material: "TNT"
+ID: "SMELT"
+ 
+Material: "FURNACE"
 
 ColorOfBossBar: "RED"
 
-Slot: 32
+Slot: 37
 
 Price: 350
 
@@ -17,23 +17,22 @@ Worlds:
 
 IDS:
 
-  TNT:
+  SMELT:
     List:
-      - "I1"  
- 
-    I1:
- 
-      Chance: 50
-      ID: "TNT"
-      Money: 50
-      Exp: 1
+      - "IRON_INGOT"  
+
+    IRON_INGOT:
+
+      Chance: 85
+      ID: "IRON_INGOT"
+      Money: 2
+      Exp: 5
       Points: 0.05
-    
       RewardsGUI:
     
         See: true
-        Icon: "TNT"
- 
+        Icon: "IRON_INGOT"
+
 LEVELS:
 
   CountOfLevels: 4

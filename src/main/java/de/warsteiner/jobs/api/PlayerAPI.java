@@ -297,6 +297,8 @@ public class PlayerAPI {
 			listedofearned.put(d, earned);
 
 		} 
+		
+		plugin.getPlayerChunkAPI().loadChunks(""+UUID, j);
 	 
 		HashMap<String, Double> money = new HashMap<String, Double>();
 		HashMap<String, Integer> broken2 = new HashMap<String, Integer>();
@@ -342,6 +344,8 @@ public class PlayerAPI {
 			for (String loading : owned) {
 
 				Job j = plugin.getJobCache().get(loading);
+				
+				plugin.getPlayerChunkAPI().loadChunks(""+UUID, j);
 
 				int level = plm.getLevelOf("" + UUID, loading);
 				double exp = plm.getExpOf("" + UUID, loading);
@@ -420,6 +424,8 @@ public class PlayerAPI {
 				plm.createJobData(UUID, j);
 
 				Job real = plugin.getJobCache().get(j);
+				
+				plugin.getPlayerChunkAPI().loadChunks(""+UUID, real);
 
 				int level = plm.getLevelOf("" + UUID, j);
 				double exp = plm.getExpOf("" + UUID, j);

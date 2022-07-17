@@ -210,7 +210,7 @@ public class JobAPI {
 	}
 
 	public void sendReward(JobsPlayer pl, Player p, Job job, double exp, double reward, String block, boolean can,
-			JobAction ac) {
+			JobAction ac, int amount) {
 		plugin.getExecutor().execute(() -> {
 			UUID UUID = p.getUniqueId();
 			double all_exp = pl.getStatsOf(job.getConfigID()).getExp();
@@ -237,7 +237,7 @@ public class JobAPI {
 							need);
 					BarColor color = job.getBarColor();
 					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".BossBar")
-							.replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
+							.replaceAll("<amount>", ""+amount).replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
 							.replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, "" + UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
@@ -253,7 +253,7 @@ public class JobAPI {
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_Message")) {
 					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".Message")
-							.replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
+							.replaceAll("<amount>", ""+amount).replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
 							.replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, "" + UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
@@ -263,7 +263,7 @@ public class JobAPI {
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enabled_Actionbar")) {
 					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".Actionbar")
-							.replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
+							.replaceAll("<amount>", ""+amount).replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
 							.replaceAll("<exp>", Format(all_exp))
 							.replaceAll("<level_name>", job.getLevelDisplay(level, "" + UUID))
 							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)

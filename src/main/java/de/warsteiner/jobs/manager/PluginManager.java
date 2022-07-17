@@ -84,11 +84,7 @@ public class PluginManager {
 		if (block.getBlockData() == null) {
 			return false;
 		}
-
-		if (block.hasMetadata("placed-by-player")) {
-			return false;
-		}
-
+ 
 		if (block.getType() == Material.MELON || block.getType() == Material.PUMPKIN
 				|| block.getType() == Material.SUGAR_CANE) {
 			return true;

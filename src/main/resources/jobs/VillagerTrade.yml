@@ -1,0 +1,73 @@
+Action:
+  - "TRADE_EMERALDS" 
+ 
+ID: "Villager"
+ 
+Material: "EMERALD"
+
+ColorOfBossBar: "GREEN"
+
+Slot: 32
+
+Price: 350
+
+Worlds:
+  - "world"
+  - "world_nether"
+
+IDS:
+
+  #on this action, 
+  #the player gets money PER Emerald spent.
+  #means, when a player trades with a Villager 
+  #for 5 emeralds, he gets the reward * 5
+  
+  TRADE_EMERALDS:
+    List:
+      - "ONE"  
+
+    ONE:
+
+      Chance: 75
+      ID: "EMERALD"
+      Money: 5.50
+      Exp: 5
+      Points: 0.05
+      RewardsGUI:
+    
+        See: true
+        Icon: "EMERALD"
+
+LEVELS:
+
+  CountOfLevels: 4
+
+  1:
+
+    Money: 0 
+    Icon: "COAL" 
+    Need: 0
+    
+  2:
+
+    Money: 250 
+    Icon: "PAPER" 
+    Need: 150 
+    EarnMore: 0.15
+    
+  3:
+
+    Money: 500 
+    Icon: "PAPER" 
+    Need: 500 
+    EarnMore: 0.25
+    
+  4:
+
+    Money: 1000 
+    Icon: "EMERALD" 
+    Need: 550 
+    EarnMore: 0.30
+
+  
+  

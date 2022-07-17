@@ -38,6 +38,17 @@ public class LanguageAPI {
 		return null;
 	}
 	
+	public Language getLanguageFromName(String id) {
+		for (int i = 0; i < langs.size(); i++) {
+			Language l = arraylangs.get(i);
+			 
+			if(l.getName().toLowerCase().equalsIgnoreCase(id.toLowerCase())) {
+				return l;
+			}
+		}
+		return null;
+	}
+	
 	
 	public Language getLanguage(String id) {
 		for (int i = 0; i < langs.size(); i++) {

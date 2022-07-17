@@ -215,6 +215,42 @@ public class GuiAddonManager {
 
 				inv.setItem(24, it);
 			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createItem(player.getName(),
+						"url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§c✘ §7Close §c✘");
+ 
+				it.setItemMeta(meta);
+
+				inv.setItem(40, it);
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createItem(player.getName(),
+						"url;http://textures.minecraft.net/texture/352723aa0637ea5204447be536151f529fe4906826d8c066c4dcc50079a64465");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§a◇ §7Documentation Site §a◇");
+ 
+				it.setItemMeta(meta);
+
+				inv.setItem(39, it);
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createItem(player.getName(),
+						"name;MHf_Discord");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§5☆ §7Our Discord Server §5☆");
+ 
+				it.setItemMeta(meta);
+
+				inv.setItem(41, it);
+			}
 
 		} else {
 			plugin.getGUI().openInventory(player, 5, "§cNo Update Found", null, null, null);
@@ -277,6 +313,42 @@ public class GuiAddonManager {
 				it.setItemMeta(meta);
 
 				inv.setItem(23, it);
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createItem(player.getName(),
+						"url;http://textures.minecraft.net/texture/afd2400002ad9fbbbd0066941eb5b1a384ab9b0e48a178ee96e4d129a5208654");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§c✘ §7Close §c✘");
+ 
+				it.setItemMeta(meta);
+
+				inv.setItem(40, it);
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createItem(player.getName(),
+						"url;http://textures.minecraft.net/texture/352723aa0637ea5204447be536151f529fe4906826d8c066c4dcc50079a64465");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§a◇ §7Documentation Site §a◇");
+ 
+				it.setItemMeta(meta);
+
+				inv.setItem(39, it);
+			}
+			
+			if (inv != null) {
+				ItemStack it = plugin.getItemAPI().createItem(player.getName(),
+						"name;MHf_Discord");
+				ItemMeta meta = it.getItemMeta();
+
+				meta.setDisplayName("§5☆ §7Our Discord Server §5☆");
+ 
+				it.setItemMeta(meta);
+
+				inv.setItem(41, it);
 			}
 
 		}
@@ -861,7 +933,7 @@ public class GuiAddonManager {
 		String name = sp.getLanguage().getStringFromPath(player.getUniqueId(), cfg.getString("LeaveConfirm_Name").replaceAll("<job>", job.getDisplay(sp.getUUIDAsString())));
 		int size = cfg.getInt("LeaveConfirm_Size");
 
-		plugin.getGUI().openInventory(player, size, name, GUIType.CONFIRM_LEAVE, null, null);
+		plugin.getGUI().openInventory(player, size, name, GUIType.CONFIRM_LEAVE, null, job);
 
 		if (t.equals(UpdateTypes.OPEN)) {
 			api.playSound("OPEN_LEAVE_CONFIRM", player);
@@ -870,7 +942,7 @@ public class GuiAddonManager {
 
 		plugin.getGUI().setPlaceHolders(player, inv_view, cfg.getStringList("LeaveConfirm_Place"), name);
 		plugin.getGUI().setCustomitems(player, player.getName(), inv_view, "LeaveConfirm_Custom.",
-				cfg.getStringList("LeaveConfirm.List"), name, cfg, null);
+				cfg.getStringList("LeaveConfirm_Custom.List"), name, cfg, null);
 		setLeaveConfirmItems(player, name, inv_view, job);
 	}
 	

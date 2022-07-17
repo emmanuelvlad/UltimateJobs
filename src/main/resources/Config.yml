@@ -13,6 +13,9 @@
 #Do you want to get a message when there is a new Update?
 CheckForUpdates: true
 
+#creates a backup of the data file every start and stopp into a zip file
+CreateBackupsOfFiles: false
+
 #Choose a Folder where the jobs get loaded from
 LoadJobsFrom: "plugins/UltimateJobs/jobs/"
 

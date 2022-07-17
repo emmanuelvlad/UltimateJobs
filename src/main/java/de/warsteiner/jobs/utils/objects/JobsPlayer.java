@@ -21,7 +21,7 @@ public class JobsPlayer {
 	private Language lang;
 	private HashMap<String, JobStats> stats;
 	private double sal;
-	private String saldate;
+	private String saldate; 
 	
 	public JobsPlayer(String name, ArrayList<String> current2, ArrayList<String> owned2,  double points,
 			int max, String UUID, UUID rUUID, Language lang, HashMap<String, JobStats> stats, double s, String saldate) {
@@ -35,9 +35,9 @@ public class JobsPlayer {
 		this.lang = lang;
 		this.stats = stats;
 		this.sal = s;
-		this.saldate = saldate;
+		this.saldate = saldate; 
 	}
-	
+ 
 	public void updateSalaryDate(String date) {
 		saldate = date;
 	}
@@ -54,7 +54,7 @@ public class JobsPlayer {
 		return sal;
 	}
 	
-	public void updateLanguage(Language n) {
+	public void updateLocalLanguage(Language n) {
 		this.lang = n;
 	}
 	

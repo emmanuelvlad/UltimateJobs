@@ -43,17 +43,15 @@ public class GuiOpenManager {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.SETTINGS)) {
 
-				for (String list : plugin.getLoaded()) {
-					Job j = plugin.getJobCache().get(list);
-					String dis = j.getDisplay(sp.getUUIDAsString());
-					String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
-					String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
+				Job j = plugin.getGUI().getGUIsJobs().get(sp.getUUIDAsString());
+				String dis = j.getDisplay(sp.getUUIDAsString());
+				String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Settings_Name"));
+				String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
 
-					if (fin.equalsIgnoreCase(title)) {
-						return j;
-					}
-
+				if (fin.equalsIgnoreCase(title)) {
+					return j;
 				}
+
 			}
 
 		}
@@ -67,17 +65,15 @@ public class GuiOpenManager {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.REWARDS)) {
 
-				for (String list : plugin.getLoaded()) {
-					Job j = plugin.getJobCache().get(list);
-					String dis = j.getDisplay(sp.getUUIDAsString());
-					String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Rewards_Name"));
-					String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
+				Job j = plugin.getGUI().getGUIsJobs().get(sp.getUUIDAsString());
+				String dis = j.getDisplay(sp.getUUIDAsString());
+				String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Rewards_Name"));
+				String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
 
-					if (fin.equalsIgnoreCase(title)) {
-						return j;
-					}
-
+				if (fin.equalsIgnoreCase(title)) {
+					return j;
 				}
+
 			}
 
 		}
@@ -125,17 +121,15 @@ public class GuiOpenManager {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.LEVELS)) {
 
-				for (String list : plugin.getLoaded()) {
-					Job j = plugin.getJobCache().get(list);
-					String dis = j.getDisplay(sp.getUUIDAsString());
-					String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Levels_Name"));
-					String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
+				Job j = plugin.getGUI().getGUIsJobs().get(sp.getUUIDAsString());
+				String dis = j.getDisplay(sp.getUUIDAsString());
+				String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Levels_Name"));
+				String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
 
-					if (fin.equalsIgnoreCase(title)) {
-						return j;
-					}
-
+				if (fin.equalsIgnoreCase(title)) {
+					return j;
 				}
+
 			}
 
 		}
@@ -158,7 +152,7 @@ public class GuiOpenManager {
 		}
 		return null;
 	}
-	
+
 	public String isWithdrawMenu(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getWithdrawConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
@@ -175,7 +169,7 @@ public class GuiOpenManager {
 		}
 		return null;
 	}
-	
+
 	public String isWithdrawConfirmMenu(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getWithdrawConfirmConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
@@ -217,17 +211,15 @@ public class GuiOpenManager {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.EARNINGS_JOB)) {
 
-				for (String list : plugin.getLoaded()) {
-					Job j = plugin.getJobCache().get(list);
-					String dis = j.getDisplay(sp.getUUIDAsString());
-					String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Job_Earnings_Name"));
-					String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
+				Job j = plugin.getGUI().getGUIsJobs().get(sp.getUUIDAsString());
+				String dis = j.getDisplay(sp.getUUIDAsString());
+				String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("Job_Earnings_Name"));
+				String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
 
-					if (fin.equalsIgnoreCase(title)) {
-						return j;
-					}
-
+				if (fin.equalsIgnoreCase(title)) {
+					return j;
 				}
+
 			}
 
 		}
@@ -258,18 +250,15 @@ public class GuiOpenManager {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.CONFIRM)) {
 
-				for (String list : plugin.getLoaded()) {
-					Job j = plugin.getJobCache().get(list);
-					String dis = j.getDisplay(sp.getUUIDAsString());
-					String named = sp.getLanguage().getStringFromPath(sp.getUUID(),
-							cfg.getString("AreYouSureGUI_Name"));
-					String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
+				Job j = plugin.getGUI().getGUIsJobs().get(sp.getUUIDAsString());
+				String dis = j.getDisplay(sp.getUUIDAsString());
+				String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("AreYouSureGUI_Name"));
+				String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
 
-					if (fin.equalsIgnoreCase(title)) {
-						return j;
-					}
-
+				if (fin.equalsIgnoreCase(title)) {
+					return j;
 				}
+
 			}
 
 		}
@@ -283,24 +272,22 @@ public class GuiOpenManager {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.CONFIRM_LEAVE)) {
 
-				for (String list : plugin.getLoaded()) {
-					Job j = plugin.getJobCache().get(list);
-					String dis = j.getDisplay(sp.getUUIDAsString());
-					String named = sp.getLanguage().getStringFromPath(sp.getUUID(),
-							cfg.getString("LeaveConfirm_Name"));
-					String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
+				Job j = plugin.getGUI().getGUIsJobs().get(sp.getUUIDAsString());
 
-					if (fin.equalsIgnoreCase(title)) {
-						return j;
-					}
+				String dis = j.getDisplay(sp.getUUIDAsString());
+				String named = sp.getLanguage().getStringFromPath(sp.getUUID(), cfg.getString("LeaveConfirm_Name"));
+				String fin = plugin.getPluginManager().toHex(named.replaceAll("<job>", dis).replaceAll("&", "§"));
 
+				if (title.equalsIgnoreCase(fin)) {
+					return j;
 				}
+
 			}
 
 		}
 		return null;
 	}
-	
+
 	public void openGuiByGuiID(CommandSender sender, GUIType type, Player player, Job job, String about, boolean y) {
 		GuiManager gui = plugin.getGUI();
 		GuiAddonManager addon = plugin.getGUIAddonManager();

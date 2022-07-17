@@ -81,7 +81,7 @@ public class WebManager {
 			try {
 				InputStream inputStream = new URL(url).openStream();
 				Files.copy(inputStream, Paths.get("plugins/UltimateJobs/updates/UltimateJobs-"+ver+".jar"), StandardCopyOption.REPLACE_EXISTING);
-				player.sendMessage(AdminCommand.prefix+"§aUpdate can be found in plugins/UltimateJobs/updates/");
+				player.sendMessage(AdminCommand.prefix+"§aUpdate downloaded & can be found now in plugins/UltimateJobs/updates/");
 			} catch (IOException e) {
 				player.sendMessage(AdminCommand.prefix+"§cFailed to download Update, please check the logs");
 				e.printStackTrace();

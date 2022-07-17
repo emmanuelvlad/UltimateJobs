@@ -63,7 +63,14 @@ public class ClickAtLanguageGUI implements Listener {
 
 					new PlayerLanguageChangeEvent(player, pp, player.getUniqueId(), old, newl);
 
-					plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId()).updateLanguage(lang);
+					if (UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(pp.getUUIDAsString()) != null) {
+						JobsPlayer jb = UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(pp.getUUIDAsString());
+
+						jb.updateLocalLanguage(lang);
+					}
+					
+					plugin.getPlayerDataAPI().updateSettingData(pp.getUUIDAsString(), "LANG", lang.getName());
+					
 					player.sendMessage(
 							pp.getLanguage().getStringFromLanguage(player.getUniqueId(), "LanguageChangedMessage")
 									.replaceAll("<lang>", lang.getID().toLowerCase()));

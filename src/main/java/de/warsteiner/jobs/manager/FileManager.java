@@ -69,8 +69,8 @@ public class FileManager {
 	private List<String> defaultlanguages = Arrays.asList("en-US");
 	private List<String> defaultjobs = Arrays.asList("Miner","Lumberjack","FarmGrow","Digger", "Killer","Fishman","Milkman"
 			, "Crafter", "Shear","Advancements","Eat","Honey","Tame","MythicMobs","Breed"
-			, "Berrys","Saplings","KillBow","TNT");
-	
+			, "Berrys","Saplings","KillBow","FarmBreak","FindTreasure","Smelt","Explore","Enchant","DrinkPotion");
+	 
 	public  boolean generateFiles(boolean d) {
 		createGUIFile();
 		createDefaultLanguages();

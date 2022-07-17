@@ -40,9 +40,13 @@ public class WorldGuardManager {
 	public static StateFlag BERRY_ACTION;
 	public static StateFlag MMORES_BREAK;
 	public static StateFlag KILLBYBOW;
-	public static StateFlag GROWSAP;
-	public static StateFlag TNT;
-
+	public static StateFlag GROWSAP; 
+	public static StateFlag TR;
+	public static StateFlag TRADE_EMERALDS;
+	public static StateFlag SMELT;
+	public static StateFlag EXPLORE; 
+	public static StateFlag ENCHANT; 
+	
 	public WorldGuardManager getManager() {
 		return this;
 	}
@@ -59,6 +63,10 @@ public class WorldGuardManager {
 	public static void load() {
 		WorldGuard worldGuard = WorldGuard.getInstance();
 		FlagRegistry flagRegistry = worldGuard.getFlagRegistry();
+		flagRegistry.register((Flag) (ENCHANT = new StateFlag("enchant-action", false)));
+		flagRegistry.register((Flag) (EXPLORE = new StateFlag("explore-action", false)));
+		flagRegistry.register((Flag) (SMELT = new StateFlag("smelt-action", false)));
+		flagRegistry.register((Flag) (TRADE_EMERALDS = new StateFlag("trade-emeralds-action", false)));
 		flagRegistry.register((Flag) (BREAK_ACTION = new StateFlag("break-action", false)));
 		flagRegistry.register((Flag) (PLACE_ACTION = new StateFlag("place-action", false)));
 		flagRegistry.register((Flag) (KILL_ACTION = new StateFlag("kill-action", false)));
@@ -79,11 +87,16 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (MMORES_BREAK = new StateFlag("moreores-break-action", false))); 
 		flagRegistry.register((Flag) (KILLBYBOW = new StateFlag("killbybow-action", false))); 
 		flagRegistry.register((Flag) (GROWSAP = new StateFlag("grow-saplings-action", false))); 
-		flagRegistry.register((Flag) (FARM_GROW_ACTION = new StateFlag("farm-grow-action", false)));
-		flagRegistry.register((Flag) (TNT = new StateFlag("tnt-action", false)));
+		flagRegistry.register((Flag) (FARM_GROW_ACTION = new StateFlag("farm-grow-action", false))); 
+		flagRegistry.register((Flag) (TR = new StateFlag("find-treasure-action", false)));
 	}
 	
 	public static StateFlag getFlagFromName(String b) {
+		if(b.equalsIgnoreCase("enchant-action")) { return ENCHANT; }
+		if(b.equalsIgnoreCase("explore-action")) { return EXPLORE; }
+		if(b.equalsIgnoreCase("smelt-action")) { return SMELT; }
+		if(b.equalsIgnoreCase("trade-emeralds-action")) { return TRADE_EMERALDS; }
+		if(b.equalsIgnoreCase("find-treasure-action")) { return TR; }
 		if(b.equalsIgnoreCase("farm-grow-action")) { return FARM_GROW_ACTION; }
 		if(b.equalsIgnoreCase("strip-action")) { return STRIP_ACTION; }
 		if(b.equalsIgnoreCase("honey-action")) { return HONEY_ACTION; }
@@ -104,8 +117,7 @@ public class WorldGuardManager {
 		if(b.equalsIgnoreCase("collectberrys-action")) { return BERRY_ACTION; } 
 		if(b.equalsIgnoreCase("moreores-break-action")) { return MMORES_BREAK; } 
 		if(b.equalsIgnoreCase("killbybow-action")) { return KILLBYBOW; } 
-		if(b.equalsIgnoreCase("grow-saplings-action")) { return GROWSAP; } 
-		if(b.equalsIgnoreCase("tnt-action")) { return TNT; } 
+		if(b.equalsIgnoreCase("grow-saplings-action")) { return GROWSAP; }  
 		return null;
 	}
 
