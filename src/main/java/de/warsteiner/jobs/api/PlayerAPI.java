@@ -4,16 +4,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.scheduler.BukkitRunnable;
  
 import de.warsteiner.jobs.UltimateJobs;
-import de.warsteiner.jobs.utils.JobAction;
+import de.warsteiner.jobs.manager.GuiOpenManager;
+import de.warsteiner.jobs.utils.JobAction; 
 import de.warsteiner.jobs.utils.objects.JobStats;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
 import de.warsteiner.jobs.utils.objects.Language;
@@ -69,6 +72,24 @@ public class PlayerAPI {
 
 		});
 	}
+ 
+	public ArrayList<String> getOnlinePlayersInJob(Job job) {
+		
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for(Player p :  Bukkit.getOnlinePlayers()) {
+			if(getRealJobPlayer(p.getUniqueId()) != null) {
+				
+				if(getRealJobPlayer(p.getUniqueId()).getCurrentJobs().contains(job.getConfigID())) {
+					list.add(""+p.getUniqueId());
+				}
+				
+			}
+		}
+		
+		return list;
+		
+	}
 
 	public double getEarnedAtDateFromAllJobs(String uuid, String date) {
 
@@ -91,11 +112,76 @@ public class PlayerAPI {
 		return this.players.contains(uuid);
 	}
 	
+	public void executeCustomEvent(String UUID, String job, boolean online) {
+		new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				if(online) { 
+						JobsPlayer f = getRealJobPlayer(UUID);
+
+						if (Bukkit.getPlayer(f.getUUID()) != null) {
+					
+							Player player = Bukkit.getPlayer(f.getUUID()); 
+							if (player.getOpenInventory() != null) {
+
+								InventoryView iv = player.getOpenInventory();
+								
+								if(iv.getTitle() != null) { 
+									String title = iv.getTitle();
+									 
+									GuiOpenManager d = plugin.getGUIOpenManager();
+									
+									if(d.isMainOpend(player, title) != null) {
+										
+										 plugin.getGUI().UpdateMainInventoryItems(player, title);
+										
+									} else if(d.isLanguageOpend(player, title) != null) {
+										 plugin.getGUI().updateLanguageInventory(player, title, f);
+									} else if(d.isEarningsAboutJob(player, title) != null) {
+										plugin.getGUIAddonManager().updateEarningsGUI_Single_Job(player, title, f, plugin.getGUIOpenManager().isEarningsAboutJob(player, title));
+									} else if(d.isEarningsALL(player, title) != null) {
+										plugin.getGUIAddonManager().updateEarningsGUI_All(player, title, f);
+									} else if(d.isWithdrawMenu(player, title) != null) {
+										plugin.getGUIAddonManager().updateWithdrawGUI(player, title, f);
+									} else if(d.isLevelsMenu(player, title) != null) {
+										plugin.getGUIAddonManager().updateLevelsGUI(player, title, f, plugin.getGUIOpenManager().isLevelsMenu(player, title));
+									} else if(d.isRewardsMenu(player, title) != null) {
+										plugin.getGUIAddonManager().updateRewardsGUI(player, title, f, plugin.getGUIOpenManager().isRewardsMenu(player, title));
+									} else if(d.isStatsMenuOpendSelf(player, title) != null) {
+										plugin.getGUIAddonManager().updateSelfUpdateGUI(player, title, f);
+									} else if(d.isStatsMenuOpendAboutPlayer(player, title) != null) {
+										plugin.getGUIAddonManager().updateOtherStatsGUI(player, title, f, plugin.getGUIOpenManager().isStatsMenuOpendAboutPlayer(player, title));
+									} else if(d.isSettingsMenu(player, title) != null) {
+										 plugin.getGUI().UpdateSettingsGUI(player, title, plugin.getGUIOpenManager().isSettingsMenu(player, title));
+									}
+									
+								}
+							}
+						 
+						}
+
+					}
+ 
+			}
+		}.runTaskLater(plugin, 2);
+	}
+  
 	public void updateSalary(String UUID, double d) {
 		if (existInCacheByUUID(UUID)) {
-			getCacheJobPlayers().get(UUID).updateSalary(d);
+			getCacheJobPlayers().get(UUID).updateCacheSalary(d);
+			executeCustomEvent(UUID, null, true);
 		} else {
 			plugin.getPlayerDataAPI().updateSalary(UUID, d);
+		}
+	}
+	
+	public void updateSalaryDate(String UUID, String d) {
+		if (existInCacheByUUID(UUID)) {
+			getCacheJobPlayers().get(UUID).updateCacheSalaryDate(d);
+			executeCustomEvent(UUID, null, true);
+		} else {
+			plugin.getPlayerDataAPI().updateSalaryDate(UUID, d);
 		}
 	}
 	
@@ -110,12 +196,13 @@ public class PlayerAPI {
 
 	public void updateDateJoinedOfJob(String UUID, String job, String date) {
 		if (existInCacheByUUID(UUID)) {
-			getCacheJobPlayers().get(UUID).getStatsOf(job).updateJoinedDate(date);
+			getCacheJobPlayers().get(UUID).getStatsOf(job).updateCacheJoinedDate(date);
+			executeCustomEvent(UUID, job, true);
 		} else {
 			plugin.getPlayerDataAPI().updateDateJoinedOfJob(UUID, job, date);
 		}
 	}
-	
+ 
 	public ArrayList<String> getOwnedJobs(String uuid) {
 		if (existInCacheByUUID(uuid)) {
 			return getCacheJobPlayers().get(uuid).getOwnJobs();
@@ -139,7 +226,7 @@ public class PlayerAPI {
 			return plugin.getPlayerDataAPI().getExpOf(uuid, job.getConfigID());
 		}
 	}
-
+ 
 	public int getBrokenTimesOfID(String uuid, Job job, String id, String ac) {
 		if (existInCacheByUUID(uuid)) {
 
@@ -168,7 +255,8 @@ public class PlayerAPI {
 
 	public void updateBrokenTimes(String uuid, Job job, int times) {
 		if (existInCacheByUUID(uuid)) {
-			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateBrokenTimes(times);
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateCacheBrokenTimes(times);
+			executeCustomEvent(uuid, job.getConfigID(), true);
 		} else {
 			plugin.getPlayerDataAPI().updateBrokenTimes(uuid, job.getConfigID(), times);
 		}
@@ -176,7 +264,8 @@ public class PlayerAPI {
 
 	public void updateBrokenTimesOf(String uuid, Job job, String id, int d, String ac) {
 		if (existInCacheByUUID(uuid)) {
-			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateBrokenTimesOf(id, d);
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateCacheBrokenTimesOf(id, d);
+			executeCustomEvent(uuid, job.getConfigID(), true);
 		} else {
 			plugin.getPlayerDataAPI().updateEarningsTimesOf(uuid, job.getConfigID(), id, d, ac);
 		}
@@ -185,6 +274,7 @@ public class PlayerAPI {
 	public void updateBrokenMoneyOf(String uuid, Job job, String id, double d, String ac) {
 		if (existInCacheByUUID(uuid)) {
 			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).getBrokenList().put(id, d);
+			executeCustomEvent(uuid, job.getConfigID(), true);
 		} else {
 			plugin.getPlayerDataAPI().updateEarningsAmountOf(uuid, job.getConfigID(), id, d, ac);
 		}
@@ -192,7 +282,8 @@ public class PlayerAPI {
 
 	public void updateEarningsAtDate(String uuid, Job job, double v, String date) {
 		if (existInCacheByUUID(uuid)) {
-			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateEarnings(date, v);
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateCacheEarnings(date, v);
+			executeCustomEvent(uuid, job.getConfigID(), true);
 		} else {
 			plugin.getPlayerDataAPI().updateEarnings(uuid, job.getConfigID(), date, v);
 		}
@@ -201,7 +292,8 @@ public class PlayerAPI {
 	public void updateEarningsOfToday(String uuid, Job job, double v) {
 		String date = plugin.getDate();
 		if (existInCacheByUUID(uuid)) { 
-			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateEarnings(date, v);
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateCacheEarnings(date, v);
+			executeCustomEvent(uuid, job.getConfigID(), true);
 		} else { 
 			plugin.getPlayerDataAPI().updateEarnings(uuid, job.getConfigID(), date, v);
 		}
@@ -209,7 +301,8 @@ public class PlayerAPI {
 	
 	public void updateExp(String uuid, Job job, double val) {
 		if (existInCacheByUUID(uuid)) {
-			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).updateExp(val);
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).changeCacheExp(val);
+			executeCustomEvent(uuid, job.getConfigID(), true);
 		} else {
 			plugin.getPlayerDataAPI().getExpOf(uuid, job.getConfigID());
 		}
@@ -217,9 +310,19 @@ public class PlayerAPI {
 
 	public void updatePoints(String uuid, double val) {
 		if (existInCacheByUUID(uuid)) {
-			getCacheJobPlayers().get(uuid).updatePoints(val);
+			getCacheJobPlayers().get(uuid).updateCachePoints(val);
+			executeCustomEvent(uuid, null, true);
 		} else {
 			plugin.getPlayerDataAPI().updatePoints(uuid, val);
+		}
+	}
+	
+	public void updateMax(String uuid, int val) {
+		if (existInCacheByUUID(uuid)) {
+			getCacheJobPlayers().get(uuid).updateCacheMax(val);
+			executeCustomEvent(uuid, null, true);
+		} else {
+			plugin.getPlayerDataAPI().updateMax(uuid, val);
 		}
 	}
 
@@ -248,6 +351,16 @@ public class PlayerAPI {
 			return plugin.getPlayerDataAPI().getLevelOf(uuid, job.getConfigID());
 		}
 	}
+	
+	public void updateLevelOf(String uuid, Job job, int lvl) {
+		if (existInCacheByUUID(uuid)) {
+			getCacheJobPlayers().get(uuid).getStatsOf(job.getConfigID()).changeCacheLevel(lvl);
+			executeCustomEvent(uuid, job.getConfigID(), true);
+		} else {
+			plugin.getPlayerDataAPI().updateLevel(uuid, lvl, job.getConfigID());
+		}
+	}
+ 
 
 	public double getPoints(String uuid) {
 		if (existInCacheByUUID(uuid)) {

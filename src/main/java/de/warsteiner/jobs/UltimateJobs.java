@@ -3,27 +3,21 @@ package de.warsteiner.jobs;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException; 
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.HashMap; 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import de.warsteiner.jobs.events.*;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.Bukkit; 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.entity.Player; 
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -45,14 +39,18 @@ import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.command.AdminTabComplete;
 import de.warsteiner.jobs.command.JobTabComplete;
 import de.warsteiner.jobs.command.JobsCommand;
+import de.warsteiner.jobs.command.admincommand.AddExpSub;
 import de.warsteiner.jobs.command.admincommand.AddMaxSub;
 import de.warsteiner.jobs.command.admincommand.AddPointsSub;
 import de.warsteiner.jobs.command.admincommand.FirstSub;
 import de.warsteiner.jobs.command.admincommand.HelpSub;
+import de.warsteiner.jobs.command.admincommand.IDSub;
 import de.warsteiner.jobs.command.admincommand.OpenSub;
 import de.warsteiner.jobs.command.admincommand.ReloadSub;
+import de.warsteiner.jobs.command.admincommand.RemoveExpSub;
 import de.warsteiner.jobs.command.admincommand.RemoveMaxSub;
 import de.warsteiner.jobs.command.admincommand.RemovePointsSub;
+import de.warsteiner.jobs.command.admincommand.SetExpSub;
 import de.warsteiner.jobs.command.admincommand.SetLanguageSub;
 import de.warsteiner.jobs.command.admincommand.SetLevelSub;
 import de.warsteiner.jobs.command.admincommand.SetMaxSub;
@@ -96,7 +94,7 @@ import de.warsteiner.jobs.jobs.JobActionFarm_Grow;
 import de.warsteiner.jobs.jobs.JobActionFindATreasure;
 import de.warsteiner.jobs.jobs.JobActionFish;
 import de.warsteiner.jobs.jobs.JobActionGrowSapling;
-import de.warsteiner.jobs.jobs.JobActionHoney;
+import de.warsteiner.jobs.jobs.JobActionHoney; 
 import de.warsteiner.jobs.jobs.JobActionKillByBow;
 import de.warsteiner.jobs.jobs.JobActionKillMob;
 import de.warsteiner.jobs.jobs.JobActionMMKill;
@@ -241,7 +239,7 @@ public class UltimateJobs extends JavaPlugin {
 
 		getCommand("jobs").setExecutor(new JobsCommand());
 		getCommand("jobs").setTabCompleter(new JobTabComplete());
-
+ 
 		getCommand("jobsadmin").setExecutor(new AdminCommand());
 		getCommand("jobsadmin").setTabCompleter(new AdminTabComplete());
 
@@ -254,7 +252,7 @@ public class UltimateJobs extends JavaPlugin {
 		createBackups();
 
 		new Metrics(this, 15424);
-
+	 
 		Bukkit.getConsoleSender().sendMessage("§7");
 		Bukkit.getConsoleSender().sendMessage("§7");
 		Bukkit.getConsoleSender().sendMessage(
@@ -430,6 +428,7 @@ public class UltimateJobs extends JavaPlugin {
 		}
 
 		getAdminSubCommandManager().getSubCommandList().add(new OpenSub());
+		getAdminSubCommandManager().getSubCommandList().add(new IDSub());
 
 		getAdminSubCommandManager().getSubCommandList().add(new SetMaxSub());
 		getAdminSubCommandManager().getSubCommandList().add(new AddMaxSub());
@@ -437,6 +436,10 @@ public class UltimateJobs extends JavaPlugin {
 
 		getAdminSubCommandManager().getSubCommandList().add(new SetLevelSub());
 
+		getAdminSubCommandManager().getSubCommandList().add(new SetExpSub());
+		getAdminSubCommandManager().getSubCommandList().add(new AddExpSub());
+		getAdminSubCommandManager().getSubCommandList().add(new RemoveExpSub());
+		
 		getAdminSubCommandManager().getSubCommandList().add(new SetPointsSub());
 		getAdminSubCommandManager().getSubCommandList().add(new AddPointsSub());
 		getAdminSubCommandManager().getSubCommandList().add(new RemovePointsSub());
@@ -474,6 +477,7 @@ public class UltimateJobs extends JavaPlugin {
 		capi = new PlayerChunkAPI();
 	}
 	
+ 
 	public PlayerChunkAPI getPlayerChunkAPI() {
 		return capi;
 	}
@@ -600,6 +604,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new ClickAtUpdateMenuEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new WithdrawMenuClickEvent(), this);
 		Bukkit.getPluginManager().registerEvents(new LeaveConfirmMenuClickEvent(), this);
+		 
 	}
 
 	public void loadEvents() {
@@ -627,7 +632,7 @@ public class UltimateJobs extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new JobActionVillagerTrade_Buy(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionSmelt(), this);
 		Bukkit.getPluginManager().registerEvents(new JobActionExploreChunks(), this);
-		Bukkit.getPluginManager().registerEvents(new JobActionEnchant(), this);
+		Bukkit.getPluginManager().registerEvents(new JobActionEnchant(), this); 
 		Bukkit.getPluginManager().registerEvents(new DefaultJobActions(), this);
 
 		if (getPluginManager().isInstalled("MythicMobs")) {
@@ -635,7 +640,7 @@ public class UltimateJobs extends JavaPlugin {
 			Bukkit.getPluginManager().registerEvents(new JobActionMMKill(), this);
 			Bukkit.getConsoleSender().sendMessage("§bLoaded Support for MythicMobs");
 		}
-
+		 
 	}
 
 	public MythicMobsManager getMythicMobsManager() {

@@ -62,7 +62,7 @@ public class SetLanguageSub extends AdminSubCommand {
 				plugin.getPlayerDataAPI().updateSettingData(uuid, "LANG", lang.getName());
 
 				sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7Language to §a" + value
-						+ "§7. §8(§bSQL§8)");
+						+ "§7.");
 				return;
 
 			} else {

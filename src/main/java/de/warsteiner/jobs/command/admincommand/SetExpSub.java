@@ -11,18 +11,18 @@ import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
-public class SetLevelSub extends AdminSubCommand {
+public class SetExpSub extends AdminSubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 	
 	@Override
 	public String getName() {
-		return "setlevel";
+		return "setexp";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Set Player's Level in a Job";
+		return "Set Player's Exp in a Job";
 	}
 
 	@Override
@@ -57,8 +57,8 @@ public class SetLevelSub extends AdminSubCommand {
 						JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(uuid);
 
 						if(jb.ownJob(j.getConfigID())) { 
-							plugin.getPlayerAPI().updateLevelOf(uuid, j, Integer.valueOf(value)); 
-							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
+							plugin.getPlayerAPI().updateExp(uuid, j, Integer.valueOf(value)); 
+							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7Exp in Job §a" + j.getConfigID()
 									+ " §7to §6"+value+". §8(§aOnline§8)");
 							if(sender instanceof Player) {
 								Player player3 = (Player) sender;
@@ -77,9 +77,9 @@ public class SetLevelSub extends AdminSubCommand {
 					} else {
 
 						if(pl.getOwnedJobs(uuid).contains(job.toUpperCase())) {
-							pl.updateLevel(uuid, Integer.valueOf(value), j.getConfigID());
+							pl.updateExp(uuid,Integer.valueOf(value), job);
 
-							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
+							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7Exp in Job §a" + j.getConfigID()
 							+ " §7to §6"+value+". §8(§cOffline§8)");
 							if(sender instanceof Player) {
 								Player player3 = (Player) sender;
@@ -129,17 +129,17 @@ public class SetLevelSub extends AdminSubCommand {
 
 	@Override
 	public String FormatTab() {
-		return "command setlevel players_online jobs_listed";
+		return "command setexp players_online jobs_listed";
 	}
 	
 	@Override
 	public String getUsage() { 
-		return "/JobsAdmin setlevel <name> <job> <value>";
+		return "/JobsAdmin setexp <name> <job> <value>";
 	}
 
 	@Override
 	public String getPermission() { 
-		return "ultimatejobs.admin.setlevel";
+		return "ultimatejobs.admin.setexp";
 	}
 	
 	@Override

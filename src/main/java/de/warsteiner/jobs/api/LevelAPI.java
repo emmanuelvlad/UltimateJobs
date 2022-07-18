@@ -73,8 +73,8 @@ public class LevelAPI {
 
 					// rewards
 
-					pl.getStatsOf(job.getConfigID()).updateLevel(new_level);
-					pl.getStatsOf(job.getConfigID()).updateExp(0);
+					plugin.getPlayerAPI().updateLevelOf(""+UUID, job, new_level); 
+					plugin.getPlayerAPI().updateExp(""+UUID, job, 0);
 
 					new BukkitRunnable() {
 						public void run() {

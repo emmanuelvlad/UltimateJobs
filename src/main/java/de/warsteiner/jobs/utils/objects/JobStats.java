@@ -35,7 +35,7 @@ public class JobStats {
 		this.earnings = earnings;
 	}
  
-	public void updateJoinedDate(String jn) {
+	public void updateCacheJoinedDate(String jn) {
 		joined = jn;
 	}
 	
@@ -51,16 +51,9 @@ public class JobStats {
 		return brokenof_times.get(ID);
 	}
 	
-	public void updateBrokenTimesOf(String id, int value) {
+	public void updateCacheBrokenTimesOf(String id, int value) {
 	 
 		getBrokenTimesOfIDList().put(id, value);
-	}
-	
-	public void addBrokenTimesOf(String id, int value) {
-		
-		Integer old = getBrokenTimesOf(id);
-		 
-		getBrokenTimesOfIDList().put(id, old+value);
 	}
  
 	public HashMap<String, Double> getEarningsList() {
@@ -76,7 +69,7 @@ public class JobStats {
 		return getEarningsList().get(date2);
 	}
 	
-	public void updateEarnings(String date, double value) {  
+	public void updateCacheEarnings(String date, double value) {  
 		getEarningsList().put(date, value);
 	}
  
@@ -88,19 +81,7 @@ public class JobStats {
 	public Double getBrokenOf(String ID) {
 		return brokenof_money.get(ID);
 	}
-	
-	public void addBrokenOf(String id, double value) {
-		
-		Double old = getBrokenOf(id);
-		 
-		getBrokenList().put(id, old+value);
-	}
-	
-	public void updateBrokenOf(String id, double value) {
-	 
-		getBrokenList().put(id, value);
-	}
-	
+ 
 	public String getDate() {
 		return date;
 	}
@@ -108,12 +89,8 @@ public class JobStats {
 	public int getBrokenTimes() {
 		return broken;
 	}
-	
-	public void addBrokenTimes(int add) {
-		this.broken = broken + add;
-	}
-	
-	public void updateBrokenTimes(int val) {
+ 
+	public void updateCacheBrokenTimes(int val) {
 		this.broken = val;
 	}
 	
@@ -121,19 +98,15 @@ public class JobStats {
 		return level;
 	}
 	
-	public void updateLevel(int lvl) {
+	public void changeCacheLevel(int lvl) { 
 		this.level = lvl;
 	}
 	
 	public double getExp() {
 		return exp;
 	}
-	
-	public void addExp(double add) {
-		this.exp = exp + add;
-	}
-	
-	public void updateExp(double val) {
+ 
+	public void changeCacheExp(double val) {
 		this.exp = val;
 	}
 	

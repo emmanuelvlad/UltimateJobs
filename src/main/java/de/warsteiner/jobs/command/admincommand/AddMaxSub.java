@@ -57,10 +57,9 @@ public class AddMaxSub extends AdminSubCommand {
 					JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(uuid);
 
 					int old = jb.getMaxJobs();
-					
-					jb.updateMax(old+Integer.valueOf(value));
+					plugin.getPlayerAPI().updateMax(uuid,old+Integer.valueOf(value));
 					sender.sendMessage(AdminCommand.prefix + "Added §a" + value + " §7to §c"+player+"§7's Max Jobs" 
-							+ "§7. §8(§eCache§8)");
+							+ "§7. §8(§aOnline§8)");
 					return;
 
 				} else {
@@ -70,7 +69,7 @@ public class AddMaxSub extends AdminSubCommand {
 					pl.updateMax(uuid, old+Integer.valueOf(value));
 
 					sender.sendMessage(AdminCommand.prefix + "Added §a" + value + " §7to §c"+player+"§7's Max Jobs" 
-							+ "§7. §8(§bSQL§8)");
+							+ "§7. §8(§cOffline§8)");
 					return;
 				}
 

@@ -38,7 +38,7 @@ public class JobsPlayer {
 		this.saldate = saldate; 
 	}
  
-	public void updateSalaryDate(String date) {
+	public void updateCacheSalaryDate(String date) {
 		saldate = date;
 	}
 	
@@ -46,7 +46,7 @@ public class JobsPlayer {
 		return saldate;
 	}
 	
-	public void updateSalary(double d) {
+	public void updateCacheSalary(double d) {
 		this.sal = d;
 	}
 	
@@ -122,7 +122,7 @@ public class JobsPlayer {
 		return points;
 	}
 
-	public void updatePoints(double d) { 
+	public void updateCachePoints(double d) { 
 		points = d;
 	}
 
@@ -134,7 +134,7 @@ public class JobsPlayer {
 		return max;
 	}
 
-	public void updateMax(int nw) {
+	public void updateCacheMax(int nw) {
 		max = nw;
 	}
   

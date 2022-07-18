@@ -575,6 +575,18 @@ public class JobWorkManager {
 		}
 	}
 
+	public void executeVilBuyTrade(String type, UUID UUID, int amount) {
+
+		if (getJobOnWork("" + UUID, JobAction.VILLAGER_TRADE, "" + type) != null) {
+
+			Job job = getJobOnWork("" + UUID, JobAction.VILLAGER_TRADE, "" + type);
+
+			finalWork("" + type, UUID, JobAction.VILLAGER_TRADE, "villager-trade-action", amount, null, null, true, false, false, job);
+
+			return;
+		}
+	}
+	
 
 	public Job getJobOnWork(String id, JobAction ac, String real) {
 		if (api.getJobsWithAction(id, ac) == null) {

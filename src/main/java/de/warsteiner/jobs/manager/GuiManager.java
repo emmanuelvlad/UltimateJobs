@@ -110,6 +110,19 @@ public class GuiManager {
 
 	}
 
+	public void updateLanguageInventory(Player player, String name, JobsPlayer jb) {
+		FileConfiguration cfg = plugin.getFileManager().getLanguageGUIConfig();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				 
+				setCustomitems(player, player.getName(), inv, "Custom.", cfg.getStringList("Custom.List"), name, cfg, null);
+
+				setLanguageItems(player, inv, cfg);
+			}
+		}.runTaskLater(plugin, 2);
+	}
+	
 	public void setLanguageItems(Player player, InventoryView inv, FileConfiguration cfg) {
 		plugin.getExecutor().execute(() -> {
 
@@ -330,6 +343,17 @@ public class GuiManager {
 				cfg.getStringList("Settings_Custom.List"), name, cfg, job);
 
 	}
+	
+	public void UpdateSettingsGUI(Player player, String name, Job job) {
+		FileConfiguration cfg = plugin.getFileManager().getSettings();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				setCustomitems(player, player.getName(), inv, "Settings_Custom.",
+						cfg.getStringList("Settings_Custom.List"), name, cfg, job);
+			}
+		}.runTaskLater(plugin, 2);
+	}
 
 	public void setMainInventoryJobItems(InventoryView inv, Player player, String name) {
 		plugin.getExecutor().execute(() -> {
@@ -429,7 +453,7 @@ public class GuiManager {
 							for (String l : j.getStatsMessage(UUID)) {
 
 								filore.add(plugin.getPluginManager().toHex(l).replaceAll("<stats_args_4>", usedlvl)
-										.replace("<earned>",
+										.replaceAll("<online>", ""+plugin.getPlayerAPI().getOnlinePlayersInJob(j).size()).replace("<earned>",
 												"" + api.Format(plugin.getPlayerAPI()
 														.getEarnedAt("" + player.getUniqueId(), j, plugin.getDate())))
 										.replaceAll("<stats_args_3>", "" + level)

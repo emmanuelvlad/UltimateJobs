@@ -53,12 +53,10 @@ public class SetPointsSub extends AdminSubCommand {
 				}
 
 				if (how.equalsIgnoreCase("CACHE")) {
-
-					JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(uuid);
-
-					jb.updatePoints(Integer.valueOf(value));
+ 
+					plugin.getPlayerAPI().updatePoints(uuid,Integer.valueOf(value));
 					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7Points to §a" + value
-							+ "§7. §8(§eCache§8)");
+							+ "§7. §8(§aOnline§8)");
 					return;
 
 				} else {
@@ -66,7 +64,7 @@ public class SetPointsSub extends AdminSubCommand {
 					pl.updatePoints(uuid, Integer.valueOf(value));
 
 					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7Points to §a" + value
-							+ "§7. §8(§bSQL§8)");
+							+ "§7. §8(§cOffline§8)");
 					return;
 				}
 

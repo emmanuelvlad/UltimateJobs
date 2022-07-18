@@ -58,9 +58,9 @@ public class RemovePointsSub extends AdminSubCommand {
 
 					double old = jb.getPoints();
 					
-					jb.updatePoints(old-Integer.valueOf(value));
+					plugin.getPlayerAPI().updatePoints(uuid, old-Integer.valueOf(value));
 					sender.sendMessage(AdminCommand.prefix + "Removed §c" + player + " §7Points -> §a" + value
-							+ "§7. §8(§eCache§8)");
+							+ "§7. §8(§aOnline§8)");
 					return;
 
 				} else {
@@ -70,7 +70,7 @@ public class RemovePointsSub extends AdminSubCommand {
 					pl.updatePoints(uuid, old- Integer.valueOf(value));
 
 					sender.sendMessage(AdminCommand.prefix + "Removed §c" + player + " §7Points -> §a" + value
-							+ "§7. §8(§bSQL§8)");
+							+ "§7. §8(§cOffline§8)");
 					
 					return;
 				}

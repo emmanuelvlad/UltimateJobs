@@ -1013,6 +1013,22 @@ public class PlayerDataAPI {
 
 		}
 	}
+	
+	public void updateExp(String UUID, double d, String job) {
+		String mode = UltimateJobs.getPlugin().getPluginMode();
+		if (mode.equalsIgnoreCase("SQL")) {
+			final String insertQuery = "UPDATE `job_stats` SET `EXP`='" + d + "' WHERE UUID='" + UUID + "' AND JOB`='"+job+"'";
+			mg.executeUpdate(insertQuery);
+		} else if (mode.equalsIgnoreCase("YML")) {
+
+			FileConfiguration cfg = plugin.getPlayerDataFile().get();
+			File file = plugin.getPlayerDataFile().getfile();
+
+			cfg.set("Jobs." + UUID + "." + job + ".Exp", d);
+			save(cfg, file);
+
+		}
+	}
 
 	public void savePlayer(JobsPlayer pl, String UUID) {
 

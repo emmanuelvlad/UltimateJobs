@@ -20,6 +20,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.jobs.UltimateJobs;
 import de.warsteiner.jobs.api.Job;
@@ -376,6 +377,18 @@ public class GuiAddonManager {
 				cfg.getStringList("Job_Earnings_Custom.List"), name, cfg, job);
 		setEarningsItems_Single(inv_view, cfg, player, job);
 	}
+	
+	public void updateEarningsGUI_Single_Job(Player player, String name, JobsPlayer jb, Job job) {
+		FileConfiguration cfg = plugin.getFileManager().getEarningsJobConfig();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				plugin.getGUI().setCustomitems(player, player.getName(), inv, "Job_Earnings_Custom.",
+						cfg.getStringList("Job_Earnings_Custom.List"), name, cfg, job);
+				setEarningsItems_Single(inv, cfg, player, job);
+			}
+		}.runTaskLater(plugin, 2);
+	}
 
 	public void setEarningsItems_Single(InventoryView inv, FileConfiguration cf, Player pl, Job job) {
 		plugin.getExecutor().execute(() -> {
@@ -613,6 +626,18 @@ public class GuiAddonManager {
 		setEarningsItems_ALL(inv_view, cfg, player);
 	}
 
+	public void updateEarningsGUI_All(Player player, String name, JobsPlayer jb) {
+		FileConfiguration cfg = plugin.getFileManager().getEarningsAllConfig();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				plugin.getGUI().setCustomitems(player, player.getName(), inv, "All_Earnings_Custom.",
+						cfg.getStringList("All_Earnings_Custom.List"), name, cfg, null);
+				setEarningsItems_ALL(inv, cfg, player);
+			}
+		}.runTaskLater(plugin, 2);
+	}
+	
 	public void setEarningsItems_ALL(InventoryView inv, FileConfiguration cf, Player pl) {
 		plugin.getExecutor().execute(() -> {
 
@@ -1041,6 +1066,7 @@ public class GuiAddonManager {
 				cfg.getStringList("ConfirmWithdraw_Custom.List"), name, cfg, null);
 		setWithdrawConfigItems(player, name, inv_view);
 	}
+ 
 
 	public void setWithdrawConfigItems(Player player, String tit, InventoryView inv) {
 		FileConfiguration cfg = plugin.getFileManager().getWithdrawConfirmConfig();
@@ -1136,6 +1162,19 @@ public class GuiAddonManager {
 		plugin.getGUI().setCustomitems(player, player.getName(), inv_view, "Withdraw_Custom.",
 				cfg.getStringList("Withdraw_Custom.List"), name, cfg, null);
 		setWithdrawItems(inv_view, player, sp);
+	}
+	
+	
+	public void updateWithdrawGUI(Player player, String name, JobsPlayer jb) {
+		FileConfiguration cfg = plugin.getFileManager().getWithdrawConfig();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				plugin.getGUI().setCustomitems(player, player.getName(), inv, "Withdraw_Custom.",
+						cfg.getStringList("Withdraw_Custom.List"), name, cfg, null);
+				setWithdrawItems(inv, player, jb);
+			}
+		}.runTaskLater(plugin, 2);
 	}
 
 	public void setWithdrawItems(InventoryView inv, Player player, JobsPlayer jb) {
@@ -1304,6 +1343,18 @@ public class GuiAddonManager {
 		plugin.getGUI().setCustomitems(player, player.getName(), inv_view, "Levels_Custom.",
 				cfg.getStringList("Levels_Custom.List"), name, cfg, null);
 		setLevelsItems(inv_view, name, cfg, player, job);
+	}
+	
+	public void updateLevelsGUI(Player player, String name, JobsPlayer jb, Job job) {
+		FileConfiguration cfg = plugin.getFileManager().getLevelGUIConfig();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				plugin.getGUI().setCustomitems(player, player.getName(), inv, "Levels_Custom.",
+						cfg.getStringList("Levels_Custom.List"), name, cfg, null);
+				setLevelsItems(inv, name, cfg, player, job);
+			}
+		}.runTaskLater(plugin, 2);
 	}
 
 	public void setLevelsItems(InventoryView inv, String name, FileConfiguration cf, Player pl, Job job) {
@@ -1540,6 +1591,18 @@ public class GuiAddonManager {
 				cfg.getStringList("Rewards_Custom.List"), name, cfg, null);
 		setRewardsItems(inv_view, name, cfg, player, job);
 	}
+	
+	public void updateRewardsGUI(Player player, String name, JobsPlayer jb, Job job) {
+		FileConfiguration cfg = plugin.getFileManager().getRewardsConfig();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				plugin.getGUI().setCustomitems(player, player.getName(), inv, "Rewards_Custom.",
+						cfg.getStringList("Rewards_Custom.List"), name, cfg, null);
+				setRewardsItems(inv, name, cfg, player, job);
+			}
+		}.runTaskLater(plugin, 2);
+	}
 
 	public void setRewardsItems(InventoryView inv, String name, FileConfiguration cf, Player pl, Job job) {
 		plugin.getExecutor().execute(() -> {
@@ -1745,6 +1808,18 @@ public class GuiAddonManager {
 				cfg.getStringList("Self_Custom.List"), name, cfg, null);
 		setStatsItems(inv_view, name, cfg, UUID, player.getName(), player, "Self");
 	}
+	
+	public void updateSelfUpdateGUI(Player player, String name, JobsPlayer jb) {
+		FileConfiguration cfg = plugin.getFileManager().getStatsConfig();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				plugin.getGUI().setCustomitems(player, player.getName(), inv, "Self_Custom.",
+						cfg.getStringList("Self_Custom.List"), name, cfg, null);
+				setStatsItems(inv, name, cfg, ""+player.getUniqueId(), player.getName(), player, "Self");
+			}
+		}.runTaskLater(plugin, 2);
+	}
 
 	public void createOtherStatsGUI(Player player, UpdateTypes t, String named, String ud) {
 		FileConfiguration cfg = plugin.getFileManager().getStatsConfig();
@@ -1766,6 +1841,18 @@ public class GuiAddonManager {
 		plugin.getGUI().setCustomitems(player, player.getName(), inv_view, "Other_Custom.",
 				cfg.getStringList("Other_Custom.List"), name, cfg, null);
 		setStatsItems(inv_view, name, cfg, ud, named, player, "Other");
+	}
+	
+	public void updateOtherStatsGUI(Player player, String name, JobsPlayer jb, String ud) {
+		FileConfiguration cfg = plugin.getFileManager().getStatsConfig();
+		InventoryView inv = player.getOpenInventory();
+		new BukkitRunnable() {
+			public void run() {
+				plugin.getGUI().setCustomitems(player, player.getName(), inv, "Other_Custom.",
+						cfg.getStringList("Other_Custom.List"), name, cfg, null);
+				setStatsItems(inv, name, cfg, ud, name, player, "Other");
+			}
+		}.runTaskLater(plugin, 2);
 	}
 
 	public void setStatsItems(InventoryView inv, String name, FileConfiguration cf, String WATCHUUID, String NAME,

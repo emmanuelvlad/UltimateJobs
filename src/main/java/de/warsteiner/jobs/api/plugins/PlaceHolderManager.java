@@ -57,7 +57,24 @@ public class PlaceHolderManager extends PlaceholderExpansion {
 				} else {
 					return jb.getLanguage().getStringFromLanguage(jb.getUUID(), "placeholder_no_job");
 				}
-			} else if (pr.contains("job_current_level")) {
+			} if (pr.contains("job_current_online")) {
+				String[] split = pr.split("_");
+				String internal = split[3];
+
+				if (jobs.size() != 0) {
+
+					if (jobs.contains(internal.toUpperCase())) {
+
+						Job job = plugin.getJobCache().get(internal.toUpperCase());
+						return ""+plugin.getPlayerAPI().getOnlinePlayersInJob(job).size();
+
+					} else {
+						return "0";
+					}
+				} else {
+					return "0";
+				}
+			}  else if (pr.contains("job_current_level")) {
 				String[] split = pr.split("_");
 				String internal = split[3];
 

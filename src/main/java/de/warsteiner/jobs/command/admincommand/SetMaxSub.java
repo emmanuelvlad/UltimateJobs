@@ -53,12 +53,10 @@ public class SetMaxSub extends AdminSubCommand {
 				}
 
 				if (how.equalsIgnoreCase("CACHE")) {
-
-					JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(uuid);
-
-					jb.updateMax(Integer.valueOf(value));
+ 
+					plugin.getPlayerAPI().updateMax(uuid, Integer.valueOf(value));
 					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7max Jobs to §a" + value
-							+ "§7. §8(§eCache§8)");
+							+ "§7. §8(§aOnline§8)");
 					return;
 
 				} else {
@@ -66,7 +64,7 @@ public class SetMaxSub extends AdminSubCommand {
 					pl.updateMax(uuid, Integer.valueOf(value));
 
 					sender.sendMessage(AdminCommand.prefix + "Changed §c" + player + "'s §7max Jobs to §a" + value
-							+ "§7. §8(§bSQL§8)");
+							+ "§7. §8(§cOffline§8)");
 					return;
 				}
 

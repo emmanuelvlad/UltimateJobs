@@ -11,18 +11,18 @@ import de.warsteiner.jobs.command.AdminCommand;
 import de.warsteiner.jobs.utils.admincommand.AdminSubCommand;
 import de.warsteiner.jobs.utils.objects.JobsPlayer;
 
-public class SetLevelSub extends AdminSubCommand {
+public class RemoveExpSub extends AdminSubCommand {
 
 	private static UltimateJobs plugin = UltimateJobs.getPlugin(); 
 	
 	@Override
 	public String getName() {
-		return "setlevel";
+		return "remexp";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Set Player's Level in a Job";
+		return "Remove Player's Exp in a Job";
 	}
 
 	@Override
@@ -57,9 +57,10 @@ public class SetLevelSub extends AdminSubCommand {
 						JobsPlayer jb =UltimateJobs.getPlugin().getPlayerAPI().getRealJobPlayer(uuid);
 
 						if(jb.ownJob(j.getConfigID())) { 
-							plugin.getPlayerAPI().updateLevelOf(uuid, j, Integer.valueOf(value)); 
-							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
-									+ " §7to §6"+value+". §8(§aOnline§8)");
+							double old = jb.getStatsOf(job).getExp();
+							plugin.getPlayerAPI().updateExp(uuid, j, old-Integer.valueOf(value)); 
+							sender.sendMessage(AdminCommand.prefix + "Removed §c" + player + " §7Exp in Job §a" + j.getConfigID()
+									+ " §7-> §6"+value+". §8(§aOnline§8)");
 							if(sender instanceof Player) {
 								Player player3 = (Player) sender;
 								player3.playSound(player3.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 3);
@@ -77,10 +78,11 @@ public class SetLevelSub extends AdminSubCommand {
 					} else {
 
 						if(pl.getOwnedJobs(uuid).contains(job.toUpperCase())) {
-							pl.updateLevel(uuid, Integer.valueOf(value), j.getConfigID());
+							double old = pl.getExpOf(uuid, job);
+							pl.updateExp(uuid,old-Integer.valueOf(value), job);
 
-							sender.sendMessage(AdminCommand.prefix + "Set §c" + player + "'s §7level in Job §a" + j.getConfigID()
-							+ " §7to §6"+value+". §8(§cOffline§8)");
+							sender.sendMessage(AdminCommand.prefix + "Removed §c" + player + " §7Exp in Job §a" + j.getConfigID()
+							+ " §7-> §6"+value+". §8(§cOffline§8)");
 							if(sender instanceof Player) {
 								Player player3 = (Player) sender;
 								player3.playSound(player3.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 3);
@@ -129,17 +131,17 @@ public class SetLevelSub extends AdminSubCommand {
 
 	@Override
 	public String FormatTab() {
-		return "command setlevel players_online jobs_listed";
+		return "command remexp players_online jobs_listed";
 	}
 	
 	@Override
 	public String getUsage() { 
-		return "/JobsAdmin setlevel <name> <job> <value>";
+		return "/JobsAdmin remexp <name> <job> <value>";
 	}
 
 	@Override
 	public String getPermission() { 
-		return "ultimatejobs.admin.setlevel";
+		return "ultimatejobs.admin.remexp";
 	}
 	
 	@Override

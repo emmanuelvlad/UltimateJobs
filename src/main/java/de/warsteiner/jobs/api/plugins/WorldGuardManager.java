@@ -66,7 +66,7 @@ public class WorldGuardManager {
 		flagRegistry.register((Flag) (ENCHANT = new StateFlag("enchant-action", false)));
 		flagRegistry.register((Flag) (EXPLORE = new StateFlag("explore-action", false)));
 		flagRegistry.register((Flag) (SMELT = new StateFlag("smelt-action", false)));
-		flagRegistry.register((Flag) (TRADE_EMERALDS = new StateFlag("trade-emeralds-action", false)));
+		flagRegistry.register((Flag) (TRADE_EMERALDS = new StateFlag("villager-trade-action", false)));
 		flagRegistry.register((Flag) (BREAK_ACTION = new StateFlag("break-action", false)));
 		flagRegistry.register((Flag) (PLACE_ACTION = new StateFlag("place-action", false)));
 		flagRegistry.register((Flag) (KILL_ACTION = new StateFlag("kill-action", false)));
@@ -95,7 +95,7 @@ public class WorldGuardManager {
 		if(b.equalsIgnoreCase("enchant-action")) { return ENCHANT; }
 		if(b.equalsIgnoreCase("explore-action")) { return EXPLORE; }
 		if(b.equalsIgnoreCase("smelt-action")) { return SMELT; }
-		if(b.equalsIgnoreCase("trade-emeralds-action")) { return TRADE_EMERALDS; }
+		if(b.equalsIgnoreCase("villager-trade-action")) { return TRADE_EMERALDS; }
 		if(b.equalsIgnoreCase("find-treasure-action")) { return TR; }
 		if(b.equalsIgnoreCase("farm-grow-action")) { return FARM_GROW_ACTION; }
 		if(b.equalsIgnoreCase("strip-action")) { return STRIP_ACTION; }

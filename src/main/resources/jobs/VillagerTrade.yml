@@ -1,7 +1,7 @@
 Action:
-  - "TRADE_EMERALDS" 
+  - "VILLAGER_TRADE" 
  
-ID: "Villager"
+ID: "VILBUX"
  
 Material: "EMERALD"
 
@@ -16,27 +16,35 @@ Worlds:
   - "world_nether"
 
 IDS:
-
-  #on this action, 
-  #the player gets money PER Emerald spent.
-  #means, when a player trades with a Villager 
-  #for 5 emeralds, he gets the reward * 5
-  
-  TRADE_EMERALDS:
+ 
+  VILLAGER_TRADE:
     List:
-      - "ONE"  
+      - "REDSTONE"  
+      - "MAP"
 
-    ONE:
+    MAP:
 
       Chance: 75
-      ID: "EMERALD"
+      ID: "MAP"
       Money: 5.50
       Exp: 5
       Points: 0.05
       RewardsGUI:
     
         See: true
-        Icon: "EMERALD"
+        Icon: "MAP"
+
+    REDSTONE:
+
+      Chance: 75
+      ID: "REDSTONE"
+      Money: 5.50
+      Exp: 5
+      Points: 0.05
+      RewardsGUI:
+    
+        See: true
+        Icon: "REDSTONE"
 
 LEVELS:
 

@@ -152,7 +152,8 @@ public class ClickManager {
 				.equalsIgnoreCase("STORED")) {
 			if (plugin.getFileManager().getConfig().getBoolean("ResetAmountOnJobLeave")) {
 				
-				jb.updateSalary(0);
+		 
+				plugin.getPlayerAPI().updateSalary(jb.getUUIDAsString(), 0);
 				
 				if(plugin.getFileManager().getConfig().getBoolean("SendResetMessage")) {
 					player.sendMessage(jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Withdraw_Reset_Salary_Message"));
@@ -171,9 +172,10 @@ public class ClickManager {
 				if(plugin.getFileManager().getConfig().getBoolean("SendRemovePercentMessage")) {
 					player.sendMessage(jb.getLanguage().getStringFromLanguage(jb.getUUID(), "Withdraw_Remove_Percent_Of_Salary_Message")
 							.replaceAll("<amount>", plugin.getAPI().Format(removed)));
+				
 				}
 				
-				jb.updateSalary(sal-removed);
+				plugin.getPlayerAPI().updateSalary(jb.getUUIDAsString(), sal-removed); 
 			}
 		}
 	}

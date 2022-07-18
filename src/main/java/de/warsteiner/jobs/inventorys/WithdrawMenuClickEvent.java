@@ -92,10 +92,10 @@ public class WithdrawMenuClickEvent implements Listener {
 
 						String ddddddddd = "" + format.format(newdate);
 
-						jb.updateSalaryDate(ddddddddd);
+						plugin.getPlayerAPI().updateSalaryDate(jb.getUUIDAsString(), ddddddddd);
 					}
 
-					jb.updateSalary(0);
+					plugin.getPlayerAPI().updateSalary(jb.getUUIDAsString(), 0);
 
 					if (plugin.getFileManager().getConfig().getBoolean("ReOpenMenuWhenSuccess")) {
 						plugin.getGUIAddonManager().createWithdrawMenu(p, UpdateTypes.REOPEN);
@@ -156,10 +156,10 @@ public class WithdrawMenuClickEvent implements Listener {
 
 								String ddddddddd = "" + format.format(newdate);
 
-								jb.updateSalaryDate(ddddddddd);
+								plugin.getPlayerAPI().updateSalaryDate(jb.getUUIDAsString(), ddddddddd);
 							}
 
-							jb.updateSalary(0);
+							plugin.getPlayerAPI().updateSalary(jb.getUUIDAsString(), 0);
 
 							if (plugin.getFileManager().getConfig().getBoolean("ReOpenMenuWhenSuccess")) {
 								plugin.getGUIAddonManager().createWithdrawMenu(p, UpdateTypes.REOPEN);

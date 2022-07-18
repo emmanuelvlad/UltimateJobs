@@ -825,6 +825,120 @@ Other_Custom:
  
 Jobs:
 
+  VILBUX:
+  
+    Display: "&aVillager Trade)"
+    
+    DisplayID: "vil-buy"
+    
+    Lore:
+      - "&7Earn Money by trading Emeralds!"
+    
+    Stats:
+      - "&7"
+      - "&aStats&8:"
+      - "&7Bought on &8: &b<stats_args_1>"
+      - "&7Joined &8: &a&l<joined>"
+      - "&7Trades &8: &b<stats_args_2>" 
+      - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
+      - "&7" 
+      - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+      - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+
+    StatsGUI:
+    
+       Display: "&8< | &aVillager Trade &8| >"
+       
+       Lore:
+
+         Other: 
+           - "&7<name>'s Stats in this Job&8:"
+           - "&8&m--------------------------"
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Trades &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+       
+         Self: 
+           - "&7Your Stats in this Job&8:"
+           - "&8&m--------------------------" 
+           - "&7Bought on &8: &b<stats_args_1>"
+           - "&7Trades &8: &b<stats_args_2>" 
+           - "&7Earned Today&8: &a<earned> Dollars"
+           - "&7" 
+           - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
+           - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
+      
+    Levels:
+    
+      1:  
+        Display: "&6Level I"
+     
+      2:  
+        Display: "&6Level II"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a250 Money"
+      
+      3:  
+        Display: "&6Level III"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a500 Money"
+      
+      4: 
+        Display: "&6Level IV"
+        
+        Lore:
+          - "&7Rewards of this Level&8:"
+          - "&8-> &a1000 Money"
+      
+    IDS:
+
+      MAP:
+      
+        Display: "&fMap"
+        
+        Rewards:
+        
+          Display: "&8< &fMap &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Traded &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
+      REDSTONE:
+      
+        Display: "&cRedstone"
+        
+        Rewards:
+        
+          Display: "&8< &cRedstone &8>"
+          
+          Lore:
+            - "&8-----------"
+            - "&7Reward &8: &c$<money>"
+            - "&7Chance &8: &9<chance>%"
+            - "&7Exp &8: &a<exp>"
+            - "&7Points &8: &6<points>"
+            - "&7Action &8: &4<action>"
+            - "&7" 
+            - "&7Traded &8: &6<times>"
+            - "&7Earned Money &8: &a<earned> Dollars"
+
   DRINK:
   
     Display: "&aDrink Potion Job"
@@ -841,6 +955,8 @@ Jobs:
       - "&7Joined &8: &a&l<joined>"
       - "&7Times &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -972,6 +1088,8 @@ Jobs:
       - "&7Joined &8: &a&l<joined>"
       - "&7Enchanted &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1103,6 +1221,8 @@ Jobs:
       - "&7Joined &8: &a&l<joined>"
       - "&7Chunks &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1196,6 +1316,8 @@ Jobs:
       - "&7Joined &8: &a&l<joined>"
       - "&7Items &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1289,6 +1411,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Chests Found &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1382,6 +1506,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Kills &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1494,6 +1620,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Saplings &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1625,6 +1753,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Collected &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1718,6 +1848,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Mobs breeded &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1830,6 +1962,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Mobs Killed &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -1923,6 +2057,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Mobs Tamed &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2035,6 +2171,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Honey Bottles &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2147,6 +2285,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Eated &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2278,6 +2418,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Completed &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2388,6 +2530,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Times sheared &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2519,6 +2663,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Items Crafted &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2650,6 +2796,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Cows milked &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2743,6 +2891,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Fishes &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2874,6 +3024,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Kills &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -2986,6 +3138,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Blocks &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -3099,6 +3253,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Broken Seeds &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -3231,6 +3387,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Plants &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -3362,6 +3520,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Blocks &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
@@ -3474,6 +3634,8 @@ Jobs:
       - "&7Joined Date&8: &a&l<joined>"
       - "&7Blocks &8: &b<stats_args_2>" 
       - "&7Earned Today&8: &a<earned> Dollars"
+      - "&7"
+      - "&7Current Members (online)&8: &e<online> Players"
       - "&7" 
       - "&7Level &8: &b<stats_args_3> &8/ <stats_args_4>"
       - "&7Exp &8: &b<stats_args_5>&8/&c<stats_args_6>" 
