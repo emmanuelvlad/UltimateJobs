@@ -141,9 +141,9 @@ public class JobAPI {
 			}
 
 			Sound sound = Sound.valueOf(config.getString("Sounds." + ty + ".Sound"));
-			int vol = config.getInt("Sounds." + ty + ".Volume");
-			int pitch = config.getInt("Sounds." + ty + ".Pitch");
-			player.playSound(player.getLocation(), sound, vol, pitch);
+			double vol = config.getDouble("Sounds." + ty + ".Volume", config.getInt("Sounds." + ty + ".Volume"));
+			double pitch = config.getDouble("Sounds." + ty + ".Pitch", config.getInt("Sounds." + ty + ".Pitch"));
+			player.playSound(player.getLocation(), sound, (float) vol, (float) pitch);
 		}
 	}
 
