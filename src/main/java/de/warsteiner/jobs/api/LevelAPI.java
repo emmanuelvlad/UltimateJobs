@@ -60,78 +60,84 @@ public class LevelAPI {
 			FileConfiguration cfg = plugin.getFileManager().getConfig();
 			String prefix = pl.getLanguage().getPrefix(UUID);
 
-			int old_level = pl.getStatsOf(job.getConfigID()).getLevel();
-			int new_level = old_level + 1;
+			int current_level = pl.getStatsOf(job.getConfigID()).getLevel();
+			double current_exp = pl.getStatsOf(job.getConfigID()).getExp();
 
-			if (old_level >= job.getCountOfLevels()) {
+			double new_exp = current_exp;
+
+			int skipped_levels = 0;
+			for (; new_exp >= getJobNeedExpWithOutPlayer(job, current_level + skipped_levels); skipped_levels++) {
+				new_exp -= getJobNeedExpWithOutPlayer(job, current_level + skipped_levels);
+			}
+
+			int new_level = current_level + skipped_levels - 1;
+
+			if (current_level >= job.getCountOfLevels() || new_level <= current_level) {
 				return;
 			}
 
 			if (!canLevelMore("" + UUID, job, new_level)) {
+				// rewards
 
-				if (canlevelUp(job, pl)) {
+				plugin.getPlayerAPI().updateLevelOf(""+UUID, job, new_level); 
+				plugin.getPlayerAPI().updateExp(""+UUID, job, new_exp);
 
-					// rewards
 
-					plugin.getPlayerAPI().updateLevelOf(""+UUID, job, new_level); 
-					plugin.getPlayerAPI().updateExp(""+UUID, job, 0);
+				new BukkitRunnable() {
+					public void run() {
+						new PlayerLevelJobEvent(player, pl, job, new_level);
+					}
+				}.runTaskLater(plugin, 1);
 
-					new BukkitRunnable() {
-						public void run() {
-							new PlayerLevelJobEvent(player, pl, job, new_level);
-						}
-					}.runTaskLater(plugin, 1);
+				if (job.isVaultOnLevel(new_level)) {
 
-					if (job.isVaultOnLevel(new_level)) {
+					double money = job.getVaultOnLevel(new_level);
 
-						double money = job.getVaultOnLevel(new_level);
+					boolean ys = true;
 
-						boolean ys = true;
+					if (plugin.getFileManager().getConfig().getString("PayMentMode").toUpperCase()
+							.equalsIgnoreCase("STORED")) {
+						if (plugin.getFileManager().getConfig().getBoolean("CountLevelsRewardAsSalary")) {
+							ys = false;
+							double old = plugin.getPlayerAPI().getSalary(pl.getUUIDAsString());
 
-						if (plugin.getFileManager().getConfig().getString("PayMentMode").toUpperCase()
-								.equalsIgnoreCase("STORED")) {
-							if (plugin.getFileManager().getConfig().getBoolean("CountLevelsRewardAsSalary")) {
-								ys = false;
-								double old = plugin.getPlayerAPI().getSalary(pl.getUUIDAsString());
-
-								plugin.getPlayerAPI().updateSalary(pl.getUUIDAsString(), old + money);
-							}
-						}
-
-						if (ys) {
-
-							UltimateJobs.getPlugin().getEco().depositPlayer(player, money);
+							plugin.getPlayerAPI().updateSalary(pl.getUUIDAsString(), old + money);
 						}
 					}
 
-					String level_name = job.getLevelDisplay(new_level, "" + UUID);
+					if (ys) {
 
-					if (cfg.getBoolean("Levels.Enable_Title")) {
-						String title_1 = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Ttitle_1")
-								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
-								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
-
-						String title_2 = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Ttitle_2")
-								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
-								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
-						player.sendTitle(title_1, title_2);
+						UltimateJobs.getPlugin().getEco().depositPlayer(player, money);
 					}
-
-					if (cfg.getBoolean("Levels.Enable_Message")) {
-						String message = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Message")
-								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
-								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
-						player.sendMessage(message);
-					}
-
-					if (cfg.getBoolean("Levels.Enabled_Actionbar")) {
-						String message = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Actionbar")
-								.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
-								.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
-						player.sendMessage(message);
-					}
-
 				}
+
+				String level_name = job.getLevelDisplay(new_level, "" + UUID);
+
+				if (cfg.getBoolean("Levels.Enable_Title")) {
+					String title_1 = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Ttitle_1")
+							.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
+							.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
+
+					String title_2 = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Ttitle_2")
+							.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
+							.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
+					player.sendTitle(title_1, title_2);
+				}
+
+				if (cfg.getBoolean("Levels.Enable_Message")) {
+					String message = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Message")
+							.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
+							.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
+					player.sendMessage(message);
+				}
+
+				if (cfg.getBoolean("Levels.Enabled_Actionbar")) {
+					String message = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Actionbar")
+							.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
+							.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
+					player.sendMessage(message);
+				}
+
 			}
 
 		});
