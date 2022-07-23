@@ -66,13 +66,18 @@ public class LevelAPI {
 			double new_exp = current_exp;
 
 			int skipped_levels = 0;
-			for (; new_exp >= getJobNeedExpWithOutPlayer(job, current_level + skipped_levels); skipped_levels++) {
-				new_exp -= getJobNeedExpWithOutPlayer(job, current_level + skipped_levels);
+			for (int i = 1; skipped_levels <= 0; i++) {
+				var exp_needed = getJobNeedExpWithOutPlayer(job, current_level + i);
+				if (new_exp - exp_needed < 0) {
+					skipped_levels = i;
+				} else {
+					new_exp -= exp_needed;
+				}
 			}
 
 			int new_level = current_level + skipped_levels - 1;
 
-			if (current_level >= job.getCountOfLevels() || new_level <= current_level) {
+			if (current_level >= job.getCountOfLevels() || current_level >= new_level) {
 				return;
 			}
 
