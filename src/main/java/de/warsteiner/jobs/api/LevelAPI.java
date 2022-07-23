@@ -121,10 +121,12 @@ public class LevelAPI {
 				if (cfg.getBoolean("Levels.Enable_Title")) {
 					String title_1 = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Ttitle_1")
 							.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
+							.replaceAll("<job>", job.getDisplay("" + UUID))
 							.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 
 					String title_2 = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Ttitle_2")
 							.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
+							.replaceAll("<job>", job.getDisplay("" + UUID))
 							.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 					player.sendTitle(title_1, title_2);
 				}
@@ -132,6 +134,7 @@ public class LevelAPI {
 				if (cfg.getBoolean("Levels.Enable_Message")) {
 					String message = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Message")
 							.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
+							.replaceAll("<job>", job.getDisplay("" + UUID))
 							.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 					player.sendMessage(message);
 				}
@@ -139,6 +142,7 @@ public class LevelAPI {
 				if (cfg.getBoolean("Levels.Enabled_Actionbar")) {
 					String message = api.toHex(pl.getLanguage().getStringFromLanguage(UUID, "Levels.Actionbar")
 							.replaceAll("<prefix>", prefix).replaceAll("<level_name>", level_name)
+							.replaceAll("<job>", job.getDisplay("" + UUID))
 							.replaceAll("<level_int>", "" + new_level).replaceAll("&", "§"));
 					player.sendMessage(message);
 				}
