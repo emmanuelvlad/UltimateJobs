@@ -1,5 +1,6 @@
 package de.warsteiner.jobs.jobs;
 
+import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,7 @@ public class JobActionFindATreasure implements Listener {
 		if (e.getClickedBlock() == null) {
 			return;
 		}
-		if (!e.getClickedBlock().getType().name().contains("CHEST")) {
+		if (e.getClickedBlock().getType() != Material.CHEST) {
 			return;
 		}
 		Chest c = (Chest) e.getClickedBlock().getState();
