@@ -3,11 +3,13 @@ package de.warsteiner.jobs.manager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat; 
 import java.util.Date;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -15,6 +17,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.warsteiner.jobs.UltimateJobs;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 
 public class PluginManager {
@@ -78,6 +81,15 @@ public class PluginManager {
 	        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
 
 	    }
+
+	public String formatText(String text, Map<String, String> replacer, OfflinePlayer player) {
+		text = toHex(text).replaceAll("&", "§");
+		for (String key : replacer.keySet()) {
+			text = text.replaceAll(key, replacer.get(key));
+		}
+
+		return PlaceholderAPI.setPlaceholders(player, text);
+	}
 	
 	public boolean isFullyGrownOld(Block block) {
 

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import static java.util.Map.entry;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -227,6 +229,19 @@ public class JobAPI {
 			}
 			String prt = pl.getLanguage().getStringFromLanguage(UUID, "prefix");
 			if (prefix != null) {
+				Map<String, String> replacer = Map.ofEntries(
+					entry("<amount>", ""+amount),
+					entry("<prefix>", prt),
+					entry("<job>", job.getDisplay("" + UUID)),
+					entry("<exp>", Format(all_exp)),
+					entry("<exp_gained>", Format(job.getExpOf(block, ac))),
+					entry("<exp_required>", Format(plugin.getLevelAPI().getJobNeedExp(job, pl))),
+					entry("<level_name>", job.getLevelDisplay(level, "" + UUID)),
+					entry("<level_int>", ""+level),
+					entry("<id>", disofid),
+					entry("<action>", ac.toString().toLowerCase()),
+					entry("<money>", Format(reward))
+				);
 
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_BossBar")) {
 					Date isago5seconds = new Date((new Date()).getTime() + 3000L);
@@ -236,15 +251,7 @@ public class JobAPI {
 					double use = BossBarHandler.calc(all_exp, plugin.getLevelAPI().canLevelMore("" + UUID, job, level),
 							need);
 					BarColor color = job.getBarColor();
-					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".BossBar")
-							.replaceAll("<amount>", ""+amount).replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
-							.replaceAll("<exp>", Format(all_exp))
-							.replaceAll("<exp_gained>", Format(job.getExpOf(block, ac)))
-							.replaceAll("<exp_required>", Format(plugin.getLevelAPI().getJobNeedExp(job, pl)))
-							.replaceAll("<level_name>", job.getLevelDisplay(level, "" + UUID))
-							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-							.replaceAll("<action>", ac.toString().toLowerCase()).replaceAll("<money>", Format(reward))
-							.replaceAll("&", "§"));
+					String message = up.formatText(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".BossBar"), replacer, p);
 					if (!BossBarHandler.exist(p.getName())) {
 						BossBarHandler.createBar(p, message, color, p.getName(), use);
 					} else {
@@ -254,27 +261,11 @@ public class JobAPI {
 					}
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enable_Message")) {
-					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".Message")
-							.replaceAll("<amount>", ""+amount).replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
-							.replaceAll("<exp>", Format(all_exp))
-							.replaceAll("<exp_gained>", Format(job.getExpOf(block, ac)))
-							.replaceAll("<exp_required>", Format(plugin.getLevelAPI().getJobNeedExp(job, pl)))
-							.replaceAll("<level_name>", job.getLevelDisplay(level, "" + UUID))
-							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-							.replaceAll("<action>", ac.toString().toLowerCase()).replaceAll("<money>", Format(reward))
-							.replaceAll("&", "§"));
+					String message = up.formatText(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".Message"), replacer, p);
 					p.sendMessage(message);
 				}
 				if (plugin.getFileManager().getConfig().getBoolean(prefix + ".Enabled_Actionbar")) {
-					String message = up.toHex(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".Actionbar")
-							.replaceAll("<amount>", ""+amount).replaceAll("<prefix>", prt).replaceAll("<job>", job.getDisplay("" + UUID))
-							.replaceAll("<exp>", Format(all_exp))
-							.replaceAll("<exp_gained>", Format(job.getExpOf(block, ac)))
-							.replaceAll("<exp_required>", Format(plugin.getLevelAPI().getJobNeedExp(job, pl)))
-							.replaceAll("<level_name>", job.getLevelDisplay(level, "" + UUID))
-							.replaceAll("<level_int>", "" + level).replaceAll("<id>", disofid)
-							.replaceAll("<action>", ac.toString().toLowerCase()).replaceAll("<money>", Format(reward))
-							.replaceAll("&", "§"));
+					String message = up.formatText(pl.getLanguage().getStringFromLanguage(UUID, prefix + ".Actionbar"), replacer, p);
 					p.spigot().sendMessage(ChatMessageType.ACTION_BAR, (BaseComponent) new TextComponent(message));
 				}
 			}
