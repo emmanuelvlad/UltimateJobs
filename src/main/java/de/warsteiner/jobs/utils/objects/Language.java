@@ -57,6 +57,7 @@ public class Language {
 	public String getStringFromLanguage(UUID UUID, String path) {  
 		if(cfg.getString(path) == null) {
 			Bukkit.getConsoleSender().sendMessage("§4Missing Element from Path: "+path+" in Config "+name+" located in "+getFile().getPath());
+			return null;
 		}
 		return UltimateJobs.getPlugin().getPluginManager().toHex(cfg.getString(path)).replaceAll("<prefix>", getPrefix(UUID)).replaceAll("&", "§");
 

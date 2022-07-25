@@ -39,6 +39,14 @@ placeholder_no_level: "&cNo Level"
 placeholder_no_exp: "&cNo Exp"
 placeholder_no_levelname: "&cNo Levelname"
 
+#admin
+admin_help_header: " §8| §9UltimateJobs §8- §4Admin Help #<page> §8|"
+admin_help_page_not_found: "§cNo Help Page found."
+admin_help_previous_page: "§8-> §cPrevious Page §8|"
+admin_help_next_page: "§8-> §aNext Page"
+admin_help_click_here: "Click here"
+admin_help_command_usage: "§8-> §6<usage> §8| §7<description>"
+
 #commands
 command_notfound: "<prefix> &7Cannot find command &6<cmd>&7!"
 command_usage: "<prefix> &7Please use &6<usage>&7."

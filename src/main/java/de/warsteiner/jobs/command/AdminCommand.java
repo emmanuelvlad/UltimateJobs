@@ -1,7 +1,8 @@
 package de.warsteiner.jobs.command;
 
 import java.util.List;
- 
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -19,6 +20,31 @@ public class AdminCommand implements CommandExecutor {
 
 	public static String prefix = "§9UltimateJobs §8-> §7";
 
+	public static Map<String, String> raw_messages = Map.of(
+		"noperm", "<prefix> §cYou dont have Permissions!",
+		"command_usage", "<prefix> §7Error! §7Use §6/Jobsadmin help§7.",
+		"admin_help_header", " §8| §9UltimateJobs §8- §4Admin Help #<page> §8|",
+		"admin_help_page_not_found", "§cNo Help Page found.",
+		"admin_help_previous_page", "§8-> §cPrevious Page §8|",
+		"admin_help_next_page", "§8-> §aNext Page",
+		"admin_help_command_usage", "§8-> §6<usage> §8| §7<description>",
+		"admin_help_click_here", "Click here"
+	);
+
+	public static String getMessage(CommandSender sender, String key) {
+		if (sender instanceof Player) {
+			Player player = (Player) sender;
+			var jb = plugin.getPlayerAPI().getRealJobPlayer(player.getUniqueId());
+
+			String msg = jb.getLanguage().getStringFromLanguage(player.getUniqueId(), key);
+			if (msg != null) {
+				return msg;
+			}
+		}
+
+		return raw_messages.get(key).replaceAll("<prefix>", prefix);
+	}
+
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		int length = args.length;
@@ -35,7 +61,7 @@ public class AdminCommand implements CommandExecutor {
 				String ar = args[0].toLowerCase();
 
 				if (find(ar) == null) {
-					sender.sendMessage(prefix + "§7Error! §7Use §6/Jobsadmin help§7.");
+					sender.sendMessage(getMessage(sender, "command_usage").replaceAll("<usage>", "/Jobsadmin"));
 					return true;
 				} else {
 
@@ -46,7 +72,7 @@ public class AdminCommand implements CommandExecutor {
 						cmd.perform(sender, args);
 
 					} else {
-						sender.sendMessage(prefix + "§cYou dont have Permissions!");
+						sender.sendMessage(getMessage(sender, "noperm"));
 						return true;
 					}
 				}
@@ -54,7 +80,7 @@ public class AdminCommand implements CommandExecutor {
 			}
 
 		} else {
-			sender.sendMessage(prefix + "§cYou dont have Permissions!");
+			sender.sendMessage(getMessage(sender, "noperm"));
 			return true;
 		}
 		return false;
@@ -82,7 +108,7 @@ public class AdminCommand implements CommandExecutor {
 		if(commands.size() >= min) {
 			
 			sender.sendMessage("§7");
-			sender.sendMessage(" §8| §9UltimateJobs §8- §4Admin Help #" + page + " §8|");
+			sender.sendMessage(getMessage(sender, "admin_help_header").replaceAll("<page>", ""+page));
 			
 			for (int i = (page - 1) * pageLength; i < (page * pageLength) && i < commands.size(); i++) {
 				AdminSubCommand which = commands.get(i);
@@ -93,10 +119,11 @@ public class AdminCommand implements CommandExecutor {
 					if(sender instanceof Player) {
 						Player player = (Player) sender;
 						 new JsonMessage() 
-						 .append("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription()).setHoverAsTooltip("§7"+which.getDescription())
+						 .append(getMessage(sender, "admin_help_command_usage").replaceAll("<usage>", which.getUsage()).replaceAll("<description>", which.getDescription())).setHoverAsTooltip("§7"+which.getDescription())
+						//  .append("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription()).setHoverAsTooltip("§7"+which.getDescription())
 						 .setClickAsSuggestCmd(us).save().send(player);
 					} else {
-						sender.sendMessage("§8-> §6" + which.getUsage() + " §8| §7" + which.getDescription());
+						sender.sendMessage(getMessage(sender, "admin_help_command_usage").replaceAll("<usage>", which.getUsage()).replaceAll("<description>", which.getDescription()));
 					}
 				}
 				
@@ -115,20 +142,20 @@ public class AdminCommand implements CommandExecutor {
 					
 					if(page == 1) {
 						 new JsonMessage() 
-						 .append(ChatColor.GREEN + "§8-> §aNext Page").setHoverAsTooltip("Click here")
+						 .append(ChatColor.GREEN + getMessage(sender, "admin_help_next_page")).setHoverAsTooltip(getMessage(sender, "admin_help_click_here"))
 						 .setClickAsExecuteCmd("/jobsadmin help "+c2).save().send(player);
 					} else {
 						
 						 
 						
 						if(commands.size() >= calc) {
-							 new JsonMessage().append(ChatColor.RED + "§8-> §cPevious Page §8|").setHoverAsTooltip("Click here")
+							 new JsonMessage().append(ChatColor.RED + getMessage(sender, "admin_help_previous_page")).setHoverAsTooltip(getMessage(sender, "admin_help_click_here"))
 							 .setClickAsExecuteCmd("/jobsadmin help "+c).save()
 							 
-							 .append(ChatColor.GREEN + " §aNext Page").setHoverAsTooltip("Click here")
+							 .append(ChatColor.GREEN + " §aNext Page").setHoverAsTooltip(getMessage(sender, "admin_help_click_here"))
 							 .setClickAsExecuteCmd("/jobsadmin help "+c2).save().send(player);
 						} else {
-							 new JsonMessage().append(ChatColor.RED + "§8-> §cPevious Page §8|").setHoverAsTooltip("Click here")
+							 new JsonMessage().append(ChatColor.RED + getMessage(sender, "admin_help_previous_page")).setHoverAsTooltip(getMessage(sender, "admin_help_click_here"))
 							 .setClickAsExecuteCmd("/jobsadmin help "+c).save().send(player);
 						}
 						
@@ -140,7 +167,7 @@ public class AdminCommand implements CommandExecutor {
 				sender.sendMessage("§7");
 			}
 		} else {
-			sender.sendMessage(prefix + "§cNo Help Page found.");
+			sender.sendMessage(getMessage(sender, "admin_help_page_not_found"));
 		}
 		}  
 	}
