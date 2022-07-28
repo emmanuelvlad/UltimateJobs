@@ -441,10 +441,9 @@ public class JobWorkManager {
 
 		UUID UUID = event.getPlayer().getUniqueId();
 
-		if (getJobOnWork("" + UUID, JobAction.FARM_BREAK, "" + type) != null) {
+		Job job = getJobOnWork("" + UUID, JobAction.FARM_BREAK, "" + type);
 
-			Job job = getJobOnWork("" + UUID, JobAction.FARM_BREAK, "" + type);
-
+		if (job != null) {
 			int amount = 1;
 
 			if (job.getConfig().getBoolean("CheckIfThereAreOtherCanesAbove")) {
@@ -599,7 +598,7 @@ public class JobWorkManager {
 			Job jub = plugin.getJobCache().get(job);
 
 			if (jub.getConfigIDOfRealID(ac, real, jub) == null) {
-				return null;
+				continue;
 			}
 
 			if (jub.getListOfRealIDS(ac).contains(real.toUpperCase())) {
