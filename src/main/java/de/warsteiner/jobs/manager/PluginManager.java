@@ -99,7 +99,8 @@ public class PluginManager {
  
 		if (block.getType() == Material.MELON || block.getType() == Material.PUMPKIN
 				|| block.getType() == Material.SUGAR_CANE) {
-			return true;
+
+			return !block.hasMetadata("placed-by-player");
 		}
 
 		BlockData bdata = block.getBlockData();
