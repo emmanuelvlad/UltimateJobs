@@ -220,6 +220,8 @@ public class JobAPI {
 			String disofid = job.getDisplayOf(block, "" + UUID, ac);
 			double need = plugin.getLevelAPI().getJobNeedExp(job, pl);
 
+			UltimateJobs.getPlugin().getAPI().playSound("REWARD", p);
+
 			String prefix = null;
 
 			if (can) {
