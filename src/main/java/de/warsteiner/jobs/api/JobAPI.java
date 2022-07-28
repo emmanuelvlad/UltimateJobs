@@ -234,7 +234,7 @@ public class JobAPI {
 					entry("<prefix>", prt),
 					entry("<job>", job.getDisplay("" + UUID)),
 					entry("<exp>", Format(all_exp)),
-					entry("<exp_gained>", Format(job.getExpOf(block, ac))),
+					entry("<exp_gained>", Format(job.getExpOf(block, ac) * amount)),
 					entry("<exp_required>", Format(plugin.getLevelAPI().getJobNeedExp(job, pl))),
 					entry("<level_name>", job.getLevelDisplay(level, "" + UUID)),
 					entry("<level_int>", ""+level),
