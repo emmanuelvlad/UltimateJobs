@@ -243,7 +243,7 @@ Sounds:
 
     Pitch: 2
 
-  REWARD:
+  FINISHED_WORK:
 
     Sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
 
