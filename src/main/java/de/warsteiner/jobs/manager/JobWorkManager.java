@@ -256,6 +256,11 @@ public class JobWorkManager {
 		final Material type = event.getBlock().getType();
 
 		if (block.hasMetadata("placed-by-player")) {
+			if (!event.isCancelled()) {
+				Bukkit.getScheduler().runTask(UltimateJobs.getPlugin(), () -> {
+					block.removeMetadata("placed-by-player", UltimateJobs.getPlugin());
+				});
+			}
 			return;
 		}
 		if (event.isCancelled()) {
