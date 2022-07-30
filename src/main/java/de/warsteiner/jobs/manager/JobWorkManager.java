@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -47,6 +48,11 @@ public class JobWorkManager {
 
 	private UltimateJobs plugin;
 	private JobAPI api;
+
+	private List<Material> breakingMaterials = List.of(
+		Material.SUGAR_CANE,
+		Material.CACTUS
+	);
 
 	public JobWorkManager(UltimateJobs plugin, JobAPI ap) {
 		this.api = ap;
@@ -255,12 +261,31 @@ public class JobWorkManager {
 		final Block block = event.getBlock();
 		final Material type = event.getBlock().getType();
 
-		if (block.hasMetadata("placed-by-player")) {
-			if (!event.isCancelled()) {
-				Bukkit.getScheduler().runTask(UltimateJobs.getPlugin(), () -> {
-					block.removeMetadata("placed-by-player", UltimateJobs.getPlugin());
-				});
+		List<Block> blocksToDel = new ArrayList<>();
+
+		if (breakingMaterials.contains(type)) {
+			var isBlockAboveSame = true;
+			for (int i = 0; isBlockAboveSame && block.getY() + i < block.getWorld().getMaxHeight(); i++) {
+				var blockAbove = block.getRelative(BlockFace.UP, i);
+
+				if (breakingMaterials.contains(blockAbove.getType()) && blockAbove.hasMetadata("placed-by-player")) {
+					blocksToDel.add(blockAbove);
+				} else if (blockAbove.getType() == Material.AIR) {
+					isBlockAboveSame = false;
+				}
 			}
+		}
+
+		if (!event.isCancelled()) {
+			Bukkit.getScheduler().runTask(UltimateJobs.getPlugin(), () -> {
+				blocksToDel.forEach(b -> {
+					b.removeMetadata("placed-by-player", UltimateJobs.getPlugin());
+				});
+			});
+		}
+
+		if (block.hasMetadata("placed-by-player")) {
+			blocksToDel.add(block);
 			return;
 		}
 		if (event.isCancelled()) {
