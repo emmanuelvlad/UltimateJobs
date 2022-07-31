@@ -688,6 +688,7 @@ public class JobWorkManager {
 
 						double exp_old = plugin.getPlayerAPI().getExpOf(IDASSTRING, job);
 						double exp = job.getExpOf(iD, ac) * amount;
+						double rewardedExp = exp + (plugin.getPlayerAPI().getExpPercentageBoost(ID) / 100F * exp);
 						Integer broken = plugin.getPlayerAPI().getBrokenTimes(IDASSTRING, job) + amount;
 						double points = job.getPointsOf(iD, ac) * amount;
 						double old_points = plugin.getPlayerAPI().getPoints(IDASSTRING);
@@ -758,7 +759,7 @@ public class JobWorkManager {
 						if (can == false) {
 
 							if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Exp")) {
-								plugin.getPlayerAPI().updateExp(IDASSTRING, job, exp_old + exp);
+								plugin.getPlayerAPI().updateExp(IDASSTRING, job, exp_old + rewardedExp);
 							}
 							if (cfg.getBoolean("Jobs.MaxEarnings.IfReached_Can_Earn_Points")) {
 								plugin.getPlayerAPI().updatePoints(IDASSTRING, points + old_points);
@@ -771,7 +772,7 @@ public class JobWorkManager {
 							}
 
 						} else {
-							plugin.getPlayerAPI().updateExp(IDASSTRING, job, exp_old + exp);
+							plugin.getPlayerAPI().updateExp(IDASSTRING, job, exp_old + rewardedExp);
 							plugin.getPlayerAPI().updatePoints(IDASSTRING, points + old_points);
 
 							plugin.getPlayerAPI().updateEarningsOfToday(IDASSTRING, job, earnedcalc);
@@ -797,7 +798,7 @@ public class JobWorkManager {
 							if (cfg.getBoolean("Enable_Levels")) {
 								UltimateJobs.getPlugin().getLevelAPI().check(player, job, d, iD);
 							}
-							UltimateJobs.getPlugin().getAPI().sendReward(d, player, job, exp, calc, iD, can, ac,
+							UltimateJobs.getPlugin().getAPI().sendReward(d, player, job, rewardedExp, calc, iD, can, ac,
 									amount);
 						}
 

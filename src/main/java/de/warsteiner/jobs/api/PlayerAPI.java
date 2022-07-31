@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
  
 import de.warsteiner.jobs.UltimateJobs;
@@ -592,4 +593,25 @@ public class PlayerAPI {
 		});
 	}
 
+	public int getExpPercentageBoost(UUID UUID) {
+		var permissionPrefix = "ultimatejobs.experience_bonus";
+		var max = 0;
+
+		Player player = Bukkit.getPlayer(UUID);
+		if (player == null) {
+			return 0;
+		}
+
+		for (PermissionAttachmentInfo attachmentInfo : player.getEffectivePermissions()) {
+			var permission = attachmentInfo.getPermission();
+			if (permission.startsWith(permissionPrefix) && attachmentInfo.getValue()) {
+				var found = Integer.parseInt(permission.substring(permission.lastIndexOf(".")+1));
+				if (found > max && found <= 100) {
+					max = found;
+				}
+			}
+		}
+
+		return max;
+	}
 }
