@@ -70,7 +70,7 @@ public class PlayerExistEvent implements Listener {
 
 				@Override
 				public void run() {
-					if (!plugin.getPlayerDataAPI().isFirstPluginStart()) {
+					if (plugin.getPlayerDataAPI().isFirstPluginStart() && player.hasPermission("ultimatejobs.admin")) {
 						player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 2, 3);
 						new JsonMessage()
 								.append("§7\n§8[§9UltimateJobs§8] §7Welcome, §6" + name
