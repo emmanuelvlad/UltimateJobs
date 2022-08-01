@@ -64,18 +64,18 @@ public class LevelAPI {
 			double current_exp = pl.getStatsOf(job.getConfigID()).getExp();
 
 			double new_exp = current_exp;
-
 			int skipped_levels = 0;
-			for (int i = 1; skipped_levels <= 0; i++) {
-				var exp_needed = getJobNeedExpWithOutPlayer(job, current_level + i);
+			while (job.getCountOfLevels() > current_level + skipped_levels) {
+				var exp_needed = getJobNeedExpWithOutPlayer(job, current_level + skipped_levels + 1);
 				if (new_exp - exp_needed < 0) {
-					skipped_levels = i;
+					break;
 				} else {
 					new_exp -= exp_needed;
+					skipped_levels++;
 				}
 			}
-
-			int new_level = current_level + skipped_levels - 1;
+			
+			int new_level = current_level + skipped_levels;
 
 			if (current_level >= job.getCountOfLevels() || current_level >= new_level) {
 				return;
