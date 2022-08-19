@@ -593,9 +593,10 @@ public class PlayerAPI {
 		});
 	}
 
-	public int getExpPercentageBoost(UUID UUID) {
-		var permissionPrefix = "ultimatejobs.experience_bonus";
-		var max = 0;
+	public double getExpPercentageBoost(UUID UUID) {
+		var basePermissionPrefix = "ultimatejobs.experience_bonus.base";
+		var addPermissionPrefix = "ultimatejobs.experience_bonus.add";
+		double baseMax = 0;
 
 		Player player = Bukkit.getPlayer(UUID);
 		if (player == null) {
@@ -604,14 +605,26 @@ public class PlayerAPI {
 
 		for (PermissionAttachmentInfo attachmentInfo : player.getEffectivePermissions()) {
 			var permission = attachmentInfo.getPermission();
-			if (permission.startsWith(permissionPrefix) && attachmentInfo.getValue()) {
+			if (permission.startsWith(basePermissionPrefix) && attachmentInfo.getValue()) {
 				var found = Integer.parseInt(permission.substring(permission.lastIndexOf(".")+1));
-				if (found > max && found <= 100) {
-					max = found;
+				if (found > baseMax && found <= 100) {
+					baseMax = found;
 				}
 			}
 		}
 
-		return max;
+		double bonus = 1 * (1 + baseMax / 100);
+
+		for (PermissionAttachmentInfo attachmentInfo : player.getEffectivePermissions()) {
+			var permission = attachmentInfo.getPermission();
+			if (permission.startsWith(addPermissionPrefix) && attachmentInfo.getValue()) {
+				var found = Integer.parseInt(permission.substring(permission.lastIndexOf(".")+1));
+				if (found > 0 && found <= 100) {
+					bonus *= (1 + (double) found / 100);
+				}
+			}
+		}
+
+		return (bonus -1) * 100;
 	}
 }
