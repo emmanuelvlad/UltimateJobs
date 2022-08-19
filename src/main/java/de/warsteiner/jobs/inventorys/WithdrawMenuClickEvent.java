@@ -49,6 +49,9 @@ public class WithdrawMenuClickEvent implements Listener {
 		Player p = (Player) e.getWhoClicked();
 
 		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer(p.getUniqueId());
+		if (jb == null) {
+			return;
+		}
 
 		YamlConfiguration lg = jb.getLanguage().getConfig();
 

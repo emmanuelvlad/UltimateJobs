@@ -45,6 +45,9 @@ public class EarningsMenuClickEvent implements Listener {
 		UUID UUID = p.getUniqueId();
 
 		JobsPlayer jb = plugin.getPlayerAPI().getRealJobPlayer("" + UUID);
+		if (jb == null) {
+			return;
+		}
 
 		String display = plugin.getPluginManager()
 				.toHex(e.getCurrentItem().getItemMeta().getDisplayName().replaceAll("&", "§"));

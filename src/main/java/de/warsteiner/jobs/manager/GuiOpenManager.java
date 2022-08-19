@@ -19,6 +19,9 @@ public class GuiOpenManager {
 	public String isStatsMenuOpendAboutPlayer(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getStatsConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.STATS_OTHER)) {
@@ -39,6 +42,9 @@ public class GuiOpenManager {
 	public Job isSettingsMenu(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getSettings();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.SETTINGS)) {
@@ -61,6 +67,9 @@ public class GuiOpenManager {
 	public Job isRewardsMenu(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getRewardsConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.REWARDS)) {
@@ -83,6 +92,9 @@ public class GuiOpenManager {
 	public String isStatsMenuOpendSelf(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getStatsConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.STATS_SELF)) {
@@ -100,6 +112,9 @@ public class GuiOpenManager {
 	public String isMainOpend(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getGUI();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.MAIN)) {
@@ -117,6 +132,9 @@ public class GuiOpenManager {
 	public Job isLevelsMenu(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getLevelGUIConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.LEVELS)) {
@@ -139,6 +157,9 @@ public class GuiOpenManager {
 	public String isHelpOpend(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getHelpSettings();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.HELP)) {
@@ -156,6 +177,9 @@ public class GuiOpenManager {
 	public String isWithdrawMenu(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getWithdrawConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.WITHDRAW)) {
@@ -173,6 +197,9 @@ public class GuiOpenManager {
 	public String isWithdrawConfirmMenu(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getWithdrawConfirmConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.CONFIRM_WITHDRAW)) {
@@ -190,6 +217,9 @@ public class GuiOpenManager {
 	public String isEarningsALL(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getEarningsAllConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.EARNINGS_ALL)) {
@@ -207,6 +237,9 @@ public class GuiOpenManager {
 	public Job isEarningsAboutJob(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getEarningsJobConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.EARNINGS_JOB)) {
@@ -229,6 +262,9 @@ public class GuiOpenManager {
 	public String isLanguageOpend(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getLanguageGUIConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.LANGUAGE)) {
@@ -246,6 +282,9 @@ public class GuiOpenManager {
 	public Job isConfirmGUI(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getConfirm();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.CONFIRM)) {
@@ -268,6 +307,9 @@ public class GuiOpenManager {
 	public Job isLeaveConfirmGUI(Player player, String title) {
 		FileConfiguration cfg = plugin.getFileManager().getLeaveConfirmConfig();
 		JobsPlayer sp = plugin.getPlayerAPI().getRealJobPlayer("" + player.getUniqueId());
+		if (sp == null) {
+			return null;
+		}
 		if (plugin.getGUI().getGUIS().containsKey(sp.getUUIDAsString())) {
 
 			if (plugin.getGUI().getGUIS().get(sp.getUUIDAsString()).equals(GUIType.CONFIRM_LEAVE)) {
